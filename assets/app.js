@@ -188,6 +188,41 @@ function handleDelete(e) {
     reloadTable()
 }
 
+function handlePull(e) {
+    var id = e.parentElement.parentElement.id;
+    var i = parseInt(id.substring(1));
+
+    var node = rows[i];
+    console.log(node);
+
+    var inputMenu = document.getElementsByClassName("inpform")[0];
+    var children = inputMenu.getElementsByTagName("input");
+
+    children[0].value = node.permission;
+
+    if (node.hasOwnProperty("expiry")) {
+        children[1].value = node.expiry;
+    }
+    if (node.hasOwnProperty("server")) {
+        children[2].value = node.server;
+    }
+    if (node.hasOwnProperty("world")) {
+        children[3].value = node.world;
+    }
+    if (node.hasOwnProperty("contexts")) {
+        var contextsStr = "";
+        for (var key in node.contexts) {
+            if (node.contexts.hasOwnProperty(key)) {
+                var value = node.contexts[key];
+                contextsStr += (key + "=" + value + " ")
+            }
+        }
+        children[4].value = contextsStr;
+    }
+
+    console.log(children);
+}
+
 function handleAdd(e) {
     var parent = e.parentElement;
     var children = parent.getElementsByTagName("input");
@@ -376,7 +411,7 @@ function nodeToHtml(id, node) {
                 contextsStr += (key + "=" + value + " ")
             }
         }
-        
+
         content += '<div class="cell">' + contextsStr.trim() + '</div>'
     } else {
         content += '<div class="cell">none</div>'
@@ -385,6 +420,7 @@ function nodeToHtml(id, node) {
     // static delete button
     content += '<div class="cell">';
     content += '<i onclick="handleDelete(this)" class="clickable material-icons md-18">delete</i>';
+    content += '<i onclick="handlePull(this)" class="clickable material-icons md-18" style="padding-left: 8px;font-size: 22px;">content_copy</i>';
     content += '</div>';
     content += '</div>';
 

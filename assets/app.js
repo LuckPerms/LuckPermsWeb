@@ -204,12 +204,18 @@ function handlePull(e) {
 
     if (node.hasOwnProperty("expiry")) {
         children[1].value = node.expiry;
+    } else {
+    	children[1].value = null;
     }
     if (node.hasOwnProperty("server")) {
         children[2].value = node.server;
+    } else {
+    	children[2].value = null;
     }
     if (node.hasOwnProperty("world")) {
         children[3].value = node.world;
+    } else {
+    	children[3].value = null;
     }
     if (node.hasOwnProperty("contexts")) {
         var contextsStr = "";
@@ -220,6 +226,8 @@ function handlePull(e) {
             }
         }
         children[4].value = contextsStr;
+    } else {
+    	children[4].value = null;
     }
 }
 

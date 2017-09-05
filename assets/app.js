@@ -5,6 +5,9 @@ var rows = [];
 // or empty, if the data loaded at the start of the session didn't contain the attribute
 var who = "";
 
+// the command alias used to open the editor page
+var cmdAlias = "lp";
+
 // makes a minimal node object from the given parameters.
 function makeNode(perm, value, server, world, expiry, contexts) {
     var node = {};
@@ -193,7 +196,6 @@ function handlePull(e) {
     var i = parseInt(id.substring(1));
 
     var node = rows[i];
-    console.log(node);
 
     var inputMenu = document.getElementsByClassName("inpform")[0];
     var children = inputMenu.getElementsByTagName("input");
@@ -219,8 +221,6 @@ function handlePull(e) {
         }
         children[4].value = contextsStr;
     }
-
-    console.log(children);
 }
 
 function handleAdd(e) {
@@ -314,7 +314,7 @@ function handleSave(e) {
         var content = "";
         content += '<div class="alert">';
         content += '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>';
-        content += '<strong>Success!</strong> Data was saved to gist. Run <code>/lp applyedits ' + id + '</code> to apply your changes.</div>';
+        content += '<strong>Success!</strong> Data was saved to gist. Run <code>/' + cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
         popup.innerHTML = content
     })
 }
@@ -467,9 +467,16 @@ function idFormEnter(e) {
             readPage(url, function (ret) {
                 var data = JSON.parse(ret);
 
+                console.log("Loaded from: ")
+            	console.log(url)
+
                 // replace the local node array with the json data
                 rows = data.nodes;
                 who = data.who;
+                cmdAlias = data.cmdAlias;
+                if (!cmdAlias) {
+                	cmdAlias = "lp"
+                }
                 hidePanel();
                 reloadTable()
             })
@@ -508,9 +515,16 @@ if (params) {
         readPage(url, function (ret) {
             var data = JSON.parse(ret);
 
+            console.log("Loaded from: ")
+            console.log(url)
+
             // replace the local node array with the json data
             rows = data.nodes;
             who = data.who;
+            cmdAlias = data.cmdAlias;
+            if (!cmdAlias) {
+            	cmdAlias = "lp"
+            }
             hidePanel();
             reloadTable()
         })

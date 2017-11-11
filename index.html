@@ -17,6 +17,9 @@
 </head>
 
 <body>
+
+<datalist id="permissions-list"></datalist>
+
 <div class="bar" style="display: none;">
   <img alt="" class="tiny-logo" src="assets/logo.png">
   <h3>Web Permissions Editor</h3>
@@ -47,7 +50,7 @@
       <div class="table-input-bar">
         <div class="newentry">
           <div class="inpform">
-            <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Permission" style="width: 195px;"></input>
+            <input type="text" list="permissions-list" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Permission" style="width: 195px;"></input>
             <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Expiry"></input>
             <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Server"></input>
             <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="World"></input>

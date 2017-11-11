@@ -8,6 +8,14 @@ var who = "";
 // the command alias used to open the editor page
 var cmdAlias = "lp";
 
+var permsListObject = document.getElementById("permissions-list")
+
+function addAutoCompletePermission(perm) {
+    var option = document.createElement("option");
+    option.value = perm;
+    permsListObject.appendChild(option);
+}
+
 // makes a minimal node object from the given parameters.
 function makeNode(perm, value, server, world, expiry, contexts) {
     var node = {};
@@ -480,6 +488,13 @@ if (params) {
             if (!cmdAlias) {
                 cmdAlias = "lp"
             }
+
+            // populate autocomplete options
+            perms = data.knownPermissions;
+            if (perms) {
+                perms.forEach(addAutoCompletePermission)
+            }
+
             hidePanel();
             reloadTable()
         })

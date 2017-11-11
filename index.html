@@ -2,67 +2,67 @@
 
 <html lang="en">
 <head>
-	<meta charset="utf-8">
+<meta charset="utf-8">
 
-	<title>LuckPerms Web Editor</title>
-	<meta content="LuckPerms Web Editor" name="description">
-	<meta content="Luck" name="author">
-	<link href="./assets/favicon/16px.png" rel="shortcut icon" sizes="16x16" type="image/png">
-	<link href="./assets/favicon/32px.png" rel="shortcut icon" sizes="32x32" type="image/png">
-	<link href="./assets/favicon/64px.png" rel="shortcut icon" sizes="64x64" type="image/png">
-	<link href="./assets/favicon/128px.png" rel="shortcut icon" sizes="128x128" type="image/png">
-	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
-	<link href="assets/style.css" rel="stylesheet" type="text/css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<title>LuckPerms Web Editor</title>
+<meta content="LuckPerms Web Editor" name="description">
+<meta content="Luck" name="author">
+<link href="./assets/favicon/16px.png" rel="shortcut icon" sizes="16x16" type="image/png">
+<link href="./assets/favicon/32px.png" rel="shortcut icon" sizes="32x32" type="image/png">
+<link href="./assets/favicon/64px.png" rel="shortcut icon" sizes="64x64" type="image/png">
+<link href="./assets/favicon/128px.png" rel="shortcut icon" sizes="128x128" type="image/png">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+<link href="assets/style.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
-  <div class="bar" style="display: none;">
-    <img alt="" class="tiny-logo" src="assets/logo.png">
-    <h3>Web Permissions Editor</h3>
-    <i onclick="handleSave(this)" class="clickable material-icons">save</i>
-  </div>
+<div class="bar" style="display: none;">
+  <img alt="" class="tiny-logo" src="assets/logo.png">
+  <h3>Web Permissions Editor</h3>
+  <i onclick="handleSave(this)" class="clickable material-icons">save</i>
+</div>
 
-  <div class="content">
-    <div id="popup"></div>
+<div class="content">
+  <div id="popup"></div>
 
-    <div id="page">
-      <div class="panel">
-        <img alt="" class="logo" src="assets/logo.png">
+  <div id="page">
+    <div class="panel">
+      <img alt="" class="logo" src="assets/logo.png">
 
-        <h1>LuckPerms</h1>
-        <h2>Web Permissions Editor</h2>
+      <h1>LuckPerms</h1>
+      <h2>Web Permissions Editor</h2>
 
-        <div id="prompt">
-          <h3>To start a new editor session, please use</h3>
-          <h4>
-            <cmd>/lp user &lt;user&gt; editor</cmd>
-            <br>
-            <cmd>/lp group &lt;group&gt; editor</cmd>
-          </h4>
-        </div>
-      </div>
-
-      <div class="wrapper" id="table-content" style="display: none;">
-        <div class="table-input-bar">
-          <div class="newentry">
-            <div class="inpform">
-              <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Permission" style="width: 195px;"></input>
-              <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Expiry"></input>
-              <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Server"></input>
-              <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="World"></input>
-              <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Contexts"></input>
-              <i onclick="handleAdd(this)" class="clickable material-icons" style="font-size: 35px; vertical-align: middle; float: right; padding-right: 10px;">add_box</i>
-            </div>
-          </div>
-        </div>
-
-        <div id="table-section"></div>
+      <div id="prompt">
+        <h3>To start a new editor session, please use</h3>
+        <h4>
+          <cmd>/lp user &lt;user&gt; editor</cmd>
+          <br>
+          <cmd>/lp group &lt;group&gt; editor</cmd>
+        </h4>
       </div>
     </div>
-  </div>
 
-	<script src="assets/app.js"></script>
+    <div class="wrapper" id="table-content" style="display: none;">
+      <div class="table-input-bar">
+        <div class="newentry">
+          <div class="inpform">
+            <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Permission" style="width: 195px;"></input>
+            <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Expiry"></input>
+            <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Server"></input>
+            <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="World"></input>
+            <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Contexts"></input>
+            <i onclick="handleAdd(this)" class="clickable material-icons" style="font-size: 35px; vertical-align: middle; float: right; padding-right: 10px;">add_box</i>
+          </div>
+        </div>
+      </div>
+
+      <div id="table-section"></div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/app.js"></script>
 
 </body>
 </html>

@@ -462,11 +462,13 @@ function removeTable() {
 // hides the welcome panel from view
 function hidePanel() {
 	document.getElementsByClassName("panel")[0].style.display = "none"
+	document.getElementsByClassName("bar")[0].style.display = "initial"
 }
 
 // unhides the welcome panel
 function showPanel() {
 	document.getElementsByClassName("panel")[0].style.display = "initial"
+	document.getElementsByClassName("bar")[0].style.display = "none"
 }
 
 // try to load the page from the url parameters when the page loads

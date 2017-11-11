@@ -3,13 +3,12 @@ html {
   min-height: 100%;
   height: 100%;
   overflow-x: hidden;
-  margin: 16px;
   padding: 0;
-  min-height: 100%;
   font-size: 72.5%;
 }
 
 body {
+  margin: 0px;
   position: relative;
   min-height: 100%;
   height: 100%;
@@ -26,18 +25,55 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+.bar {
+  overflow: hidden;
+  background-color: #2d2d38;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.bar .tiny-logo {
+  margin-top: 10px;
+  margin-left: 10px;
+  float: left;
+  height: 40px;
+  width: 40px;
+  vertical-align: middle;
+  border-radius: 6px;
+}
+
+.bar h3 {
+  margin-left: 10px;
+  float: left;
+  color: #EEEEEE;
+}
+
+.bar i {
+  font-size: 40px;
+  vertical-align: middle;
+  float: right;
+  margin-top: 10px;
+  margin-right: 15px;
+  color: #EEEEEE;
+}
+
+.content {
+  margin-top: 80px;
+}
+
 .panel {
   font-size: 1.3em;
   position: absolute;
   border-radius: 10px;
-  width: 200px;
+  width: 230px;
   height: 450px;
   background: #eee;
   top: 50%;
   left: 50%;
   z-index: 100;
   text-align: center;
-  margin: -250px 0 0 -120px;
+  margin: -300px 0 0 -135px;
   padding: 20px;
   line-height: 0.5rem;
 }
@@ -67,8 +103,20 @@ body {
 .panel h3 {
   font-weight: 400;
   font-size: 1.0em;
-  padding-top: 100px;
+  padding-top: 30px;
   margin-bottom: 10px;
+  line-height: 1.7rem;
+}
+
+.panel cmd {
+  padding: 2px 4px;
+  font-size: 90%;
+  background-color: #f9f2f4;
+  border-radius: 4px;
+  background-color: #ffffff;
+  font-family: monospace;
+  color: #141422;
+  line-height: 2.2rem;
 }
 
 .panel input {
@@ -114,7 +162,7 @@ body {
 
 .wrapper {
   margin: 0 auto;
-  padding: 40px;
+  padding: 5px;
   max-width: 1000px;
   font-size: 16px;
   line-height: 20px;

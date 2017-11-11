@@ -299,14 +299,6 @@ function handleAdd(e) {
 
 	rows.push(makeNode(permission, true, server, world, expiryTime, contextsObj));
 	reloadTable()
-
-	// copy input values over to the re-drawn table
-	var parentNew = document.getElementsByClassName("newentry")[0]
-	var childrenNew = parentNew.getElementsByTagName("input");
-	childrenNew[1].value = children[1].value
-	childrenNew[2].value = children[2].value
-	childrenNew[3].value = children[3].value
-	childrenNew[4].value = children[4].value
 }
 
 // called when the value tag is clicked
@@ -349,18 +341,6 @@ function handleSave(e) {
 function reloadTable() {
 	var content = "";
 
-	// new input header at the top of the table
-	content += '<div class="newentry">';
-	content += '<div class="inpform">';
-	content += '<input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Permission" style="width: 195px;"></input>';
-	content += '<input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Expiry"></input>';
-	content += '<input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Server"></input>';
-	content += '<input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="World"></input>';
-	content += '<input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Contexts"></input>';
-	content += '<i onclick="handleAdd(this)" class="clickable material-icons" style="font-size: 35px; vertical-align: middle; float: right; padding-right: 10px;">add_box</i>';
-	content += '</div>';
-	content += '</div>';
-
 	if (rows.length) {
 		// begin the table
 		content += '<div class="table">';
@@ -387,7 +367,7 @@ function reloadTable() {
 	}
 
 	// set the data
-	var element = document.getElementById("table-content");
+	var element = document.getElementById("table-section");
 	element.innerHTML = content
 }
 
@@ -454,21 +434,18 @@ function nodeToHtml(id, node) {
 	return content
 }
 
-function removeTable() {
-	var content = document.getElementById("table-content");
-	content.innerHTML = ""
-}
-
 // hides the welcome panel from view
 function hidePanel() {
 	document.getElementsByClassName("panel")[0].style.display = "none"
-	document.getElementsByClassName("bar")[0].style.display = "initial"
+	document.getElementsByClassName("bar")[0].style.display = "inherit"
+	document.getElementsByClassName("wrapper")[0].style.display = "inherit"
 }
 
 // unhides the welcome panel
 function showPanel() {
 	document.getElementsByClassName("panel")[0].style.display = "initial"
 	document.getElementsByClassName("bar")[0].style.display = "none"
+	document.getElementsByClassName("wrapper")[0].style.display = "none"
 }
 
 // try to load the page from the url parameters when the page loads

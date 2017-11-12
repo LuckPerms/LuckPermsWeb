@@ -292,6 +292,14 @@ code {
   text-decoration: none;
 }
 
+.footer a {
+  color: #88bb88;
+}
+
+.footer a:hover {
+  color: #44bb44;
+}
+
 .footer ul {
   list-style-type: none;
   margin: 0;

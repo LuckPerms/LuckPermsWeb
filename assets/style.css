@@ -25,6 +25,18 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+.flex-center {
+  display: flex;
+}
+
+.flex-center > :first-child, .flex-center > :last-child {
+  flex: 1;
+}
+
+.flex-center > :last-child {
+  text-align: right;
+}
+
 .bar {
   overflow: hidden;
   background-color: #2d2d38;
@@ -281,8 +293,6 @@ code {
 }
 
 .footer ul {
-  display: flex;
-  justify-content: space-between;
   list-style-type: none;
   margin: 0;
   padding: 0;

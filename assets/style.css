@@ -66,14 +66,14 @@ body {
   font-size: 1.3em;
   position: absolute;
   border-radius: 10px;
-  width: 230px;
+  width: 240px;
   height: 450px;
   background: #eee;
   top: 50%;
   left: 50%;
   z-index: 100;
   text-align: center;
-  margin: -300px 0 0 -135px;
+  margin: -300px 0 0 -140px;
   padding: 20px;
   line-height: 0.5rem;
 }

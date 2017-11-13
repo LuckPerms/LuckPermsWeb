@@ -207,7 +207,7 @@ ul.flex-center {
   display: inline;
 }
 
-.inpform input {
+.inpform input, .cell input {
   margin-left: 3px;
   width: 135px;
   padding: 8px 8px;
@@ -263,6 +263,11 @@ ul.flex-center {
     padding: 2px 12px;
     display: block;
   }
+}
+
+.cell input {
+  box-sizing: border-box;
+  width: 100%
 }
 
 code {

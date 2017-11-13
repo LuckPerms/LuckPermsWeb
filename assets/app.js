@@ -318,6 +318,42 @@ function handleValueSwap(e) {
     reloadTable()
 }
 
+function handleEditStart(e) {
+    var value = e.innerHTML;
+
+    if (value.startsWith("<input"))
+        return;
+
+    var value = e.innerHTML;
+    e.innerHTML = '<input onblur="handleEditStop(this)" onkeypress="handleEditKeypress(this, event)">';
+    e.childNodes[0].focus()
+    e.childNodes[0].value = value
+}
+
+function handleEditStop(e) {
+    var id = e.parentElement.parentElement.id;
+    var i = parseInt(id.substring(1));
+    var value = e.value;
+
+    if (value == "") {
+        value = rows[i].permission
+    } else {
+        rows[i].permission = value
+    }
+
+    e.parentElement.innerHTML = value
+}
+
+function handleEditKeypress(e, event) {
+    var key = event.key
+
+    if (key == "Escape") {
+        reloadTable()
+    } else if (key == "Enter") {
+        handleEditStop(e)
+    }
+}
+
 function handleSave(e) {
     console.log("Saving data to gist");
 
@@ -386,7 +422,7 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div class="cell">' + node.permission + '</div>';
+    content += '<div class="cell clickable" onclick="handleEditStart(this)">' + node.permission + '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
         content += '<div class="cell"><code onclick="handleValueSwap(this)" class="code-true clickable">true</code></div>'

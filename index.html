@@ -21,9 +21,11 @@
 <datalist id="permissions-list"></datalist>
 
 <div class="bar" style="display: none;">
-  <img alt="" class="tiny-logo" src="assets/logo.png">
-  <h3>Web Permissions Editor</h3>
-  <i onclick="handleSave(this)" class="clickable material-icons">save</i>
+  <ul class="flex-center">
+    <li><img alt="" class="tiny-logo" src="assets/logo.png">
+      <h3>Web Permissions Editor</h3>
+    <li><i onclick="handleSave(this)" class="clickable material-icons">save</i>
+  </ul>
 </div>
 
 <div class="content">
@@ -63,6 +65,14 @@
       <div id="table-section"></div>
     </div>
   </div>
+</div>
+
+<div class="footer">
+  <ul class="flex-center">
+    <li><a href="https://github.com/lucko" target="_blank">lucko</a>/<a href="https://github.com/lucko/LuckPermsWeb" target="_blank">LuckPermsWeb</a>
+      (<a id="version" href="https://github.com/lucko/LuckPermsWeb/tree/production" target="_blank">???????</a>)
+    <li><a href="https://github.com/lucko/LuckPermsWeb/blob/master/LICENSE.txt" target="_blank">Copyright &copy; 2017 LuckPerms contributors</a>
+  </ul>
 </div>
 
 <script src="assets/app.js"></script>

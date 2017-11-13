@@ -314,7 +314,7 @@ function handleValueSwap(e) {
     var id = e.parentElement.parentElement.id;
     var i = parseInt(id.substring(1));
 
-    rows[i].value = !rows[i].value;
+    rows[i].value = !((rows[i].value == null) || rows[i].value);
     reloadTable()
 }
 

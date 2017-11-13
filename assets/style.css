@@ -9,9 +9,11 @@ html {
 }
 
 body {
+  display: flex;
+  flex-flow: column;
   margin: 0px;
   position: relative;
-  min-height: calc(100% - 120px);
+  min-height: 100%;
   font-family: 'Source Sans Pro';
   font-style: normal;
   font-weight: 300;
@@ -72,7 +74,7 @@ body {
 
 .content {
   margin-top: 80px;
-  margin-bottom: 40px;
+  flex-grow: 1;
 }
 
 .panel {
@@ -282,8 +284,6 @@ code {
   overflow: hidden;
   background-color: #2d2d38;
   font-size: 75%;
-  position: fixed;
-  bottom: 0;
   width: 100%;
 }
 

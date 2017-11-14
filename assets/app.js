@@ -333,12 +333,37 @@ function handleEditStart(e) {
 function handleEditStop(e) {
     var id = e.parentElement.parentElement.id;
     var i = parseInt(id.substring(1));
+    var type = e.parentElement.className.replace(/ ?(cell|clickable) ?/gi, "")
     var value = e.value;
 
-    if (value == "") {
-        value = rows[i].permission
-    } else {
-        rows[i].permission = value
+    if (type == "permission") {
+        if (value == "") {
+            value = rows[i].permission
+        } else {
+            rows[i].permission = value
+        }
+    } else if (type == "expiry") {
+      if ((value == "") || (value == "never")) {
+          value = "never"
+          delete rows[i].expiry
+      } else {
+          rows[i].expiry = parseDuration(value)
+          value = expressDuration(rows[i].expiry)
+      }
+    } else if ((type == "server") || (type == "world")) {
+        if ((value == "") || (value == "global")) {
+            value = "global"
+            delete rows[i][type]
+        } else {
+            rows[i][type] = value
+        }
+    } else if (type == "contexts") {
+        if ((value == "") || (value == "none")) {
+            value = "none"
+            delete rows[i].contexts
+        } else {
+            rows[i].contexts = parseContexts(value)
+        }
     }
 
     e.parentElement.innerHTML = value

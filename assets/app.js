@@ -343,13 +343,29 @@ function handleEditStop(e) {
             rows[i].permission = value
         }
     } else if (type == "expiry") {
-      if ((value == "") || (value == "never")) {
-          value = "never"
-          delete rows[i].expiry
-      } else {
-          rows[i].expiry = parseDuration(value)
-          value = expressDuration(rows[i].expiry)
-      }
+        var expiryTime
+
+        if ((value == "") || (value == "never")) {
+            value = "never"
+            expiryTime = 0
+        } else {
+            var duration = parseDuration(value)
+            var now = Math.round((new Date()).getTime() / 1000)
+
+            if (!duration) {
+                expiryTime = 0;
+            } else {
+                expiryTime = now + duration
+            }
+        }
+
+        if (expiryTime == 0) {
+            delete rows[i].expiry
+        } else {
+            rows[i].expiry = expiryTime
+        }
+
+        value = expressDuration(expiryTime)
     } else if ((type == "server") || (type == "world")) {
         if ((value == "") || (value == "global")) {
             value = "global"

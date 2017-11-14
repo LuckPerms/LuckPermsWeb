@@ -497,8 +497,8 @@ function nodeToHtml(id, node) {
         content += getContentDiv("contexts") + 'none</div>'
     }
 
-    // static delete button
-    content += '<div class="cell">';
+    // static copy and delete button
+    content += '<div class="cell buttons">';
     content += '<i onclick="handleDelete(this)" class="clickable material-icons md-18">delete</i>';
     content += '<i onclick="handlePull(this)" class="clickable material-icons md-18" style="padding-left: 8px;font-size: 22px;">content_copy</i>';
     content += '</div>';

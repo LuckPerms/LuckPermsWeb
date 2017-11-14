@@ -292,6 +292,11 @@ code {
   cursor: hand;
 }
 
+.cell.buttons {
+  width: 0;
+  white-space: nowrap;
+}
+
 .footer {
   overflow: hidden;
   background-color: #2d2d38;

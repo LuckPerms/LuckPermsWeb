@@ -355,7 +355,7 @@ function handleEditStop(e) {
                 if (t < now) {
                     expiryTime = 0
                 } else {
-                    expiryTime = t
+                    expiryTime = t - now
                 }
             } else {
                 var duration = parseDuration(value)
@@ -363,18 +363,18 @@ function handleEditStop(e) {
                 if (!duration) {
                     expiryTime = 0
                 } else {
-                    expiryTime = now + duration
+                    expiryTime = duration
                 }
             }
         }
 
         if (expiryTime == 0) {
             delete rows[i].expiry
+            value = "never"
         } else {
-            rows[i].expiry = expiryTime
+            rows[i].expiry = now + expiryTime
+            value = expressDuration(expiryTime)
         }
-
-        value = expressDuration(expiryTime - now)
     } else if ((type == "server") || (type == "world")) {
         if ((value == "") || (value == "global")) {
             value = "global"

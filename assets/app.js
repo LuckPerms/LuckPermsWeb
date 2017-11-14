@@ -318,6 +318,92 @@ function handleValueSwap(e) {
     reloadTable()
 }
 
+function handleEditStart(e) {
+    var value = e.innerHTML;
+
+    if (value.startsWith("<input"))
+        return;
+
+    var value = e.innerHTML;
+    e.innerHTML = '<input onblur="handleEditStop(this)" onkeypress="handleEditKeypress(this, event)">';
+    e.childNodes[0].focus()
+    e.childNodes[0].value = value
+}
+
+function handleEditStop(e) {
+    var id = e.parentElement.parentElement.id;
+    var i = parseInt(id.substring(1));
+    var type = e.parentElement.className.replace(/ ?(cell|clickable) ?/gi, "")
+    var value = e.value;
+
+    if (type == "permission") {
+        if (value == "") {
+            value = rows[i].permission
+        } else {
+            rows[i].permission = value
+        }
+    } else if (type == "expiry") {
+        var now = Math.round((new Date()).getTime() / 1000)
+        var expiryTime
+
+        if ((value == "") || (value == "never")) {
+            expiryTime = 0
+        } else {
+            var t = Number(value)
+
+            if (t) {
+                if (t < now) {
+                    expiryTime = 0
+                } else {
+                    expiryTime = t - now
+                }
+            } else {
+                var duration = parseDuration(value)
+
+                if (!duration) {
+                    expiryTime = 0
+                } else {
+                    expiryTime = duration
+                }
+            }
+        }
+
+        if (expiryTime == 0) {
+            delete rows[i].expiry
+            value = "never"
+        } else {
+            rows[i].expiry = now + expiryTime
+            value = expressDuration(expiryTime)
+        }
+    } else if ((type == "server") || (type == "world")) {
+        if ((value == "") || (value == "global")) {
+            value = "global"
+            delete rows[i][type]
+        } else {
+            rows[i][type] = value
+        }
+    } else if (type == "contexts") {
+        if ((value == "") || (value == "none")) {
+            value = "none"
+            delete rows[i].contexts
+        } else {
+            rows[i].contexts = parseContexts(value)
+        }
+    }
+
+    e.parentElement.innerHTML = value
+}
+
+function handleEditKeypress(e, event) {
+    var key = event.key
+
+    if (key == "Escape") {
+        reloadTable()
+    } else if (key == "Enter") {
+        handleEditStop(e)
+    }
+}
+
 function handleSave(e) {
     console.log("Saving data to gist");
 
@@ -379,6 +465,10 @@ function reloadTable() {
     element.innerHTML = content
 }
 
+function getContentDiv(type) {
+    return '<div class="cell ' + type + ' clickable" onclick="handleEditStart(this)">'
+}
+
 function nodeToHtml(id, node) {
     var content = "";
 
@@ -386,7 +476,7 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div class="cell">' + node.permission + '</div>';
+    content += '<div list="permissions-list" class="cell permission clickable" onclick="handleEditStart(this)">' + node.permission + '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
         content += '<div class="cell"><code onclick="handleValueSwap(this)" class="code-true clickable">true</code></div>'
@@ -395,27 +485,27 @@ function nodeToHtml(id, node) {
     }
 
     if (!node.hasOwnProperty("expiry") || node.expiry === 0) {
-        content += '<div class="cell">never</div>'
+        content += getContentDiv("expiry") + 'never</div>'
     } else {
         var now = Math.round((new Date()).getTime() / 1000);
         var left = node.expiry - now;
         if (left <= 0) {
-            content += '<div class="cell">now</div>'
+            content += getContentDiv("expiry") + 'now</div>'
         } else {
-            content += '<div class="cell">' + expressDuration(left) + '</div>'
+            content += getContentDiv("expiry") + expressDuration(left) + '</div>'
         }
     }
 
     if (node.hasOwnProperty("server")) {
-        content += '<div class="cell">' + node.server + '</div>'
+        content += getContentDiv("server") + node.server + '</div>'
     } else {
-        content += '<div class="cell">global</div>'
+        content += getContentDiv("server") + 'global</div>'
     }
 
     if (node.hasOwnProperty("world")) {
-        content += '<div class="cell">' + node.world + '</div>'
+        content += getContentDiv("world") + node.world + '</div>'
     } else {
-        content += '<div class="cell">global</div>'
+        content += getContentDiv("world") + 'global</div>'
     }
 
     if (node.hasOwnProperty("contexts")) {
@@ -427,13 +517,13 @@ function nodeToHtml(id, node) {
             }
         }
 
-        content += '<div class="cell">' + contextsStr.trim() + '</div>'
+        content += getContentDiv("contexts") + contextsStr.trim() + '</div>'
     } else {
-        content += '<div class="cell">none</div>'
+        content += getContentDiv("contexts") + 'none</div>'
     }
 
-    // static delete button
-    content += '<div class="cell">';
+    // static copy and delete button
+    content += '<div class="cell buttons">';
     content += '<i onclick="handleDelete(this)" class="clickable material-icons md-18">delete</i>';
     content += '<i onclick="handlePull(this)" class="clickable material-icons md-18" style="padding-left: 8px;font-size: 22px;">content_copy</i>';
     content += '</div>';

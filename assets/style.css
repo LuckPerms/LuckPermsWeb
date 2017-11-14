@@ -207,7 +207,7 @@ ul.flex-center {
   display: inline;
 }
 
-.inpform input {
+.inpform input, .cell input {
   margin-left: 3px;
   width: 135px;
   padding: 8px 8px;
@@ -265,6 +265,11 @@ ul.flex-center {
   }
 }
 
+.cell input {
+  box-sizing: border-box;
+  width: 100%
+}
+
 code {
   padding: 2px 4px;
   font-size: 90%;
@@ -285,6 +290,11 @@ code {
 .clickable {
   cursor: pointer;
   cursor: hand;
+}
+
+.cell.buttons {
+  width: 0;
+  white-space: nowrap;
 }
 
 .footer {

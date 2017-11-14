@@ -451,7 +451,7 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += getContentDiv("permission") + node.permission + '</div>';
+    content += '<div list="permissions-list" class="cell permission clickable" onclick="handleEditStart(this)">' + node.permission + '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
         content += '<div class="cell"><code onclick="handleValueSwap(this)" class="code-true clickable">true</code></div>'

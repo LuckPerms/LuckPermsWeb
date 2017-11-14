@@ -343,19 +343,28 @@ function handleEditStop(e) {
             rows[i].permission = value
         }
     } else if (type == "expiry") {
+        var now = Math.round((new Date()).getTime() / 1000)
         var expiryTime
 
         if ((value == "") || (value == "never")) {
-            value = "never"
             expiryTime = 0
         } else {
-            var duration = parseDuration(value)
-            var now = Math.round((new Date()).getTime() / 1000)
+            var t = Number(value)
 
-            if (!duration) {
-                expiryTime = 0;
+            if (t) {
+                if (t < now) {
+                    expiryTime = 0
+                } else {
+                    expiryTime = t
+                }
             } else {
-                expiryTime = now + duration
+                var duration = parseDuration(value)
+
+                if (!duration) {
+                    expiryTime = 0
+                } else {
+                    expiryTime = now + duration
+                }
             }
         }
 
@@ -365,7 +374,7 @@ function handleEditStop(e) {
             rows[i].expiry = expiryTime
         }
 
-        value = expressDuration(expiryTime)
+        value = expressDuration(expiryTime - now)
     } else if ((type == "server") || (type == "world")) {
         if ((value == "") || (value == "global")) {
             value = "global"

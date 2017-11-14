@@ -415,6 +415,10 @@ function reloadTable() {
     element.innerHTML = content
 }
 
+function getContentDiv(type) {
+    return '<div class="cell ' + type + ' clickable" onclick="handleEditStart(this)">'
+}
+
 function nodeToHtml(id, node) {
     var content = "";
 
@@ -422,7 +426,7 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div class="cell clickable" onclick="handleEditStart(this)">' + node.permission + '</div>';
+    content += getContentDiv("permission") + node.permission + '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
         content += '<div class="cell"><code onclick="handleValueSwap(this)" class="code-true clickable">true</code></div>'
@@ -431,27 +435,27 @@ function nodeToHtml(id, node) {
     }
 
     if (!node.hasOwnProperty("expiry") || node.expiry === 0) {
-        content += '<div class="cell">never</div>'
+        content += getContentDiv("expiry") + 'never</div>'
     } else {
         var now = Math.round((new Date()).getTime() / 1000);
         var left = node.expiry - now;
         if (left <= 0) {
-            content += '<div class="cell">now</div>'
+            content += getContentDiv("expiry") + 'now</div>'
         } else {
-            content += '<div class="cell">' + expressDuration(left) + '</div>'
+            content += getContentDiv("expiry") + expressDuration(left) + '</div>'
         }
     }
 
     if (node.hasOwnProperty("server")) {
-        content += '<div class="cell">' + node.server + '</div>'
+        content += getContentDiv("server") + node.server + '</div>'
     } else {
-        content += '<div class="cell">global</div>'
+        content += getContentDiv("server") + 'global</div>'
     }
 
     if (node.hasOwnProperty("world")) {
-        content += '<div class="cell">' + node.world + '</div>'
+        content += getContentDiv("world") + node.world + '</div>'
     } else {
-        content += '<div class="cell">global</div>'
+        content += getContentDiv("world") + 'global</div>'
     }
 
     if (node.hasOwnProperty("contexts")) {
@@ -463,9 +467,9 @@ function nodeToHtml(id, node) {
             }
         }
 
-        content += '<div class="cell">' + contextsStr.trim() + '</div>'
+        content += getContentDiv("contexts") + contextsStr.trim() + '</div>'
     } else {
-        content += '<div class="cell">none</div>'
+        content += getContentDiv("contexts") + 'none</div>'
     }
 
     // static delete button

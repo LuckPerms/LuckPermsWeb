@@ -254,8 +254,9 @@ ul.flex-center {
 }
 
 .cell {
-  padding: 6px 12px;
+  padding: 2px 12px;
   display: table-cell;
+  vertical-align: middle;
 }
 
 @media screen and (max-width: 580px) {

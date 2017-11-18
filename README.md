@@ -25,7 +25,7 @@ The web editor and the MC server communicate with each other using isolated data
 
 This process transfers permissions data from the MC server to your browser, without ever requiring communication of any sort between the web server hosting the editor and the MC server itself. GitHub is used as a middle man, and simply accepts and stores the data payload, and then supplies it when the data is requested. The web editor knows the id of the payload as it is included in the URI.
 
-### Web Editor --> MC Server
+### Web Editor -> MC Server
 
 1. Once you've finished editing things in the editor, you hit the save button at the top of the page, and the whole process happens again in reverse. The web editor gathers the modified data and forms a payload object, serialised as JSON.
 2. The web editor posts this payload to GitHub's Gist API, and retrieves the id of the resultant gist. The id is appended as an argument within a command string.

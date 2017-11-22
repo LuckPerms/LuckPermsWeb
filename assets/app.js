@@ -8,6 +8,11 @@ var who = "";
 // the command alias used to open the editor page
 var cmdAlias = "lp";
 
+// if the initial editor token was a "legacy" token.
+// the legacy tokens contain two codes, separated by a "/" character
+// the newer tokens only contain one code element
+var legacy = false
+
 var permsListObject = document.getElementById("permissions-list")
 
 function addAutoCompletePermission(perm) {
@@ -54,7 +59,6 @@ function makeNode(perm, value, server, world, expiry, contexts) {
 
 // reads data from a web address, and passes the result to the callback
 function readPage(link, callback) {
-    console.log("Loading from url: " + link)
     var xhr = new XMLHttpRequest();
     xhr.open("GET", link, true);
 
@@ -74,8 +78,7 @@ function postGist(data, callback) {
 
     xhr.onreadystatechange = function () {
         if (this.readyState === 4) {
-            var data = JSON.parse(this.responseText);
-            callback(data.files["luckperms-data.json"]["raw_url"])
+            callback(JSON.parse(this.responseText));
         }
     };
 
@@ -320,11 +323,10 @@ function handleValueSwap(e) {
 
 function handleEditStart(e) {
     var value = e.innerHTML;
-
-    if (value.startsWith("<input"))
+    if (value.startsWith("<input")) {
         return;
+    }
 
-    var value = e.innerHTML;
     e.innerHTML = '<input onblur="handleEditStop(this)" onkeypress="handleEditKeypress(this, event)">';
     e.childNodes[0].focus()
     e.childNodes[0].value = value
@@ -413,12 +415,19 @@ function handleSave(e) {
     data.nodes = rows;
 
     // post the data, and then send a popup when the save is complete
-    postGist(JSON.stringify(data), function (ret) {
-        console.log("Save URL: " + ret);
+    postGist(JSON.stringify(data), function (data) {
+    	var id;
 
-        // parse the tag from the returned url
-        var split = ret.split("/");
-        var id = split[4] + "/" + split[6];
+    	if (legacy) {
+    		var rawUrl = data.files["luckperms-data.json"].raw_url
+    		// parse the tag from the returned url
+        	var split = rawUrl.split("/");
+        	id = split[4] + "/" + split[6];
+    	} else {
+    		id = data.id
+    	}
+
+        console.log("Save id: " + id);
 
         // display the popup
         var popup = document.getElementById("popup");
@@ -556,10 +565,62 @@ setTimeout(function () {
 	});
 }, 0)
 
+function loadData(data) {
+	// replace the local node array with the json data
+    rows = data.nodes;
+    who = data.who;
+    cmdAlias = data.cmdAlias;
+    if (!cmdAlias) {
+        cmdAlias = "lp"
+    }
+
+    // populate autocomplete options
+    perms = data.knownPermissions;
+    if (perms) {
+        perms.forEach(addAutoCompletePermission)
+    }
+
+    hidePanel();
+    reloadTable()
+}
+
+function loadFromParams(params) {
+    // get data
+    var parts = params.split("/");
+
+    if (parts.length === 2) {
+    	legacy = true; // mark as a legacy code
+        var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] + "/luckperms-data.json";
+        console.log("Loading from legacy URL: " + url)
+        readPage(url, function (ret) {
+            var data = JSON.parse(ret);
+            loadData(data)
+        })
+    } else {
+    	// single token??
+    	var url = "https://api.github.com/gists/" + params;
+    	console.log("Loading from URL: " + url)
+    	readPage(url, function(ret) {
+    		var data = JSON.parse(ret);
+    		var fileObject = data.files["luckperms-data.json"];
+    		if (fileObject.truncated) {
+    			var rawUrl = fileObject.raw_url
+				readPage(rawUrl, function (otherRet) {
+            		var permsData = JSON.parse(otherRet);
+            		loadData(permsData)
+        		})
+    		} else {
+    			var permsData = JSON.parse(fileObject.content)
+    			loadData(permsData);
+    		}
+    	})
+    }
+}
+
 // try to load the page from the url parameters when the page loads
 var params = document.location.search;
 if (params) {
-    console.log("Trying to load from URL params");
+    console.log("Found location parameters to load from");
 
     if (params.startsWith("?")) {
         params = params.substring(1)
@@ -568,39 +629,13 @@ if (params) {
     // update status
     document.getElementById("prompt").innerHTML = "Loading...";
 
-    // get data
-    var parts = params.split("/");
-    console.log(parts);
-
-    if (parts.length === 2) {
-        var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] + "/luckperms-data.json";
-        readPage(url, function (ret) {
-            var data = JSON.parse(ret);
-
-            console.log("Loaded from: ")
-            console.log(url)
-
-            // replace the local node array with the json data
-            rows = data.nodes;
-            who = data.who;
-            cmdAlias = data.cmdAlias;
-            if (!cmdAlias) {
-                cmdAlias = "lp"
-            }
-
-            // populate autocomplete options
-            perms = data.knownPermissions;
-            if (perms) {
-                perms.forEach(addAutoCompletePermission)
-            }
-
-            hidePanel();
-            reloadTable()
-        })
-    } else {
-        // just the load the table
-        console.log("Creating empty table for test purposes.")
+    if (params === "dev") {
+    	// just the load the table
+        console.log("Creating empty table for development & testing purposes")
         hidePanel();
         reloadTable()
+    } else {
+    	console.log("Got params: " + params);
+    	loadFromParams(params);
     }
 }

@@ -347,8 +347,27 @@ function handleSave(e) {
             + cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
         popup.innerHTML = content
 
-        if (!clipboard)
+        if (!clipboard) {
+            var copiedTimer;
             clipboard = new Clipboard("#apply_command")
+
+            clipboard.on("success", function(e) {
+                e.clearSelection()
+
+                if (e.trigger.classList.contains("copied")) {
+                    var copy = e.trigger.cloneNode(true);
+                    e.trigger.parentNode.replaceChild(copy, e.trigger);
+
+                    clearTimeout(copiedTimer)
+                } else {
+                    e.trigger.classList.add("copied");
+                }
+
+                copiedTimer = setTimeout(function() {
+                    e.trigger.classList.remove("copied");
+                }, 1000)
+            })
+        }
     })
 }
 

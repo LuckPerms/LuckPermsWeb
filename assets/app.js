@@ -330,7 +330,8 @@ function handleEditStart(e) {
     }
 
     var value = e.innerText;
-    e.innerHTML = '<input onblur="handleEditStop(this)" onkeypress="handleEditKeypress(this, event)">';
+    var type = e.className.replace(/ ?(cell|clickable) ?/gi, "")
+    e.innerHTML = '<input ' + ((type == "permission") ? 'list="permissions-list" ' : '') + 'onblur="handleEditStop(this)" onkeypress="handleEditKeypress(this, event)">';
     e.childNodes[0].focus()
     e.childNodes[0].value = value
 }

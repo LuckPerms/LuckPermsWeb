@@ -325,11 +325,11 @@ function handleValueSwap(e) {
 }
 
 function handleEditStart(e) {
-    var value = e.innerHTML;
-    if (value.startsWith("<input")) {
+    if (e.firstElementChild) {
         return;
     }
 
+    var value = e.innerText;
     e.innerHTML = '<input onblur="handleEditStop(this)" onkeypress="handleEditKeypress(this, event)">';
     e.childNodes[0].focus()
     e.childNodes[0].value = value

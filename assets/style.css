@@ -278,10 +278,10 @@ code {
   0% {
     opacity: 0;
   }
-  30% {
+  10% {
     opacity: 1;
   }
-  70% {
+  90% {
     opacity: 1;
   }
   100% {
@@ -308,7 +308,7 @@ code {
 }
 
 #apply_command.copied::after {
-  animation: copied 1s;
+  animation: copied 4s;
   display: initial;
 }
 

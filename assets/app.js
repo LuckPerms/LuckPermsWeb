@@ -365,7 +365,7 @@ function handleSave(e) {
 
                 copiedTimer = setTimeout(function() {
                     e.trigger.classList.remove("copied");
-                }, 1000)
+                }, 4000)
             })
         }
     })

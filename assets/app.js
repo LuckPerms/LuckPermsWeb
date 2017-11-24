@@ -15,6 +15,9 @@ var legacy = false
 
 var permsListObject = document.getElementById("permissions-list")
 
+// Clipboard instance
+var clipboard
+
 function addAutoCompletePermission(perm) {
     var option = document.createElement("option");
     option.value = perm;
@@ -435,8 +438,31 @@ function handleSave(e) {
         var content = "";
         content += '<div class="alert">';
         content += '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>';
-        content += '<strong>Success!</strong> Data was saved to gist. Run <code>/' + cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
+        content += '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Click, to copy to Clipboard">/'
+            + cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
         popup.innerHTML = content
+
+        if (!clipboard) {
+            var copiedTimer;
+            clipboard = new Clipboard("#apply_command")
+
+            clipboard.on("success", function(e) {
+                e.clearSelection()
+
+                if (e.trigger.classList.contains("copied")) {
+                    var copy = e.trigger.cloneNode(true);
+                    e.trigger.parentNode.replaceChild(copy, e.trigger);
+
+                    clearTimeout(copiedTimer)
+                } else {
+                    e.trigger.classList.add("copied");
+                }
+
+                copiedTimer = setTimeout(function() {
+                    e.trigger.classList.remove("copied");
+                }, 4000)
+            })
+        }
     })
 }
 

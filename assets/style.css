@@ -280,6 +280,44 @@ code {
   color: #141422;
 }
 
+@keyframes copied {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+#apply_command {
+  position: relative;
+}
+
+#apply_command::after {
+  content: "Copied to clipboard!";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  background-color: white;
+  border-radius: 4px;
+  opacity: 0;
+  display: none;
+}
+
+#apply_command.copied::after {
+  animation: copied 4s;
+  display: initial;
+}
+
 .code-true {
   color: #14ca00;
 }

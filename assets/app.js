@@ -438,7 +438,7 @@ function handleSave(e) {
         var content = "";
         content += '<div class="alert">';
         content += '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>';
-        content += '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Click, to copy to Clipboard">/'
+        content += '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/'
             + cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
         popup.innerHTML = content
 

@@ -231,39 +231,37 @@ function parseContexts(s) {
 }
 
 // callback for when a record in the table is deleted
-function handleDelete(e) {
-    var id = e.parentElement.parentElement.id;
-    var i = parseInt(id.substring(1));
+function handleDelete() {
+    console.log($(this));
+    var id = $(this).parents(".row").attr("id").substring(1);
 
-    rows.splice(i, 1);
-    reloadTable()
+    rows.splice(id, 1);
+    reloadTable();
 }
 
-function handlePull(e) {
-    var id = e.parentElement.parentElement.id;
-    var i = parseInt(id.substring(1));
+function handleCopy() {
+    var id = $(this).parents(".row").attr("id").substring(1);
 
-    var node = rows[i];
+    var node = rows[id];
 
-    var inputMenu = document.getElementsByClassName("inpform")[0];
-    var children = inputMenu.getElementsByTagName("input");
+    var inputs = $("#inpform > input");
 
-    children[0].value = node.permission;
+    inputs[0].value = node.permission;
 
     if (node.hasOwnProperty("expiry")) {
-        children[1].value = node.expiry;
+        inputs[1].value = node.expiry;
     } else {
-        children[1].value = null;
+        inputs[1].value = null;
     }
     if (node.hasOwnProperty("server")) {
-        children[2].value = node.server;
+        inputs[2].value = node.server;
     } else {
-        children[2].value = null;
+        inputs[2].value = null;
     }
     if (node.hasOwnProperty("world")) {
-        children[3].value = node.world;
+        inputs[3].value = node.world;
     } else {
-        children[3].value = null;
+        inputs[3].value = null;
     }
     if (node.hasOwnProperty("contexts")) {
         var contextsStr = "";
@@ -273,9 +271,9 @@ function handlePull(e) {
                 contextsStr += (key + "=" + value + " ")
             }
         }
-        children[4].value = contextsStr;
+        inputs[4].value = contextsStr;
     } else {
-        children[4].value = null;
+        inputs[4].value = null;
     }
 }
 
@@ -597,9 +595,8 @@ function nodeToHtml(id, node) {
 
     // static copy and delete button
     content += '<div class="cell buttons">';
-    content += '<i onclick="handleDelete(this)" class="clickable material-icons md-18">delete</i>';
-    content +=
-        '<i onclick="handlePull(this)" class="clickable material-icons md-18" style="padding-left: 8px;font-size: 22px;">content_copy</i>';
+    content += '<i class="clickable material-icons delete">delete</i>';
+    content += '<i class="clickable material-icons copy">content_copy</i>';
     content += '</div>';
     content += '</div>';
 
@@ -669,6 +666,10 @@ function loadFromParams(params) {
         })
     }
 }
+
+// Register events
+$(document).on("click", ".buttons > .delete", handleDelete);
+$(document).on("click", ".buttons > .copy", handleCopy);
 
 // Do things when page has loaded
 $(loadCss);

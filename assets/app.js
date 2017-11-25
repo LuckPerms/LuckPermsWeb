@@ -11,12 +11,13 @@ var cmdAlias = "lp";
 // if the initial editor token was a "legacy" token.
 // the legacy tokens contain two codes, separated by a "/" character
 // the newer tokens only contain one code element
-var legacy = false
+var legacy = false;
 
-var permsListObject = document.getElementById("permissions-list")
+var permsListObject = document.getElementById("permissions-list");
 
 // Clipboard instance
-var clipboard
+var clipboard;
+const classesRegex = / ?(cell|clickable|editable) ?/gi;
 
 // loads optional stylesheets async
 function loadCss() {
@@ -283,7 +284,6 @@ function handleCopy() {
 }
 
 function handleAddEnter(event) {
-    // listen for the enter key
     if (event.key == "Enter") {
         handleAdd();
         return false;
@@ -359,90 +359,90 @@ function handleValueSwap() {
     reloadTable();
 }
 
-function handleEditStart(e) {
-    if (e.firstElementChild) {
-        return;
-    }
-
-    var value = e.innerText;
-    var type = e.className.replace(/ ?(cell|clickable) ?/gi, "")
-    e.innerHTML = '<input ' + ((type == "permission") ? 'list="permissions-list" ' : '') +
-        'onblur="handleEditStop(this)" onkeypress="handleEditKeypress(this, event)">';
-    e.childNodes[0].focus()
-    e.childNodes[0].value = value
+function handleEditStart() {
+    var value = $(this).text();
+    var type = $(this).attr("class").replace(classesRegex, "");
+    $(this).html('<input ' + ((type == "permission") ? 'list="permissions-list" ' : '') + '>');
+    var input = $(this).find("input");
+    input.focus();
+    input.val(value);
 }
 
 function handleEditStop(e) {
-    var id = e.parentElement.parentElement.id;
-    var i = parseInt(id.substring(1));
-    var type = e.parentElement.className.replace(/ ?(cell|clickable) ?/gi, "")
-    var value = e.value;
+    var id = e.parents(".row").attr("id").substring(1);
+    var cell = e.parents(".cell");
+    var type = cell.attr("class").replace(classesRegex, "");
+    var value = e.val();
 
     if (type == "permission") {
         if (value == "") {
-            value = rows[i].permission
+            value = rows[id].permission;
         } else {
-            rows[i].permission = value
+            rows[id].permission = value;
         }
     } else if (type == "expiry") {
-        var now = Math.round((new Date()).getTime() / 1000)
-        var expiryTime
+        var now = Math.round((new Date()).getTime() / 1000);
+        var expiryTime;
 
         if ((value == "") || (value == "never")) {
-            expiryTime = 0
+            expiryTime = 0;
         } else {
-            var t = Number(value)
+            var t = Number(value);
 
             if (t) {
                 if (t < now) {
-                    expiryTime = 0
+                    expiryTime = 0;
                 } else {
-                    expiryTime = t - now
+                    expiryTime = t - now;
                 }
             } else {
-                var duration = parseDuration(value)
+                var duration = parseDuration(value);
 
                 if (!duration) {
-                    expiryTime = 0
+                    expiryTime = 0;
                 } else {
-                    expiryTime = duration
+                    expiryTime = duration;
                 }
             }
         }
 
         if (expiryTime == 0) {
-            delete rows[i].expiry
-            value = "never"
+            delete rows[id].expiry;
+            value = "never";
         } else {
-            rows[i].expiry = now + expiryTime
-            value = expressDuration(expiryTime)
+            rows[id].expiry = now + expiryTime;
+            value = expressDuration(expiryTime);
         }
     } else if ((type == "server") || (type == "world")) {
         if ((value == "") || (value == "global")) {
-            value = "global"
-            delete rows[i][type]
+            value = "global";
+            delete rows[id][type];
         } else {
-            rows[i][type] = value
+            rows[id][type] = value;
         }
     } else if (type == "contexts") {
         if ((value == "") || (value == "none")) {
-            value = "none"
-            delete rows[i].contexts
+            value = "none";
+            delete rows[id].contexts;
         } else {
-            rows[i].contexts = parseContexts(value)
+            rows[id].contexts = parseContexts(value);
         }
     }
 
-    e.parentElement.innerHTML = value
+    cell.html(value);
 }
 
-function handleEditKeypress(e, event) {
-    var key = event.key
+function handleEditBlur() {
+    handleEditStop($(this));
+}
+
+function handleEditKeypress(event) {
+    var key = event.key;
 
     if (key == "Escape") {
-        reloadTable()
+        reloadTable();
     } else if (key == "Enter") {
-        handleEditStop(e)
+        handleEditStop($(this));
     }
 }
 
@@ -472,7 +472,8 @@ function handleSave(e) {
         // display the popup
         var content = "";
         content += '<div class="alert">';
-        content += '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>';
+        content +=
+            '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>';
         content +=
             '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/' +
             cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
@@ -537,7 +538,7 @@ function reloadTable() {
 }
 
 function getContentDiv(type) {
-    return '<div class="cell ' + type + ' clickable" onclick="handleEditStart(this)">'
+    return '<div class="cell ' + type + ' clickable editable">'
 }
 
 function nodeToHtml(id, node) {
@@ -547,7 +548,7 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div list="permissions-list" class="cell permission clickable" onclick="handleEditStart(this)">' + node
+    content += '<div list="permissions-list" class="cell permission clickable editable">' + node
         .permission + '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
@@ -675,7 +676,10 @@ $(document).on("click", "#table-section .buttons > .copy", handleCopy);
 $(document).on("click", "#inpform > .add", handleAdd);
 $(document).on("keypress", "#inpform > input", handleAddEnter);
 
+$(document).on("click", "#table-section .editable:not(:has(input))", handleEditStart);
 $(document).on("click", "#table-section .code-false, #table-section .code-true", handleValueSwap);
+$(document).on("blur", "#table-section .editable input", handleEditBlur);
+$(document).on("keypress", "#table-section .editable input", handleEditKeypress);
 
 // Do things when page has loaded
 $(loadCss);

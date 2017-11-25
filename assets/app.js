@@ -30,6 +30,41 @@ function loadCss() {
     }
 }
 
+// try to load the page from the url parameters when the page loads
+function loadContent() {
+    var params = document.location.search;
+    if (params) {
+        console.log("Found location parameters to load from");
+
+        if (params.startsWith("?")) {
+            params = params.substring(1)
+        }
+
+        // update status
+        document.getElementById("prompt").innerHTML = "Loading...";
+
+        if (params === "dev") {
+          // just the load the table
+            console.log("Creating empty table for development & testing purposes")
+            hidePanel();
+            reloadTable()
+        } else {
+          console.log("Got params: " + params);
+          loadFromParams(params);
+        }
+    }
+}
+
+// pulls the latest production version of the editor and displays it
+function loadVersion() {
+    readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function (ret) {
+        var data = JSON.parse(ret);
+        var version = document.getElementById("version");
+        version.innerHTML = data.commit.sha.substring(0,7);
+        version.href = data.commit.html_url;
+    });
+}
+
 function addAutoCompletePermission(perm) {
     var option = document.createElement("option");
     option.value = perm;
@@ -646,37 +681,7 @@ function loadFromParams(params) {
     }
 }
 
-// try to load the page from the url parameters when the page loads
-$(function () {
-    loadCss();
-
-    var params = document.location.search;
-    if (params) {
-        console.log("Found location parameters to load from");
-
-        if (params.startsWith("?")) {
-            params = params.substring(1)
-        }
-
-        // update status
-        document.getElementById("prompt").innerHTML = "Loading...";
-
-        if (params === "dev") {
-        	// just the load the table
-            console.log("Creating empty table for development & testing purposes")
-            hidePanel();
-            reloadTable()
-        } else {
-        	console.log("Got params: " + params);
-        	loadFromParams(params);
-        }
-    }
-
-    // pulls the latest production version of the editor and displays it
-  	readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function (ret) {
-  	    var data = JSON.parse(ret);
-  	    var version = document.getElementById("version");
-  	    version.innerHTML = data.commit.sha.substring(0,7);
-  	    version.href = data.commit.html_url;
-  	});
-});
+// Do things when page has loaded
+$(loadCss);
+$(loadContent);
+$(loadVersion);

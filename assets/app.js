@@ -41,10 +41,10 @@ function loadContent() {
         }
 
         // update status
-        document.getElementById("prompt").innerHTML = "Loading...";
+        $("#prompt").html("Loading...");
 
         if (params === "dev") {
-          // just the load the table
+            // just the load the table
             console.log("Creating empty table for development & testing purposes")
             hidePanel();
             reloadTable()
@@ -59,9 +59,9 @@ function loadContent() {
 function loadVersion() {
     readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function (ret) {
         var data = JSON.parse(ret);
-        var version = document.getElementById("version");
-        version.innerHTML = data.commit.sha.substring(0,7);
-        version.href = data.commit.html_url;
+        var version = $("#version");
+        version.html(data.commit.sha.substring(0,7));
+        version.attr("href", data.commit.html_url);
     });
 }
 
@@ -617,16 +617,16 @@ function nodeToHtml(id, node) {
 
 // hides the welcome panel from view
 function hidePanel() {
-    document.getElementsByClassName("panel")[0].style.display = "none"
-    document.getElementsByClassName("bar")[0].style.display = "inherit"
-    document.getElementsByClassName("wrapper")[0].style.display = "inherit"
+    $("#panel").hide()
+    $("#bar").show()
+    $("#table-content").show()
 }
 
 // unhides the welcome panel
 function showPanel() {
-    document.getElementsByClassName("panel")[0].style.display = "initial"
-    document.getElementsByClassName("bar")[0].style.display = "none"
-    document.getElementsByClassName("wrapper")[0].style.display = "none"
+    $("#panel").show()
+    $("#bar").hide()
+    $("#table-content").hide()
 }
 
 function loadData(data) {

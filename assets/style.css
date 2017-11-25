@@ -46,7 +46,7 @@ ul.flex-center {
   width: 100%;
 }
 
-.bar {
+#bar {
   overflow: hidden;
   background-color: #2d2d38;
   position: fixed;
@@ -54,7 +54,7 @@ ul.flex-center {
   width: 100%;
 }
 
-.bar .tiny-logo {
+#bar .tiny-logo {
   margin-top: 10px;
   margin-left: 10px;
   float: left;
@@ -64,13 +64,13 @@ ul.flex-center {
   border-radius: 6px;
 }
 
-.bar h3 {
+#bar h3 {
   margin-left: 10px;
   float: left;
   color: #EEEEEE;
 }
 
-.bar i {
+#bar i {
   font-size: 40px;
   vertical-align: middle;
   float: right;
@@ -84,7 +84,7 @@ ul.flex-center {
   flex-grow: 1;
 }
 
-.panel {
+#panel {
   font-size: 1.3em;
   position: absolute;
   border-radius: 10px;
@@ -100,29 +100,29 @@ ul.flex-center {
   line-height: 0.5rem;
 }
 
-.panel.hide {
+#panel.hide {
   display: none;
 }
 
-.logo {
+#panel .logo {
   height: 180px;
   width: 180px;
   vertical-align: middle;
   border-radius: 6px;
 }
 
-.panel h1 {
+#panel h1 {
   font-size: 1.9em;
   color: #222;
 }
 
-.panel h2 {
+#panel h2 {
   font-weight: 400;
   font-size: 0.8em;
   margin-bottom: 16px;
 }
 
-.panel h3 {
+#panel h3 {
   font-weight: 400;
   font-size: 1.0em;
   padding-top: 30px;
@@ -130,7 +130,7 @@ ul.flex-center {
   line-height: 1.7rem;
 }
 
-.panel cmd {
+#panel cmd {
   padding: 2px 4px;
   font-size: 90%;
   background-color: #f9f2f4;

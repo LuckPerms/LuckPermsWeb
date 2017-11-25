@@ -1,30 +1,30 @@
 html {
-  position  : relative;
+  position: relative;
   min-height: 100%;
-  height    : 100%;
+  height: 100%;
   overflow-x: hidden;
-  padding   : 0;
-  font-size : 72.5%;
+  padding: 0;
+  font-size: 72.5%;
   overflow-y: scroll;
 }
 
 body {
-  display                : flex;
-  flex-flow              : column;
-  margin                 : 0;
-  position               : relative;
-  min-height             : 100%;
-  font-family            : 'Source Sans Pro', 'Open Sans', Sans-Serif;
-  font-style             : normal;
-  font-weight            : 300;
-  font-size              : 1.4rem;
-  line-height            : 2rem;
-  letter-spacing         : 0.01rem;
-  color                  : #212121;
-  background-color       : #141422;
-  -webkit-font-smoothing : antialiased;
+  display: flex;
+  flex-flow: column;
+  margin: 0;
+  position: relative;
+  min-height: 100%;
+  font-family: 'Source Sans Pro', 'Open Sans', Sans-Serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  letter-spacing: 0.01rem;
+  color: #212121;
+  background-color: #141422;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering         : optimizeLegibility;
+  text-rendering: optimizeLegibility;
 }
 
 .flex-center {
@@ -42,63 +42,63 @@ body {
 
 ul.flex-center {
   list-style-type: none;
-  margin         : 0;
-  padding        : 0;
-  width          : 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 #bar {
-  overflow        : hidden;
+  overflow: hidden;
   background-color: #2d2d38;
-  position        : fixed;
-  top             : 0;
-  width           : 100%;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 #bar .tiny-logo {
-  margin-top    : 10px;
-  margin-left   : 10px;
-  float         : left;
-  height        : 40px;
-  width         : 40px;
+  margin-top: 10px;
+  margin-left: 10px;
+  float: left;
+  height: 40px;
+  width: 40px;
   vertical-align: middle;
-  border-radius : 6px;
+  border-radius: 6px;
 }
 
 #bar h3 {
   margin-left: 10px;
-  float      : left;
-  color      : #EEEEEE;
+  float: left;
+  color: #EEEEEE;
 }
 
 #bar i {
-  font-size     : 40px;
+  font-size: 40px;
   vertical-align: middle;
-  float         : right;
-  margin-top    : 10px;
-  margin-right  : 15px;
-  color         : #EEEEEE;
+  float: right;
+  margin-top: 10px;
+  margin-right: 15px;
+  color: #EEEEEE;
 }
 
 .content {
   margin-top: 80px;
-  flex-grow : 1;
+  flex-grow: 1;
 }
 
 #panel {
-  font-size    : 1.3em;
-  position     : absolute;
+  font-size: 1.3em;
+  position: absolute;
   border-radius: 10px;
-  width        : 240px;
-  height       : 450px;
-  background   : #eee;
-  top          : 50%;
-  left         : 50%;
-  z-index      : 100;
-  text-align   : center;
-  margin       : -300px 0 0 -140px;
-  padding      : 20px;
-  line-height  : 0.5rem;
+  width: 240px;
+  height: 450px;
+  background: #eee;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  text-align: center;
+  margin: -300px 0 0 -140px;
+  padding: 20px;
+  line-height: 0.5rem;
 }
 
 #panel.hide {
@@ -106,40 +106,40 @@ ul.flex-center {
 }
 
 #panel .logo {
-  height        : 180px;
-  width         : 180px;
+  height: 180px;
+  width: 180px;
   vertical-align: middle;
-  border-radius : 6px;
+  border-radius: 6px;
 }
 
 #panel h1 {
   font-size: 1.9em;
-  color    : #222;
+  color: #222;
 }
 
 #panel h2 {
-  font-weight  : 400;
-  font-size    : 0.8em;
+  font-weight: 400;
+  font-size: 0.8em;
   margin-bottom: 16px;
 }
 
 #panel h3 {
-  font-weight  : 400;
-  font-size    : 1.0em;
-  padding-top  : 30px;
+  font-weight: 400;
+  font-size: 1.0em;
+  padding-top: 30px;
   margin-bottom: 10px;
-  line-height  : 1.7rem;
+  line-height: 1.7rem;
 }
 
 #panel cmd {
-  padding         : 2px 4px;
-  font-size       : 90%;
+  padding: 2px 4px;
+  font-size: 90%;
   background-color: #f9f2f4;
-  border-radius   : 4px;
+  border-radius: 4px;
   background-color: #ffffff;
-  font-family     : monospace;
-  color           : #141422;
-  line-height     : 2.2rem;
+  font-family: monospace;
+  color: #141422;
+  line-height: 2.2rem;
 }
 
 .perms-grid {
@@ -147,21 +147,21 @@ ul.flex-center {
 }
 
 .alert {
-  padding         : 20px;
+  padding: 20px;
   background-color: #669e00;
-  color           : white;
-  margin-bottom   : 15px;
+  color: white;
+  margin-bottom: 15px;
 }
 
 .closebtn {
   margin-left: 15px;
-  color      : white;
+  color: white;
   font-weight: bold;
-  float      : right;
-  font-size  : 22px;
+  float: right;
+  font-size: 22px;
   line-height: 20px;
-  cursor     : pointer;
-  transition : 0.3s;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .closebtn:hover {
@@ -169,22 +169,22 @@ ul.flex-center {
 }
 
 .wrapper {
-  margin                : 0 auto;
-  padding               : 5px;
-  max-width             : 1000px;
-  font-size             : 16px;
-  line-height           : 20px;
-  font-weight           : 400;
-  color                 : #222;
+  margin: 0 auto;
+  padding: 5px;
+  max-width: 1000px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  color: #222;
   -webkit-font-smoothing: antialiased;
-  font-smoothing        : antialiased;
+  font-smoothing: antialiased;
 }
 
 .newentry {
-  width        : 100%;
-  box-shadow   : 0 1px 3px rgba(0, 0, 0, 0.2);
-  background   : #eeeeee;
-  padding      : 10px 0;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  background: #eeeeee;
+  padding: 10px 0;
   margin-bottom: 22px;
 }
 
@@ -195,14 +195,14 @@ ul.flex-center {
 
 #inpform input,
 .cell input {
-  margin-left       : 3px;
-  width             : 135px;
-  padding           : 8px;
-  box-sizing        : border-box;
-  border            : 1.5px solid #ccc;
+  margin-left: 3px;
+  width: 135px;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1.5px solid #ccc;
   -webkit-transition: 0.5s;
-  transition        : 0.5s;
-  outline           : none;
+  transition: 0.5s;
+  outline: none;
 }
 
 #inpform input[name=permission] {
@@ -210,17 +210,17 @@ ul.flex-center {
 }
 
 #inpform .add {
-  font-size     : 35px;
+  font-size: 35px;
   vertical-align: middle;
-  float         : right;
-  padding-right : 10px;
+  float: right;
+  padding-right: 10px;
 }
 
 .table {
-  margin    : 0 0 40px;
-  width     : 100%;
+  margin: 0 0 40px;
+  width: 100%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  display   : table;
+  display: table;
 }
 @media screen and (max-width: 580px) {
   .table {
@@ -229,7 +229,7 @@ ul.flex-center {
 }
 
 .row {
-  display   : table-row;
+  display: table-row;
   background: #f6f6f6;
 }
 
@@ -239,8 +239,8 @@ ul.flex-center {
 
 .row.header {
   font-weight: 900;
-  color      : #ffffff;
-  background : #669e00;
+  color: #ffffff;
+  background: #669e00;
 }
 @media screen and (max-width: 580px) {
   .row {
@@ -250,8 +250,8 @@ ul.flex-center {
 }
 
 .cell {
-  padding       : 2px 12px;
-  display       : table-cell;
+  padding: 2px 12px;
+  display: table-cell;
   vertical-align: middle;
 }
 @media screen and (max-width: 580px) {
@@ -263,16 +263,16 @@ ul.flex-center {
 
 .cell input {
   box-sizing: border-box;
-  width     : 100%;
+  width: 100%;
 }
 
 code {
-  padding         : 2px 4px;
-  font-size       : 90%;
+  padding: 2px 4px;
+  font-size: 90%;
   background-color: #f9f2f4;
-  border-radius   : 4px;
+  border-radius: 4px;
   background-color: #ffffff;
-  color           : #141422;
+  color: #141422;
 }
 @keyframes copied {
   0% {
@@ -297,20 +297,20 @@ code {
 }
 
 #apply_command::after {
-  content         : "Copied to clipboard!";
-  position        : absolute;
-  left            : 0;
-  right           : 0;
-  text-align      : center;
+  content: "Copied to clipboard!";
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
   background-color: white;
-  border-radius   : 4px;
-  opacity         : 0;
-  display         : none;
+  border-radius: 4px;
+  opacity: 0;
+  display: none;
 }
 
 #apply_command.copied::after {
   animation: copied 4s;
-  display  : initial;
+  display: initial;
 }
 
 .code-true {
@@ -327,24 +327,24 @@ code {
 }
 
 .cell.buttons {
-  width      : 0;
+  width: 0;
   white-space: nowrap;
 }
 
 .cell.buttons .copy {
   padding-left: 8px;
-  font-size   : 22px;
+  font-size: 22px;
 }
 
 .footer {
-  overflow        : hidden;
+  overflow: hidden;
   background-color: #2d2d38;
-  font-size       : 75%;
-  width           : 100%;
+  font-size: 75%;
+  width: 100%;
 }
 
 .footer * {
-  color          : #bbbbbb;
+  color: #bbbbbb;
   text-decoration: none;
 }
 
@@ -357,6 +357,6 @@ code {
 }
 
 .footer ul li {
-  margin : 7px 14px;
+  margin: 7px 14px;
   padding: 0;
 }

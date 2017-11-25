@@ -18,6 +18,7 @@ var permsListObject = document.getElementById("permissions-list")
 // Clipboard instance
 var clipboard
 
+// loads optional stylesheets async
 function loadCss() {
     const stylesheet = /<link(?:\s[^.-\d][^\/\]'"[!#$%&()*+,;<=>?@^`{|}~ ]*(?:=(?:"[^"]*"|'[^']*'|[^'"<\s]*))?)*\s?\/?>/gi;
     var head = $("head");
@@ -593,16 +594,6 @@ function showPanel() {
     document.getElementsByClassName("wrapper")[0].style.display = "none"
 }
 
-// pulls the latest production version of the editor and displays it
-setTimeout(function () {
-	readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function (ret) {
-	    var data = JSON.parse(ret);
-	    var version = document.getElementById("version");
-	    version.innerHTML = data.commit.sha.substring(0,7);
-	    version.href = data.commit.html_url;
-	});
-}, 0)
-
 function loadData(data) {
 	// replace the local node array with the json data
     rows = data.nodes;
@@ -680,4 +671,12 @@ $(function () {
         	loadFromParams(params);
         }
     }
+
+    // pulls the latest production version of the editor and displays it
+  	readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function (ret) {
+  	    var data = JSON.parse(ret);
+  	    var version = document.getElementById("version");
+  	    version.innerHTML = data.commit.sha.substring(0,7);
+  	    version.href = data.commit.html_url;
+  	});
 });

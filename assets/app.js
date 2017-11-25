@@ -245,23 +245,28 @@ function handleCopy() {
     var node = rows[id];
 
     var inputs = $("#inpform > input");
+    var permission = inputs.filter("[name=permission]");
+    var expiry = inputs.filter("[name=expiry]");
+    var server = inputs.filter("[name=server]");
+    var world = inputs.filter("[name=world]");
+    var contexts = inputs.filter("[name=contexts]");
 
-    inputs[0].value = node.permission;
+    permission.val(node.permission);
 
     if (node.hasOwnProperty("expiry")) {
-        inputs[1].value = node.expiry;
+        expiry.val(node.expiry);
     } else {
-        inputs[1].value = null;
+        expiry.val(null);
     }
     if (node.hasOwnProperty("server")) {
-        inputs[2].value = node.server;
+        server.val(node.server);
     } else {
-        inputs[2].value = null;
+        server.val(null);
     }
     if (node.hasOwnProperty("world")) {
-        inputs[3].value = node.world;
+        world.val(node.world);
     } else {
-        inputs[3].value = null;
+        world.val(null);
     }
     if (node.hasOwnProperty("contexts")) {
         var contextsStr = "";
@@ -271,9 +276,9 @@ function handleCopy() {
                 contextsStr += (key + "=" + value + " ")
             }
         }
-        inputs[4].value = contextsStr;
+        contexts.val(contextsStr);
     } else {
-        inputs[4].value = null;
+        contexts.val(null);
     }
 }
 

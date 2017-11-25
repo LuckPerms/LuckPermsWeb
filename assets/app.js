@@ -277,31 +277,30 @@ function handleCopy() {
     }
 }
 
-function handleAddEnter(element, event) {
+function handleAddEnter(event) {
     // listen for the enter key
-    if (event.which === 13 || event.keyCode === 13) {
-        handleAdd(element);
-        return false
+    if (event.key == "Enter") {
+        handleAdd();
+        return false;
     }
 
-    return true
+    return true;
 }
 
-function handleAdd(e) {
-    var parent = e.parentElement;
-    var children = parent.getElementsByTagName("input");
+function handleAdd() {
+    var inputs = $("#inpform input");
 
-    var permission = children[0].value;
+    var permission = inputs.filter("[name=permission]").val();
 
     // don't process the add if the permission field is left empty
     if (!permission) {
-        return
+        return;
     }
 
-    var expiry = children[1].value;
-    var server = children[2].value;
-    var world = children[3].value;
-    var contexts = children[4].value;
+    var expiry = inputs.filter("[name=expiry]").val();
+    var server = inputs.filter("[name=server]").val();
+    var world = inputs.filter("[name=world]").val();
+    var contexts = inputs.filter("[name=contexts]").val();
 
     var now = Math.round((new Date()).getTime() / 1000);
     var expiryTime;
@@ -670,6 +669,9 @@ function loadFromParams(params) {
 // Register events
 $(document).on("click", ".buttons > .delete", handleDelete);
 $(document).on("click", ".buttons > .copy", handleCopy);
+
+$(document).on("click", "#inpform > .add", handleAdd);
+$(document).on("keypress", "#inpform > input", handleAddEnter);
 
 // Do things when page has loaded
 $(loadCss);

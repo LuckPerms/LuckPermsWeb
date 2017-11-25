@@ -205,6 +205,17 @@ ul.flex-center {
   outline           : none;
 }
 
+#inpform input[name=permission] {
+  width: 195px;
+}
+
+#inpform .add {
+  font-size     : 35px;
+  vertical-align: middle;
+  float         : right;
+  padding-right : 10px;
+}
+
 .table {
   margin    : 0 0 40px;
   width     : 100%;

@@ -58,12 +58,12 @@
         <div class="table-input-bar">
           <div class="newentry">
             <div id="inpform">
-              <input type="text" list="permissions-list" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Permission" style="width: 195px;"></input>
-              <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Expiry"></input>
-              <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Server"></input>
-              <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="World"></input>
-              <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Contexts"></input>
-              <i onclick="handleAdd(this)" class="clickable material-icons" style="font-size: 35px; vertical-align: middle; float: right; padding-right: 10px;">add_box</i>
+              <input type="text" list="permissions-list" name="permission" placeholder="Permission">
+              <input type="text" name="expiry" placeholder="Expiry">
+              <input type="text" name="server" placeholder="Server">
+              <input type="text" name="world" placeholder="World">
+              <input type="text" name="contexts" placeholder="Contexts">
+              <i class="clickable material-icons add">add_box</i>
             </div>
           </div>
         </div>

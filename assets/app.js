@@ -57,8 +57,7 @@ function loadContent() {
 
 // pulls the latest production version of the editor and displays it
 function loadVersion() {
-    readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function (ret) {
-        var data = JSON.parse(ret);
+    readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function (data) {
         var version = $("#version");
         version.html(data.commit.sha.substring(0,7));
         version.attr("href", data.commit.html_url);
@@ -107,31 +106,13 @@ function makeNode(perm, value, server, world, expiry, contexts) {
     return node
 }
 
-// reads data from a web address, and passes the result to the callback
+// reads data from a web address, and passes the result JSON object to the callback
 function readPage(link, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", link, true);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            callback(xhr.responseText);
-        }
-    };
-
-    xhr.send(null);
+    $.getJSON(link, callback);
 }
 
 // posts a string to GitHub's gist service, and returns the raw url of the content to the callback
 function postGist(data, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://api.github.com/gists');
-
-    xhr.onreadystatechange = function () {
-        if (this.readyState === 4) {
-            callback(JSON.parse(this.responseText));
-        }
-    };
-
     // construct the payload for the gist API
     var post = {
         "description": "LuckPerms Web Permissions Editor Data",
@@ -143,8 +124,13 @@ function postGist(data, callback) {
         }
     };
 
-    // post the data to the API
-    xhr.send(JSON.stringify(post))
+    $.ajax("https://api.github.com/gists", {
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify(post),
+        method: "POST",
+        success: callback
+    });
 }
 
 function contains(haystack, needle) {
@@ -467,28 +453,26 @@ function handleSave(e) {
 
     // post the data, and then send a popup when the save is complete
     postGist(JSON.stringify(data), function (data) {
-    	var id;
+      	var id;
 
-    	if (legacy) {
-    		var rawUrl = data.files["luckperms-data.json"].raw_url
-    		// parse the tag from the returned url
-        	var split = rawUrl.split("/");
-        	id = split[4] + "/" + split[6];
-    	} else {
-    		id = data.id
-    	}
+      	if (legacy) {
+      		  var rawUrl = data.files["luckperms-data.json"].raw_url
+      		  // parse the tag from the returned url
+          	var split = rawUrl.split("/");
+          	id = split[4] + "/" + split[6];
+      	} else {
+      		  id = data.id
+      	}
 
         console.log("Save id: " + id);
 
         // display the popup
-        var popup = document.getElementById("popup");
-
         var content = "";
         content += '<div class="alert">';
         content += '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>';
         content += '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/'
             + cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
-        popup.innerHTML = content
+        $("#popup").html(content);
 
         if (!clipboard) {
             var copiedTimer;
@@ -656,26 +640,23 @@ function loadFromParams(params) {
     	legacy = true; // mark as a legacy code
         var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] + "/luckperms-data.json";
         console.log("Loading from legacy URL: " + url)
-        readPage(url, function (ret) {
-            var data = JSON.parse(ret);
+        readPage(url, function (data) {
             loadData(data)
         })
     } else {
     	// single token??
     	var url = "https://api.github.com/gists/" + params;
     	console.log("Loading from URL: " + url)
-    	readPage(url, function(ret) {
-    		var data = JSON.parse(ret);
+    	readPage(url, function(data) {
     		var fileObject = data.files["luckperms-data.json"];
     		if (fileObject.truncated) {
-    			var rawUrl = fileObject.raw_url
-				readPage(rawUrl, function (otherRet) {
-            		var permsData = JSON.parse(otherRet);
-            		loadData(permsData)
-        		})
+      			var rawUrl = fileObject.raw_url
+  				  readPage(rawUrl, function (permsData) {
+              		loadData(permsData)
+          	})
     		} else {
-    			var permsData = JSON.parse(fileObject.content)
-    			loadData(permsData);
+      			var permsData = JSON.parse(fileObject.content)
+      			loadData(permsData);
     		}
     	})
     }

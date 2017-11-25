@@ -475,10 +475,8 @@ function handleSave() {
         content +=
             '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/' +
             cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
-        $("#popup").html(content);
-        var alert = $("#popup .alert");
-        alert.hide();
-        alert.slideDown();
+        $("#popup").append(content);
+        $("#popup .alert").last().hide().slideDown();
 
         if (!clipboard) {
             var copiedTimer;
@@ -505,7 +503,9 @@ function handleSave() {
 }
 
 function handleAlertClose() {
-    $(this).parents(".alert").slideUp();
+    $(this).parents(".alert").slideUp(function() {
+        $(this).remove();
+    });
 }
 
 // reloads the data in the table from the values stored in the rows array

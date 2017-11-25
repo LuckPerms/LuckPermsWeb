@@ -20,12 +20,13 @@ var clipboard
 
 // loads optional stylesheets async
 function loadCss() {
-    const stylesheet = /<link(?:\s[^.-\d][^\/\]'"[!#$%&()*+,;<=>?@^`{|}~ ]*(?:=(?:"[^"]*"|'[^']*'|[^'"<\s]*))?)*\s?\/?>/gi;
+    const stylesheet =
+        /<link(?:\s[^.-\d][^\/\]'"[!#$%&()*+,;<=>?@^`{|}~ ]*(?:=(?:"[^"]*"|'[^']*'|[^'"<\s]*))?)*\s?\/?>/gi;
     var head = $("head");
     var css = $("#css-defer").text();
     var matches;
 
-    while((matches = stylesheet.exec(css)) !== null) {
+    while ((matches = stylesheet.exec(css)) !== null) {
         head.append(matches[0]);
     }
 }
@@ -49,17 +50,17 @@ function loadContent() {
             hidePanel();
             reloadTable()
         } else {
-          console.log("Got params: " + params);
-          loadFromParams(params);
+            console.log("Got params: " + params);
+            loadFromParams(params);
         }
     }
 }
 
 // pulls the latest production version of the editor and displays it
 function loadVersion() {
-    readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function (data) {
+    readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function(data) {
         var version = $("#version");
-        version.html(data.commit.sha.substring(0,7));
+        version.html(data.commit.sha.substring(0, 7));
         version.attr("href", data.commit.html_url);
     });
 }
@@ -219,7 +220,7 @@ function expressDuration(s) {
 
 function parseContexts(s) {
     var contexts = {};
-    s.split(" ").forEach(function (part) {
+    s.split(" ").forEach(function(part) {
         var kv = part.split("=", 2);
         if (kv && kv.length === 2) {
             var key = kv[0];
@@ -364,7 +365,8 @@ function handleEditStart(e) {
 
     var value = e.innerText;
     var type = e.className.replace(/ ?(cell|clickable) ?/gi, "")
-    e.innerHTML = '<input ' + ((type == "permission") ? 'list="permissions-list" ' : '') + 'onblur="handleEditStop(this)" onkeypress="handleEditKeypress(this, event)">';
+    e.innerHTML = '<input ' + ((type == "permission") ? 'list="permissions-list" ' : '') +
+        'onblur="handleEditStop(this)" onkeypress="handleEditKeypress(this, event)">';
     e.childNodes[0].focus()
     e.childNodes[0].value = value
 }
@@ -452,17 +454,17 @@ function handleSave(e) {
     data.nodes = rows;
 
     // post the data, and then send a popup when the save is complete
-    postGist(JSON.stringify(data), function (data) {
-      	var id;
+    postGist(JSON.stringify(data), function(data) {
+        var id;
 
-      	if (legacy) {
-      		  var rawUrl = data.files["luckperms-data.json"].raw_url
-      		  // parse the tag from the returned url
-          	var split = rawUrl.split("/");
-          	id = split[4] + "/" + split[6];
-      	} else {
-      		  id = data.id
-      	}
+        if (legacy) {
+            var rawUrl = data.files["luckperms-data.json"].raw_url
+            // parse the tag from the returned url
+            var split = rawUrl.split("/");
+            id = split[4] + "/" + split[6];
+        } else {
+            id = data.id
+        }
 
         console.log("Save id: " + id);
 
@@ -470,8 +472,9 @@ function handleSave(e) {
         var content = "";
         content += '<div class="alert">';
         content += '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>';
-        content += '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/'
-            + cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
+        content +=
+            '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/' +
+            cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
         $("#popup").html(content);
 
         if (!clipboard) {
@@ -519,7 +522,7 @@ function reloadTable() {
 
         // add each row
         var i = -1;
-        rows.forEach(function (node) {
+        rows.forEach(function(node) {
             i++;
             content += nodeToHtml(i, node)
         });
@@ -543,12 +546,15 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div list="permissions-list" class="cell permission clickable" onclick="handleEditStart(this)">' + node.permission + '</div>';
+    content += '<div list="permissions-list" class="cell permission clickable" onclick="handleEditStart(this)">' + node
+        .permission + '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
-        content += '<div class="cell"><code onclick="handleValueSwap(this)" class="code-true clickable">true</code></div>'
+        content +=
+            '<div class="cell"><code onclick="handleValueSwap(this)" class="code-true clickable">true</code></div>'
     } else {
-        content += '<div class="cell"><code onclick="handleValueSwap(this)" class="code-false clickable">false</code></div>'
+        content +=
+            '<div class="cell"><code onclick="handleValueSwap(this)" class="code-false clickable">false</code></div>'
     }
 
     if (!node.hasOwnProperty("expiry") || node.expiry === 0) {
@@ -592,7 +598,8 @@ function nodeToHtml(id, node) {
     // static copy and delete button
     content += '<div class="cell buttons">';
     content += '<i onclick="handleDelete(this)" class="clickable material-icons md-18">delete</i>';
-    content += '<i onclick="handlePull(this)" class="clickable material-icons md-18" style="padding-left: 8px;font-size: 22px;">content_copy</i>';
+    content +=
+        '<i onclick="handlePull(this)" class="clickable material-icons md-18" style="padding-left: 8px;font-size: 22px;">content_copy</i>';
     content += '</div>';
     content += '</div>';
 
@@ -614,7 +621,7 @@ function showPanel() {
 }
 
 function loadData(data) {
-	// replace the local node array with the json data
+    // replace the local node array with the json data
     rows = data.nodes;
     who = data.who;
     cmdAlias = data.cmdAlias;
@@ -637,28 +644,29 @@ function loadFromParams(params) {
     var parts = params.split("/");
 
     if (parts.length === 2) {
-    	legacy = true; // mark as a legacy code
-        var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] + "/luckperms-data.json";
+        legacy = true; // mark as a legacy code
+        var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] +
+            "/luckperms-data.json";
         console.log("Loading from legacy URL: " + url)
-        readPage(url, function (data) {
+        readPage(url, function(data) {
             loadData(data)
         })
     } else {
-    	// single token??
-    	var url = "https://api.github.com/gists/" + params;
-    	console.log("Loading from URL: " + url)
-    	readPage(url, function(data) {
-    		var fileObject = data.files["luckperms-data.json"];
-    		if (fileObject.truncated) {
-      			var rawUrl = fileObject.raw_url
-  				  readPage(rawUrl, function (permsData) {
-              		loadData(permsData)
-          	})
-    		} else {
-      			var permsData = JSON.parse(fileObject.content)
-      			loadData(permsData);
-    		}
-    	})
+        // single token??
+        var url = "https://api.github.com/gists/" + params;
+        console.log("Loading from URL: " + url)
+        readPage(url, function(data) {
+            var fileObject = data.files["luckperms-data.json"];
+            if (fileObject.truncated) {
+                var rawUrl = fileObject.raw_url
+                readPage(rawUrl, function(permsData) {
+                    loadData(permsData)
+                })
+            } else {
+                var permsData = JSON.parse(fileObject.content)
+                loadData(permsData);
+            }
+        })
     }
 }
 

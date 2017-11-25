@@ -233,7 +233,6 @@ function parseContexts(s) {
 
 // callback for when a record in the table is deleted
 function handleDelete() {
-    console.log($(this));
     var id = $(this).parents(".row").attr("id").substring(1);
 
     rows.splice(id, 1);
@@ -446,7 +445,7 @@ function handleEditKeypress(event) {
     }
 }
 
-function handleSave(e) {
+function handleSave() {
     console.log("Saving data to gist");
 
     // construct the data object to send back to gist
@@ -472,12 +471,14 @@ function handleSave(e) {
         // display the popup
         var content = "";
         content += '<div class="alert">';
-        content +=
-            '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>';
+        content += '<span class="closebtn">&times;</span>';
         content +=
             '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/' +
             cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
         $("#popup").html(content);
+        var alert = $("#popup .alert");
+        alert.hide();
+        alert.slideDown();
 
         if (!clipboard) {
             var copiedTimer;
@@ -501,6 +502,10 @@ function handleSave(e) {
             })
         }
     })
+}
+
+function handleAlertClose() {
+    $(this).parents(".alert").slideUp();
 }
 
 // reloads the data in the table from the values stored in the rows array
@@ -533,8 +538,7 @@ function reloadTable() {
     }
 
     // set the data
-    var element = document.getElementById("table-section");
-    element.innerHTML = content
+    $("#table-section").html(content);
 }
 
 function getContentDiv(type) {
@@ -548,8 +552,7 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div list="permissions-list" class="cell permission clickable editable">' + node
-        .permission + '</div>';
+    content += '<div list="permissions-list" class="cell permission clickable editable">' + node.permission + '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
         content += '<div class="cell"><code class="code-true clickable">true</code></div>'
@@ -670,8 +673,8 @@ function loadFromParams(params) {
 }
 
 // Register events
-$(document).on("click", "#table-section .buttons > .delete", handleDelete);
-$(document).on("click", "#table-section .buttons > .copy", handleCopy);
+$(document).on("click", "#bar .save", handleSave);
+$(document).on("click", "#popup .closebtn", handleAlertClose);
 
 $(document).on("click", "#inpform > .add", handleAdd);
 $(document).on("keypress", "#inpform > input", handleAddEnter);
@@ -680,6 +683,9 @@ $(document).on("click", "#table-section .editable:not(:has(input))", handleEditS
 $(document).on("click", "#table-section .code-false, #table-section .code-true", handleValueSwap);
 $(document).on("blur", "#table-section .editable input", handleEditBlur);
 $(document).on("keypress", "#table-section .editable input", handleEditKeypress);
+
+$(document).on("click", "#table-section .buttons > .delete", handleDelete);
+$(document).on("click", "#table-section .buttons > .copy", handleCopy);
 
 // Do things when page has loaded
 $(loadCss);

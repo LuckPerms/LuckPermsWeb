@@ -645,24 +645,26 @@ function loadFromParams(params) {
 }
 
 // try to load the page from the url parameters when the page loads
-var params = document.location.search;
-if (params) {
-    console.log("Found location parameters to load from");
+$(function () {
+    var params = document.location.search;
+    if (params) {
+        console.log("Found location parameters to load from");
 
-    if (params.startsWith("?")) {
-        params = params.substring(1)
+        if (params.startsWith("?")) {
+            params = params.substring(1)
+        }
+
+        // update status
+        document.getElementById("prompt").innerHTML = "Loading...";
+
+        if (params === "dev") {
+        	// just the load the table
+            console.log("Creating empty table for development & testing purposes")
+            hidePanel();
+            reloadTable()
+        } else {
+        	console.log("Got params: " + params);
+        	loadFromParams(params);
+        }
     }
-
-    // update status
-    document.getElementById("prompt").innerHTML = "Loading...";
-
-    if (params === "dev") {
-    	// just the load the table
-        console.log("Creating empty table for development & testing purposes")
-        hidePanel();
-        reloadTable()
-    } else {
-    	console.log("Got params: " + params);
-    	loadFromParams(params);
-    }
-}
+});

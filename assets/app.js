@@ -352,12 +352,11 @@ function handleAdd() {
 }
 
 // called when the value tag is clicked
-function handleValueSwap(e) {
-    var id = e.parentElement.parentElement.id;
-    var i = parseInt(id.substring(1));
+function handleValueSwap() {
+    var id = $(this).parents(".row").attr("id").substring(1);
 
-    rows[i].value = !((rows[i].value == null) || rows[i].value);
-    reloadTable()
+    rows[id].value = !((rows[id].value == null) || rows[id].value);
+    reloadTable();
 }
 
 function handleEditStart(e) {
@@ -552,11 +551,9 @@ function nodeToHtml(id, node) {
         .permission + '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
-        content +=
-            '<div class="cell"><code onclick="handleValueSwap(this)" class="code-true clickable">true</code></div>'
+        content += '<div class="cell"><code class="code-true clickable">true</code></div>'
     } else {
-        content +=
-            '<div class="cell"><code onclick="handleValueSwap(this)" class="code-false clickable">false</code></div>'
+        content += '<div class="cell"><code class="code-false clickable">false</code></div>'
     }
 
     if (!node.hasOwnProperty("expiry") || node.expiry === 0) {
@@ -672,11 +669,13 @@ function loadFromParams(params) {
 }
 
 // Register events
-$(document).on("click", ".buttons > .delete", handleDelete);
-$(document).on("click", ".buttons > .copy", handleCopy);
+$(document).on("click", "#table-section .buttons > .delete", handleDelete);
+$(document).on("click", "#table-section .buttons > .copy", handleCopy);
 
 $(document).on("click", "#inpform > .add", handleAdd);
 $(document).on("keypress", "#inpform > input", handleAddEnter);
+
+$(document).on("click", "#table-section .code-false, #table-section .code-true", handleValueSwap);
 
 // Do things when page has loaded
 $(loadCss);

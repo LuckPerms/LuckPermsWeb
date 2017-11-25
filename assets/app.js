@@ -18,6 +18,17 @@ var permsListObject = document.getElementById("permissions-list")
 // Clipboard instance
 var clipboard
 
+function loadCss() {
+    const stylesheet = /<link(?:\s[^.-\d][^\/\]'"[!#$%&()*+,;<=>?@^`{|}~ ]*(?:=(?:"[^"]*"|'[^']*'|[^'"<\s]*))?)*\s?\/?>/gi;
+    var head = $("head");
+    var css = $("#css-defer").text();
+    var matches;
+
+    while((matches = stylesheet.exec(css)) !== null) {
+        head.append(matches[0]);
+    }
+}
+
 function addAutoCompletePermission(perm) {
     var option = document.createElement("option");
     option.value = perm;
@@ -646,6 +657,8 @@ function loadFromParams(params) {
 
 // try to load the page from the url parameters when the page loads
 $(function () {
+    loadCss();
+
     var params = document.location.search;
     if (params) {
         console.log("Found location parameters to load from");

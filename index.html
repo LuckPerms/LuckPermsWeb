@@ -1,82 +1,86 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
+  <meta charset="utf-8">
 
-<title>LuckPerms Web Editor</title>
-<meta content="LuckPerms Web Editor" name="description">
-<meta content="Luck" name="author">
-<link href="./assets/favicon/16px.png" rel="shortcut icon" sizes="16x16" type="image/png">
-<link href="./assets/favicon/32px.png" rel="shortcut icon" sizes="32x32" type="image/png">
-<link href="./assets/favicon/64px.png" rel="shortcut icon" sizes="64x64" type="image/png">
-<link href="./assets/favicon/128px.png" rel="shortcut icon" sizes="128x128" type="image/png">
-<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
-<link href="assets/style.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>LuckPerms Web Editor</title>
+  <meta content="LuckPerms Web Editor" name="description">
+  <meta content="Luck" name="author">
+  <link href="assets/logo/16px.png" rel="shortcut icon" sizes="16x16" type="image/png">
+  <link href="assets/logo/32px.png" rel="shortcut icon" sizes="32x32" type="image/png">
+  <link href="assets/logo/64px.png" rel="shortcut icon" sizes="64x64" type="image/png">
+  <link href="assets/logo/128px.png" rel="shortcut icon" sizes="128x128" type="image/png">
+  <link href="assets/style.css" rel="stylesheet" type="text/css">
+  <noscript id="css-defer">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+  </noscript>
 
-<script src="assets/app.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous" defer></script>
+  <script src="assets/app.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" defer></script>
 </head>
 
 <body>
 
-<datalist id="permissions-list"></datalist>
+  <datalist id="permissions-list"></datalist>
 
-<div class="bar" style="display: none;">
-  <ul class="flex-center">
-    <li><img alt="" class="tiny-logo" src="assets/logo.png">
-      <h3>Web Permissions Editor</h3>
-    <li><i onclick="handleSave(this)" class="clickable material-icons">save</i>
-  </ul>
-</div>
+  <div id="bar" style="display: none;">
+    <ul class="flex-center">
+      <li><img alt="LuckPerms Logo" class="tiny-logo" width="40" height="40" src="assets/logo/40px.png">
+        <h3>Web Permissions Editor</h3></li>
+      <li><i id="save-button" class="clickable material-icons save">save</i></li>
+    </ul>
+  </div>
 
-<div class="content">
-  <div id="popup"></div>
+  <div class="content">
+    <div id="popup"></div>
 
-  <div id="page">
-    <div class="panel">
-      <img alt="" class="logo" src="assets/logo.png">
+    <div id="page">
+      <div id="panel">
+        <img alt="LuckPerms Logo" class="logo" width="180" height="180" src="assets/logo/180px.png">
 
-      <h1>LuckPerms</h1>
-      <h2>Web Permissions Editor</h2>
+        <h1>LuckPerms</h1>
+        <h2>Web Permissions Editor</h2>
 
-      <div id="prompt">
-        <h3>To start a new editor session, please use</h3>
-        <h4>
+        <div id="prompt">
+          <h3>To start a new editor session, please use</h3>
+          <h4>
           <cmd>/lp user &lt;user&gt; editor</cmd>
           <br>
           <cmd>/lp group &lt;group&gt; editor</cmd>
         </h4>
-      </div>
-    </div>
-
-    <div class="wrapper" id="table-content" style="display: none;">
-      <div class="table-input-bar">
-        <div class="newentry">
-          <div class="inpform">
-            <input type="text" list="permissions-list" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Permission" style="width: 195px;"></input>
-            <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Expiry"></input>
-            <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Server"></input>
-            <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="World"></input>
-            <input type="text" onkeypress="return handleAddEnter(this, event)" name="id" placeholder="Contexts"></input>
-            <i onclick="handleAdd(this)" class="clickable material-icons" style="font-size: 35px; vertical-align: middle; float: right; padding-right: 10px;">add_box</i>
-          </div>
         </div>
       </div>
 
-      <div id="table-section"></div>
+      <div id="table-content" class="wrapper" style="display: none;">
+        <div class="table-input-bar">
+          <div class="newentry">
+            <div id="inpform">
+              <input type="text" list="permissions-list" name="permission" placeholder="Permission">
+              <input type="text" name="expiry" placeholder="Expiry">
+              <input type="text" name="server" placeholder="Server">
+              <input type="text" name="world" placeholder="World">
+              <input type="text" name="contexts" placeholder="Contexts">
+              <i class="clickable material-icons add">add_box</i>
+            </div>
+          </div>
+        </div>
+
+        <div id="table-section"></div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="footer">
-  <ul class="flex-center">
-    <li><a href="https://github.com/lucko" target="_blank">lucko</a>/<a href="https://github.com/lucko/LuckPermsWeb" target="_blank">LuckPermsWeb</a>
-      (<a id="version" href="https://github.com/lucko/LuckPermsWeb/tree/production" target="_blank">???????</a>)
-    <li><a href="https://github.com/lucko/LuckPermsWeb/blob/master/LICENSE.txt" target="_blank">Copyright &copy; 2017 LuckPerms contributors</a>
-  </ul>
-</div>
+  <div class="footer">
+    <ul class="flex-center">
+      <li><a href="https://github.com/lucko" target="_blank">lucko</a>/<a href="https://github.com/lucko/LuckPermsWeb" target="_blank">LuckPermsWeb</a> (
+        <a id="version" href="https://github.com/lucko/LuckPermsWeb/tree/production" target="_blank">???????</a>)</li>
+      <li><a href="https://github.com/lucko/LuckPermsWeb/blob/master/LICENSE.txt" target="_blank">Copyright &copy; 2017 LuckPerms contributors</a></li>
+    </ul>
+  </div>
 
 </body>
+
 </html>

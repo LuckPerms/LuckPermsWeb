@@ -11,12 +11,60 @@ var cmdAlias = "lp";
 // if the initial editor token was a "legacy" token.
 // the legacy tokens contain two codes, separated by a "/" character
 // the newer tokens only contain one code element
-var legacy = false
+var legacy = false;
 
-var permsListObject = document.getElementById("permissions-list")
+var permsListObject = document.getElementById("permissions-list");
 
 // Clipboard instance
-var clipboard
+var clipboard;
+const classesRegex = / ?(cell|clickable|editable) ?/gi;
+
+// loads optional stylesheets async
+function loadCss() {
+    const stylesheet =
+        /<link(?:\s[^.-\d][^\/\]'"[!#$%&()*+,;<=>?@^`{|}~ ]*(?:=(?:"[^"]*"|'[^']*'|[^'"<\s]*))?)*\s?\/?>/gi;
+    var head = $("head");
+    var css = $("#css-defer").text();
+    var matches;
+
+    while ((matches = stylesheet.exec(css)) !== null) {
+        head.append(matches[0]);
+    }
+}
+
+// try to load the page from the url parameters when the page loads
+function loadContent() {
+    var params = document.location.search;
+    if (params) {
+        console.log("Found location parameters to load from");
+
+        if (params.startsWith("?")) {
+            params = params.substring(1)
+        }
+
+        // update status
+        $("#prompt").html("Loading...");
+
+        if (params === "dev") {
+            // just the load the table
+            console.log("Creating empty table for development & testing purposes")
+            hidePanel();
+            reloadTable()
+        } else {
+            console.log("Got params: " + params);
+            loadFromParams(params);
+        }
+    }
+}
+
+// pulls the latest production version of the editor and displays it
+function loadVersion() {
+    readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function(data) {
+        var version = $("#version");
+        version.html(data.commit.sha.substring(0, 7));
+        version.attr("href", data.commit.html_url);
+    });
+}
 
 function addAutoCompletePermission(perm) {
     var option = document.createElement("option");
@@ -60,31 +108,13 @@ function makeNode(perm, value, server, world, expiry, contexts) {
     return node
 }
 
-// reads data from a web address, and passes the result to the callback
+// reads data from a web address, and passes the result JSON object to the callback
 function readPage(link, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", link, true);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            callback(xhr.responseText);
-        }
-    };
-
-    xhr.send(null);
+    $.getJSON(link, callback);
 }
 
 // posts a string to GitHub's gist service, and returns the raw url of the content to the callback
 function postGist(data, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://api.github.com/gists');
-
-    xhr.onreadystatechange = function () {
-        if (this.readyState === 4) {
-            callback(JSON.parse(this.responseText));
-        }
-    };
-
     // construct the payload for the gist API
     var post = {
         "description": "LuckPerms Web Permissions Editor Data",
@@ -96,8 +126,13 @@ function postGist(data, callback) {
         }
     };
 
-    // post the data to the API
-    xhr.send(JSON.stringify(post))
+    $.ajax("https://api.github.com/gists", {
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify(post),
+        method: "POST",
+        success: callback
+    });
 }
 
 function contains(haystack, needle) {
@@ -186,7 +221,7 @@ function expressDuration(s) {
 
 function parseContexts(s) {
     var contexts = {};
-    s.split(" ").forEach(function (part) {
+    s.split(" ").forEach(function(part) {
         var kv = part.split("=", 2);
         if (kv && kv.length === 2) {
             var key = kv[0];
@@ -197,39 +232,41 @@ function parseContexts(s) {
 }
 
 // callback for when a record in the table is deleted
-function handleDelete(e) {
-    var id = e.parentElement.parentElement.id;
-    var i = parseInt(id.substring(1));
+function handleDelete() {
+    var id = $(this).parents(".row").attr("id").substring(1);
 
-    rows.splice(i, 1);
-    reloadTable()
+    rows.splice(id, 1);
+    reloadTable();
 }
 
-function handlePull(e) {
-    var id = e.parentElement.parentElement.id;
-    var i = parseInt(id.substring(1));
+function handleCopy() {
+    var id = $(this).parents(".row").attr("id").substring(1);
 
-    var node = rows[i];
+    var node = rows[id];
 
-    var inputMenu = document.getElementsByClassName("inpform")[0];
-    var children = inputMenu.getElementsByTagName("input");
+    var inputs = $("#inpform > input");
+    var permission = inputs.filter("[name=permission]");
+    var expiry = inputs.filter("[name=expiry]");
+    var server = inputs.filter("[name=server]");
+    var world = inputs.filter("[name=world]");
+    var contexts = inputs.filter("[name=contexts]");
 
-    children[0].value = node.permission;
+    permission.val(node.permission);
 
     if (node.hasOwnProperty("expiry")) {
-        children[1].value = node.expiry;
+        expiry.val(node.expiry);
     } else {
-        children[1].value = null;
+        expiry.val(null);
     }
     if (node.hasOwnProperty("server")) {
-        children[2].value = node.server;
+        server.val(node.server);
     } else {
-        children[2].value = null;
+        server.val(null);
     }
     if (node.hasOwnProperty("world")) {
-        children[3].value = node.world;
+        world.val(node.world);
     } else {
-        children[3].value = null;
+        world.val(null);
     }
     if (node.hasOwnProperty("contexts")) {
         var contextsStr = "";
@@ -239,37 +276,35 @@ function handlePull(e) {
                 contextsStr += (key + "=" + value + " ")
             }
         }
-        children[4].value = contextsStr;
+        contexts.val(contextsStr);
     } else {
-        children[4].value = null;
+        contexts.val(null);
     }
 }
 
-function handleAddEnter(element, event) {
-    // listen for the enter key
-    if (event.which === 13 || event.keyCode === 13) {
-        handleAdd(element);
-        return false
+function handleAddEnter(event) {
+    if (event.key == "Enter") {
+        handleAdd();
+        return false;
     }
 
-    return true
+    return true;
 }
 
-function handleAdd(e) {
-    var parent = e.parentElement;
-    var children = parent.getElementsByTagName("input");
+function handleAdd() {
+    var inputs = $("#inpform input");
 
-    var permission = children[0].value;
+    var permission = inputs.filter("[name=permission]").val();
 
     // don't process the add if the permission field is left empty
     if (!permission) {
-        return
+        return;
     }
 
-    var expiry = children[1].value;
-    var server = children[2].value;
-    var world = children[3].value;
-    var contexts = children[4].value;
+    var expiry = inputs.filter("[name=expiry]").val();
+    var server = inputs.filter("[name=server]").val();
+    var world = inputs.filter("[name=world]").val();
+    var contexts = inputs.filter("[name=contexts]").val();
 
     var now = Math.round((new Date()).getTime() / 1000);
     var expiryTime;
@@ -316,101 +351,101 @@ function handleAdd(e) {
 }
 
 // called when the value tag is clicked
-function handleValueSwap(e) {
-    var id = e.parentElement.parentElement.id;
-    var i = parseInt(id.substring(1));
+function handleValueSwap() {
+    var id = $(this).parents(".row").attr("id").substring(1);
 
-    rows[i].value = !((rows[i].value == null) || rows[i].value);
-    reloadTable()
+    rows[id].value = !((rows[id].value == null) || rows[id].value);
+    reloadTable();
 }
 
-function handleEditStart(e) {
-    if (e.firstElementChild) {
-        return;
-    }
-
-    var value = e.innerText;
-    var type = e.className.replace(/ ?(cell|clickable) ?/gi, "")
-    e.innerHTML = '<input ' + ((type == "permission") ? 'list="permissions-list" ' : '') + 'onblur="handleEditStop(this)" onkeypress="handleEditKeypress(this, event)">';
-    e.childNodes[0].focus()
-    e.childNodes[0].value = value
+function handleEditStart() {
+    var value = $(this).text();
+    var type = $(this).attr("class").replace(classesRegex, "");
+    $(this).html('<input ' + ((type == "permission") ? 'list="permissions-list" ' : '') + '>');
+    var input = $(this).find("input");
+    input.focus();
+    input.val(value);
 }
 
 function handleEditStop(e) {
-    var id = e.parentElement.parentElement.id;
-    var i = parseInt(id.substring(1));
-    var type = e.parentElement.className.replace(/ ?(cell|clickable) ?/gi, "")
-    var value = e.value;
+    var id = e.parents(".row").attr("id").substring(1);
+    var cell = e.parents(".cell");
+    var type = cell.attr("class").replace(classesRegex, "");
+    var value = e.val();
 
     if (type == "permission") {
         if (value == "") {
-            value = rows[i].permission
+            value = rows[id].permission;
         } else {
-            rows[i].permission = value
+            rows[id].permission = value;
         }
     } else if (type == "expiry") {
-        var now = Math.round((new Date()).getTime() / 1000)
-        var expiryTime
+        var now = Math.round((new Date()).getTime() / 1000);
+        var expiryTime;
 
         if ((value == "") || (value == "never")) {
-            expiryTime = 0
+            expiryTime = 0;
         } else {
-            var t = Number(value)
+            var t = Number(value);
 
             if (t) {
                 if (t < now) {
-                    expiryTime = 0
+                    expiryTime = 0;
                 } else {
-                    expiryTime = t - now
+                    expiryTime = t - now;
                 }
             } else {
-                var duration = parseDuration(value)
+                var duration = parseDuration(value);
 
                 if (!duration) {
-                    expiryTime = 0
+                    expiryTime = 0;
                 } else {
-                    expiryTime = duration
+                    expiryTime = duration;
                 }
             }
         }
 
         if (expiryTime == 0) {
-            delete rows[i].expiry
-            value = "never"
+            delete rows[id].expiry;
+            value = "never";
         } else {
-            rows[i].expiry = now + expiryTime
-            value = expressDuration(expiryTime)
+            rows[id].expiry = now + expiryTime;
+            value = expressDuration(expiryTime);
         }
     } else if ((type == "server") || (type == "world")) {
         if ((value == "") || (value == "global")) {
-            value = "global"
-            delete rows[i][type]
+            value = "global";
+            delete rows[id][type];
         } else {
-            rows[i][type] = value
+            rows[id][type] = value;
         }
     } else if (type == "contexts") {
         if ((value == "") || (value == "none")) {
-            value = "none"
-            delete rows[i].contexts
+            value = "none";
+            delete rows[id].contexts;
         } else {
-            rows[i].contexts = parseContexts(value)
+            rows[id].contexts = parseContexts(value);
         }
     }
 
-    e.parentElement.innerHTML = value
+    cell.html(value);
 }
 
-function handleEditKeypress(e, event) {
-    var key = event.key
+function handleEditBlur() {
+    handleEditStop($(this));
+}
+
+function handleEditKeypress(event) {
+    var key = event.key;
 
     if (key == "Escape") {
-        reloadTable()
+        reloadTable();
     } else if (key == "Enter") {
-        handleEditStop(e)
+        handleEditStop($(this));
     }
 }
 
-function handleSave(e) {
+function handleSave() {
     console.log("Saving data to gist");
 
     // construct the data object to send back to gist
@@ -418,53 +453,67 @@ function handleSave(e) {
     data.who = who;
     data.nodes = rows;
 
-    // post the data, and then send a popup when the save is complete
-    postGist(JSON.stringify(data), function (data) {
-    	var id;
+    // Change save button to Loading
+    $("#save-button").removeClass("save").addClass("loading").text("loop")
 
-    	if (legacy) {
-    		var rawUrl = data.files["luckperms-data.json"].raw_url
-    		// parse the tag from the returned url
-        	var split = rawUrl.split("/");
-        	id = split[4] + "/" + split[6];
-    	} else {
-    		id = data.id
-    	}
+    // post the data, and then send a popup when the save is complete
+    postGist(JSON.stringify(data), function(data) {
+        var id;
+
+        if (legacy) {
+            var rawUrl = data.files["luckperms-data.json"].raw_url
+            // parse the tag from the returned url
+            var split = rawUrl.split("/");
+            id = split[4] + "/" + split[6];
+        } else {
+            id = data.id
+        }
 
         console.log("Save id: " + id);
 
         // display the popup
-        var popup = document.getElementById("popup");
-
         var content = "";
         content += '<div class="alert">';
-        content += '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>';
-        content += '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/'
-            + cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
-        popup.innerHTML = content
+        content += '<span class="closebtn">&times;</span>';
+        content +=
+            '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/' +
+            cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
+        $("#popup").append(content);
+        $("#popup .alert").last().hide().slideDown();
+
+        // Change save button back
+        $("#save-button").removeClass("loading").addClass("save").text("save")
 
         if (!clipboard) {
             var copiedTimer;
             clipboard = new Clipboard("#apply_command")
 
             clipboard.on("success", function(e) {
-                e.clearSelection()
+                e.clearSelection();
+                var trigger = $(e.trigger);
 
-                if (e.trigger.classList.contains("copied")) {
-                    var copy = e.trigger.cloneNode(true);
-                    e.trigger.parentNode.replaceChild(copy, e.trigger);
+                if (trigger.hasClass("copied")) {
+                    var clone = trigger.clone(true);
+                    trigger.replaceWith(trigger.clone(true));
+                    trigger = clone;
 
-                    clearTimeout(copiedTimer)
+                    clearTimeout(copiedTimer);
                 } else {
-                    e.trigger.classList.add("copied");
+                    trigger.addClass("copied");
                 }
 
                 copiedTimer = setTimeout(function() {
-                    e.trigger.classList.remove("copied");
+                    trigger.removeClass("copied");
                 }, 4000)
             })
         }
     })
+}
+
+function handleAlertClose() {
+    $(this).parents(".alert").slideUp(function() {
+        $(this).remove();
+    });
 }
 
 // reloads the data in the table from the values stored in the rows array
@@ -488,7 +537,7 @@ function reloadTable() {
 
         // add each row
         var i = -1;
-        rows.forEach(function (node) {
+        rows.forEach(function(node) {
             i++;
             content += nodeToHtml(i, node)
         });
@@ -497,12 +546,11 @@ function reloadTable() {
     }
 
     // set the data
-    var element = document.getElementById("table-section");
-    element.innerHTML = content
+    $("#table-section").html(content);
 }
 
 function getContentDiv(type) {
-    return '<div class="cell ' + type + ' clickable" onclick="handleEditStart(this)">'
+    return '<div class="cell ' + type + ' clickable editable">'
 }
 
 function nodeToHtml(id, node) {
@@ -512,12 +560,12 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div list="permissions-list" class="cell permission clickable" onclick="handleEditStart(this)">' + node.permission + '</div>';
+    content += '<div list="permissions-list" class="cell permission clickable editable">' + node.permission + '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
-        content += '<div class="cell"><code onclick="handleValueSwap(this)" class="code-true clickable">true</code></div>'
+        content += '<div class="cell"><code class="code-true clickable">true</code></div>'
     } else {
-        content += '<div class="cell"><code onclick="handleValueSwap(this)" class="code-false clickable">false</code></div>'
+        content += '<div class="cell"><code class="code-false clickable">false</code></div>'
     }
 
     if (!node.hasOwnProperty("expiry") || node.expiry === 0) {
@@ -560,8 +608,8 @@ function nodeToHtml(id, node) {
 
     // static copy and delete button
     content += '<div class="cell buttons">';
-    content += '<i onclick="handleDelete(this)" class="clickable material-icons md-18">delete</i>';
-    content += '<i onclick="handlePull(this)" class="clickable material-icons md-18" style="padding-left: 8px;font-size: 22px;">content_copy</i>';
+    content += '<i class="clickable material-icons delete">delete</i>';
+    content += '<i class="clickable material-icons copy">content_copy</i>';
     content += '</div>';
     content += '</div>';
 
@@ -570,30 +618,20 @@ function nodeToHtml(id, node) {
 
 // hides the welcome panel from view
 function hidePanel() {
-    document.getElementsByClassName("panel")[0].style.display = "none"
-    document.getElementsByClassName("bar")[0].style.display = "inherit"
-    document.getElementsByClassName("wrapper")[0].style.display = "inherit"
+    $("#panel").hide()
+    $("#bar").show()
+    $("#table-content").show()
 }
 
 // unhides the welcome panel
 function showPanel() {
-    document.getElementsByClassName("panel")[0].style.display = "initial"
-    document.getElementsByClassName("bar")[0].style.display = "none"
-    document.getElementsByClassName("wrapper")[0].style.display = "none"
+    $("#panel").show()
+    $("#bar").hide()
+    $("#table-content").hide()
 }
 
-// pulls the latest production version of the editor and displays it
-setTimeout(function () {
-	readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function (ret) {
-	    var data = JSON.parse(ret);
-	    var version = document.getElementById("version");
-	    version.innerHTML = data.commit.sha.substring(0,7);
-	    version.href = data.commit.html_url;
-	});
-}, 0)
-
 function loadData(data) {
-	// replace the local node array with the json data
+    // replace the local node array with the json data
     rows = data.nodes;
     who = data.who;
     cmdAlias = data.cmdAlias;
@@ -616,53 +654,48 @@ function loadFromParams(params) {
     var parts = params.split("/");
 
     if (parts.length === 2) {
-    	legacy = true; // mark as a legacy code
-        var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] + "/luckperms-data.json";
+        legacy = true; // mark as a legacy code
+        var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] +
+            "/luckperms-data.json";
         console.log("Loading from legacy URL: " + url)
-        readPage(url, function (ret) {
-            var data = JSON.parse(ret);
+        readPage(url, function(data) {
             loadData(data)
         })
     } else {
-    	// single token??
-    	var url = "https://api.github.com/gists/" + params;
-    	console.log("Loading from URL: " + url)
-    	readPage(url, function(ret) {
-    		var data = JSON.parse(ret);
-    		var fileObject = data.files["luckperms-data.json"];
-    		if (fileObject.truncated) {
-    			var rawUrl = fileObject.raw_url
-				readPage(rawUrl, function (otherRet) {
-            		var permsData = JSON.parse(otherRet);
-            		loadData(permsData)
-        		})
-    		} else {
-    			var permsData = JSON.parse(fileObject.content)
-    			loadData(permsData);
-    		}
-    	})
+        // single token??
+        var url = "https://api.github.com/gists/" + params;
+        console.log("Loading from URL: " + url)
+        readPage(url, function(data) {
+            var fileObject = data.files["luckperms-data.json"];
+            if (fileObject.truncated) {
+                var rawUrl = fileObject.raw_url
+                readPage(rawUrl, function(permsData) {
+                    loadData(permsData)
+                })
+            } else {
+                var permsData = JSON.parse(fileObject.content)
+                loadData(permsData);
+            }
+        })
     }
 }
 
-// try to load the page from the url parameters when the page loads
-var params = document.location.search;
-if (params) {
-    console.log("Found location parameters to load from");
+// Register events
+$(document).on("click", "#save-button.save", handleSave);
+$(document).on("click", "#popup .closebtn", handleAlertClose);
 
-    if (params.startsWith("?")) {
-        params = params.substring(1)
-    }
+$(document).on("click", "#inpform > .add", handleAdd);
+$(document).on("keypress", "#inpform > input", handleAddEnter);
 
-    // update status
-    document.getElementById("prompt").innerHTML = "Loading...";
+$(document).on("click", "#table-section .editable:not(:has(input))", handleEditStart);
+$(document).on("click", "#table-section .code-false, #table-section .code-true", handleValueSwap);
+$(document).on("blur", "#table-section .editable input", handleEditBlur);
+$(document).on("keypress", "#table-section .editable input", handleEditKeypress);
 
-    if (params === "dev") {
-    	// just the load the table
-        console.log("Creating empty table for development & testing purposes")
-        hidePanel();
-        reloadTable()
-    } else {
-    	console.log("Got params: " + params);
-    	loadFromParams(params);
-    }
-}
+$(document).on("click", "#table-section .buttons > .delete", handleDelete);
+$(document).on("click", "#table-section .buttons > .copy", handleCopy);
+
+// Do things when page has loaded
+$(loadCss);
+$(loadContent);
+$(loadVersion);

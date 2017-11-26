@@ -274,23 +274,6 @@ code {
   background-color: #ffffff;
   color: #141422;
 }
-@keyframes copied {
-  0% {
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  90% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
 
 #apply_command {
   position: relative;
@@ -326,6 +309,10 @@ code {
   cursor: hand;
 }
 
+.loading {
+  animation: spin 1s infinite;
+}
+
 .cell.buttons {
   width: 0;
   white-space: nowrap;
@@ -359,4 +346,31 @@ code {
 .footer ul li {
   margin: 7px 14px;
   padding: 0;
+}
+/* ===================== Animations ===================== */
+@keyframes copied {
+  0% {
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }

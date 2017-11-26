@@ -453,6 +453,9 @@ function handleSave() {
     data.who = who;
     data.nodes = rows;
 
+    // Change save button to Loading
+    $("#save-button").removeClass("save").addClass("loading").text("loop")
+
     // post the data, and then send a popup when the save is complete
     postGist(JSON.stringify(data), function(data) {
         var id;
@@ -477,6 +480,9 @@ function handleSave() {
             cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
         $("#popup").append(content);
         $("#popup .alert").last().hide().slideDown();
+
+        // Change save button back
+        $("#save-button").removeClass("loading").addClass("save").text("save")
 
         if (!clipboard) {
             var copiedTimer;
@@ -673,7 +679,7 @@ function loadFromParams(params) {
 }
 
 // Register events
-$(document).on("click", "#bar .save", handleSave);
+$(document).on("click", "#save-button.save", handleSave);
 $(document).on("click", "#popup .closebtn", handleAlertClose);
 
 $(document).on("click", "#inpform > .add", handleAdd);

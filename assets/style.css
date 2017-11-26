@@ -282,6 +282,7 @@ code {
 #apply_command::after {
   content: "Copied to clipboard!";
   position: absolute;
+  top: 0;
   left: 0;
   right: 0;
   text-align: center;
@@ -371,6 +372,6 @@ code {
   }
 
   to {
-    transform: rotate(360deg);
+    transform: rotate(-360deg);
   }
 }

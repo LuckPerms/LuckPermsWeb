@@ -489,19 +489,21 @@ function handleSave() {
             clipboard = new Clipboard("#apply_command")
 
             clipboard.on("success", function(e) {
-                e.clearSelection()
+                e.clearSelection();
+                var trigger = $(e.trigger);
 
-                if (e.trigger.classList.contains("copied")) {
-                    var copy = e.trigger.cloneNode(true);
-                    e.trigger.parentNode.replaceChild(copy, e.trigger);
+                if (trigger.hasClass("copied")) {
+                    var clone = trigger.clone(true);
+                    trigger.replaceWith(trigger.clone(true));
+                    trigger = clone;
 
-                    clearTimeout(copiedTimer)
+                    clearTimeout(copiedTimer);
                 } else {
-                    e.trigger.classList.add("copied");
+                    trigger.addClass("copied");
                 }
 
                 copiedTimer = setTimeout(function() {
-                    e.trigger.classList.remove("copied");
+                    trigger.removeClass("copied");
                 }, 4000)
             })
         }

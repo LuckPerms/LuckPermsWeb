@@ -29,6 +29,7 @@ body {
 
 .flex-center {
   display: flex;
+  align-items: center;
 }
 
 .flex-center > :first-child,
@@ -53,6 +54,7 @@ ul.flex-center {
   position: fixed;
   top: 0;
   width: 100%;
+  color: #EEEEEE;
 }
 
 #bar .tiny-logo {
@@ -68,16 +70,48 @@ ul.flex-center {
 #bar h3 {
   margin-left: 10px;
   float: left;
-  color: #EEEEEE;
 }
 
-#bar i {
+#bar .material-icons {
   font-size: 40px;
   vertical-align: middle;
-  float: right;
-  margin-top: 10px;
   margin-right: 15px;
-  color: #EEEEEE;
+}
+
+#identifier {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+#identifier[data-type]::before {
+  content: attr(data-type) ": ";
+  text-transform: capitalize;
+}
+
+#identifier[data-type=dev]::before,
+#identifier[data-type=group]::before,
+#identifier[data-type=user]::before {
+  color: #2d2d38;
+  background-color: #EEEEEE;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 15px;
+  text-align: center;
+  line-height: 1em;
+}
+
+#identifier[data-type=dev]::before {
+  content: "D";
+}
+
+#identifier[data-type=group]::before {
+  content: "G";
+}
+
+#identifier[data-type=user]::before {
+  content: "U";
 }
 
 .content {

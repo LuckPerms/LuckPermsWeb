@@ -1,6 +1,10 @@
 // the rows currently in the table
 var rows = [];
 
+// permissionHistory of the data for undo/redo
+var permissionHistory = [];
+var permissionHistoryPos = 0;
+
 // who is being edited. this should be in the format "user/<uuid>" or "group/<group name>"
 // or empty, if the data loaded at the start of the session didn't contain the attribute
 var whoType = "";
@@ -54,6 +58,7 @@ function loadContent() {
             whoType = "dev";
             who = "test";
             whoFriendly = "Developer Test";
+            permissionHistory.push(JSON.parse(JSON.stringify(rows)));
 
             populateIdentifier();
             hidePanel();
@@ -72,6 +77,47 @@ function loadVersion() {
         version.html(data.commit.sha.substring(0, 7));
         version.attr("href", data.commit.html_url);
     });
+}
+
+function canUndo() {
+    return permissionHistoryPos > 0;
+}
+
+function canRedo() {
+    return permissionHistoryPos < (permissionHistory.length - 1);
+}
+
+function pushHistory() {
+    console.log("Before:", permissionHistory, permissionHistoryPos, canUndo(), canRedo(), "Same: " + (JSON.stringify(
+        rows) == JSON.stringify(permissionHistory[permissionHistoryPos])), rows, permissionHistory[
+        permissionHistoryPos]);
+
+    if (canRedo()) {
+        // Shorten the array
+        permissionHistory = permissionHistory.slice(0, (permissionHistoryPos + 1));
+    }
+
+    if (JSON.stringify(rows) == JSON.stringify(permissionHistory[permissionHistoryPos])) return;
+
+    permissionHistory.push(JSON.parse(JSON.stringify(rows)));
+    permissionHistoryPos++;
+
+    updateHistoryButtons();
+
+    console.log("After:", permissionHistory, permissionHistoryPos, canUndo(), canRedo());
+}
+
+function updateHistoryButtons() {
+    setButtonClickable($("#undo-button"), canUndo());
+    setButtonClickable($("#redo-button"), canRedo());
+}
+
+function setButtonClickable(button, clickable) {
+    if (clickable) {
+        button.removeClass("unclickable").addClass("clickable");
+    } else {
+        button.removeClass("clickable").addClass("unclickable");
+    }
 }
 
 function addAutoCompletePermission(perm) {
@@ -244,6 +290,7 @@ function handleDelete() {
     var id = $(this).parents(".row").attr("id").substring(1);
 
     rows.splice(id, 1);
+    pushHistory();
     reloadTable();
 }
 
@@ -355,7 +402,8 @@ function handleAdd() {
     }
 
     rows.push(makeNode(permission, true, server, world, expiryTime, contextsObj));
-    reloadTable()
+    pushHistory();
+    reloadTable();
 }
 
 // called when the value tag is clicked
@@ -363,6 +411,7 @@ function handleValueSwap() {
     var id = $(this).parents(".row").attr("id").substring(1);
 
     rows[id].value = !((rows[id].value == null) || rows[id].value);
+    pushHistory();
     reloadTable();
 }
 
@@ -437,6 +486,7 @@ function handleEditStop(e) {
     }
 
     cell.html(value);
+    pushHistory();
 }
 
 function handleEditBlur() {
@@ -451,6 +501,31 @@ function handleEditKeypress(event) {
     } else if (key == "Enter") {
         handleEditStop($(this));
     }
+}
+
+function handleUndo() {
+    if (!canUndo()) return;
+
+    permissionHistoryPos--;
+    applyUndoRedo();
+}
+
+function handleRedo() {
+    if (!canRedo()) return;
+
+    permissionHistoryPos++;
+    applyUndoRedo();
+}
+
+function applyUndoRedo() {
+    console.log("Before:", rows, permissionHistoryPos);
+
+    rows = permissionHistory[permissionHistoryPos];
+
+    console.log("After:", rows, permissionHistoryPos);
+
+    reloadTable();
+    updateHistoryButtons();
 }
 
 function handleSave() {
@@ -568,7 +643,8 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div list="permissions-list" class="cell permission clickable editable">' + node.permission + '</div>';
+    content += '<div list="permissions-list" class="cell permission clickable editable">' + node.permission +
+        '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
         content += '<div class="cell"><code class="code-true clickable">true</code></div>'
@@ -658,14 +734,13 @@ function loadData(data) {
         cmdAlias = "lp"
     }
 
-    console.log(data.who, data.who.split("/"), whoType, who, whoFriendly)
-
     // populate autocomplete options
     perms = data.knownPermissions;
     if (perms) {
         perms.forEach(addAutoCompletePermission)
     }
 
+    permissionHistory.push(JSON.parse(JSON.stringify(rows)));
     populateIdentifier();
     hidePanel();
     reloadTable();
@@ -703,6 +778,8 @@ function loadFromParams(params) {
 }
 
 // Register events
+$(document).on("click", "#undo-button.clickable", handleUndo);
+$(document).on("click", "#redo-button.clickable", handleRedo);
 $(document).on("click", "#save-button.save", handleSave);
 $(document).on("click", "#popup .closebtn", handleAlertClose);
 

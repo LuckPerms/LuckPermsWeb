@@ -348,6 +348,11 @@ code {
   cursor: hand;
 }
 
+.unclickable {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .loading {
   animation: spin 1s infinite;
 }

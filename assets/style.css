@@ -88,6 +88,32 @@ ul.flex-center {
   text-transform: capitalize;
 }
 
+#identifier[data-type=dev]::before,
+#identifier[data-type=group]::before,
+#identifier[data-type=user]::before {
+  color: #2d2d38;
+  background-color: #EEEEEE;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 15px;
+  text-align: center;
+  line-height: 1em;
+}
+
+#identifier[data-type=dev]::before {
+  content: "D";
+}
+
+#identifier[data-type=group]::before {
+  content: "G";
+}
+
+#identifier[data-type=user]::before {
+  content: "U";
+}
+
 .content {
   margin-top: 80px;
   flex-grow: 1;

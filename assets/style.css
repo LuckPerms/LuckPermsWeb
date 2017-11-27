@@ -78,6 +78,10 @@ ul.flex-center {
   margin-right: 15px;
 }
 
+#bar li:last-child {
+  font-size: 0;
+}
+
 #identifier {
   font-size: 2em;
   font-weight: bold;

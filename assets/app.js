@@ -608,8 +608,8 @@ function nodeToHtml(id, node) {
 
     // static copy and delete button
     content += '<div class="cell buttons">';
-    content += '<i class="clickable material-icons delete">delete</i>';
-    content += '<i class="clickable material-icons copy">content_copy</i>';
+    content += '<i class="clickable material-icons delete" title="Delete">delete</i>';
+    content += '<i class="clickable material-icons copy" title="Copy">content_copy</i>';
     content += '</div>';
     content += '</div>';
 

@@ -458,7 +458,7 @@ function handleSave() {
 
     // construct the data object to send back to gist
     var data = {};
-    data.who = who;
+    data.who = `${whoType}/${who}`;
     data.nodes = rows;
 
     // Change save button to Loading

@@ -457,7 +457,7 @@ function handleSave() {
     $("#save-button").removeClass("save").addClass("loading").text("loop")
 
     // post the data, and then send a popup when the save is complete
-    postGist(JSON.stringify(data), function(data) {
+    postGist(JSON.stringify(data, null, 2), function(data) {
         var id;
 
         if (legacy) {

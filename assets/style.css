@@ -361,6 +361,26 @@ code {
 .github-corner:hover .octo-arm {
   animation: octocat-wave 560ms ease-in-out;
 }
+
+.github-corner svg path {
+  color: #141422;
+  fill: #2d2d38;
+  transition: color 140ms ease-out, fill 140ms ease-out;
+}
+
+.github-corner svg path.octo-arm,
+.github-corner svg path.octo-body {
+  fill: #141422;
+}
+
+.github-corner:hover svg path {
+  color: #88bb88;
+}
+
+.github-corner:hover svg path.octo-arm,
+.github-corner:hover svg path.octo-body {
+  fill: #88bb88;
+}
 @media (max-width:500px) {
   .github-corner:hover .octo-arm {
     animation: none;

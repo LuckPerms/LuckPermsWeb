@@ -350,20 +350,14 @@ code {
 }
 /* ===================== Animations ===================== */
 @keyframes copied {
-  0% {
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  90% {
-    opacity: 1;
-  }
-
+  0%,
   100% {
     opacity: 0;
+  }
+
+  10%,
+  90% {
+    opacity: 1;
   }
 }
 @keyframes spin {

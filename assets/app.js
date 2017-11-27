@@ -3,7 +3,9 @@ var rows = [];
 
 // who is being edited. this should be in the format "user/<uuid>" or "group/<group name>"
 // or empty, if the data loaded at the start of the session didn't contain the attribute
+var whoType = "";
 var who = "";
+var whoFriendly = "";
 
 // the command alias used to open the editor page
 var cmdAlias = "lp";
@@ -39,7 +41,7 @@ function loadContent() {
         console.log("Found location parameters to load from");
 
         if (params.startsWith("?")) {
-            params = params.substring(1)
+            params = params.substring(1);
         }
 
         // update status
@@ -47,9 +49,15 @@ function loadContent() {
 
         if (params === "dev") {
             // just the load the table
-            console.log("Creating empty table for development & testing purposes")
+            console.log("Creating empty table for development & testing purposes");
+
+            whoType = "dev";
+            who = "test";
+            whoFriendly = "Developer Test";
+
+            populateIdentifier();
             hidePanel();
-            reloadTable()
+            reloadTable();
         } else {
             console.log("Got params: " + params);
             loadFromParams(params);
@@ -616,6 +624,14 @@ function nodeToHtml(id, node) {
     return content
 }
 
+// populate identifier
+function populateIdentifier() {
+    var identifier = $("#identifier");
+    identifier.text(whoFriendly);
+    identifier.attr("data-type", whoType);
+    identifier.attr("title", `Editing ${whoType} "${whoFriendly}" (${who})`);
+}
+
 // hides the welcome panel from view
 function hidePanel() {
     $("#panel").hide()
@@ -633,11 +649,16 @@ function showPanel() {
 function loadData(data) {
     // replace the local node array with the json data
     rows = data.nodes;
-    who = data.who;
+    who = data.who.split("/");
+    whoType = who[0];
+    who = who[1];
+    whoFriendly = (data.whoFriendly == null) ? who : data.whoFriendly;
     cmdAlias = data.cmdAlias;
     if (!cmdAlias) {
         cmdAlias = "lp"
     }
+
+    console.log(data.who, data.who.split("/"), whoType, who, whoFriendly)
 
     // populate autocomplete options
     perms = data.knownPermissions;
@@ -645,8 +666,9 @@ function loadData(data) {
         perms.forEach(addAutoCompletePermission)
     }
 
+    populateIdentifier();
     hidePanel();
-    reloadTable()
+    reloadTable();
 }
 
 function loadFromParams(params) {

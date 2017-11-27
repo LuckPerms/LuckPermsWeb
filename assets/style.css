@@ -29,6 +29,7 @@ body {
 
 .flex-center {
   display: flex;
+  align-items: center;
 }
 
 .flex-center > :first-child,
@@ -53,6 +54,7 @@ ul.flex-center {
   position: fixed;
   top: 0;
   width: 100%;
+  color: #EEEEEE;
 }
 
 #bar .tiny-logo {
@@ -68,16 +70,22 @@ ul.flex-center {
 #bar h3 {
   margin-left: 10px;
   float: left;
-  color: #EEEEEE;
 }
 
-#bar i {
+#bar .material-icons {
   font-size: 40px;
   vertical-align: middle;
-  float: right;
-  margin-top: 10px;
   margin-right: 15px;
-  color: #EEEEEE;
+}
+
+#identifier {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+#identifier[data-type]::before {
+  content: attr(data-type) ": ";
+  text-transform: capitalize;
 }
 
 .content {

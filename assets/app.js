@@ -3,7 +3,7 @@ var rows = [];
 
 // permissionHistory of the data for undo/redo
 var permissionHistory = [];
-var permissionHistoryPos = 0;
+var permissionHistoryPos = -1;
 
 // who is being edited. this should be in the format "user/<uuid>" or "group/<group name>"
 // or empty, if the data loaded at the start of the session didn't contain the attribute
@@ -58,7 +58,6 @@ function loadContent() {
             whoType = "dev";
             who = "test";
             whoFriendly = "Developer Test";
-            permissionHistory.push(JSON.parse(JSON.stringify(rows)));
 
             populateIdentifier();
             hidePanel();
@@ -67,6 +66,8 @@ function loadContent() {
             console.log("Got params: " + params);
             loadFromParams(params);
         }
+
+        pushHistory();
     }
 }
 
@@ -84,27 +85,25 @@ function canUndo() {
 }
 
 function canRedo() {
-    return permissionHistoryPos < (permissionHistory.length - 1);
+    return (permissionHistoryPos + 1) < permissionHistory.length;
+}
+
+function isUnchanged() {
+    return JSON.stringify(rows) == JSON.stringify(permissionHistory[permissionHistoryPos]);
 }
 
 function pushHistory() {
-    console.log("Before:", permissionHistory, permissionHistoryPos, canUndo(), canRedo(), "Same: " + (JSON.stringify(
-        rows) == JSON.stringify(permissionHistory[permissionHistoryPos])), rows, permissionHistory[
-        permissionHistoryPos]);
-
-    if (canRedo()) {
+    if (isUnchanged()) {
+        return;
+    } else if (canRedo()) {
         // Shorten the array
         permissionHistory = permissionHistory.slice(0, (permissionHistoryPos + 1));
     }
 
-    if (JSON.stringify(rows) == JSON.stringify(permissionHistory[permissionHistoryPos])) return;
-
-    permissionHistory.push(JSON.parse(JSON.stringify(rows)));
+    permissionHistory.push(deepClone(rows));
     permissionHistoryPos++;
 
     updateHistoryButtons();
-
-    console.log("After:", permissionHistory, permissionHistoryPos, canUndo(), canRedo());
 }
 
 function updateHistoryButtons() {
@@ -191,6 +190,10 @@ function postGist(data, callback) {
 
 function contains(haystack, needle) {
     return haystack && haystack.indexOf(needle) !== -1
+}
+
+function deepClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
 }
 
 // parses a duration from a string to a duration in seconds
@@ -518,11 +521,7 @@ function handleRedo() {
 }
 
 function applyUndoRedo() {
-    console.log("Before:", rows, permissionHistoryPos);
-
-    rows = permissionHistory[permissionHistoryPos];
-
-    console.log("After:", rows, permissionHistoryPos);
+    rows = deepClone(permissionHistory[permissionHistoryPos]);
 
     reloadTable();
     updateHistoryButtons();
@@ -740,7 +739,6 @@ function loadData(data) {
         perms.forEach(addAutoCompletePermission)
     }
 
-    permissionHistory.push(JSON.parse(JSON.stringify(rows)));
     populateIdentifier();
     hidePanel();
     reloadTable();

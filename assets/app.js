@@ -775,11 +775,24 @@ function loadFromParams(params) {
     }
 }
 
+function showHelp() {
+    $("#help-section").fadeIn();
+}
+
+function hideHelp(e) {
+    if (e.target != this)
+        return false;
+
+    $("#help-section").fadeOut();
+}
+
 // Register events
 $(document).on("click", "#undo-button.clickable", handleUndo);
 $(document).on("click", "#redo-button.clickable", handleRedo);
 $(document).on("click", "#save-button.save", handleSave);
 $(document).on("click", "#popup .closebtn", handleAlertClose);
+$(document).on("click", "#help-button", showHelp);
+$(document).on("click", "#help-section", hideHelp);
 
 $(document).on("click", "#inpform > .add", handleAdd);
 $(document).on("keypress", "#inpform > input", handleAddEnter);

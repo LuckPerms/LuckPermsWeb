@@ -117,8 +117,8 @@ function makeNode(perm, value, server, world, expiry, contexts) {
 }
 
 // reads data from a web address, and passes the result JSON object to the callback
-function readPage(link, callback) {
-    $.getJSON(link, callback);
+function readPage(link, callback, error) {
+    $.getJSON(link, callback).fail(error);
 }
 
 // posts a string to GitHub's gist service, and returns the raw url of the content to the callback
@@ -698,6 +698,9 @@ function loadFromParams(params) {
                 var permsData = JSON.parse(fileObject.content)
                 loadData(permsData);
             }
+        }, function(){
+            $("#prompt").html('<h3 class="code-false"><b>Error loading data!</b>' +
+            '<br><br>Please check the url was copied correctly.</h3>');
         })
     }
 }

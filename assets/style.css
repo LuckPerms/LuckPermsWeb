@@ -132,7 +132,6 @@ ul.flex-center {
   text-align: center;
   margin: -300px 0 0 -140px;
   padding: 20px;
-  line-height: 0.5rem;
 }
 
 #panel.hide {
@@ -155,6 +154,11 @@ ul.flex-center {
   font-weight: 400;
   font-size: 0.8em;
   margin-bottom: 16px;
+}
+
+#panel h1,
+#panel h2 {
+  line-height: 0.5rem;
 }
 
 #panel h3 {

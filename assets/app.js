@@ -1,6 +1,12 @@
 // the rows currently in the table
 var rows = [];
 
+// the sorting properties
+var sort = {
+    on: null,
+    mode: "asc"
+};
+
 // who is being edited. this should be in the format "user/<uuid>" or "group/<group name>"
 // or empty, if the data loaded at the start of the session didn't contain the attribute
 var whoType = "";
@@ -67,10 +73,13 @@ function loadContent() {
 
 // pulls the latest production version of the editor and displays it
 function loadVersion() {
-    readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function(data) {
+    $.getJSON("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function(data) {
         var version = $("#version");
         version.html(data.commit.sha.substring(0, 7));
         version.attr("href", data.commit.html_url);
+    })
+    .fail(function() {
+        console.log("Unable to load version.");
     });
 }
 
@@ -114,11 +123,6 @@ function makeNode(perm, value, server, world, expiry, contexts) {
     }
 
     return node
-}
-
-// reads data from a web address, and passes the result JSON object to the callback
-function readPage(link, callback) {
-    $.getJSON(link, callback);
 }
 
 // posts a string to GitHub's gist service, and returns the raw url of the content to the callback
@@ -453,6 +457,24 @@ function handleEditKeypress(event) {
     }
 }
 
+function handleSort(event) {
+    var element = event.currentTarget;
+
+    if (element.innerHTML.charAt(0) === "↓") {
+        // asc --> desc
+        sort.on = element.innerHTML.toLowerCase().substring(2);
+        sort.mode = "desc";
+    } else if (element.innerHTML.charAt(0) === "↑") {
+        // desc --> nothing
+        sort.on = null;
+    } else {
+        // nothing --> asc
+        sort.on = element.innerHTML.toLowerCase();
+        sort.mode = "asc";
+    }
+    reloadTable();
+}
+
 function handleSave() {
     console.log("Saving data to gist");
 
@@ -526,6 +548,37 @@ function handleAlertClose() {
 
 // reloads the data in the table from the values stored in the rows array
 function reloadTable() {
+    var entries = [];
+
+    // form an array of entries
+    var i = -1;
+    rows.forEach(function(node) {
+        i++;
+        entries.push({
+            id: i,
+            value: node
+        });
+    });
+
+    // apply sorting
+    if (sort.on) {
+        entries.sort(function(a, b) {
+            var ax = a.value[sort.on];
+            var bx = b.value[sort.on];
+
+            if (ax < bx) {
+                return -1;
+            }
+            if (ax > bx) {
+                return 1;
+            }
+            return 0;
+        });
+        if (sort.mode === "desc") {
+            entries.reverse();
+        }
+    }
+
     var content = "";
 
     if (rows.length) {
@@ -534,21 +587,27 @@ function reloadTable() {
 
         // field headings
         content += '<div class="row header">';
-        content += '<div class="cell">Permission</div>';
-        content += '<div class="cell">Value</div>';
-        content += '<div class="cell">Expiry</div>';
-        content += '<div class="cell">Server</div>';
-        content += '<div class="cell">World</div>';
+
+        for (col of ["Permission", "Value", "Expiry", "Server", "Server"]) {
+            if (sort.on === col.toLowerCase()) {
+                if (sort.mode === "desc") {
+                    col = "↑ " + col;
+                } else {
+                    col = "↓ " + col;
+                }
+            }
+
+            content += '<div class="cell clickable">' + col + '</div>';
+        }
+
         content += '<div class="cell">Contexts</div>';
         content += '<div class="cell"></div>';
         content += '</div>';
 
         // add each row
-        var i = -1;
-        rows.forEach(function(node) {
-            i++;
-            content += nodeToHtml(i, node)
-        });
+        entries.forEach(function(entry) {
+            content += nodeToHtml(entry.id, entry.value);
+        })
 
         content += '</div>';
     }
@@ -680,18 +739,18 @@ function loadFromParams(params) {
         var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] +
             "/luckperms-data.json";
         console.log("Loading from legacy URL: " + url)
-        readPage(url, function(data) {
+        $.getJSON(url, function(data) {
             loadData(data)
         })
     } else {
         // single token??
         var url = "https://api.github.com/gists/" + params;
         console.log("Loading from URL: " + url)
-        readPage(url, function(data) {
+        $.getJSON(url, function(data) {
             var fileObject = data.files["luckperms-data.json"];
             if (fileObject.truncated) {
                 var rawUrl = fileObject.raw_url
-                readPage(rawUrl, function(permsData) {
+                $.getJSON(rawUrl, function(permsData) {
                     loadData(permsData)
                 })
             } else {
@@ -716,6 +775,8 @@ $(document).on("keypress", "#table-section .editable input", handleEditKeypress)
 
 $(document).on("click", "#table-section .buttons > .delete", handleDelete);
 $(document).on("click", "#table-section .buttons > .copy", handleCopy);
+
+$(document).on("click", "#table-section .header > .clickable", handleSort)
 
 // Do things when page has loaded
 $(loadCss);

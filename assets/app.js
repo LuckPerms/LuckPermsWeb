@@ -588,7 +588,7 @@ function reloadTable() {
         // field headings
         content += '<div class="row header">';
 
-        for (col of ["Permission", "Value", "Expiry", "Server", "Server"]) {
+        for (col of ["Permission", "Value", "Expiry", "Server", "World"]) {
             if (sort.on === col.toLowerCase()) {
                 if (sort.mode === "desc") {
                     col = "↑ " + col;

@@ -579,7 +579,7 @@ function handleSave() {
         content += '<div class="alert">';
         content += '<span class="closebtn">&times;</span>';
         content +=
-            '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/' +
+            '<strong>Success!</strong> Data was saved to gist. Run <code class="apply_command" class="clickable" title="Copy to clipboard">/' +
             cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
         $("#popup").append(content);
         $("#popup .alert").last().hide().slideDown();
@@ -588,8 +588,12 @@ function handleSave() {
         $("#save-button").removeClass("loading").addClass("save").text("save")
 
         if (!clipboard) {
-            var copiedTimer;
-            clipboard = new Clipboard("#apply_command")
+            clipboard = new Clipboard(".apply_command", {
+                target:
+                    function(trigger) {
+                        return trigger;
+                    }
+            })
 
             clipboard.on("success", function(e) {
                 e.clearSelection();
@@ -600,12 +604,12 @@ function handleSave() {
                     trigger.replaceWith(trigger.clone(true));
                     trigger = clone;
 
-                    clearTimeout(copiedTimer);
+                    clearTimeout(trigger.copiedTimer);
                 } else {
                     trigger.addClass("copied");
                 }
 
-                copiedTimer = setTimeout(function() {
+                trigger.copiedTimer = setTimeout(function() {
                     trigger.removeClass("copied");
                 }, 4000)
             })

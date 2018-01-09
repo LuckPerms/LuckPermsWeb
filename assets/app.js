@@ -78,11 +78,11 @@ function loadContent() {
 
 // pulls the latest production version of the editor and displays it
 function loadVersion() {
-    readPage("https://api.github.com/repos/lucko/LuckPermsWebEditor/branches/production", function(data) {
+    $.getJSON("https://api.github.com/repos/lucko/LuckPermsWebEditor/branches/production", function(data) {
         var version = $("#version");
         version.html(data.commit.sha.substring(0, 7));
         version.attr("href", data.commit.html_url);
-    }, function() {
+    }).fail(function() {
         console.log("Unable to load version.");
     });
 }
@@ -166,11 +166,6 @@ function makeNode(perm, value, server, world, expiry, contexts) {
     }
 
     return node
-}
-
-// reads data from a web address, and passes the result JSON object to the callback
-function readPage(link, callback, error) {
-    $.getJSON(link, callback).fail(error)
 }
 
 // posts a string to GitHub's gist service, and returns the raw url of the content to the callback
@@ -868,20 +863,20 @@ function loadFromParams(params) {
         var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] +
             "/luckperms-data.json";
         console.log("Loading from legacy URL: " + url)
-        readPage(url, function(data) {
+        $.getJSON(url, function(data) {
             loadData(data)
-        }, showLoadingError)
+        }).fail(showLoadingError)
     } else {
         // single token??
         var url = "https://api.github.com/gists/" + params;
         console.log("Loading from URL: " + url)
-        readPage(url, function(data) {
+        $.getJSON(url, function(data) {
             var fileObject = data.files["luckperms-data.json"];
             if (fileObject.truncated) {
                 var rawUrl = fileObject.raw_url
-                readPage(rawUrl, function(permsData) {
+                $.getJSON(rawUrl, function(permsData) {
                     loadData(permsData)
-                }, showLoadingError)
+                }).fail(showLoadingError)
             } else {
                 var permsData = JSON.parse(fileObject.content)
                 loadData(permsData);

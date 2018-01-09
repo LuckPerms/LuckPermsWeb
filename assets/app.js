@@ -881,7 +881,7 @@ function loadFromParams(params) {
                 var permsData = JSON.parse(fileObject.content)
                 loadData(permsData);
             }
-        }, showLoadingError)
+        }).fail(showLoadingError)
     }
 }
 

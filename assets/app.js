@@ -1,6 +1,16 @@
 // the rows currently in the table
 var rows = [];
 
+// permissionHistory of the data for undo/redo
+var permissionHistory = [];
+var permissionHistoryPos = -1;
+
+// the sorting properties
+var sort = {
+    on: null,
+    mode: "asc"
+};
+
 // who is being edited. this should be in the format "user/<uuid>" or "group/<group name>"
 // or empty, if the data loaded at the start of the session didn't contain the attribute
 var whoType = "";
@@ -58,6 +68,7 @@ function loadContent() {
             populateIdentifier();
             hidePanel();
             reloadTable();
+            pushHistory();
         } else {
             console.log("Got params: " + params);
             loadFromParams(params);
@@ -67,11 +78,53 @@ function loadContent() {
 
 // pulls the latest production version of the editor and displays it
 function loadVersion() {
-    readPage("https://api.github.com/repos/lucko/LuckPermsWeb/branches/production", function(data) {
-        var version = $("#version");
-        version.html(data.commit.sha.substring(0, 7));
-        version.attr("href", data.commit.html_url);
-    });
+    $.getJSON("https://api.github.com/repos/lucko/LuckPermsWebEditor/branches/production", function(data) {
+            var version = $("#version");
+            version.html(data.commit.sha.substring(0, 7));
+            version.attr("href", data.commit.html_url);
+        })
+        .fail(function() {
+            console.log("Unable to load version.");
+        });
+}
+
+function canUndo() {
+    return permissionHistoryPos > 0;
+}
+
+function canRedo() {
+    return (permissionHistoryPos + 1) < permissionHistory.length;
+}
+
+function isUnchanged() {
+    return JSON.stringify(rows) == JSON.stringify(permissionHistory[permissionHistoryPos]);
+}
+
+function pushHistory() {
+    if (isUnchanged()) {
+        return;
+    } else if (canRedo()) {
+        // Shorten the array
+        permissionHistory = permissionHistory.slice(0, (permissionHistoryPos + 1));
+    }
+
+    permissionHistory.push(deepClone(rows));
+    permissionHistoryPos++;
+
+    updateHistoryButtons();
+}
+
+function updateHistoryButtons() {
+    setButtonClickable($("#undo-button"), canUndo());
+    setButtonClickable($("#redo-button"), canRedo());
+}
+
+function setButtonClickable(button, clickable) {
+    if (clickable) {
+        button.removeClass("unclickable").addClass("clickable");
+    } else {
+        button.removeClass("clickable").addClass("unclickable");
+    }
 }
 
 function addAutoCompletePermission(perm) {
@@ -145,6 +198,10 @@ function postGist(data, callback) {
 
 function contains(haystack, needle) {
     return haystack && haystack.indexOf(needle) !== -1
+}
+
+function deepClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
 }
 
 // parses a duration from a string to a duration in seconds
@@ -239,11 +296,25 @@ function parseContexts(s) {
     return contexts;
 }
 
+function escapeHtml(text) {
+    return text.replace(/[\"&'\/<>]/g, function(a) {
+        return {
+            '"': '&quot;',
+            '&': '&amp;',
+            "'": '&#39;',
+            '/': '&#47;',
+            '<': '&lt;',
+            '>': '&gt;'
+        }[a];
+    });
+}
+
 // callback for when a record in the table is deleted
 function handleDelete() {
     var id = $(this).parents(".row").attr("id").substring(1);
 
     rows.splice(id, 1);
+    pushHistory();
     reloadTable();
 }
 
@@ -355,7 +426,8 @@ function handleAdd() {
     }
 
     rows.push(makeNode(permission, true, server, world, expiryTime, contextsObj));
-    reloadTable()
+    pushHistory();
+    reloadTable();
 }
 
 // called when the value tag is clicked
@@ -363,6 +435,7 @@ function handleValueSwap() {
     var id = $(this).parents(".row").attr("id").substring(1);
 
     rows[id].value = !((rows[id].value == null) || rows[id].value);
+    pushHistory();
     reloadTable();
 }
 
@@ -436,7 +509,8 @@ function handleEditStop(e) {
         }
     }
 
-    cell.html(value);
+    cell.text(value);
+    pushHistory();
 }
 
 function handleEditBlur() {
@@ -453,7 +527,51 @@ function handleEditKeypress(event) {
     }
 }
 
+function handleUndo() {
+    if (!canUndo()) return;
+
+    permissionHistoryPos--;
+    applyUndoRedo();
+}
+
+function handleRedo() {
+    if (!canRedo()) return;
+
+    permissionHistoryPos++;
+    applyUndoRedo();
+}
+
+function applyUndoRedo() {
+    rows = deepClone(permissionHistory[permissionHistoryPos]);
+
+    reloadTable();
+    updateHistoryButtons();
+}
+
+function handleSort(event) {
+    var element = event.currentTarget;
+
+    if (element.innerHTML.charAt(0) === "↓") {
+        // asc --> desc
+        sort.on = element.innerHTML.toLowerCase().substring(2);
+        sort.mode = "desc";
+    } else if (element.innerHTML.charAt(0) === "↑") {
+        // desc --> nothing
+        sort.on = null;
+    } else {
+        // nothing --> asc
+        sort.on = element.innerHTML.toLowerCase();
+        sort.mode = "asc";
+    }
+    reloadTable();
+}
+
 function handleSave() {
+    var saveButton = $("#save-button");
+
+    if (saveButton.hasClass("loading"))
+        return;
+
     console.log("Saving data to gist");
 
     // construct the data object to send back to gist
@@ -462,7 +580,7 @@ function handleSave() {
     data.nodes = rows;
 
     // Change save button to Loading
-    $("#save-button").removeClass("save").addClass("loading").text("loop")
+    saveButton.removeClass("save").addClass("loading").text("loop")
 
     // post the data, and then send a popup when the save is complete
     postGist(JSON.stringify(data, null, 2), function(data) {
@@ -484,7 +602,7 @@ function handleSave() {
         content += '<div class="alert">';
         content += '<span class="closebtn">&times;</span>';
         content +=
-            '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/' +
+            '<strong>Success!</strong> Data was saved to gist. Run <code class="apply_command" class="clickable" title="Copy to clipboard">/' +
             cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
         $("#popup").append(content);
         $("#popup .alert").last().hide().slideDown();
@@ -493,8 +611,11 @@ function handleSave() {
         $("#save-button").removeClass("loading").addClass("save").text("save")
 
         if (!clipboard) {
-            var copiedTimer;
-            clipboard = new Clipboard("#apply_command")
+            clipboard = new Clipboard(".apply_command", {
+                target: function(trigger) {
+                    return trigger;
+                }
+            })
 
             clipboard.on("success", function(e) {
                 e.clearSelection();
@@ -505,12 +626,12 @@ function handleSave() {
                     trigger.replaceWith(trigger.clone(true));
                     trigger = clone;
 
-                    clearTimeout(copiedTimer);
+                    clearTimeout(trigger.copiedTimer);
                 } else {
                     trigger.addClass("copied");
                 }
 
-                copiedTimer = setTimeout(function() {
+                trigger.copiedTimer = setTimeout(function() {
                     trigger.removeClass("copied");
                 }, 4000)
             })
@@ -524,8 +645,70 @@ function handleAlertClose() {
     });
 }
 
+function handleShortcuts(event) {
+    if (event.ctrlKey || event.metaKey) {
+        switch (String.fromCharCode(event.which).toLowerCase()) {
+            case 's':
+                event.preventDefault();
+
+                handleSave();
+
+                break;
+            case 'h':
+                event.preventDefault();
+
+                showHelp();
+
+                break;
+            case 'z':
+                event.preventDefault();
+
+                handleUndo();
+
+                break;
+            case 'y':
+                event.preventDefault();
+
+                handleRedo();
+
+                break;
+        }
+    }
+}
+
 // reloads the data in the table from the values stored in the rows array
 function reloadTable() {
+    var entries = [];
+
+    // form an array of entries
+    var i = -1;
+    rows.forEach(function(node) {
+        i++;
+        entries.push({
+            id: i,
+            value: node
+        });
+    });
+
+    // apply sorting
+    if (sort.on) {
+        entries.sort(function(a, b) {
+            var ax = a.value.hasOwnProperty(sort.on) ? a.value[sort.on] : "";
+            var bx = b.value.hasOwnProperty(sort.on) ? b.value[sort.on] : "";
+
+            if (ax < bx) {
+                return -1;
+            }
+            if (ax > bx) {
+                return 1;
+            }
+            return 0;
+        });
+        if (sort.mode === "desc") {
+            entries.reverse();
+        }
+    }
+
     var content = "";
 
     if (rows.length) {
@@ -534,21 +717,27 @@ function reloadTable() {
 
         // field headings
         content += '<div class="row header">';
-        content += '<div class="cell">Permission</div>';
-        content += '<div class="cell">Value</div>';
-        content += '<div class="cell">Expiry</div>';
-        content += '<div class="cell">Server</div>';
-        content += '<div class="cell">World</div>';
+
+        for (col of ["Permission", "Value", "Expiry", "Server", "World"]) {
+            if (sort.on === col.toLowerCase()) {
+                if (sort.mode === "desc") {
+                    col = "↑ " + col;
+                } else {
+                    col = "↓ " + col;
+                }
+            }
+
+            content += '<div class="cell clickable">' + col + '</div>';
+        }
+
         content += '<div class="cell">Contexts</div>';
         content += '<div class="cell"></div>';
         content += '</div>';
 
         // add each row
-        var i = -1;
-        rows.forEach(function(node) {
-            i++;
-            content += nodeToHtml(i, node)
-        });
+        entries.forEach(function(entry) {
+            content += nodeToHtml(entry.id, entry.value);
+        })
 
         content += '</div>';
     }
@@ -568,7 +757,8 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div list="permissions-list" class="cell permission clickable editable">' + node.permission + '</div>';
+    content += '<div list="permissions-list" class="cell permission clickable editable">' + escapeHtml(node.permission) +
+        '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
         content += '<div class="cell"><code class="code-true clickable">true</code></div>'
@@ -589,13 +779,13 @@ function nodeToHtml(id, node) {
     }
 
     if (node.hasOwnProperty("server")) {
-        content += getContentDiv("server") + node.server + '</div>'
+        content += getContentDiv("server") + escapeHtml(node.server) + '</div>'
     } else {
         content += getContentDiv("server") + 'global</div>'
     }
 
     if (node.hasOwnProperty("world")) {
-        content += getContentDiv("world") + node.world + '</div>'
+        content += getContentDiv("world") + escapeHtml(node.world) + '</div>'
     } else {
         content += getContentDiv("world") + 'global</div>'
     }
@@ -609,7 +799,7 @@ function nodeToHtml(id, node) {
             }
         }
 
-        content += getContentDiv("contexts") + contextsStr.trim() + '</div>'
+        content += getContentDiv("contexts") + escapeHtml(contextsStr.trim()) + '</div>'
     } else {
         content += getContentDiv("contexts") + 'none</div>'
     }
@@ -658,8 +848,6 @@ function loadData(data) {
         cmdAlias = "lp"
     }
 
-    console.log(data.who, data.who.split("/"), whoType, who, whoFriendly)
-
     // populate autocomplete options
     perms = data.knownPermissions;
     if (perms) {
@@ -669,6 +857,7 @@ function loadData(data) {
     populateIdentifier();
     hidePanel();
     reloadTable();
+    pushHistory();
 }
 
 function loadFromParams(params) {
@@ -680,34 +869,49 @@ function loadFromParams(params) {
         var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] +
             "/luckperms-data.json";
         console.log("Loading from legacy URL: " + url)
-        readPage(url, function(data) {
+        $.getJSON(url, function(data) {
             loadData(data)
         })
     } else {
         // single token??
         var url = "https://api.github.com/gists/" + params;
         console.log("Loading from URL: " + url)
-        readPage(url, function(data) {
+        $.getJSON(url, function(data) {
             var fileObject = data.files["luckperms-data.json"];
             if (fileObject.truncated) {
                 var rawUrl = fileObject.raw_url
-                readPage(rawUrl, function(permsData) {
+                $.getJSON(rawUrl, function(permsData) {
                     loadData(permsData)
                 })
             } else {
                 var permsData = JSON.parse(fileObject.content)
                 loadData(permsData);
             }
-        }, function(){
+        }, function() {
             $("#prompt").html('<h3 class="code-false"><b>Error loading data!</b>' +
-            '<br><br>Please check the url was copied correctly.</h3>');
+                '<br><br>Please check the url was copied correctly.</h3>');
         })
     }
 }
 
+function showHelp() {
+    $("#help-section").fadeIn();
+}
+
+function hideHelp(e) {
+    if (e.target != this)
+        return false;
+
+    $("#help-section").fadeOut();
+}
+
 // Register events
+$(document).on("click", "#undo-button.clickable", handleUndo);
+$(document).on("click", "#redo-button.clickable", handleRedo);
 $(document).on("click", "#save-button.save", handleSave);
 $(document).on("click", "#popup .closebtn", handleAlertClose);
+$(document).on("click", "#help-button", showHelp);
+$(document).on("click", "#help-section", hideHelp);
 
 $(document).on("click", "#inpform > .add", handleAdd);
 $(document).on("keypress", "#inpform > input", handleAddEnter);
@@ -719,6 +923,10 @@ $(document).on("keypress", "#table-section .editable input", handleEditKeypress)
 
 $(document).on("click", "#table-section .buttons > .delete", handleDelete);
 $(document).on("click", "#table-section .buttons > .copy", handleCopy);
+
+$(document).on("click", "#table-section .header > .clickable", handleSort);
+
+$(window).bind("keydown", handleShortcuts);
 
 // Do things when page has loaded
 $(loadCss);

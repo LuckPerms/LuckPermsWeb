@@ -152,16 +152,13 @@ ul.flex-center {
 #panel h1 {
   font-size: 1.9em;
   color: #222;
+  line-height: 0.5rem;
 }
 
 #panel h2 {
   font-weight: 400;
   font-size: 0.8em;
   margin-bottom: 16px;
-}
-
-#panel h1,
-#panel h2 {
   line-height: 0.5rem;
 }
 
@@ -182,6 +179,10 @@ ul.flex-center {
   font-family: monospace;
   color: #141422;
   line-height: 2.2rem;
+}
+
+#panel .loading-error {
+  color: #ff0016;
 }
 
 .perms-grid {

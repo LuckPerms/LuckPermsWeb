@@ -78,14 +78,13 @@ function loadContent() {
 
 // pulls the latest production version of the editor and displays it
 function loadVersion() {
-    $.getJSON("https://api.github.com/repos/lucko/LuckPermsWebEditor/branches/production", function(data) {
-            var version = $("#version");
-            version.html(data.commit.sha.substring(0, 7));
-            version.attr("href", data.commit.html_url);
-        })
-        .fail(function() {
-            console.log("Unable to load version.");
-        });
+    readPage("https://api.github.com/repos/lucko/LuckPermsWebEditor/branches/production", function(data) {
+        var version = $("#version");
+        version.html(data.commit.sha.substring(0, 7));
+        version.attr("href", data.commit.html_url);
+    }, function() {
+        console.log("Unable to load version.");
+    });
 }
 
 function canUndo() {
@@ -171,7 +170,7 @@ function makeNode(perm, value, server, world, expiry, contexts) {
 
 // reads data from a web address, and passes the result JSON object to the callback
 function readPage(link, callback, error) {
-    $.getJSON(link, callback).fail(error);
+    $.getJSON(link, callback).fail(error)
 }
 
 // posts a string to GitHub's gist service, and returns the raw url of the content to the callback
@@ -869,28 +868,25 @@ function loadFromParams(params) {
         var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] +
             "/luckperms-data.json";
         console.log("Loading from legacy URL: " + url)
-        $.getJSON(url, function(data) {
+        readPage(url, function(data) {
             loadData(data)
-        })
+        }, showLoadingError)
     } else {
         // single token??
         var url = "https://api.github.com/gists/" + params;
         console.log("Loading from URL: " + url)
-        $.getJSON(url, function(data) {
+        readPage(url, function(data) {
             var fileObject = data.files["luckperms-data.json"];
             if (fileObject.truncated) {
                 var rawUrl = fileObject.raw_url
-                $.getJSON(rawUrl, function(permsData) {
+                readPage(rawUrl, function(permsData) {
                     loadData(permsData)
-                })
+                }, showLoadingError)
             } else {
                 var permsData = JSON.parse(fileObject.content)
                 loadData(permsData);
             }
-        }, function() {
-            $("#prompt").html('<h3 class="code-false"><b>Error loading data!</b>' +
-                '<br><br>Please check the url was copied correctly.</h3>');
-        })
+        }, showLoadingError)
     }
 }
 
@@ -903,6 +899,11 @@ function hideHelp(e) {
         return false;
 
     $("#help-section").fadeOut();
+}
+
+function showLoadingError() {
+    $("#prompt").html('<h3 class="loading-error"><b>Error loading data!</b>' +
+        '<br><br>Please check the url was copied correctly.</h3>');
 }
 
 // Register events

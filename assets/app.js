@@ -79,13 +79,13 @@ function loadContent() {
 // pulls the latest production version of the editor and displays it
 function loadVersion() {
     $.getJSON("https://api.github.com/repos/lucko/LuckPermsWebEditor/branches/production", function(data) {
-        var version = $("#version");
-        version.html(data.commit.sha.substring(0, 7));
-        version.attr("href", data.commit.html_url);
-    })
-    .fail(function() {
-        console.log("Unable to load version.");
-    });
+            var version = $("#version");
+            version.html(data.commit.sha.substring(0, 7));
+            version.attr("href", data.commit.html_url);
+        })
+        .fail(function() {
+            console.log("Unable to load version.");
+        });
 }
 
 function canUndo() {
@@ -292,10 +292,14 @@ function parseContexts(s) {
 }
 
 function escapeHtml(text) {
-    return text.replace(/[\"&'\/<>]/g, function (a) {
+    return text.replace(/[\"&'\/<>]/g, function(a) {
         return {
-            '"': '&quot;', '&': '&amp;', "'": '&#39;',
-            '/': '&#47;',  '<': '&lt;',  '>': '&gt;'
+            '"': '&quot;',
+            '&': '&amp;',
+            "'": '&#39;',
+            '/': '&#47;',
+            '<': '&lt;',
+            '>': '&gt;'
         }[a];
     });
 }
@@ -558,6 +562,11 @@ function handleSort(event) {
 }
 
 function handleSave() {
+    var saveButton = $("#save-button");
+
+    if (saveButton.hasClass("loading"))
+        return;
+
     console.log("Saving data to gist");
 
     // construct the data object to send back to gist
@@ -566,7 +575,7 @@ function handleSave() {
     data.nodes = rows;
 
     // Change save button to Loading
-    $("#save-button").removeClass("save").addClass("loading").text("loop")
+    saveButton.removeClass("save").addClass("loading").text("loop")
 
     // post the data, and then send a popup when the save is complete
     postGist(JSON.stringify(data, null, 2), function(data) {
@@ -598,10 +607,9 @@ function handleSave() {
 
         if (!clipboard) {
             clipboard = new Clipboard(".apply_command", {
-                target:
-                    function(trigger) {
-                        return trigger;
-                    }
+                target: function(trigger) {
+                    return trigger;
+                }
             })
 
             clipboard.on("success", function(e) {
@@ -630,6 +638,37 @@ function handleAlertClose() {
     $(this).parents(".alert").slideUp(function() {
         $(this).remove();
     });
+}
+
+function handleShortcuts(event) {
+    if (event.ctrlKey || event.metaKey) {
+        switch (String.fromCharCode(event.which).toLowerCase()) {
+            case 's':
+                event.preventDefault();
+
+                handleSave();
+
+                break;
+            case 'h':
+                event.preventDefault();
+
+                showHelp();
+
+                break;
+            case 'z':
+                event.preventDefault();
+
+                handleUndo();
+
+                break;
+            case 'y':
+                event.preventDefault();
+
+                handleRedo();
+
+                break;
+        }
+    }
 }
 
 // reloads the data in the table from the values stored in the rows array
@@ -713,7 +752,8 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div list="permissions-list" class="cell permission clickable editable">' + escapeHtml(node.permission) + '</div>';
+    content += '<div list="permissions-list" class="cell permission clickable editable">' + escapeHtml(node.permission) +
+        '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
         content += '<div class="cell"><code class="code-true clickable">true</code></div>'
@@ -876,7 +916,9 @@ $(document).on("keypress", "#table-section .editable input", handleEditKeypress)
 $(document).on("click", "#table-section .buttons > .delete", handleDelete);
 $(document).on("click", "#table-section .buttons > .copy", handleCopy);
 
-$(document).on("click", "#table-section .header > .clickable", handleSort)
+$(document).on("click", "#table-section .header > .clickable", handleSort);
+
+$(window).bind("keydown", handleShortcuts);
 
 // Do things when page has loaded
 $(loadCss);

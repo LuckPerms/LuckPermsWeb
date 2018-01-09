@@ -291,6 +291,15 @@ function parseContexts(s) {
     return contexts;
 }
 
+function escapeHtml(text) {
+    return text.replace(/[\"&'\/<>]/g, function (a) {
+        return {
+            '"': '&quot;', '&': '&amp;', "'": '&#39;',
+            '/': '&#47;',  '<': '&lt;',  '>': '&gt;'
+        }[a];
+    });
+}
+
 // callback for when a record in the table is deleted
 function handleDelete() {
     var id = $(this).parents(".row").attr("id").substring(1);
@@ -491,7 +500,7 @@ function handleEditStop(e) {
         }
     }
 
-    cell.html(value);
+    cell.text(value);
     pushHistory();
 }
 
@@ -704,8 +713,7 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div list="permissions-list" class="cell permission clickable editable">' + node.permission +
-        '</div>';
+    content += '<div list="permissions-list" class="cell permission clickable editable">' + escapeHtml(node.permission) + '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
         content += '<div class="cell"><code class="code-true clickable">true</code></div>'
@@ -726,13 +734,13 @@ function nodeToHtml(id, node) {
     }
 
     if (node.hasOwnProperty("server")) {
-        content += getContentDiv("server") + node.server + '</div>'
+        content += getContentDiv("server") + escapeHtml(node.server) + '</div>'
     } else {
         content += getContentDiv("server") + 'global</div>'
     }
 
     if (node.hasOwnProperty("world")) {
-        content += getContentDiv("world") + node.world + '</div>'
+        content += getContentDiv("world") + escapeHtml(node.world) + '</div>'
     } else {
         content += getContentDiv("world") + 'global</div>'
     }
@@ -746,7 +754,7 @@ function nodeToHtml(id, node) {
             }
         }
 
-        content += getContentDiv("contexts") + contextsStr.trim() + '</div>'
+        content += getContentDiv("contexts") + escapeHtml(contextsStr.trim()) + '</div>'
     } else {
         content += getContentDiv("contexts") + 'none</div>'
     }

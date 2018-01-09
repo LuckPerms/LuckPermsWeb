@@ -31,7 +31,12 @@
       <li><img alt="LuckPerms Logo" class="tiny-logo" width="40" height="40" src="assets/logo/40px.png" srcset="assets/logo/80px.png 2x, assets/logo/160px.png 4x">
         <h3>Web Permissions Editor</h3></li>
       <li id="identifier"></li>
-      <li><i id="save-button" class="clickable material-icons save" title="Save">save</i></li>
+      <li>
+        <i id="undo-button" class="unclickable material-icons undo" title="Undo">undo</i>
+        <i id="redo-button" class="unclickable material-icons redo" title="Redo">redo</i>
+        <i id="save-button" class="clickable material-icons save" title="Save">save</i>
+        <i id="help-button" class="clickable material-icons help" title="Help">help</i>
+      </li>
     </ul>
   </div>
 
@@ -71,6 +76,11 @@
 
         <div id="table-section"></div>
       </div>
+    </div>
+  </div>
+
+  <div id="help-section" style="display: none;">
+    <div class="help-content">
     </div>
   </div>
 

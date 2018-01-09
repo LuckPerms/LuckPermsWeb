@@ -1,6 +1,10 @@
 // the rows currently in the table
 var rows = [];
 
+// permissionHistory of the data for undo/redo
+var permissionHistory = [];
+var permissionHistoryPos = -1;
+
 // the sorting properties
 var sort = {
     on: null,
@@ -64,6 +68,7 @@ function loadContent() {
             populateIdentifier();
             hidePanel();
             reloadTable();
+            pushHistory();
         } else {
             console.log("Got params: " + params);
             loadFromParams(params);
@@ -81,6 +86,45 @@ function loadVersion() {
     .fail(function() {
         console.log("Unable to load version.");
     });
+}
+
+function canUndo() {
+    return permissionHistoryPos > 0;
+}
+
+function canRedo() {
+    return (permissionHistoryPos + 1) < permissionHistory.length;
+}
+
+function isUnchanged() {
+    return JSON.stringify(rows) == JSON.stringify(permissionHistory[permissionHistoryPos]);
+}
+
+function pushHistory() {
+    if (isUnchanged()) {
+        return;
+    } else if (canRedo()) {
+        // Shorten the array
+        permissionHistory = permissionHistory.slice(0, (permissionHistoryPos + 1));
+    }
+
+    permissionHistory.push(deepClone(rows));
+    permissionHistoryPos++;
+
+    updateHistoryButtons();
+}
+
+function updateHistoryButtons() {
+    setButtonClickable($("#undo-button"), canUndo());
+    setButtonClickable($("#redo-button"), canRedo());
+}
+
+function setButtonClickable(button, clickable) {
+    if (clickable) {
+        button.removeClass("unclickable").addClass("clickable");
+    } else {
+        button.removeClass("clickable").addClass("unclickable");
+    }
 }
 
 function addAutoCompletePermission(perm) {
@@ -149,6 +193,10 @@ function postGist(data, callback) {
 
 function contains(haystack, needle) {
     return haystack && haystack.indexOf(needle) !== -1
+}
+
+function deepClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
 }
 
 // parses a duration from a string to a duration in seconds
@@ -257,6 +305,7 @@ function handleDelete() {
     var id = $(this).parents(".row").attr("id").substring(1);
 
     rows.splice(id, 1);
+    pushHistory();
     reloadTable();
 }
 
@@ -368,7 +417,8 @@ function handleAdd() {
     }
 
     rows.push(makeNode(permission, true, server, world, expiryTime, contextsObj));
-    reloadTable()
+    pushHistory();
+    reloadTable();
 }
 
 // called when the value tag is clicked
@@ -376,6 +426,7 @@ function handleValueSwap() {
     var id = $(this).parents(".row").attr("id").substring(1);
 
     rows[id].value = !((rows[id].value == null) || rows[id].value);
+    pushHistory();
     reloadTable();
 }
 
@@ -450,6 +501,7 @@ function handleEditStop(e) {
     }
 
     cell.text(value);
+    pushHistory();
 }
 
 function handleEditBlur() {
@@ -464,6 +516,27 @@ function handleEditKeypress(event) {
     } else if (key == "Enter") {
         handleEditStop($(this));
     }
+}
+
+function handleUndo() {
+    if (!canUndo()) return;
+
+    permissionHistoryPos--;
+    applyUndoRedo();
+}
+
+function handleRedo() {
+    if (!canRedo()) return;
+
+    permissionHistoryPos++;
+    applyUndoRedo();
+}
+
+function applyUndoRedo() {
+    rows = deepClone(permissionHistory[permissionHistoryPos]);
+
+    reloadTable();
+    updateHistoryButtons();
 }
 
 function handleSort(event) {
@@ -515,7 +588,7 @@ function handleSave() {
         content += '<div class="alert">';
         content += '<span class="closebtn">&times;</span>';
         content +=
-            '<strong>Success!</strong> Data was saved to gist. Run <code id="apply_command" class="clickable" data-clipboard-target="#apply_command" title="Copy to clipboard">/' +
+            '<strong>Success!</strong> Data was saved to gist. Run <code class="apply_command" class="clickable" title="Copy to clipboard">/' +
             cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
         $("#popup").append(content);
         $("#popup .alert").last().hide().slideDown();
@@ -524,8 +597,12 @@ function handleSave() {
         $("#save-button").removeClass("loading").addClass("save").text("save")
 
         if (!clipboard) {
-            var copiedTimer;
-            clipboard = new Clipboard("#apply_command")
+            clipboard = new Clipboard(".apply_command", {
+                target:
+                    function(trigger) {
+                        return trigger;
+                    }
+            })
 
             clipboard.on("success", function(e) {
                 e.clearSelection();
@@ -536,12 +613,12 @@ function handleSave() {
                     trigger.replaceWith(trigger.clone(true));
                     trigger = clone;
 
-                    clearTimeout(copiedTimer);
+                    clearTimeout(trigger.copiedTimer);
                 } else {
                     trigger.addClass("copied");
                 }
 
-                copiedTimer = setTimeout(function() {
+                trigger.copiedTimer = setTimeout(function() {
                     trigger.removeClass("copied");
                 }, 4000)
             })
@@ -726,8 +803,6 @@ function loadData(data) {
         cmdAlias = "lp"
     }
 
-    console.log(data.who, data.who.split("/"), whoType, who, whoFriendly)
-
     // populate autocomplete options
     perms = data.knownPermissions;
     if (perms) {
@@ -737,6 +812,7 @@ function loadData(data) {
     populateIdentifier();
     hidePanel();
     reloadTable();
+    pushHistory();
 }
 
 function loadFromParams(params) {
@@ -770,9 +846,24 @@ function loadFromParams(params) {
     }
 }
 
+function showHelp() {
+    $("#help-section").fadeIn();
+}
+
+function hideHelp(e) {
+    if (e.target != this)
+        return false;
+
+    $("#help-section").fadeOut();
+}
+
 // Register events
+$(document).on("click", "#undo-button.clickable", handleUndo);
+$(document).on("click", "#redo-button.clickable", handleRedo);
 $(document).on("click", "#save-button.save", handleSave);
 $(document).on("click", "#popup .closebtn", handleAlertClose);
+$(document).on("click", "#help-button", showHelp);
+$(document).on("click", "#help-section", hideHelp);
 
 $(document).on("click", "#inpform > .add", handleAdd);
 $(document).on("keypress", "#inpform > input", handleAddEnter);

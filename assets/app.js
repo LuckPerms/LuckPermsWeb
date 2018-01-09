@@ -649,8 +649,8 @@ function reloadTable() {
     // apply sorting
     if (sort.on) {
         entries.sort(function(a, b) {
-            var ax = a.value[sort.on];
-            var bx = b.value[sort.on];
+            var ax = a.value.hasOwnProperty(sort.on) ? a.value[sort.on] : "";
+            var bx = b.value.hasOwnProperty(sort.on) ? b.value[sort.on] : "";
 
             if (ax < bx) {
                 return -1;

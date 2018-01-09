@@ -127,16 +127,15 @@ ul.flex-center {
   font-size: 1.3em;
   position: absolute;
   border-radius: 10px;
-  width: 240px;
+  width: 260px;
   height: 450px;
   background: #eee;
   top: 50%;
   left: 50%;
   z-index: 100;
   text-align: center;
-  margin: -300px 0 0 -140px;
+  margin: -300px 0 0 -150px;
   padding: 20px;
-  line-height: 0.5rem;
 }
 
 #panel.hide {
@@ -153,12 +152,14 @@ ul.flex-center {
 #panel h1 {
   font-size: 1.9em;
   color: #222;
+  line-height: 0.5rem;
 }
 
 #panel h2 {
   font-weight: 400;
   font-size: 0.8em;
   margin-bottom: 16px;
+  line-height: 0.5rem;
 }
 
 #panel h3 {
@@ -171,13 +172,17 @@ ul.flex-center {
 
 #panel cmd {
   padding: 2px 4px;
-  font-size: 90%;
+  font-size: 80%;
   background-color: #f9f2f4;
   border-radius: 4px;
   background-color: #ffffff;
   font-family: monospace;
   color: #141422;
   line-height: 2.2rem;
+}
+
+#panel .loading-error {
+  color: #ff0016;
 }
 
 .perms-grid {

@@ -79,13 +79,12 @@ function loadContent() {
 // pulls the latest production version of the editor and displays it
 function loadVersion() {
     $.getJSON("https://api.github.com/repos/lucko/LuckPermsWebEditor/branches/production", function(data) {
-            var version = $("#version");
-            version.html(data.commit.sha.substring(0, 7));
-            version.attr("href", data.commit.html_url);
-        })
-        .fail(function() {
-            console.log("Unable to load version.");
-        });
+        var version = $("#version");
+        version.html(data.commit.sha.substring(0, 7));
+        version.attr("href", data.commit.html_url);
+    }).fail(function() {
+        console.log("Unable to load version.");
+    });
 }
 
 function canUndo() {
@@ -866,7 +865,7 @@ function loadFromParams(params) {
         console.log("Loading from legacy URL: " + url)
         $.getJSON(url, function(data) {
             loadData(data)
-        })
+        }).fail(showLoadingError)
     } else {
         // single token??
         var url = "https://api.github.com/gists/" + params;
@@ -877,12 +876,12 @@ function loadFromParams(params) {
                 var rawUrl = fileObject.raw_url
                 $.getJSON(rawUrl, function(permsData) {
                     loadData(permsData)
-                })
+                }).fail(showLoadingError)
             } else {
                 var permsData = JSON.parse(fileObject.content)
                 loadData(permsData);
             }
-        })
+        }).fail(showLoadingError)
     }
 }
 
@@ -895,6 +894,11 @@ function hideHelp(e) {
         return false;
 
     $("#help-section").fadeOut();
+}
+
+function showLoadingError() {
+    $("#prompt").html('<h3 class="loading-error"><b>Error loading data!</b>' +
+        '<br><br>Please check the url was copied correctly.</h3>');
 }
 
 // Register events

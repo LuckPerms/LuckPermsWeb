@@ -62,12 +62,11 @@ function loadContent() {
             populateIdentifier();
             hidePanel();
             reloadTable();
+            pushHistory();
         } else {
             console.log("Got params: " + params);
             loadFromParams(params);
         }
-
-        pushHistory();
     }
 }
 
@@ -742,6 +741,7 @@ function loadData(data) {
     populateIdentifier();
     hidePanel();
     reloadTable();
+    pushHistory();
 }
 
 function loadFromParams(params) {

@@ -76,17 +76,6 @@ function loadContent() {
     }
 }
 
-// pulls the latest production version of the editor and displays it
-function loadVersion() {
-    $.getJSON("https://api.github.com/repos/lucko/LuckPermsWebEditor/branches/production", function(data) {
-        var version = $("#version");
-        version.html(data.commit.sha.substring(0, 7));
-        version.attr("href", data.commit.html_url);
-    }).fail(function() {
-        console.log("Unable to load version.");
-    });
-}
-
 function canUndo() {
     return permissionHistoryPos > 0;
 }
@@ -928,4 +917,3 @@ $(window).bind("keydown", handleShortcuts);
 // Do things when page has loaded
 $(loadCss);
 $(loadContent);
-$(loadVersion);

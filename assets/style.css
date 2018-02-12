@@ -173,7 +173,6 @@ ul.flex-center {
 #panel cmd {
   padding: 2px 4px;
   font-size: 80%;
-  background-color: #f9f2f4;
   border-radius: 4px;
   background-color: #ffffff;
   font-family: monospace;
@@ -312,7 +311,6 @@ ul.flex-center {
 code {
   padding: 2px 4px;
   font-size: 90%;
-  background-color: #f9f2f4;
   border-radius: 4px;
   background-color: #ffffff;
   color: #141422;

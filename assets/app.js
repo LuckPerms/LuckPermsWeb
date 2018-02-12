@@ -1,44 +1,42 @@
 // the rows currently in the table
-var rows = [];
+let rows = [];
 
 // permissionHistory of the data for undo/redo
-var permissionHistory = [];
-var permissionHistoryPos = -1;
+let permissionHistory = [];
+let permissionHistoryPos = -1;
 
 // the sorting properties
-var sort = {
+const sort = {
     on: null,
     mode: "asc"
 };
 
 // who is being edited. this should be in the format "user/<uuid>" or "group/<group name>"
 // or empty, if the data loaded at the start of the session didn't contain the attribute
-var whoType = "";
-var who = "";
-var whoFriendly = "";
+let whoType = "";
+let who = "";
+let whoFriendly = "";
 
 // the command alias used to open the editor page
-var cmdAlias = "lp";
+let cmdAlias = "lp";
 
 // if the initial editor token was a "legacy" token.
 // the legacy tokens contain two codes, separated by a "/" character
 // the newer tokens only contain one code element
-var legacy = false;
+let legacy = false;
 
-var permsListObject = document.getElementById("permissions-list");
+const permsListObject = document.getElementById("permissions-list");
 
 // Clipboard instance
-var clipboard;
+let clipboard;
 const classesRegex = / ?(cell|clickable|editable) ?/gi;
 
 // loads optional stylesheets async
 function loadCss() {
-    const stylesheet =
-        /<link(?:\s[^.-\d][^\/\]'"[!#$%&()*+,;<=>?@^`{|}~ ]*(?:=(?:"[^"]*"|'[^']*'|[^'"<\s]*))?)*\s?\/?>/gi;
-    var head = $("head");
-    var css = $("#css-defer").text();
-    var matches;
-
+    const stylesheet = /<link(?:\s[^.-\d][^\/\]'"[!#$%&()*+,;<=>?@^`{|}~ ]*(?:=(?:"[^"]*"|'[^']*'|[^'"<\s]*))?)*\s?\/?>/gi;
+    const head = $("head");
+    const css = $("#css-defer").text();
+    let matches;
     while ((matches = stylesheet.exec(css)) !== null) {
         head.append(matches[0]);
     }
@@ -46,7 +44,7 @@ function loadCss() {
 
 // try to load the page from the url parameters when the page loads
 function loadContent() {
-    var params = document.location.search;
+    let params = document.location.search;
     if (params) {
         console.log("Found location parameters to load from");
 
@@ -85,7 +83,7 @@ function canRedo() {
 }
 
 function isUnchanged() {
-    return JSON.stringify(rows) == JSON.stringify(permissionHistory[permissionHistoryPos]);
+    return JSON.stringify(rows) === JSON.stringify(permissionHistory[permissionHistoryPos]);
 }
 
 function pushHistory() {
@@ -116,14 +114,14 @@ function setButtonClickable(button, clickable) {
 }
 
 function addAutoCompletePermission(perm) {
-    var option = document.createElement("option");
+    const option = document.createElement("option");
     option.value = perm;
     permsListObject.appendChild(option);
 }
 
 // makes a minimal node object from the given parameters.
 function makeNode(perm, value, server, world, expiry, contexts) {
-    var node = {};
+    const node = {};
 
     node.permission = perm;
 
@@ -143,10 +141,10 @@ function makeNode(perm, value, server, world, expiry, contexts) {
         node.expiry = expiry
     }
 
-    var hasContexts = false;
-    for (var key in contexts) {
+    let hasContexts = false;
+    for (const key in contexts) {
         if (contexts.hasOwnProperty(key)) {
-            hasContexts = true
+            hasContexts = true;
             break;
         }
     }
@@ -161,7 +159,7 @@ function makeNode(perm, value, server, world, expiry, contexts) {
 // posts a string to GitHub's gist service, and returns the raw url of the content to the callback
 function postGist(data, callback) {
     // construct the payload for the gist API
-    var post = {
+    const post = {
         "description": "LuckPerms Web Permissions Editor Data",
         "public": false,
         "files": {
@@ -190,12 +188,11 @@ function deepClone(obj) {
 
 // parses a duration from a string to a duration in seconds
 function parseDuration(s) {
-    var spaceRgx = new RegExp(" ", 'g');
-
-    var seconds = 0;
-    var minutes = 0;
-    var hours = 0;
-    var days = 0;
+    const spaceRgx = new RegExp(" ", 'g');
+    let seconds = 0;
+    let minutes = 0;
+    let hours = 0;
+    let days = 0;
 
     if (contains(s, "d")) {
         days = Number(s.split("d")[0].replace(spaceRgx, ""));
@@ -247,12 +244,12 @@ function expressDuration(s) {
         return "0s";
     }
 
-    var days = Math.floor(s / 86400);
-    var hours = Math.floor(((s % 86400) / 3600));
-    var minutes = Math.floor((((s % 86400) % 3600) / 60));
-    var seconds = (((s % 86400) % 3600) % 60);
+    const days = Math.floor(s / 86400);
+    const hours = Math.floor(((s % 86400) / 3600));
+    const minutes = Math.floor((((s % 86400) % 3600) / 60));
+    const seconds = (((s % 86400) % 3600) % 60);
 
-    var ret = "";
+    let ret = "";
     if (days !== 0) {
         ret += (days + "d ");
     }
@@ -269,11 +266,11 @@ function expressDuration(s) {
 }
 
 function parseContexts(s) {
-    var contexts = {};
+    const contexts = {};
     s.split(" ").forEach(function(part) {
-        var kv = part.split("=", 2);
+        const kv = part.split("=", 2);
         if (kv && kv.length === 2) {
-            var key = kv[0];
+            const key = kv[0];
             contexts[key] = kv[1]
         }
     });
@@ -295,24 +292,22 @@ function escapeHtml(text) {
 
 // callback for when a record in the table is deleted
 function handleDelete() {
-    var id = $(this).parents(".row").attr("id").substring(1);
-
+    const id = $(this).parents(".row").attr("id").substring(1);
     rows.splice(id, 1);
     pushHistory();
     reloadTable();
 }
 
 function handleCopy() {
-    var id = $(this).parents(".row").attr("id").substring(1);
+    const id = $(this).parents(".row").attr("id").substring(1);
+    const node = rows[id];
 
-    var node = rows[id];
-
-    var inputs = $("#inpform > input");
-    var permission = inputs.filter("[name=permission]");
-    var expiry = inputs.filter("[name=expiry]");
-    var server = inputs.filter("[name=server]");
-    var world = inputs.filter("[name=world]");
-    var contexts = inputs.filter("[name=contexts]");
+    const inputs = $("#inpform").find("> input");
+    const permission = inputs.filter("[name=permission]");
+    const expiry = inputs.filter("[name=expiry]");
+    const server = inputs.filter("[name=server]");
+    const world = inputs.filter("[name=world]");
+    const contexts = inputs.filter("[name=contexts]");
 
     permission.val(node.permission);
 
@@ -332,10 +327,10 @@ function handleCopy() {
         world.val(null);
     }
     if (node.hasOwnProperty("contexts")) {
-        var contextStr = "";
-        for (var key in node.context) {
+        let contextStr = "";
+        for (const key in node.context) {
             if (node.context.hasOwnProperty(key)) {
-                var value = node.context[key];
+                const value = node.context[key];
                 contextStr += (key + "=" + value + " ")
             }
         }
@@ -346,36 +341,34 @@ function handleCopy() {
 }
 
 function handleAddEnter(event) {
-    if (event.key == "Enter") {
+    if (event.key === "Enter") {
         handleAdd();
         return false;
     }
-
     return true;
 }
 
 function handleAdd() {
-    var inputs = $("#inpform input");
-
-    var permission = inputs.filter("[name=permission]").val();
+    const inputs = $("#inpform").find("input");
+    let permission = inputs.filter("[name=permission]").val();
 
     // don't process the add if the permission field is left empty
     if (!permission) {
         return;
     }
 
-    var expiry = inputs.filter("[name=expiry]").val();
-    var server = inputs.filter("[name=server]").val();
-    var world = inputs.filter("[name=world]").val();
-    var contexts = inputs.filter("[name=contexts]").val();
+    let expiry = inputs.filter("[name=expiry]").val();
+    let server = inputs.filter("[name=server]").val();
+    let world = inputs.filter("[name=world]").val();
+    let contexts = inputs.filter("[name=contexts]").val();
 
-    var now = Math.round((new Date()).getTime() / 1000);
-    var expiryTime;
+    let now = Math.round((new Date()).getTime() / 1000);
+    let expiryTime;
 
     if (!expiry) {
         expiryTime = 0
     } else {
-        var t = Number(expiry);
+        let t = Number(expiry);
         if (t) {
             if (t < now) {
                 expiryTime = 0
@@ -383,7 +376,7 @@ function handleAdd() {
                 expiryTime = t
             }
         } else {
-            var duration = parseDuration(expiry);
+            let duration = parseDuration(expiry);
             if (!duration) {
                 expiryTime = 0;
             } else {
@@ -404,7 +397,7 @@ function handleAdd() {
         world = "global"
     }
 
-    var contextsObj = {};
+    let contextsObj = {};
     if (contexts) {
         contextsObj = parseContexts(contexts)
     }
@@ -416,7 +409,7 @@ function handleAdd() {
 
 // called when the value tag is clicked
 function handleValueSwap() {
-    var id = $(this).parents(".row").attr("id").substring(1);
+    const id = $(this).parents(".row").attr("id").substring(1);
 
     rows[id].value = !((rows[id].value == null) || rows[id].value);
     pushHistory();
@@ -424,35 +417,34 @@ function handleValueSwap() {
 }
 
 function handleEditStart() {
-    var value = $(this).text();
-    var type = $(this).attr("class").replace(classesRegex, "");
-    $(this).html('<input ' + ((type == "permission") ? 'list="permissions-list" ' : '') + '>');
-    var input = $(this).find("input");
+    const value = $(this).text();
+    const type = $(this).attr("class").replace(classesRegex, "");
+    $(this).html('<input ' + ((type === "permission") ? 'list="permissions-list" ' : '') + '>');
+    const input = $(this).find("input");
     input.focus();
     input.val(value);
 }
 
 function handleEditStop(e) {
-    var id = e.parents(".row").attr("id").substring(1);
-    var cell = e.parents(".cell");
-    var type = cell.attr("class").replace(classesRegex, "");
-    var value = e.val();
+    const id = e.parents(".row").attr("id").substring(1);
+    const cell = e.parents(".cell");
+    const type = cell.attr("class").replace(classesRegex, "");
+    let value = e.val();
 
-    if (type == "permission") {
-        if (value == "") {
+    if (type === "permission") {
+        if (value === "") {
             value = rows[id].permission;
         } else {
             rows[id].permission = value;
         }
-    } else if (type == "expiry") {
-        var now = Math.round((new Date()).getTime() / 1000);
-        var expiryTime;
+    } else if (type === "expiry") {
+        const now = Math.round((new Date()).getTime() / 1000);
+        let expiryTime;
 
-        if ((value == "") || (value == "never")) {
+        if (!value || (value === "never")) {
             expiryTime = 0;
         } else {
-            var t = Number(value);
-
+            const t = Number(value);
             if (t) {
                 if (t < now) {
                     expiryTime = 0;
@@ -460,8 +452,7 @@ function handleEditStop(e) {
                     expiryTime = t - now;
                 }
             } else {
-                var duration = parseDuration(value);
-
+                let duration = parseDuration(value);
                 if (!duration) {
                     expiryTime = 0;
                 } else {
@@ -470,22 +461,22 @@ function handleEditStop(e) {
             }
         }
 
-        if (expiryTime == 0) {
+        if (expiryTime === 0) {
             delete rows[id].expiry;
             value = "never";
         } else {
             rows[id].expiry = now + expiryTime;
             value = expressDuration(expiryTime);
         }
-    } else if ((type == "server") || (type == "world")) {
-        if ((value == "") || (value == "global")) {
+    } else if ((type === "server") || (type === "world")) {
+        if ((value === "") || (value === "global")) {
             value = "global";
             delete rows[id][type];
         } else {
             rows[id][type] = value;
         }
-    } else if (type == "contexts") {
-        if ((value == "") || (value == "none")) {
+    } else if (type === "contexts") {
+        if ((value === "") || (value === "none")) {
             value = "none";
             delete rows[id].context;
         } else {
@@ -502,11 +493,10 @@ function handleEditBlur() {
 }
 
 function handleEditKeypress(event) {
-    var key = event.key;
-
-    if (key == "Escape") {
+    const key = event.key;
+    if (key === "Escape") {
         reloadTable();
-    } else if (key == "Enter") {
+    } else if (key === "Enter") {
         handleEditStop($(this));
     }
 }
@@ -533,8 +523,7 @@ function applyUndoRedo() {
 }
 
 function handleSort(event) {
-    var element = event.currentTarget;
-
+    const element = event.currentTarget;
     if (element.innerHTML.charAt(0) === "↓") {
         // asc --> desc
         sort.on = element.innerHTML.toLowerCase().substring(2);
@@ -551,29 +540,27 @@ function handleSort(event) {
 }
 
 function handleSave() {
-    var saveButton = $("#save-button");
-
+    const saveButton = $("#save-button");
     if (saveButton.hasClass("loading"))
         return;
 
     console.log("Saving data to gist");
 
     // construct the data object to send back to gist
-    var data = {};
+    const data = {};
     data.who = `${whoType}/${who}`;
     data.nodes = rows;
 
     // Change save button to Loading
-    saveButton.removeClass("save").addClass("loading").text("loop")
+    saveButton.removeClass("save").addClass("loading").text("loop");
 
     // post the data, and then send a popup when the save is complete
     postGist(JSON.stringify(data, null, 2), function(data) {
-        var id;
-
+        let id;
         if (legacy) {
-            var rawUrl = data.files["luckperms-data.json"].raw_url
+            const rawUrl = data.files["luckperms-data.json"].raw_url;
             // parse the tag from the returned url
-            var split = rawUrl.split("/");
+            const split = rawUrl.split("/");
             id = split[4] + "/" + split[6];
         } else {
             id = data.id
@@ -582,31 +569,33 @@ function handleSave() {
         console.log("Save id: " + id);
 
         // display the popup
-        var content = "";
+        let content = "";
         content += '<div class="alert">';
         content += '<span class="closebtn">&times;</span>';
         content +=
             '<strong>Success!</strong> Data was saved to gist. Run <code class="apply_command" class="clickable" title="Copy to clipboard">/' +
             cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
-        $("#popup").append(content);
-        $("#popup .alert").last().hide().slideDown();
+
+        const popup = $("#popup");
+        popup.append(content);
+        popup.find(".alert").last().hide().slideDown();
 
         // Change save button back
-        $("#save-button").removeClass("loading").addClass("save").text("save")
+        $("#save-button").removeClass("loading").addClass("save").text("save");
 
         if (!clipboard) {
             clipboard = new Clipboard(".apply_command", {
                 target: function(trigger) {
                     return trigger;
                 }
-            })
+            });
 
             clipboard.on("success", function(e) {
                 e.clearSelection();
-                var trigger = $(e.trigger);
+                let trigger = $(e.trigger);
 
                 if (trigger.hasClass("copied")) {
-                    var clone = trigger.clone(true);
+                    const clone = trigger.clone(true);
                     trigger.replaceWith(trigger.clone(true));
                     trigger = clone;
 
@@ -662,10 +651,10 @@ function handleShortcuts(event) {
 
 // reloads the data in the table from the values stored in the rows array
 function reloadTable() {
-    var entries = [];
+    const entries = [];
 
     // form an array of entries
-    var i = -1;
+    let i = -1;
     rows.forEach(function(node) {
         i++;
         entries.push({
@@ -677,9 +666,8 @@ function reloadTable() {
     // apply sorting
     if (sort.on) {
         entries.sort(function(a, b) {
-            var ax = a.value.hasOwnProperty(sort.on) ? a.value[sort.on] : "";
-            var bx = b.value.hasOwnProperty(sort.on) ? b.value[sort.on] : "";
-
+            const ax = a.value.hasOwnProperty(sort.on) ? a.value[sort.on] : "";
+            const bx = b.value.hasOwnProperty(sort.on) ? b.value[sort.on] : "";
             if (ax < bx) {
                 return -1;
             }
@@ -693,8 +681,7 @@ function reloadTable() {
         }
     }
 
-    var content = "";
-
+    let content = "";
     if (rows.length) {
         // begin the table
         content += '<div class="table">';
@@ -702,7 +689,7 @@ function reloadTable() {
         // field headings
         content += '<div class="row header">';
 
-        for (col of ["Permission", "Value", "Expiry", "Server", "World"]) {
+        for (let col of ["Permission", "Value", "Expiry", "Server", "World"]) {
             if (sort.on === col.toLowerCase()) {
                 if (sort.mode === "desc") {
                     col = "↑ " + col;
@@ -721,7 +708,7 @@ function reloadTable() {
         // add each row
         entries.forEach(function(entry) {
             content += nodeToHtml(entry.id, entry.value);
-        })
+        });
 
         content += '</div>';
     }
@@ -735,7 +722,7 @@ function getContentDiv(type) {
 }
 
 function nodeToHtml(id, node) {
-    var content = "";
+    let content = "";
 
     // start div
     content += '<div id="e' + id + '" class="row">';
@@ -753,8 +740,8 @@ function nodeToHtml(id, node) {
     if (!node.hasOwnProperty("expiry") || node.expiry === 0) {
         content += getContentDiv("expiry") + 'never</div>'
     } else {
-        var now = Math.round((new Date()).getTime() / 1000);
-        var left = node.expiry - now;
+        const now = Math.round((new Date()).getTime() / 1000);
+        const left = node.expiry - now;
         if (left <= 0) {
             content += getContentDiv("expiry") + 'now</div>'
         } else {
@@ -775,10 +762,10 @@ function nodeToHtml(id, node) {
     }
 
     if (node.hasOwnProperty("context")) {
-        var contextStr = "";
-        for (var key in node.context) {
+        let contextStr = "";
+        for (const key in node.context) {
             if (node.context.hasOwnProperty(key)) {
-                var value = node.context[key];
+                const value = node.context[key];
                 contextStr += (key + "=" + value + " ")
             }
         }
@@ -800,7 +787,7 @@ function nodeToHtml(id, node) {
 
 // populate identifier
 function populateIdentifier() {
-    var identifier = $("#identifier");
+    const identifier = $("#identifier");
     identifier.text(whoFriendly);
     identifier.attr("data-type", whoType);
     identifier.attr("title", `Editing ${whoType} "${whoFriendly}" (${who})`);
@@ -808,16 +795,9 @@ function populateIdentifier() {
 
 // hides the welcome panel from view
 function hidePanel() {
-    $("#panel").hide()
-    $("#bar").show()
-    $("#table-content").show()
-}
-
-// unhides the welcome panel
-function showPanel() {
-    $("#panel").show()
-    $("#bar").hide()
-    $("#table-content").hide()
+    $("#panel").hide();
+    $("#bar").show();
+    $("#table-content").show();
 }
 
 function loadData(data) {
@@ -832,8 +812,8 @@ function loadData(data) {
         cmdAlias = "lp"
     }
 
-    // populate autocomplete options
-    perms = data.knownPermissions;
+    // populate auto-complete options
+    let perms = data.knownPermissions;
     if (perms) {
         perms.forEach(addAutoCompletePermission)
     }
@@ -846,29 +826,27 @@ function loadData(data) {
 
 function loadFromParams(params) {
     // get data
-    var parts = params.split("/");
-
+    const parts = params.split("/");
     if (parts.length === 2) {
         legacy = true; // mark as a legacy code
-        var url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] +
-            "/luckperms-data.json";
-        console.log("Loading from legacy URL: " + url)
+        const url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] + "/luckperms-data.json";
+        console.log("Loading from legacy URL: " + url);
         $.getJSON(url, function(data) {
             loadData(data)
         }).fail(showLoadingError)
     } else {
         // single token??
-        var url = "https://api.github.com/gists/" + params;
-        console.log("Loading from URL: " + url)
+        const url = "https://api.github.com/gists/" + params;
+        console.log("Loading from URL: " + url);
         $.getJSON(url, function(data) {
-            var fileObject = data.files["luckperms-data.json"];
+            const fileObject = data.files["luckperms-data.json"];
             if (fileObject.truncated) {
-                var rawUrl = fileObject.raw_url
+                const rawUrl = fileObject.raw_url;
                 $.getJSON(rawUrl, function(permsData) {
                     loadData(permsData)
                 }).fail(showLoadingError)
             } else {
-                var permsData = JSON.parse(fileObject.content)
+                const permsData = JSON.parse(fileObject.content);
                 loadData(permsData);
             }
         }).fail(showLoadingError)
@@ -880,8 +858,9 @@ function showHelp() {
 }
 
 function hideHelp(e) {
-    if (e.target != this)
+    if (e.target !== this) {
         return false;
+    }
 
     $("#help-section").fadeOut();
 }

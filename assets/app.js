@@ -323,7 +323,7 @@ function handleTab() {
 
     populateIdentifier();
     reloadTable();
-    pushHistory();
+    updateHistoryButtons();
     populateTab();
 }
 
@@ -856,7 +856,17 @@ function populateTab() {
 
     for (const index in tabs) {
         const tab = tabs[index];
-        const elem = $('<button></button>').attr("id", `e${index}`).text(tab.whoFriendly);
+
+        let icon;
+        if (tab.whoType === "user") {
+            icon = "Ⓤ ";
+        } else if (tab.whoType === "group") {
+            icon = "Ⓖ ";
+        } else {
+            icon = "";
+        }
+
+        const elem = $('<button></button>').attr("id", `e${index}`).text(icon + tab.whoFriendly);
 
         // noinspection EqualityComparisonWithCoercionJS
         if (index == currentTab) {

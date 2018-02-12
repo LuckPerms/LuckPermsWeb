@@ -1,21 +1,44 @@
-// the rows currently in the table
-let rows = [];
+// the tabs currently open in the editor
+const tabs = [];
 
-// permissionHistory of the data for undo/redo
-let permissionHistory = [];
-let permissionHistoryPos = -1;
+// creates a new blank tab
+function newTab() {
+    return {
+        // the rows currently in the table
+        rows: [],
 
-// the sorting properties
-const sort = {
-    on: null,
-    mode: "asc"
-};
+        // permissionHistory of the data for undo/redo
+        permissionHistory: [],
+        permissionHistoryPos: -1,
 
-// who is being edited. this should be in the format "user/<uuid>" or "group/<group name>"
-// or empty, if the data loaded at the start of the session didn't contain the attribute
-let whoType = "";
-let who = "";
-let whoFriendly = "";
+        // the sorting properties
+        sort: {
+            on: "",
+            mode: "asc"
+        },
+
+        // who is being edited. this should be in the format "user/<uuid>" or "group/<group name>"
+        // or empty, if the data loaded at the start of the session didn't contain the attribute
+        whoType: "",
+        who: "",
+        whoFriendly: "",
+    }
+}
+
+// the index of the active tab
+let currentTab = 0;
+
+// returns the current tab
+function tab() {
+    if (currentTab >= tabs.length) {
+        currentTab = 0;
+    }
+    if (currentTab === 0 && tabs.length === 0) {
+        tabs.push(newTab());
+    }
+
+    return tabs[currentTab];
+}
 
 // the command alias used to open the editor page
 let cmdAlias = "lp";
@@ -25,9 +48,10 @@ let cmdAlias = "lp";
 // the newer tokens only contain one code element
 let legacy = false;
 
+// permissions list dom object
 const permsListObject = document.getElementById("permissions-list");
 
-// Clipboard instance
+// clipboard instance
 let clipboard;
 const classesRegex = / ?(cell|clickable|editable) ?/gi;
 
@@ -59,9 +83,12 @@ function loadContent() {
             // just the load the table
             console.log("Creating empty table for development & testing purposes");
 
-            whoType = "dev";
-            who = "test";
-            whoFriendly = "Developer Test";
+            const tab = newTab();
+            tabs[0] = tab;
+
+            tab.whoType = "dev";
+            tab.who = "test";
+            tab.whoFriendly = "Developer Test";
 
             populateIdentifier();
             hidePanel();
@@ -75,15 +102,15 @@ function loadContent() {
 }
 
 function canUndo() {
-    return permissionHistoryPos > 0;
+    return tab().permissionHistoryPos > 0;
 }
 
 function canRedo() {
-    return (permissionHistoryPos + 1) < permissionHistory.length;
+    return (tab().permissionHistoryPos + 1) < tab().permissionHistory.length;
 }
 
 function isUnchanged() {
-    return JSON.stringify(rows) === JSON.stringify(permissionHistory[permissionHistoryPos]);
+    return JSON.stringify(tab().rows) === JSON.stringify(tab().permissionHistory[tab().permissionHistoryPos]);
 }
 
 function pushHistory() {
@@ -91,11 +118,11 @@ function pushHistory() {
         return;
     } else if (canRedo()) {
         // Shorten the array
-        permissionHistory = permissionHistory.slice(0, (permissionHistoryPos + 1));
+        tab().permissionHistory = tab().permissionHistory.slice(0, (tab().permissionHistoryPos + 1));
     }
 
-    permissionHistory.push(deepClone(rows));
-    permissionHistoryPos++;
+    tab().permissionHistory.push(deepClone(tab().rows));
+    tab().permissionHistoryPos++;
 
     updateHistoryButtons();
 }
@@ -293,14 +320,14 @@ function escapeHtml(text) {
 // callback for when a record in the table is deleted
 function handleDelete() {
     const id = $(this).parents(".row").attr("id").substring(1);
-    rows.splice(id, 1);
+    tab().rows.splice(id, 1);
     pushHistory();
     reloadTable();
 }
 
 function handleCopy() {
     const id = $(this).parents(".row").attr("id").substring(1);
-    const node = rows[id];
+    const node = tab().rows[id];
 
     const inputs = $("#inpform").find("> input");
     const permission = inputs.filter("[name=permission]");
@@ -402,7 +429,7 @@ function handleAdd() {
         contextsObj = parseContexts(contexts)
     }
 
-    rows.push(makeNode(permission, true, server, world, expiryTime, contextsObj));
+    tab().rows.push(makeNode(permission, true, server, world, expiryTime, contextsObj));
     pushHistory();
     reloadTable();
 }
@@ -410,8 +437,9 @@ function handleAdd() {
 // called when the value tag is clicked
 function handleValueSwap() {
     const id = $(this).parents(".row").attr("id").substring(1);
+    const row = tab().rows[id];
 
-    rows[id].value = !((rows[id].value == null) || rows[id].value);
+    row.value = !((row.value == null) || trow.value);
     pushHistory();
     reloadTable();
 }
@@ -430,12 +458,14 @@ function handleEditStop(e) {
     const cell = e.parents(".cell");
     const type = cell.attr("class").replace(classesRegex, "");
     let value = e.val();
+    
+    const row = tab().rows[id];
 
     if (type === "permission") {
         if (value === "") {
-            value = rows[id].permission;
+            value = row.permission;
         } else {
-            rows[id].permission = value;
+            row.permission = value;
         }
     } else if (type === "expiry") {
         const now = Math.round((new Date()).getTime() / 1000);
@@ -462,25 +492,25 @@ function handleEditStop(e) {
         }
 
         if (expiryTime === 0) {
-            delete rows[id].expiry;
+            delete row.expiry;
             value = "never";
         } else {
-            rows[id].expiry = now + expiryTime;
+            row.expiry = now + expiryTime;
             value = expressDuration(expiryTime);
         }
     } else if ((type === "server") || (type === "world")) {
         if ((value === "") || (value === "global")) {
             value = "global";
-            delete rows[id][type];
+            delete row[type];
         } else {
-            rows[id][type] = value;
+            row[type] = value;
         }
     } else if (type === "contexts") {
         if ((value === "") || (value === "none")) {
             value = "none";
-            delete rows[id].context;
+            delete row.context;
         } else {
-            rows[id].context = parseContexts(value);
+            row.context = parseContexts(value);
         }
     }
 
@@ -504,19 +534,19 @@ function handleEditKeypress(event) {
 function handleUndo() {
     if (!canUndo()) return;
 
-    permissionHistoryPos--;
+    tab().permissionHistoryPos--;
     applyUndoRedo();
 }
 
 function handleRedo() {
     if (!canRedo()) return;
 
-    permissionHistoryPos++;
+    tab().permissionHistoryPos++;
     applyUndoRedo();
 }
 
 function applyUndoRedo() {
-    rows = deepClone(permissionHistory[permissionHistoryPos]);
+    tab().rows = deepClone(tab().permissionHistory[tab().permissionHistoryPos]);
 
     reloadTable();
     updateHistoryButtons();
@@ -526,15 +556,15 @@ function handleSort(event) {
     const element = event.currentTarget;
     if (element.innerHTML.charAt(0) === "↓") {
         // asc --> desc
-        sort.on = element.innerHTML.toLowerCase().substring(2);
-        sort.mode = "desc";
+        tab().sort.on = element.innerHTML.toLowerCase().substring(2);
+        tab().sort.mode = "desc";
     } else if (element.innerHTML.charAt(0) === "↑") {
         // desc --> nothing
-        sort.on = null;
+        tab().sort.on = "";
     } else {
         // nothing --> asc
-        sort.on = element.innerHTML.toLowerCase();
-        sort.mode = "asc";
+        tab().sort.on = element.innerHTML.toLowerCase();
+        tab().sort.mode = "asc";
     }
     reloadTable();
 }
@@ -547,9 +577,25 @@ function handleSave() {
     console.log("Saving data to gist");
 
     // construct the data object to send back to gist
-    const data = {};
-    data.who = `${whoType}/${who}`;
-    data.nodes = rows;
+    let data;
+
+    if (tabs.length === 1) {
+        const tab = tabs[0];
+        data = {
+            who: `${tab.whoType}/${tab.who}`,
+            nodes: tab.rows
+        };
+    } else {
+        data = {
+            tabs: []
+        };
+        for (const tab of tabs) {
+            data.tabs.push({
+                who: `${tab.whoType}/${tab.who}`,
+                nodes: tab.rows
+            });
+        }
+    }
 
     // Change save button to Loading
     saveButton.removeClass("save").addClass("loading").text("loop");
@@ -623,27 +669,19 @@ function handleShortcuts(event) {
         switch (String.fromCharCode(event.which).toLowerCase()) {
             case 's':
                 event.preventDefault();
-
                 handleSave();
-
                 break;
             case 'h':
                 event.preventDefault();
-
                 showHelp();
-
                 break;
             case 'z':
                 event.preventDefault();
-
                 handleUndo();
-
                 break;
             case 'y':
                 event.preventDefault();
-
                 handleRedo();
-
                 break;
         }
     }
@@ -652,6 +690,7 @@ function handleShortcuts(event) {
 // reloads the data in the table from the values stored in the rows array
 function reloadTable() {
     const entries = [];
+    const rows = tab().rows;
 
     // form an array of entries
     let i = -1;
@@ -664,6 +703,7 @@ function reloadTable() {
     });
 
     // apply sorting
+    const sort = tab().sort;
     if (sort.on) {
         entries.sort(function(a, b) {
             const ax = a.value.hasOwnProperty(sort.on) ? a.value[sort.on] : "";
@@ -788,9 +828,9 @@ function nodeToHtml(id, node) {
 // populate identifier
 function populateIdentifier() {
     const identifier = $("#identifier");
-    identifier.text(whoFriendly);
-    identifier.attr("data-type", whoType);
-    identifier.attr("title", `Editing ${whoType} "${whoFriendly}" (${who})`);
+    identifier.text(tab().whoFriendly);
+    identifier.attr("data-type", tab().whoType);
+    identifier.attr("title", `Editing ${tab().whoType} "${tab().whoFriendly}" (${tab().who})`);
 }
 
 // hides the welcome panel from view
@@ -801,19 +841,24 @@ function hidePanel() {
 }
 
 function loadData(data) {
-    // replace the local node array with the json data
-    rows = data.nodes;
-    who = data.who.split("/");
-    whoType = who[0];
-    who = who[1];
-    whoFriendly = (data.whoFriendly == null) ? who : data.whoFriendly;
-    cmdAlias = data.cmdAlias;
+    // read alias
+    cmdAlias = data["cmdAlias"];
     if (!cmdAlias) {
         cmdAlias = "lp"
     }
 
+    // read data
+    const payloads = data["tabs"];
+    if (payloads) {
+        for (const tab of payloads) {
+            tabs.push(populateNewTab(tab));
+        }
+    } else {
+        tabs.push(populateNewTab(data));
+    }
+
     // populate auto-complete options
-    let perms = data.knownPermissions;
+    const perms = data["knownPermissions"];
     if (perms) {
         perms.forEach(addAutoCompletePermission)
     }
@@ -822,6 +867,19 @@ function loadData(data) {
     hidePanel();
     reloadTable();
     pushHistory();
+}
+
+function populateNewTab(data) {
+    const tab = newTab();
+    const who = data.who.split("/");
+
+    tab.whoType = who[0];
+    tab.who = who[1];
+    tab.whoFriendly = (data.whoFriendly == null) ? tab.who : data.whoFriendly;
+
+    tab.rows = data.nodes;
+
+    return tab;
 }
 
 function loadFromParams(params) {

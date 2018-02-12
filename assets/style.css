@@ -5,7 +5,9 @@ html {
   overflow-x: hidden;
   padding: 0;
   font-size: 72.5%;
-  overflow-y: scroll;
+  overflow-y: auto;
+  font-family: 'Source Sans Pro', 'Open Sans', Sans-Serif;
+  font-style: normal;
 }
 
 body {
@@ -14,8 +16,6 @@ body {
   margin: 0;
   position: relative;
   min-height: 100%;
-  font-family: 'Source Sans Pro', 'Open Sans', Sans-Serif;
-  font-style: normal;
   font-weight: 300;
   font-size: 1.4rem;
   line-height: 2rem;
@@ -25,6 +25,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .flex-center {
@@ -49,7 +66,7 @@ ul.flex-center {
 }
 
 #bar {
-  overflow: hidden;
+  min-width: 900px;
   background-color: #2d2d38;
   position: fixed;
   top: 0;
@@ -118,8 +135,37 @@ ul.flex-center {
   content: "U";
 }
 
+#tab {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-left: 10px;
+}
+
+#tab button {
+  color: #bbbbbb;
+  background-color: inherit;
+  border-style: none none solid none;
+  border-width: 3px;
+  float: none;
+  outline: none;
+  cursor: pointer;
+  padding: 7px 10px;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+#tab button:hover {
+  border-color: #88bb88;
+}
+
+#tab .active {
+  background-color: #3c3c46;
+  border-color: #4bbb5f;
+  color: #ffffff;
+}
+
 .content {
-  margin-top: 80px;
+  margin-top: 100px;
   flex-grow: 1;
 }
 
@@ -213,7 +259,8 @@ ul.flex-center {
 .wrapper {
   margin: 0 auto;
   padding: 5px;
-  max-width: 1000px;
+  max-width: 1100px;
+  min-width: 890px;
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
@@ -393,6 +440,7 @@ code {
 
 .footer {
   overflow: hidden;
+  min-width: 600px;
   background: #2d2d38;
   font-size: 75%;
   width: 100%;

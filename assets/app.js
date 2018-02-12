@@ -317,6 +317,16 @@ function escapeHtml(text) {
     });
 }
 
+function handleTab() {
+    const element = $(this);
+    currentTab = parseInt(element.attr("id").substring(1));
+
+    populateIdentifier();
+    reloadTable();
+    pushHistory();
+    populateTab();
+}
+
 // callback for when a record in the table is deleted
 function handleDelete() {
     const id = $(this).parents(".row").attr("id").substring(1);
@@ -833,6 +843,29 @@ function populateIdentifier() {
     identifier.attr("title", `Editing ${tab().whoType} "${tab().whoFriendly}" (${tab().who})`);
 }
 
+function populateTab() {
+    const tabElement = $("#tab");
+
+    if (tabs.length <= 1) {
+        tabElement.hide();
+        return;
+    }
+
+    tabElement.empty();
+    tabElement.show();
+
+    for (const index in tabs) {
+        const tab = tabs[index];
+        const elem = $('<button></button>').attr("id", `e${index}`).text(tab.whoFriendly);
+
+        // noinspection EqualityComparisonWithCoercionJS
+        if (index == currentTab) {
+            elem.addClass("active");
+        }
+        elem.appendTo(tabElement);
+    }
+}
+
 // hides the welcome panel from view
 function hidePanel() {
     $("#panel").hide();
@@ -867,6 +900,7 @@ function loadData(data) {
     hidePanel();
     reloadTable();
     pushHistory();
+    populateTab();
 }
 
 function populateNewTab(data) {
@@ -935,6 +969,8 @@ $(document).on("click", "#save-button.save", handleSave);
 $(document).on("click", "#popup .closebtn", handleAlertClose);
 $(document).on("click", "#help-button", showHelp);
 $(document).on("click", "#help-section", hideHelp);
+
+$(document).on("click", "#tab > button", handleTab);
 
 $(document).on("click", "#inpform > .add", handleAdd);
 $(document).on("keypress", "#inpform > input", handleAddEnter);

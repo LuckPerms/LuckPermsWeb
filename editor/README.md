@@ -40,6 +40,3 @@ As well as being convenient for end-users (as they don't have to host the editor
 * As data is transferred using isolated payload objects, there is no need for any direct communication between the editor and the MC server.
 * The official version of the editor at https://lpedit.lucko.me is published using GitHub Pages. (I don't have to pay for it!)
 * There is a lesser security risk, as all changes have to be applied using the `/lp applyedits` command. You can freely give out the URL of editor sessions to other people, and although they will be able to make changes, said changes won't apply to your server unless you run the apply command.
-
-## Contributions
-Web dev certainly isn't one of my strong points, and this project is far from perfect. I'd really appreciate any contributions! Just make changes in your own fork and PR them back. :smile:

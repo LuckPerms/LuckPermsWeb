@@ -43,11 +43,6 @@ function tab() {
 // the command alias used to open the editor page
 let cmdAlias = "lp";
 
-// if the initial editor token was a "legacy" token.
-// the legacy tokens contain two codes, separated by a "/" character
-// the newer tokens only contain one code element
-let legacy = false;
-
 // permissions list dom object
 const permsListObject = document.getElementById("permissions-list");
 
@@ -181,28 +176,6 @@ function makeNode(perm, value, server, world, expiry, contexts) {
     }
 
     return node
-}
-
-// posts a string to GitHub's gist service, and returns the raw url of the content to the callback
-function postGist(data, callback) {
-    // construct the payload for the gist API
-    const post = {
-        "description": "LuckPerms Web Permissions Editor Data",
-        "public": false,
-        "files": {
-            "luckperms-data.json": {
-                "content": data
-            }
-        }
-    };
-
-    $.ajax("https://api.github.com/gists", {
-        contentType: "application/json",
-        dataType: "json",
-        data: JSON.stringify(post),
-        method: "POST",
-        success: callback
-    });
 }
 
 function contains(haystack, needle) {
@@ -584,7 +557,7 @@ function handleSave() {
     if (saveButton.hasClass("loading"))
         return;
 
-    console.log("Saving data to gist");
+    console.log("Saving data");
 
     // construct the data object to send back to gist
     let data;
@@ -610,18 +583,8 @@ function handleSave() {
     // Change save button to Loading
     saveButton.removeClass("save").addClass("loading").text("loop");
 
-    // post the data, and then send a popup when the save is complete
-    postGist(JSON.stringify(data, null, 2), function(data) {
-        let id;
-        if (legacy) {
-            const rawUrl = data.files["luckperms-data.json"].raw_url;
-            // parse the tag from the returned url
-            const split = rawUrl.split("/");
-            id = split[4] + "/" + split[6];
-        } else {
-            id = data.id
-        }
-
+    const callback = function(data) {
+        const id = data["key"];
         console.log("Save id: " + id);
 
         // display the popup
@@ -629,7 +592,7 @@ function handleSave() {
         content += '<div class="alert">';
         content += '<span class="closebtn">&times;</span>';
         content +=
-            '<strong>Success!</strong> Data was saved to gist. Run <code class="apply_command" class="clickable" title="Copy to clipboard">/' +
+            '<strong>Success!</strong> Data was saved. Run <code class="apply_command" class="clickable" title="Copy to clipboard">/' +
             cmdAlias + ' applyedits ' + id + '</code> to apply your changes.</div>';
 
         const popup = $("#popup");
@@ -665,7 +628,16 @@ function handleSave() {
                 }, 4000)
             })
         }
-    })
+    };
+
+    // post the data, and then send a popup when the save is complete
+    $.ajax("https://bytebin.lucko.me/post", {
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(data, null, 2),
+        method: "POST",
+        success: callback
+    });
 }
 
 function handleAlertClose() {
@@ -883,21 +855,33 @@ function hidePanel() {
     $("#table-content").show();
 }
 
+function populateNewTab(data) {
+    const tab = newTab();
+    const who = data["who"]["id"].split("/");
+    tab.whoType = who[0];
+    tab.who = who[1];
+    tab.whoFriendly = (data["who"]["friendly"] == null) ? tab.who : data["who"]["friendly"];
+    tab.rows = data["nodes"];
+    return tab;
+}
+
+function loadFromParams(params) {
+    // get data
+    const url = "https://bytebin.lucko.me/" + params;
+    console.log("Loading from URL: " + url);
+    $.getJSON(url, loadData).fail(showLoadingError)
+}
+
 function loadData(data) {
     // read alias
-    cmdAlias = data["cmdAlias"];
+    cmdAlias = data["metadata"]["cmdAlias"];
     if (!cmdAlias) {
         cmdAlias = "lp"
     }
 
     // read data
-    const payloads = data["tabs"];
-    if (payloads) {
-        for (const tab of payloads) {
-            tabs.push(populateNewTab(tab));
-        }
-    } else {
-        tabs.push(populateNewTab(data));
+    for (const tab of data["sessions"]) {
+        tabs.push(populateNewTab(tab));
     }
 
     // populate auto-complete options
@@ -911,48 +895,6 @@ function loadData(data) {
     reloadTable();
     pushHistory();
     populateTab();
-}
-
-function populateNewTab(data) {
-    const tab = newTab();
-    const who = data.who.split("/");
-
-    tab.whoType = who[0];
-    tab.who = who[1];
-    tab.whoFriendly = (data.whoFriendly == null) ? tab.who : data.whoFriendly;
-
-    tab.rows = data.nodes;
-
-    return tab;
-}
-
-function loadFromParams(params) {
-    // get data
-    const parts = params.split("/");
-    if (parts.length === 2) {
-        legacy = true; // mark as a legacy code
-        const url = "https://gist.githubusercontent.com/anonymous/" + parts[0] + "/raw/" + parts[1] + "/luckperms-data.json";
-        console.log("Loading from legacy URL: " + url);
-        $.getJSON(url, function(data) {
-            loadData(data)
-        }).fail(showLoadingError)
-    } else {
-        // single token??
-        const url = "https://api.github.com/gists/" + params;
-        console.log("Loading from URL: " + url);
-        $.getJSON(url, function(data) {
-            const fileObject = data.files["luckperms-data.json"];
-            if (fileObject.truncated) {
-                const rawUrl = fileObject.raw_url;
-                $.getJSON(rawUrl, function(permsData) {
-                    loadData(permsData)
-                }).fail(showLoadingError)
-            } else {
-                const permsData = JSON.parse(fileObject.content);
-                loadData(permsData);
-            }
-        }).fail(showLoadingError)
-    }
 }
 
 function showHelp() {

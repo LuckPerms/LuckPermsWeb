@@ -1,0 +1,62 @@
+html {
+  font-size: 72.5%;
+}
+
+body {
+  color: #212121;
+  background-color: #141422;
+
+  font-family: 'Source Sans Pro', 'Open Sans', Sans-Serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  letter-spacing: 0.01rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.logo {
+  text-align: center;
+}
+
+.logo img {
+  max-width: 1000px;
+  width: 100%;
+  margin: 15px auto;
+  height: auto;
+  text-align: center;
+}
+
+.msg-panel {
+  background: #303030;
+  padding: 20px;
+  border-radius: 4px;
+  color: #97e097;
+}
+
+.msg-panel a {
+  color: #53e0b6;
+}
+
+.container {
+  padding: 20px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

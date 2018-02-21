@@ -58,7 +58,7 @@ function reloadTable() {
 
     content += '<table class="table">';
     content += '<tr class="row header">';
-    for (const col of ["Target", "Permission", "Value", ""]) {
+    for (const col of ["Target", "Permission", "Result", ""]) {
         content += '<th class="cell">' + col + '</th>';
     }
     content += '</tr>';
@@ -75,11 +75,11 @@ function reloadTable() {
         content += '<th class="cell permission">' + escapeHtml(permission) + '</th>';
 
         if (result === "true") {
-            content += '<th class="cell value"><code class="code-true">true</code></th>';
+            content += '<th class="cell result"><code class="code-true">true</code></th>';
         } else if (result === "false") {
-            content += '<th class="cell value"><code class="code-false">false</code></th>';
+            content += '<th class="cell result"><code class="code-false">false</code></th>';
         } else {
-            content += '<th class="cell value"><code class="code-undefined">undefined</code></th>';
+            content += '<th class="cell result"><code class="code-undefined">undefined</code></th>';
         }
 
         content += '<th class="cell buttons">';

@@ -2,7 +2,7 @@
 An online web editor for permission data stored by the [LuckPerms plugin](https://github.com/lucko/LuckPerms).
 
 ## Live copy
-An official version of this site is hosted [**here**](https://lpedit.lucko.me/). However, you are free to host your own version, or even just clone this repository locally and open the page.
+An official version of this site is hosted [**here**](https://luckperms.github.io/editor/). However, you are free to host your own version, or even just clone this repository locally and open the page.
 
 ## How does it work
 The site is very simple in design, but probably doesn't work how you think it does.

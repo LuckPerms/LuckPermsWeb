@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
 
-  <title>LuckPerms Web Editor</title>
-  <meta content="LuckPerms Web Editor" name="description">
+  <title>LuckPerms Tree Viewer</title>
+  <meta content="LuckPerms Tree Viewer" name="description">
   <meta content="Luck" name="author">
   <link href="../assets/logo/16px.png" rel="shortcut icon" sizes="16x16" type="image/png">
   <link href="../assets/logo/32px.png" rel="shortcut icon" sizes="32x32" type="image/png">
@@ -14,74 +14,43 @@
   <link href="assets/style.css" rel="stylesheet" type="text/css">
   <noscript id="css-defer">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   </noscript>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous" defer></script>
   <script src="assets/app.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha256-Daf8GuI2eLKHJlOWLRR/zRy9Clqcj4TUSumbxYH9kGI=" crossorigin="anonymous" defer></script>
 </head>
 
 <body>
-
-  <datalist id="permissions-list"></datalist>
-
   <div id="bar" style="display: none;">
     <ul class="flex-center">
-      <li><img alt="LuckPerms Logo" class="tiny-logo" width="40" height="40" src="../assets/logo/40px.png" srcset="../assets/logo/80px.png 2x, ../assets/logo/160px.png 4x">
-        <h3>Web Permissions Editor</h3></li>
-      <li id="identifier"></li>
       <li>
-        <i id="undo-button" class="unclickable material-icons undo" title="Undo (Ctrl + Z)">undo</i>
-        <i id="redo-button" class="unclickable material-icons redo" title="Redo (Ctrl + Y)">redo</i>
-        <i id="save-button" class="clickable material-icons save" title="Save (Ctrl + S)">save</i>
-        <i style="display: none" id="help-button" class="clickable material-icons help" title="Help (Ctrl + H)">help</i>
+        <img alt="LuckPerms Logo" class="tiny-logo" width="40" height="40" src="../assets/logo/40px.png" srcset="../assets/logo/80px.png 2x, ../assets/logo/160px.png 4x">
+        <h3>Tree Viewer</h3>
       </li>
     </ul>
-    <div id="tab" style="display: none"></div>
   </div>
 
   <div class="content">
-    <div id="popup"></div>
-
     <div id="page">
       <div id="panel">
         <img alt="LuckPerms Logo" class="logo" width="180" height="180" src="../assets/logo/180px.png" srcset="../assets/logo/360px.png 2x, ../assets/logo/720px.png 4x">
 
         <h1>LuckPerms</h1>
-        <h2>Web Permissions Editor</h2>
+        <h2>Tree Viewer</h2>
 
         <div id="prompt">
-          <h3>To start a new editor session, please use</h3>
+          <h3>To generate a tree, please use</h3>
           <h4>
-          <span class="cmd">/lp user &lt;user&gt; editor</span>
+          <span class="cmd">/lp tree</span>
           <br>
-          <span class="cmd">/lp group &lt;group&gt; editor</span>
+          <span class="cmd">/lp tree &lt;scope&gt;</span>
+          <br>
+          <span class="cmd">/lp tree &lt;scope&gt; &lt;user&gt;</span>
         </h4>
         </div>
       </div>
 
-      <div id="table-content" class="wrapper" style="display: none;">
-        <div class="table-input-bar">
-          <div class="newentry">
-            <div id="inpform">
-              <input type="text" list="permissions-list" name="permission" placeholder="Permission">
-              <input type="text" name="expiry" placeholder="Expiry">
-              <input type="text" name="server" placeholder="Server">
-              <input type="text" name="world" placeholder="World">
-              <input type="text" name="contexts" placeholder="Contexts">
-              <i class="clickable material-icons add" title="Add">add_box</i>
-            </div>
-          </div>
-        </div>
-
-        <div id="table-section"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="help-section" style="display: none;">
-    <div class="help-content">
+      <div id="tree-content" class="wrapper" style="display: none;"></div>
     </div>
   </div>
 

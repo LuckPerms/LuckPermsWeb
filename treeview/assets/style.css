@@ -95,6 +95,67 @@ ul.flex-center {
   flex-grow: 1;
 }
 
+#panel {
+  font-size: 1.3em;
+  position: absolute;
+  border-radius: 10px;
+  width: 260px;
+  height: 450px;
+  background: #eee;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  text-align: center;
+  margin: -300px 0 0 -150px;
+  padding: 20px;
+}
+
+#panel.hide {
+  display: none;
+}
+
+#panel .logo {
+  height: 180px;
+  width: 180px;
+  vertical-align: middle;
+  border-radius: 6px;
+}
+
+#panel h1 {
+  font-size: 1.9em;
+  color: #222;
+  line-height: 0.5rem;
+}
+
+#panel h2 {
+  font-weight: 400;
+  font-size: 0.8em;
+  margin-bottom: 16px;
+  line-height: 0.5rem;
+}
+
+#panel h3 {
+  font-weight: 400;
+  font-size: 1.0em;
+  padding-top: 30px;
+  margin-bottom: 10px;
+  line-height: 1.7rem;
+}
+
+#panel .cmd {
+  padding: 2px 4px;
+  font-size: 80%;
+  border-radius: 4px;
+  background-color: #ffffff;
+  font-family: monospace;
+  color: #141422;
+  line-height: 2.2rem;
+}
+
+#panel .loading-error {
+  color: #ff0016;
+}
+
 .wrapper {
   margin: 0 auto;
   max-width: 890px;
@@ -109,19 +170,18 @@ ul.flex-center {
   background: #eee;
   padding: 20px;
   border-radius: 10px;
+  font-family: Consolas;
+  white-space: pre;
 }
 
-.wrapper h1 {
-  font-size: 1.9em;
-  color: #222;
-  line-height: 0.5rem;
+.highlight-true {
+  color: #22863a;
+  background-color: #f0fff4;
 }
 
-.wrapper h2 {
-  font-weight: 400;
-  font-size: 1.7em;
-  margin-bottom: 16px;
-  line-height: 0.5rem;
+.highlight-false {
+  color: #b31d28;
+  background-color: #ffeef0;
 }
 
 .footer {

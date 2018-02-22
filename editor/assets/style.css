@@ -216,7 +216,7 @@ ul.flex-center {
   line-height: 1.7rem;
 }
 
-#panel cmd {
+#panel .cmd {
   padding: 2px 4px;
   font-size: 80%;
   border-radius: 4px;

@@ -422,7 +422,7 @@ function handleValueSwap() {
     const id = $(this).parents(".row").attr("id").substring(1);
     const row = tab().rows[id];
 
-    row.value = !((row.value == null) || trow.value);
+    row.value = !((row.value == null) || row.value);
     pushHistory();
     reloadTable();
 }

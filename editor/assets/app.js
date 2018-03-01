@@ -43,9 +43,6 @@ function tab() {
 // the command alias used to open the editor page
 let cmdAlias = "lp";
 
-// permissions list dom object
-const permsListObject = document.getElementById("permissions-list");
-
 // clipboard instance
 let clipboard;
 const classesRegex = / ?(cell|clickable|editable) ?/gi;
@@ -133,12 +130,6 @@ function setButtonClickable(button, clickable) {
     } else {
         button.removeClass("clickable").addClass("unclickable");
     }
-}
-
-function addAutoCompletePermission(perm) {
-    const option = document.createElement("option");
-    option.value = perm;
-    permsListObject.appendChild(option);
 }
 
 // makes a minimal node object from the given parameters.
@@ -429,8 +420,10 @@ function handleValueSwap() {
 
 function handleEditStart() {
     const value = $(this).text();
-    const type = $(this).attr("class").replace(classesRegex, "");
-    $(this).html('<input ' + ((type === "permission") ? 'list="permissions-list" ' : '') + '>');
+    //const type = $(this).attr("class").replace(classesRegex, "");
+    //$(this).html('<input ' + ((type === "permission") ? 'class="autocomp" ' : '') + '>');
+    $(this).html('<input>');
+
     const input = $(this).find("input");
     input.focus();
     input.val(value);
@@ -750,7 +743,7 @@ function nodeToHtml(id, node) {
     content += '<div id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div list="permissions-list" class="cell permission clickable editable">' + escapeHtml(node.permission) +
+    content += '<div class="cell permission clickable editable">' + escapeHtml(node.permission) +
         '</div>';
 
     if (!node.hasOwnProperty("value") || node.value) {
@@ -886,8 +879,39 @@ function loadData(data) {
 
     // populate auto-complete options
     const perms = data["knownPermissions"];
-    if (perms) {
-        perms.forEach(addAutoCompletePermission)
+
+    // define permission object
+    function Completion(permission) {
+        this.permission = permission;
+        this.complexity = permission.split(".").length;
+    }
+    // this is needed for format the completion properly
+    Completion.prototype.toString = function() {
+        return this.permission;
+    };
+
+    // populate an array of completion objects
+    const completions = [];
+    for (const permission of perms) {
+        completions.push(new Completion(permission));
+    }
+
+    const elements = $(".autocomp").get();
+    for (const element of elements) {
+        new Awesomplete(element, {
+            list: completions,
+            sort: (a, b) => {
+                if (a.value.complexity < b.value.complexity) return -1;
+                if (a.value.complexity > b.value.complexity) return 1;
+                if (a.value.permission < b.value.permission) return -1;
+                if (a.value.permission > b.value.permission) return 1;
+                return 0;
+            },
+            filter: Awesomplete.FILTER_STARTSWITH,
+            minChars: 0,
+            maxItems: 20,
+            autoFirst: true
+        });
     }
 
     populateIdentifier();
@@ -926,6 +950,7 @@ $(document).on("click", "#tab > button", handleTab);
 
 $(document).on("click", "#inpform > .add", handleAdd);
 $(document).on("keypress", "#inpform > input", handleAddEnter);
+$(document).on("keypress", "#inpform > div > input", handleAddEnter);
 
 $(document).on("click", "#table-section .editable:not(:has(input))", handleEditStart);
 $(document).on("click", "#table-section .code-false, #table-section .code-true", handleValueSwap);

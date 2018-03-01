@@ -295,7 +295,7 @@ ul.flex-center {
 }
 
 #inpform input[name=permission] {
-  width: 195px;
+  width: 250px;
 }
 
 #inpform .add {
@@ -305,16 +305,19 @@ ul.flex-center {
   padding-right: 10px;
 }
 
+.awesomplete li[aria-selected=true] mark {
+    background: #88bb88;
+}
+
+.awesomplete mark {
+    background: #a5eca5;
+}
+
 .table {
   margin: 0 0 40px;
   width: 100%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   display: table;
-}
-@media screen and (max-width: 580px) {
-  .table {
-    display: block;
-  }
 }
 
 .row {
@@ -331,23 +334,11 @@ ul.flex-center {
   color: #ffffff;
   background: #669e00;
 }
-@media screen and (max-width: 580px) {
-  .row {
-    padding: 8px 0;
-    display: block;
-  }
-}
 
 .cell {
   padding: 2px 12px;
   display: table-cell;
   vertical-align: middle;
-}
-@media screen and (max-width: 580px) {
-  .cell {
-    padding: 2px 12px;
-    display: block;
-  }
 }
 
 .cell input {

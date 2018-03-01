@@ -11,21 +11,22 @@
   <link href="../assets/logo/32px.png" rel="shortcut icon" sizes="32x32" type="image/png">
   <link href="../assets/logo/64px.png" rel="shortcut icon" sizes="64x64" type="image/png">
   <link href="../assets/logo/128px.png" rel="shortcut icon" sizes="128x128" type="image/png">
-  <link href="assets/style.css" rel="stylesheet" type="text/css">
+
   <noscript id="css-defer">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   </noscript>
 
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.css" rel="stylesheet">
+  <link href="assets/style.css" rel="stylesheet" type="text/css">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous" defer></script>
-  <script src="assets/app.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js" integrity="sha256-xA+USAVmEnBnz1FiLRSG8xglJflQVHmQvbx5+u4bslk=" crossorigin="anonymous" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha256-Daf8GuI2eLKHJlOWLRR/zRy9Clqcj4TUSumbxYH9kGI=" crossorigin="anonymous" defer></script>
+  <script src="assets/app.js" defer></script>
 </head>
 
 <body>
-
-  <datalist id="permissions-list"></datalist>
-
   <div id="bar" style="display: none;">
     <ul class="flex-center">
       <li><img alt="LuckPerms Logo" class="tiny-logo" width="40" height="40" src="../assets/logo/40px.png" srcset="../assets/logo/80px.png 2x, ../assets/logo/160px.png 4x">
@@ -65,7 +66,7 @@
         <div class="table-input-bar">
           <div class="newentry">
             <div id="inpform">
-              <input type="text" list="permissions-list" name="permission" placeholder="Permission">
+              <input type="text" class="autocomp" name="permission" placeholder="Permission">
               <input type="text" name="expiry" placeholder="Expiry">
               <input type="text" name="server" placeholder="Server">
               <input type="text" name="world" placeholder="World">

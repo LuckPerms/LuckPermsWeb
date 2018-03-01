@@ -230,7 +230,7 @@ ul.flex-center {
 
 .cell.buttons {
   width: 0;
-  max-width: 0;
+  max-width: 15px;
   white-space: nowrap;
 }
 

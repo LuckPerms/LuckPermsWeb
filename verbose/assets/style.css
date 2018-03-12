@@ -240,16 +240,23 @@ ul.flex-center {
 }
 
 .extra {
-  background: #bdbdbd;
+  background: #cecece;
   height: 100px;
 }
 
 .extra-cell {
   padding: 10px;
+  line-height: 23px;
 }
 
 .extra-cell p {
   margin: 0;
+}
+
+.inline-code {
+  padding: 0px 3px;
+  border-radius: 3px;
+  background-color: #e2e2e2;
 }
 
 .trace {
@@ -257,25 +264,26 @@ ul.flex-center {
   padding: 5px;
   border-radius: 5px;
   width: fit-content;
+  line-height: 18px;
 }
 
-code {
+.value {
   padding: 2px 4px;
   font-size: 90%;
   border-radius: 4px;
   background-color: #ffffff;
-  color: #141422;
+  font-family: monospace;
 }
 
-.code-true {
+.value[data-type=true] {
   color: #14ca00;
 }
 
-.code-false {
+.value[data-type=false] {
   color: #ff0016;
 }
 
-.code-undefined {
+.value[data-type=undefined] {
   color: #757575;
 }
 

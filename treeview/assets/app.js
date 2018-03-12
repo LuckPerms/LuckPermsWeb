@@ -90,8 +90,8 @@ function loadFromParams(params) {
 }
 
 function showLoadingError() {
-    $("#prompt").html('<h3 class="loading-error"><b>Error loading data!</b>' +
-        '<br><br>Please check the url was copied correctly.</h3>');
+    $("#prompt").html('<h3 class="loading-error"><b>Loading error</b>' +
+        '<br><br>Either the URL was copied incorrectly or the session has expired.<br><br>Please try again.</h3>');
 }
 
 function loadData(data) {

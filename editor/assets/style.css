@@ -165,7 +165,7 @@ ul.flex-center {
 }
 
 .content {
-  margin-top: 100px;
+  margin-top: 105px;
   flex-grow: 1;
 }
 
@@ -303,6 +303,10 @@ ul.flex-center {
   vertical-align: middle;
   float: right;
   padding-right: 10px;
+}
+
+.awesomplete {
+  position: inherit;
 }
 
 .awesomplete li[aria-selected=true] mark {

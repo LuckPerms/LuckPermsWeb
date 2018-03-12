@@ -48,7 +48,7 @@ function escapeHtml(text) {
 function formatContext(context) {
     const formatted = [];
     for (const c of context) {
-        formatted.push(c.key + "=" + c.value);
+        formatted.push('<span class="inline-code">' + escapeHtml(c.key) + "=" + escapeHtml(c.value) + '</span>');
     }
     return formatted.join(", ");
 }
@@ -75,11 +75,11 @@ function reloadTable() {
         content += '<th class="cell permission">' + escapeHtml(permission) + '</th>';
 
         if (result === "true") {
-            content += '<th class="cell result"><code class="code-true">true</code></th>';
+            content += '<th class="cell result"><span class="value" data-type="true">true</span></th>';
         } else if (result === "false") {
-            content += '<th class="cell result"><code class="code-false">false</code></th>';
+            content += '<th class="cell result"><span class="value" data-type="false">false</span></th>';
         } else {
-            content += '<th class="cell result"><code class="code-undefined">undefined</code></th>';
+            content += '<th class="cell result"><span class="value" data-type="undefined">undefined</span></th>';
         }
 
         content += '<th class="cell buttons">';
@@ -96,7 +96,7 @@ function reloadTable() {
         content += '<tr id="e' + i + '-extra" class="row extra" style="display: none">';
         content += '<td class="extra-cell" colspan="4">';
         content += '<p><b>Context: </b>' + formatContext(context) + '</p>';
-        content += '<p><b>Origin: </b>' + escapeHtml(origin) + '</p>';
+        content += '<p><b>Origin: &nbsp; &nbsp;</b><span>' + escapeHtml(origin.toUpperCase()) + '</span></p>';
         content += '<b>Trace: </b>';
         content += '<br>';
         content += '<div class="trace">';
@@ -131,8 +131,8 @@ function loadFromParams(params) {
 }
 
 function showLoadingError() {
-    $("#prompt").html('<h3 class="loading-error"><b>Error loading data!</b>' +
-        '<br><br>Please check the url was copied correctly.</h3>');
+    $("#prompt").html('<h3 class="loading-error"><b>Loading error</b>' +
+        '<br><br>Either the URL was copied incorrectly or the session has expired.<br><br>Please try again.</h3>');
 }
 
 function loadData(data) {

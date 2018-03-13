@@ -12,6 +12,10 @@
   <link href="assets/logo/128px.png" rel="shortcut icon" sizes="128x128" type="image/png">
   <link href="assets/home/style.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous" defer></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ" crossorigin="anonymous" defer></script>
+  <script src="assets/home/app.js" defer></script>
 </head>
 
 <body>
@@ -19,7 +23,7 @@
   <ul class="flex-center">
     <li>
       <img alt="LuckPerms Logo" class="tiny-logo" width="40" height="40" src="assets/logo/40px.png" srcset="assets/logo/80px.png 2x, assets/logo/160px.png 4x">
-      <h3>LuckPerms Web</h3>
+      <h3>LuckPerms <span class="tagline">An advanced permissions plugin for Bukkit/Spigot, BungeeCord and Sponge.</span></h3>
     </li>
   </ul>
 </div>
@@ -27,24 +31,88 @@
 <div class="content">
   <div id="page">
     <div class="wrapper">
-      <h1>Web content</h1>
-      <p>This site hosts some web applications which can be used with the plugin.</p>
-      <br>
-      <h2>Web Editor</h2>
-      <p>A web based permissions editor for data stored in the plugin.</p>
-      <p>See the project’s homepage <a href="editor/">here</a> or the <a href="https://github.com/lucko/LuckPerms/wiki/Web-Editor">wiki page</a> for usage instructions.</p>
-      <br>
-      <h2>Verbose Viewer</h2>
-      <p>A web based viewer for verbose recording logs.</p>
-      <p>See the project’s homepage <a href="verbose/">here</a> or the <a href="https://github.com/lucko/LuckPerms/wiki/Verbose">wiki page</a> for usage instructions.</p>
 
-      <br>
-      <h2>Tree Viewer</h2>
-      <p>A web based viewer to visualise tree permission structures.</p>
-      <p>See the project’s homepage <a href="treeview/">here</a> or the <a href="https://github.com/lucko/LuckPerms/wiki/Command-Usage#lp-tree">wiki page</a> for usage instructions.</p>
+      <div class="column">
+        <h1>Resources</h1>
+        <p>A collection of useful resources for the plugin.</p>
+        <br>
+        <ul>
+          <li onclick="location.href = 'https://github.com/lucko/LuckPerms/wiki'">Wiki<i class="fas fa-book"></i></li>
+          <li onclick="location.href = 'https://github.com/lucko/LuckPerms'">GitHub<i class="fab fa-github"></i></li>
+          <li onclick="location.href = 'https://github.com/lucko/LuckPerms/issues'">Bug Tracker<i class="fas fa-bug"></i></li>
+          <li onclick="location.href = 'https://discord.gg/W3FzxHA'">Discord Server<i class="fab fa-discord"></i></li>
+          <li onclick="location.href = 'https://maven-badges.herokuapp.com/maven-central/me.lucko.luckperms/luckperms-api'">API Releases<i class="fas fa-file-code"></i></li>
+        </ul>
+        <br>
+        <ul>
+          <li onclick="location.href = 'https://www.spigotmc.org/resources/28140/'">Spigot Resource Page<i class="fas fa-info-circle"></i></li>
+          <li onclick="location.href = 'https://ore.spongepowered.org/Luck/LuckPerms'">Sponge Resource Page<i class="fas fa-info-circle"></i></li>
+          <li onclick="location.href = 'https://nukkitx.com/resources/51/'">Nukkit Resource Page<i class="fas fa-info-circle"></i></li>
+        </ul>
+      </div>
+
+      <div class="column dl-column">
+        <h1>Download</h1>
+        <p>The latest development builds of LuckPerms.</p>
+        <br>
+        <ul>
+          <li id="bukkit-dl">
+            LuckPerms for <b>Bukkit/Spigot</b>
+            <br>
+            <br>
+            <span style="font-size: 22px"><i class="fas fa-download"></i></span>
+            <br>
+            <span class="version-tag">v???</span>
+          </li>
+          <li id="bungee-dl">
+            LuckPerms for <b>BungeeCord</b>
+            <br>
+            <br>
+            <span style="font-size: 22px"><i class="fas fa-download"></i></span>
+            <br>
+            <span class="version-tag">v???</span>
+          </li>
+          <li id="sponge-dl">
+            LuckPerms for <b>Sponge</b>
+            <br>
+            <br>
+            <span style="font-size: 22px"><i class="fas fa-download"></i></span>
+            <br>
+            <span class="version-tag">v???</span>
+          </li>
+          <li id="nukkit-dl">
+            LuckPerms for <b>Nukkit</b>
+            <br>
+            <br>
+            <span style="font-size: 22px"><i class="fas fa-download"></i></span>
+            <br>
+            <span class="version-tag">v???</span>
+          </li>
+        </ul>
+
+      </div>
+
+      <div class="column">
+        <h1>Web Applications</h1>
+        <p>Online editors/viewers built into the plugin.</p>
+        <br>
+        <h2>Web Editor</h2>
+        <p>A web based permissions editor for data stored in the plugin.</p>
+        <p>See the project’s homepage <a href="editor/">here</a> or the <a href="https://github.com/lucko/LuckPerms/wiki/Web-Editor">wiki page</a> for usage instructions.</p>
+        <br>
+        <h2>Verbose Viewer</h2>
+        <p>A web based viewer for verbose recording logs.</p>
+        <p>See the project’s homepage <a href="verbose/">here</a> or the <a href="https://github.com/lucko/LuckPerms/wiki/Verbose">wiki page</a> for usage instructions.</p>
+
+        <br>
+        <h2>Tree Viewer</h2>
+        <p>A web based viewer to visualise tree permission structures.</p>
+        <p>See the project’s homepage <a href="treeview/">here</a> or the <a href="https://github.com/lucko/LuckPerms/wiki/Command-Usage#lp-tree">wiki page</a> for usage instructions.</p>
+      </div>
 
     </div>
   </div>
+</div>
 </body>
 </html>
 
@@ -53,10 +121,10 @@
 </div>
 
 <div class="footer">
-  <a href="https://github.com/lucko/LuckPermsWeb" class="github-corner"><svg width="60" height="60" viewBox="0 0 250 250"><path d="M0 0l115 115h15l12 27 108 108v-250z"/><path d="M128.3 109c-14.5-9.3-9.3-19.4-9.3-19.4 3-6.9 1.5-11 1.5-11-1.3-6.6 2.9-2.3 2.9-2.3 3.9 4.6 2.1 11 2.1 11-2.6 10.3 5.1 14.6 8.9 15.9" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115c-.1.1 3.7 1.5 4.8.4l13.9-13.8c3.2-2.4 6.2-3.2 8.5-3-8.4-10.6-14.7-24.2 1.6-40.6 4.7-4.6 10.2-6.8 15.9-7 .6-1.6 3.5-7.4 11.7-10.9 0 0 4.7 2.4 7.4 16.1 4.3 2.4 8.4 5.6 12.1 9.2 3.6 3.6 6.8 7.8 9.2 12.2 13.7 2.6 16.2 7.3 16.2 7.3-3.6 8.2-9.4 11.1-10.9 11.7-.3 5.8-2.4 11.2-7.1 15.9-16.4 16.4-30 10-40.6 1.6.2 2.8-1 6.8-5 10.8l-11.7 11.6c-1.2 1.2.6 5.4.8 5.3z" class="octo-body"/></svg></a>
+  <a href="https://github.com/lucko/LuckPerms" class="github-corner"><svg width="60" height="60" viewBox="0 0 250 250"><path d="M0 0l115 115h15l12 27 108 108v-250z"/><path d="M128.3 109c-14.5-9.3-9.3-19.4-9.3-19.4 3-6.9 1.5-11 1.5-11-1.3-6.6 2.9-2.3 2.9-2.3 3.9 4.6 2.1 11 2.1 11-2.6 10.3 5.1 14.6 8.9 15.9" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115c-.1.1 3.7 1.5 4.8.4l13.9-13.8c3.2-2.4 6.2-3.2 8.5-3-8.4-10.6-14.7-24.2 1.6-40.6 4.7-4.6 10.2-6.8 15.9-7 .6-1.6 3.5-7.4 11.7-10.9 0 0 4.7 2.4 7.4 16.1 4.3 2.4 8.4 5.6 12.1 9.2 3.6 3.6 6.8 7.8 9.2 12.2 13.7 2.6 16.2 7.3 16.2 7.3-3.6 8.2-9.4 11.1-10.9 11.7-.3 5.8-2.4 11.2-7.1 15.9-16.4 16.4-30 10-40.6 1.6.2 2.8-1 6.8-5 10.8l-11.7 11.6c-1.2 1.2.6 5.4.8 5.3z" class="octo-body"/></svg></a>
   <ul class="flex-center">
-    <li><a href="https://github.com/lucko" target="_blank">lucko</a>/<a href="https://github.com/lucko/LuckPermsWeb" target="_blank">LuckPermsWeb</a></li>
-    <li><a href="https://github.com/lucko/LuckPermsWeb/blob/master/LICENSE.txt" target="_blank">Copyright &copy; 2017-2018 LuckPerms contributors</a></li>
+    <li><a href="https://github.com/lucko" target="_blank">lucko</a>/<a href="https://github.com/lucko/LuckPermsWeb" target="_blank">LuckPerms</a></li>
+    <li><a href="https://github.com/lucko/LuckPerms/blob/master/LICENSE.txt" target="_blank">Copyright &copy; 2017-2018 LuckPerms contributors</a></li>
   </ul>
 </div>
 </body>

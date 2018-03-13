@@ -23,6 +23,7 @@ body {
   color: #212121;
   background-color: #141422;
   -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
@@ -89,6 +90,11 @@ ul.flex-center {
   float: left;
 }
 
+#bar .tagline {
+  font-weight: normal;
+  padding-left: 15px;
+}
+
 .content {
   margin-top: 80px;
   margin-bottom: 40px;
@@ -97,31 +103,87 @@ ul.flex-center {
 
 .wrapper {
   margin: 0 auto;
-  max-width: 890px;
-  min-width: 890px;
+  max-width: 960px;
+  min-width: 960px;
+}
+
+.column {
+  margin: 5px;
+  max-width: 270px;
+  min-width: 270px;
+
+  min-height: 650px;
+
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
+  text-align: center;
   color: #222;
-  -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;
 
   background: #eee;
-  padding: 20px;
+  padding: 10px 20px 20px 20px;
   border-radius: 10px;
+  float: left;
 }
 
-.wrapper h1 {
+.column h1 {
   font-size: 1.9em;
   color: #222;
   line-height: 0.5rem;
 }
 
-.wrapper h2 {
+.column h2 {
   font-weight: 400;
   font-size: 1.7em;
   margin-bottom: 16px;
   line-height: 0.5rem;
+}
+
+.column ul {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
+  -webkit-padding-start: 0;
+}
+
+.column li {
+  display: block;
+  font-size: 1.1em;
+  font-weight: 400;
+  text-align: center;
+  height: 44px;
+  line-height: 44px;
+  background: #fff;
+  margin-top: 10px;
+  color: #222;
+  border-radius: 4px;
+  transition: background .2s ease, color .2s ease;
+  cursor: pointer;
+  cursor: hand;
+}
+
+.dl-column li {
+  padding-top: 5px;
+  height: 100px;
+  line-height: 23px;
+}
+
+.dl-column span {
+  font-size: 24px;
+}
+
+.column li:hover {
+  color:#fff;
+  background:#222;
+}
+
+.column svg {
+  margin-left: 10px;
+}
+
+.column a:visited {
+
 }
 
 .footer {

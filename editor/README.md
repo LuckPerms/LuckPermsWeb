@@ -15,7 +15,7 @@ The web editor and the MC server communicate with each other using isolated data
 
 ### MC Server -> Web Editor
 
-1. A user on the MC server runs one of the editor commands. (`/lp group <group> edtior` or `/lp user <user> editor`)
+1. A user on the MC server runs one of the editor commands. (`/lp group <group> editor` or `/lp user <user> editor`)
 2. The LuckPerms plugin gathers all of the data it has about the user/group, and forms a payload object, serialised as JSON.
 3. The plugin posts this payload to the pastebin service, and retrieves the id of the resultant content. The id is appended as a parameter to the web editors url.
 4. A link to the web editor, including the payload id is returned to the user in the MC chat.

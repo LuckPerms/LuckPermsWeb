@@ -158,8 +158,8 @@ ul.flex-center {
 
 .wrapper {
   margin: 0 auto;
-  max-width: 890px;
-  min-width: 890px;
+  max-width: 1200px;
+  min-width: 1200px;
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
@@ -171,7 +171,9 @@ ul.flex-center {
   padding: 20px;
   border-radius: 10px;
   font-family: Consolas;
+
   white-space: pre;
+  overflow-x: auto;
 }
 
 .highlight-true {

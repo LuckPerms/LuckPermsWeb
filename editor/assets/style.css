@@ -309,6 +309,11 @@ ul.flex-center {
   position: inherit;
 }
 
+.awesomplete > ul {
+  min-width: 500px;
+  left: initial;
+}
+
 .awesomplete li[aria-selected=true] mark {
     background: #88bb88;
 }

@@ -161,11 +161,11 @@
 }
 
 .awesomplete li[aria-selected=true] mark {
-    background: #88bb88;
+  background: #88bb88;
 }
 
 .awesomplete mark {
-    background: #a5eca5;
+  background: #a5eca5;
 }
 
 .table {

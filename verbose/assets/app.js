@@ -1,3 +1,54 @@
+// the metadata fields displayed by the viewer
+const META_FIELDS = [
+    {
+        "name": "Start Time",
+        "desc": "When the recording was started.",
+        "value": function(meta) {
+            return meta["startTime"];
+        }
+    },
+    {
+        "name": "End Time",
+        "desc": "When the recording was ended.",
+        "value": function(meta) {
+            return meta["endTime"];
+        }
+    },
+    {
+        "name": "Duration",
+        "desc": "How long the plugin was recording for.",
+        "value": function(meta) {
+            return meta["duration"];
+        }
+    },
+    {
+        "name": "Count",
+        "desc": "How many values were matched and how many checks were made in total.",
+        "value": function(meta) {
+            const count = meta["count"];
+            return count["matched"] + " / " + count["total"];
+        }
+    },
+    {
+        "name": "Filter",
+        "desc": "The string used to filter the output.",
+        "value": function(meta) {
+            return '<span class="value" data-type="undefined">' + meta["filter"] + '</span>';
+        }
+    },
+    {
+        "name": "Truncated",
+        "desc": "If the data was truncated (limited in size) when uploaded.",
+        "value": function(meta) {
+            if (meta["truncated"]) {
+                return '<span class="value" data-type="true">true</span>';
+            } else {
+                return '<span class="value" data-type="false">false</span>';
+            }
+        }
+    }
+];
+
 // the data currently in the editor
 let metadata = {};
 let log = [];
@@ -46,6 +97,10 @@ function escapeHtml(text) {
 }
 
 function formatContext(context) {
+    if (context.length === 0) {
+        return "global";
+    }
+
     const formatted = [];
     for (const c of context) {
         formatted.push('<span class="inline-code">' + escapeHtml(c.key) + "=" + escapeHtml(c.value) + '</span>');
@@ -56,6 +111,25 @@ function formatContext(context) {
 function reloadTable() {
     let content = "";
 
+    // append meta
+    content += '<table class="table">';
+    content += '<tr class="row header">';
+    for (const col of ["Metadata Key", "Metadata Value", "Description"]) {
+        content += '<th class="cell">' + col + '</th>';
+    }
+    content += '</tr>';
+
+    for (const field of META_FIELDS) {
+        content += '<tr class="meta-row">';
+        content += '<td class="cell">' + field.name + '</td>';
+        content += '<td class="cell">' + field.value(metadata) + '</td>';
+        content += '<td class="cell">' + field.desc + '</td>';
+        content += '</tr>';
+    }
+
+    content += '</table>';
+
+    // append the content
     content += '<table class="table">';
     content += '<tr class="row header">';
     for (const col of ["Target", "Permission", "Result", ""]) {
@@ -71,20 +145,20 @@ function reloadTable() {
 
         // begin row
         content += '<tr id="e' + i + '" class="row clickable">';
-        content += '<th class="cell target">' + escapeHtml(target) + '</th>';
-        content += '<th class="cell permission">' + escapeHtml(permission) + '</th>';
+        content += '<td class="cell target">' + escapeHtml(target) + '</td>';
+        content += '<td class="cell permission">' + escapeHtml(permission) + '</td>';
 
         if (result === "true") {
-            content += '<th class="cell result"><span class="value" data-type="true">true</span></th>';
+            content += '<td class="cell result"><span class="value" data-type="true">true</span></td>';
         } else if (result === "false") {
-            content += '<th class="cell result"><span class="value" data-type="false">false</span></th>';
+            content += '<td class="cell result"><span class="value" data-type="false">false</span></td>';
         } else {
-            content += '<th class="cell result"><span class="value" data-type="undefined">undefined</span></th>';
+            content += '<td class="cell result"><span class="value" data-type="undefined">undefined</span></td>';
         }
 
-        content += '<th class="cell buttons">';
+        content += '<td class="cell buttons">';
         content += '<i class="clickable material-icons" title="Expand">expand_more</i>';
-        content += '</th>';
+        content += '</td>';
         content += '</tr>';
         // end row
 

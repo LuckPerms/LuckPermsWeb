@@ -303,7 +303,7 @@ function handleCopy() {
     const id = $(this).parents(".row").attr("id").substring(1);
     const node = tab().rows[id];
 
-    const inputs = $("#inpform").find("> input");
+    const inputs = $("#inpform").find("input");
     const permission = inputs.filter("[name=permission]");
     const expiry = inputs.filter("[name=expiry]");
     const server = inputs.filter("[name=server]");
@@ -403,7 +403,7 @@ function handleAdd() {
         contextsObj = parseContexts(contexts)
     }
 
-    tab().rows.push(makeNode(permission, true, server, world, expiryTime, contextsObj));
+    tab().rows.unshift(makeNode(permission, true, server, world, expiryTime, contextsObj));
     pushHistory();
     reloadTable();
 }
@@ -699,10 +699,10 @@ function reloadTable() {
     let content = "";
     if (rows.length) {
         // begin the table
-        content += '<div class="table">';
+        content += '<table class="table">';
 
         // field headings
-        content += '<div class="row header">';
+        content += '<tr class="row header">';
 
         for (let col of ["Permission", "Value", "Expiry", "Server", "World"]) {
             if (sort.on === col.toLowerCase()) {
@@ -713,19 +713,19 @@ function reloadTable() {
                 }
             }
 
-            content += '<div class="cell clickable">' + col + '</div>';
+            content += '<th class="cell clickable">' + col + '</th>';
         }
 
-        content += '<div class="cell">Contexts</div>';
-        content += '<div class="cell"></div>';
-        content += '</div>';
+        content += '<th class="cell">Contexts</th>';
+        content += '<th class="cell"></th>';
+        content += '</tr>';
 
         // add each row
         entries.forEach(function(entry) {
             content += nodeToHtml(entry.id, entry.value);
         });
 
-        content += '</div>';
+        content += '</table>';
     }
 
     // set the data
@@ -733,23 +733,22 @@ function reloadTable() {
 }
 
 function getContentDiv(type) {
-    return '<div class="cell ' + type + ' clickable editable">'
+    return '<td class="cell ' + type + ' clickable editable">'
 }
 
 function nodeToHtml(id, node) {
     let content = "";
 
     // start div
-    content += '<div id="e' + id + '" class="row">';
+    content += '<tr id="e' + id + '" class="row">';
 
     // variable content
-    content += '<div class="cell permission clickable editable">' + escapeHtml(node.permission) +
-        '</div>';
+    content += '<td class="cell permission clickable editable">' + escapeHtml(node.permission) + '</td>';
 
     if (!node.hasOwnProperty("value") || node.value) {
-        content += '<div class="cell"><code class="code-true clickable">true</code></div>'
+        content += '<td class="cell"><code class="code-true clickable">true</code></td>'
     } else {
-        content += '<div class="cell"><code class="code-false clickable">false</code></div>'
+        content += '<td class="cell"><code class="code-false clickable">false</code></td>'
     }
 
     if (!node.hasOwnProperty("expiry") || node.expiry === 0) {
@@ -758,22 +757,22 @@ function nodeToHtml(id, node) {
         const now = Math.round((new Date()).getTime() / 1000);
         const left = node.expiry - now;
         if (left <= 0) {
-            content += getContentDiv("expiry") + 'now</div>'
+            content += getContentDiv("expiry") + 'now</td>'
         } else {
-            content += getContentDiv("expiry") + expressDuration(left) + '</div>'
+            content += getContentDiv("expiry") + expressDuration(left) + '</td>'
         }
     }
 
     if (node.hasOwnProperty("server")) {
-        content += getContentDiv("server") + escapeHtml(node.server) + '</div>'
+        content += getContentDiv("server") + escapeHtml(node.server) + '</td>'
     } else {
-        content += getContentDiv("server") + 'global</div>'
+        content += getContentDiv("server") + 'global</td>'
     }
 
     if (node.hasOwnProperty("world")) {
-        content += getContentDiv("world") + escapeHtml(node.world) + '</div>'
+        content += getContentDiv("world") + escapeHtml(node.world) + '</td>'
     } else {
-        content += getContentDiv("world") + 'global</div>'
+        content += getContentDiv("world") + 'global</td>'
     }
 
     if (node.hasOwnProperty("context")) {
@@ -785,17 +784,17 @@ function nodeToHtml(id, node) {
             }
         }
 
-        content += getContentDiv("contexts") + escapeHtml(contextStr.trim()) + '</div>'
+        content += getContentDiv("contexts") + escapeHtml(contextStr.trim()) + '</td>'
     } else {
-        content += getContentDiv("contexts") + 'none</div>'
+        content += getContentDiv("contexts") + 'none</td>'
     }
 
     // static copy and delete button
-    content += '<div class="cell buttons">';
+    content += '<td class="cell buttons">';
     content += '<i class="clickable material-icons delete" title="Delete">delete</i>';
     content += '<i class="clickable material-icons copy" title="Copy">content_copy</i>';
-    content += '</div>';
-    content += '</div>';
+    content += '</td>';
+    content += '</tr>';
 
     return content
 }

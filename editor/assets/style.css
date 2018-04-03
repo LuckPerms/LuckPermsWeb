@@ -1,3 +1,19 @@
+/* null table defaults */
+th {
+  font-weight: unset;
+  text-align: unset;
+}
+
+td, th {
+  vertical-align: unset;
+}
+
+table {
+  border-collapse: unset;
+  border-spacing: unset;
+  border-color: unset;
+}
+
 #bar .material-icons {
   font-size: 40px;
   vertical-align: middle;

@@ -52,90 +52,107 @@
         <h1>Resources</h1>
         <p>A collection of useful resources for the plugin.</p>
         <br>
-        <ul>
-          <li onclick="location.href = 'https://github.com/lucko/LuckPerms/wiki'">Wiki<i class="fas fa-book"></i></li>
-          <li onclick="location.href = 'https://github.com/lucko/LuckPerms'">GitHub<i class="fab fa-github"></i></li>
-          <li onclick="location.href = 'https://github.com/lucko/LuckPerms/issues'">Bug
-            Tracker<i class="fas fa-bug"></i></li>
-          <li onclick="location.href = 'https://ci.lucko.me/job/LuckPerms/'">Jenkins<i class="fab fa-jenkins"></i></li>
-          <li onclick="location.href = 'https://discord.gg/W3FzxHA'">Discord Server<i class="fab fa-discord"></i></li>
-          <li onclick="location.href = 'https://maven-badges.herokuapp.com/maven-central/me.lucko.luckperms/luckperms-api'">
-            API Releases<i class="fas fa-file-code"></i></li>
+        <ul class="button-column">
+          <li onclick="location.href = 'https://github.com/lucko/LuckPerms/wiki'">
+            <h1>Wiki<i class="fas fa-book"></i></h1>
+            <h2>Learn how to install, setup, configure and effectively use LuckPerms.</h2>
+          </li>
+          <li onclick="location.href = 'https://github.com/lucko/LuckPerms'">
+            <h1>GitHub<i class="fab fa-github"></i></h1>
+            <h2>Browse the source code, report issues and contribute code.</h2>
+          </li>
+          <li onclick="location.href = 'https://discord.gg/W3FzxHA'">
+            <h1>Discord Server<i class="fab fa-discord"></i></h1>
+            <h2>Join <span id="discordcount" style="font-style: italic">???</span> others to discuss the project and ask/answer questions.</h2>
+          </li>
+          <li onclick="location.href = 'https://oss.sonatype.org/#nexus-search;quick~luckperms-api'">
+            <h1>API Documentation<i class="fas fa-file-code"></i></h1>
+            <h2>Learn how to use the LuckPerms API in your own projects.</h2>
+          </li>
         </ul>
         <br>
-        <ul>
-          <li onclick="location.href = 'https://www.spigotmc.org/resources/28140/'">Spigot Resource
-            Page<i class="fas fa-info-circle"></i></li>
-          <li onclick="location.href = 'https://ore.spongepowered.org/Luck/LuckPerms'">Sponge Resource
-            Page<i class="fas fa-info-circle"></i></li>
-          <li onclick="location.href = 'https://nukkitx.com/resources/51/'">Nukkit Resource
-            Page<i class="fas fa-info-circle"></i></li>
+        <ul class="button-column">
+          <li onclick="location.href = 'https://www.spigotmc.org/resources/28140/'">
+            <h1>Spigot Resource Page<i class="fas fa-info-circle"></i></h1>
+            <h2>View the LuckPerms release on the Spigot forums.</h2>
+          </li>
+          <li onclick="location.href = 'https://ore.spongepowered.org/Luck/LuckPerms'">
+            <h1>Sponge Resource Page<i class="fas fa-info-circle"></i></h1>
+            <h2>View the LuckPerms release on Sponge's Ore repository.</h2>
+          </li>
+          <li onclick="location.href = 'https://nukkitx.com/resources/51/'">
+            <h1>Nukkit Resource Page<i class="fas fa-info-circle"></i></h1>
+            <h2>View the LuckPerms release on the NukkitX forums.</h2>
+          </li>
         </ul>
       </div>
 
-      <div class="column dl-column">
+      <div class="column">
         <h1>Download</h1>
         <p>The latest development builds of LuckPerms.</p>
         <br>
-        <ul>
+        <ul class="dl-column">
           <li id="bukkit-dl">
-            LuckPerms for <b>Bukkit/Spigot</b>
-            <br>
-            <br>
+            <h1>LuckPerms for <b>Bukkit/Spigot</b></h1>
+            <h2>Supporting versions >= 1.8.8</h2>
             <span style="font-size: 22px"><i class="fas fa-download"></i></span>
             <br>
             <span class="version-tag">v???</span>
           </li>
           <li id="bungee-dl">
-            LuckPerms for <b>BungeeCord</b>
-            <br>
-            <br>
+            <h1>LuckPerms for <b>BungeeCord</b></h1>
+            <h2>Supporting versions >= 1.8.8</h2>
             <span style="font-size: 22px"><i class="fas fa-download"></i></span>
             <br>
             <span class="version-tag">v???</span>
           </li>
           <li id="sponge-dl">
-            LuckPerms for <b>Sponge</b>
-            <br>
-            <br>
+            <h1>LuckPerms for <b>Sponge</b></h1>
+            <h2>Supporting SpongeAPI 5/6/7</h2>
             <span style="font-size: 22px"><i class="fas fa-download"></i></span>
             <br>
             <span class="version-tag">v???</span>
           </li>
           <li id="nukkit-dl">
-            LuckPerms for <b>Nukkit</b>
-            <br>
-            <br>
+            <h1>LuckPerms for <b>Nukkit</b></h1>
+            <h2>Supporting NukkitX >= b93</h2>
             <span style="font-size: 22px"><i class="fas fa-download"></i></span>
             <br>
             <span class="version-tag">v???</span>
           </li>
         </ul>
-
+        <br>
+        <ul class="dl-column">
+          <li style="height: 70px" onclick="location.href = 'https://ci.lucko.me/view/LuckPerms/'">
+            <h1>Other downloads</h1>
+            <h3>More downloads are available directly from Jenkins.</h3>
+          </li>
+        </ul>
       </div>
 
       <div class="column">
         <h1>Web Applications</h1>
         <p>Online editors/viewers built into the plugin.</p>
-        <br>
-        <h2>Web Editor</h2>
-        <p>A web based permissions editor for data stored in the plugin.</p>
-        <p>See the project’s homepage <a href="editor/">here</a> or the
-          <a href="https://github.com/lucko/LuckPerms/wiki/Web-Editor">wiki page</a> for usage instructions.</p>
-        <br>
-        <h2>Verbose Viewer</h2>
-        <p>A web based viewer for verbose recording logs.</p>
-        <p>See the project’s homepage <a href="verbose/">here</a> or the
-          <a href="https://github.com/lucko/LuckPerms/wiki/Verbose">wiki page</a> for usage instructions.</p>
-
-        <br>
-        <h2>Tree Viewer</h2>
-        <p>A web based viewer to visualise tree permission structures.</p>
-        <p>See the project’s homepage <a href="treeview/">here</a> or the
-          <a href="https://github.com/lucko/LuckPerms/wiki/Command-Usage#lp-tree">wiki page</a> for usage instructions.
-        </p>
+        <br><br>
+        This site hosts a number of extra web applications which work with the plugin.
+        <br><br><br>
+        These applications are designed to work for all users, even those without the ability to install/host an application on their own web server.
+        <br><br><br>
+        <ul class="button-column">
+          <li onclick="location.href = 'editor/'">
+            <h1>Web Editor</h1>
+            <h2>A web based permissions editor for data stored in the plugin.</h2>
+          </li>
+          <li onclick="location.href = 'verbose/'">
+            <h1>Verbose Viewer</h1>
+            <h2>A web based viewer for verbose recording logs.</h2>
+          </li>
+          <li onclick="location.href = 'editor/'">
+            <h1>Tree Viewer</h1>
+            <h2>A web based viewer to visualise tree permission structures.</h2>
+          </li>
+        </ul>
       </div>
-
     </div>
   </div>
 </div>

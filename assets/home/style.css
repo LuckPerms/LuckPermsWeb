@@ -19,15 +19,12 @@
   margin: 5px;
   max-width: 270px;
   min-width: 270px;
-
-  min-height: 650px;
-
+  min-height: 700px;
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
   text-align: center;
   color: #222;
-
   background: #eee;
   padding: 10px 20px 20px 20px;
   border-radius: 10px;
@@ -36,7 +33,6 @@
 
 .column h1 {
   font-size: 1.9em;
-  color: #222;
   line-height: 0.5rem;
 }
 
@@ -60,7 +56,7 @@
   font-size: 1.1em;
   font-weight: 400;
   text-align: center;
-  height: 44px;
+  height: 70px;
   line-height: 44px;
   background: #fff;
   margin-top: 10px;
@@ -69,6 +65,36 @@
   transition: background .2s ease, color .2s ease;
   cursor: pointer;
   cursor: hand;
+}
+
+.button-column h1 {
+  font-size: 1.1em;
+  line-height: 20px;
+  padding: 3px 0 0;
+  margin: 0;
+}
+
+.button-column h2 {
+  font-size: 0.9em;
+  line-height: 18px;
+  padding: 5px 7px 0 7px;
+  margin: 0;
+}
+
+.dl-column h1 {
+  font-size: 1.1em;
+  font-weight: normal;
+  line-height: 0;
+}
+
+.dl-column h2 {
+  font-size: 0.7em;
+}
+
+.dl-column h3 {
+  font-size: 0.9em;
+  font-weight: normal;
+  line-height: 16px;
 }
 
 .dl-column li {

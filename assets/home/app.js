@@ -20,3 +20,7 @@ $.getJSON("https://ci.lucko.me/job/LuckPerms/api/json", function(info) {
         }
     })
 });
+
+$.getJSON("https://discordapp.com/api/invites/W3FzxHA?with_counts=true", function(data) {
+    $("#discordcount").text(data["approximate_member_count"]);
+});

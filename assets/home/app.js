@@ -1,5 +1,5 @@
 function formUrl(buildNumber, version, type) {
-    return "https://ci.lucko.me/job/LuckPerms/" + buildNumber + "/artifact/" + type.toLowerCase() + "/target/LuckPerms-" + type + "-" + version + ".jar";
+    return "https://ci.lucko.me/job/LuckPerms/" + buildNumber + "/artifact/" + type.toLowerCase() + "/build/libs/LuckPerms-" + type + "-" + version + ".jar";
 }
 
 $.getJSON("https://ci.lucko.me/job/LuckPerms/api/json", function(info) {

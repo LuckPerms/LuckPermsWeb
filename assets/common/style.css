@@ -75,8 +75,8 @@ ul.flex-center {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 7px;
+  width: 15px;
+  height: 15px;
 }
 
 ::-webkit-scrollbar-track {

@@ -179,6 +179,13 @@ function deepClone(obj) {
 
 // parses a duration from a string to a duration in seconds
 function parseDuration(s) {
+    let now = new Date().getTime() / 1000;
+    let expiry = new Date(s).getTime() / 1000;
+
+    if (expiry) {
+        return expiry - now;
+    }
+
     const spaceRgx = new RegExp(" ", 'g');
     let seconds = 0;
     let minutes = 0;
@@ -238,7 +245,7 @@ function expressDuration(s) {
     const days = Math.floor(s / 86400);
     const hours = Math.floor(((s % 86400) / 3600));
     const minutes = Math.floor((((s % 86400) % 3600) / 60));
-    const seconds = (((s % 86400) % 3600) % 60);
+    const seconds = Math.floor((((s % 86400) % 3600) % 60));
 
     let ret = "";
     if (days !== 0) {

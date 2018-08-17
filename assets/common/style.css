@@ -35,6 +35,7 @@ body {
   top: 0;
   width: 100%;
   color: #EEEEEE;
+  z-index: 1;
 }
 
 #bar .tiny-logo {

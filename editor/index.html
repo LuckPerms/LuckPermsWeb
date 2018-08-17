@@ -79,14 +79,14 @@
       <div class="table-input-bar">
         <div class="newentry">
           <div id="inpform">
-            <input type="text" class="autocomp" name="permission" placeholder="Permission">
-            <input type="text" name="expiry" placeholder="Expiry">
-            <input type="text" name="server" placeholder="Server">
-            <input type="text" name="world" placeholder="World">
-            <input type="text" name="contexts" placeholder="Contexts">
+            <input type="text" class="autocomp" name="permission" placeholder="Permission" title="Filter through known permissions or add a new one.">
+            <input type="text" name="expiry" placeholder="Expiry" title="When will the permission expire? Leave blank for no expiry.">
+            <input type="text" name="server" placeholder="Server" title="Restrict this permission to a certain server. Leave blank for global.">
+            <input type="text" name="world" placeholder="World" title="Restrict this permission to a certain world. Leave blank for global.">
+            <input type="text" name="contexts" placeholder="Contexts" title="Add custom contexts.">
             <input type="checkbox" name="value" id="inpvalue" checked>
-            <label for="inpvalue"></label>
-            <i class="clickable material-icons add" title="Add">add_box</i>
+            <label for="inpvalue" title="Click to toggle the true/false value."></label>
+            <i class="clickable material-icons add" title="Add permission.">add_box</i>
           </div>
         </div>
       </div>

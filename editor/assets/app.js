@@ -164,6 +164,8 @@ function makeNode(perm, value, server, world, expiry, contexts) {
         node.context = contexts
     }
 
+    node.new = true;
+
     return node;
 }
 
@@ -739,7 +741,7 @@ function nodeToHtml(id, node) {
     let content = "";
 
     // start div
-    content += '<tr id="e' + id + '" class="row">';
+    content += '<tr id="e' + id + '" class="row ' + (node.new ? 'new' : '') + '">';
 
     // variable content
     content += '<td class="cell permission clickable editable">' + escapeHtml(node.permission) + '</td>';

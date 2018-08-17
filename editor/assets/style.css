@@ -255,10 +255,18 @@ table {
   background: #669e00;
 }
 
+.row.new td {
+  background: rgba(0,200,0,0.2);
+}
+
 .cell {
   padding: 2px 12px;
   display: table-cell;
   vertical-align: middle;
+}
+
+th.cell {
+  padding: 5px 12px;
 }
 
 .cell input {

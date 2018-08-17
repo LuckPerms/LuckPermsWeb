@@ -138,9 +138,7 @@ function makeNode(perm, value, server, world, expiry, contexts) {
 
     node.permission = perm;
 
-    if (!value) {
-        node.value = false;
-    }
+    node.value = value;
 
     if (server.toLowerCase() !== "global") {
         node.server = server
@@ -166,7 +164,7 @@ function makeNode(perm, value, server, world, expiry, contexts) {
         node.context = contexts
     }
 
-    return node
+    return node;
 }
 
 function contains(haystack, needle) {
@@ -362,6 +360,7 @@ function handleAdd() {
     let server = inputs.filter("[name=server]").val();
     let world = inputs.filter("[name=world]").val();
     let contexts = inputs.filter("[name=contexts]").val();
+    let value = $("#inpvalue").is(':checked');
 
     let now = Math.round((new Date()).getTime() / 1000);
     let expiryTime;
@@ -403,7 +402,7 @@ function handleAdd() {
         contextsObj = parseContexts(contexts)
     }
 
-    tab().rows.unshift(makeNode(permission, true, server, world, expiryTime, contextsObj));
+    tab().rows.unshift(makeNode(permission, value, server, world, expiryTime, contextsObj));
     pushHistory();
     reloadTable();
 }
@@ -434,7 +433,7 @@ function handleEditStop(e) {
     const cell = e.parents(".cell");
     const type = cell.attr("class").replace(classesRegex, "");
     let value = e.val();
-    
+
     const row = tab().rows[id];
 
     if (type === "permission") {

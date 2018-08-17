@@ -138,9 +138,7 @@ function makeNode(perm, value, server, world, expiry, contexts) {
 
     node.permission = perm;
 
-    if (!value) {
-        node.value = false;
-    }
+    node.value = value;
 
     if (server.toLowerCase() !== "global") {
         node.server = server
@@ -166,7 +164,9 @@ function makeNode(perm, value, server, world, expiry, contexts) {
         node.context = contexts
     }
 
-    return node
+    node.new = true;
+
+    return node;
 }
 
 function contains(haystack, needle) {
@@ -179,6 +179,13 @@ function deepClone(obj) {
 
 // parses a duration from a string to a duration in seconds
 function parseDuration(s) {
+    let now = new Date().getTime() / 1000;
+    let expiry = new Date(s).getTime() / 1000;
+
+    if (expiry) {
+        return expiry - now;
+    }
+
     const spaceRgx = new RegExp(" ", 'g');
     let seconds = 0;
     let minutes = 0;
@@ -238,7 +245,7 @@ function expressDuration(s) {
     const days = Math.floor(s / 86400);
     const hours = Math.floor(((s % 86400) / 3600));
     const minutes = Math.floor((((s % 86400) % 3600) / 60));
-    const seconds = (((s % 86400) % 3600) % 60);
+    const seconds = Math.floor((((s % 86400) % 3600) % 60));
 
     let ret = "";
     if (days !== 0) {
@@ -362,6 +369,7 @@ function handleAdd() {
     let server = inputs.filter("[name=server]").val();
     let world = inputs.filter("[name=world]").val();
     let contexts = inputs.filter("[name=contexts]").val();
+    let value = $("#inpvalue").is(':checked');
 
     let now = Math.round((new Date()).getTime() / 1000);
     let expiryTime;
@@ -403,7 +411,7 @@ function handleAdd() {
         contextsObj = parseContexts(contexts)
     }
 
-    tab().rows.unshift(makeNode(permission, true, server, world, expiryTime, contextsObj));
+    tab().rows.unshift(makeNode(permission, value, server, world, expiryTime, contextsObj));
     pushHistory();
     reloadTable();
 }
@@ -434,7 +442,7 @@ function handleEditStop(e) {
     const cell = e.parents(".cell");
     const type = cell.attr("class").replace(classesRegex, "");
     let value = e.val();
-    
+
     const row = tab().rows[id];
 
     if (type === "permission") {
@@ -740,7 +748,7 @@ function nodeToHtml(id, node) {
     let content = "";
 
     // start div
-    content += '<tr id="e' + id + '" class="row">';
+    content += '<tr id="e' + id + '" class="row ' + (node.new ? 'new' : '') + '">';
 
     // variable content
     content += '<td class="cell permission clickable editable">' + escapeHtml(node.permission) + '</td>';

@@ -123,6 +123,7 @@ table {
 .wrapper {
   margin: 0 auto;
   padding: 5px;
+  padding-top: 1px;
   max-width: 1100px;
   min-width: 890px;
   font-size: 16px;
@@ -131,40 +132,96 @@ table {
   color: #222;
 }
 
+.table-input-bar {
+  position: fixed;
+  width: 1100px;
+}
+
 .newentry {
   width: 100%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   background: #eeeeee;
-  padding: 10px 0;
-  margin-bottom: 22px;
+  padding-bottom: 10px;
+  position: relative;
+}
+
+#table-section {
+  margin-top: 85px;
+}
+
+.newentry:before {
+  content: 'Add permission:';
+  color: #FFF;
+  background: #999;
+  display: block;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  font-weight: bold;
 }
 
 #inpform {
-  padding: 2px 10px;
-  display: inline;
+  padding: 0 5px;
+  display: flex;
 }
 
 #inpform input,
 .cell input {
   margin-left: 3px;
-  width: 135px;
   padding: 8px;
   box-sizing: border-box;
   border: 1.5px solid #ccc;
   -webkit-transition: 0.5s;
   transition: 0.5s;
   outline: none;
+  flex: 1;
 }
 
 #inpform input[name=permission] {
-  width: 250px;
+
+}
+
+#inpform input[name=value] + label {
+  background:red;
+  color: #FFF;
+  padding: 0.33em 1em;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-left: 2px;
+  transition: background 0.2s, opacity 0.2s;
+  border: 0;
+  outline: none;
+  line-height: 1.5;
+}
+
+#inpform input[name=value] {
+  display: none;
+}
+
+#inpform input[name=value] + label:after {
+  content: 'False';
+}
+
+#inpform input[name=value]:checked + label {
+  background: green;
+}
+
+#inpform input[name=value]:checked + label:after {
+  content: 'True';
+}
+
+#inpform input[name=value] + label:hover {
+  opacity: 0.8;
 }
 
 #inpform .add {
   font-size: 35px;
-  vertical-align: middle;
-  float: right;
-  padding-right: 10px;
+  transition: opacity 0.2s;
+}
+
+#inpform .add:hover {
+  opacity: 0.8;
 }
 
 .awesomplete {
@@ -206,10 +263,18 @@ table {
   background: #669e00;
 }
 
+.row.new td {
+  background: rgba(0,200,0,0.2);
+}
+
 .cell {
   padding: 2px 12px;
   display: table-cell;
   vertical-align: middle;
+}
+
+th.cell {
+  padding: 5px 12px;
 }
 
 .cell input {

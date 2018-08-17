@@ -26,6 +26,7 @@
   <link href="../assets/logo/128px.png" rel="shortcut icon" sizes="128x128" type="image/png">
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.min.css" rel="stylesheet">
   <link href="../assets/common/style.css" rel="stylesheet" type="text/css">
   <link href="assets/style.css" rel="stylesheet" type="text/css">
   <noscript id="css-defer">
@@ -33,10 +34,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   </noscript>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js" integrity="sha256-xA+USAVmEnBnz1FiLRSG8xglJflQVHmQvbx5+u4bslk=" crossorigin="anonymous" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha256-Daf8GuI2eLKHJlOWLRR/zRy9Clqcj4TUSumbxYH9kGI=" crossorigin="anonymous" defer></script>
-  <script src="assets/app.js" defer></script>
 </head>
 
 <body>
@@ -83,12 +80,14 @@
       <div class="table-input-bar">
         <div class="newentry">
           <div id="inpform">
-            <input type="text" class="autocomp" name="permission" placeholder="Permission">
-            <input type="text" name="expiry" placeholder="Expiry">
-            <input type="text" name="server" placeholder="Server">
-            <input type="text" name="world" placeholder="World">
-            <input type="text" name="contexts" placeholder="Contexts">
-            <i class="clickable material-icons add" title="Add">add_box</i>
+            <input type="text" class="autocomp" name="permission" placeholder="Permission" title="Filter through known permissions or add a new one.">
+            <input type="text" name="expiry" class="datepicker-here" placeholder="Expiry" data-language="en" data-timepicker="true" title="When will the permission expire? Leave blank for no expiry.">
+            <input type="text" name="server" placeholder="Server" title="Restrict this permission to a certain server. Leave blank for global.">
+            <input type="text" name="world" placeholder="World" title="Restrict this permission to a certain world. Leave blank for global.">
+            <input type="text" name="contexts" placeholder="Contexts" title="Add custom contexts.">
+            <input type="checkbox" name="value" id="inpvalue" checked>
+            <label for="inpvalue" title="Click to toggle the true/false value."></label>
+            <i class="clickable material-icons add" title="Add permission.">add_box</i>
           </div>
         </div>
       </div>
@@ -119,6 +118,18 @@
       2017-2018 LuckPerms contributors</a></li>
   </ul>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js" integrity="sha256-xA+USAVmEnBnz1FiLRSG8xglJflQVHmQvbx5+u4bslk="
+  crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha256-Daf8GuI2eLKHJlOWLRR/zRy9Clqcj4TUSumbxYH9kGI="
+  crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.min.js" integrity="sha256-0prQxFtdWQNa3vW5JDMbvbBp6ehKzf9UIWqFGZIWPPE="
+  crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/i18n/datepicker.en.min.js" integrity="sha256-RbE9ux8UbaKexk/+aT9XkZ8tcUWg3yw/3XE/S8iW7eI="
+    crossorigin="anonymous" defer></script>
+<script src="assets/app.js" defer></script>
 
 </body>
 </html>

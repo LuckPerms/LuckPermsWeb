@@ -90,7 +90,7 @@ table {
 }
 
 .content {
-  margin-top: 105px;
+  margin-top: 113px;
   flex-grow: 1;
 }
 
@@ -134,7 +134,9 @@ table {
 
 .table-input-bar {
   position: fixed;
-  width: 1100px;
+  width: 100%;
+  max-width: 1100px;
+  z-index: 2;
 }
 
 .newentry {
@@ -174,10 +176,6 @@ table {
   transition: 0.5s;
   outline: none;
   flex: 1;
-}
-
-#inpform input[name=permission] {
-
 }
 
 #inpform input[name=value] + label {
@@ -263,8 +261,18 @@ table {
   background: #669e00;
 }
 
-.row.new td {
-  background: rgba(0,200,0,0.2);
+.row.new td:first-child {
+  border-left: limegreen 4px solid;
+  position: relative;
+}
+
+.row.new td:first-child:before {
+  content: '+';
+	position: absolute;
+	right: 103%;
+	color: limegreen;
+	font-size: 2em;
+	font-weight: bold;
 }
 
 .cell {

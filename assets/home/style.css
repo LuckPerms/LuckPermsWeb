@@ -96,12 +96,14 @@
 
 .dl-column li {
   padding-top: 5px;
-  height: 100px;
+  height: 80px;
   line-height: 23px;
 }
 
 .dl-column span {
   font-size: 24px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .column li:hover {

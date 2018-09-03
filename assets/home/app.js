@@ -1,26 +1,31 @@
-function formUrl(buildNumber, version, type) {
-    return "https://ci.lucko.me/job/LuckPerms/" + buildNumber + "/artifact/" + type.toLowerCase() + "/build/libs/LuckPerms-" + type + "-" + version + ".jar";
-}
+const JENKINS_URL = "https://ci.lucko.me/job/LuckPerms/";
+const DISCORD_INVITE_CODE = "W3FzxHA";
 
-$.getJSON("https://ci.lucko.me/job/LuckPerms/api/json", function(info) {
-    const buildUrl = info["lastSuccessfulBuild"]["url"];
-    $.getJSON(buildUrl + "api/json", function(build) {
-        const sampleArtifact = build["artifacts"][0];
-        const sampleName = sampleArtifact["displayPath"];
+$.getJSON(JENKINS_URL + "lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]", function(info) {
+    const buildUrl = info["url"];
+    let version;
 
-        const version = sampleName.split("-")[2].slice(0, -4);
-        const buildNumber = build["id"];
+    for (const artifact of info["artifacts"]) {
+        const fileName = artifact["fileName"];
+        const relativePath = artifact["relativePath"];
+        const id = relativePath.substr(0, relativePath.indexOf('/'));
 
-        $(".version-tag").html("v" + version);
-        for (const type of ["Bukkit", "Bungee", "Sponge", "Nukkit"]) {
-            const selector = "#" + type.toLowerCase() + "-dl";
-            $(selector).click(function() {
-                window.location.href = formUrl(buildNumber, version, type);
-            });
+        // save version for later
+        if (!version) {
+            version = fileName.split("-").pop().slice(0, -4);
         }
-    })
+
+        const selector = "#" + id.toLowerCase() + "-dl";
+        $(selector).click(function() {
+            window.location.href = buildUrl + "artifact/" + relativePath;
+        });
+    }
+
+    if (version) {
+        $(".version-tag").html("v" + version);
+    }
 });
 
-$.getJSON("https://discordapp.com/api/invites/W3FzxHA?with_counts=true", function(data) {
+$.getJSON("https://discordapp.com/api/invites/" + DISCORD_INVITE_CODE + "?with_counts=true", function(data) {
     $("#discordcount").text(data["approximate_member_count"]);
 });

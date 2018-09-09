@@ -90,7 +90,7 @@ table {
 }
 
 .content {
-  margin-top: 105px;
+  margin-top: 113px;
   flex-grow: 1;
 }
 
@@ -134,7 +134,9 @@ table {
 
 .table-input-bar {
   position: fixed;
-  width: 1100px;
+  width: 100%;
+  max-width: 1100px;
+  z-index: 2;
 }
 
 .newentry {
@@ -162,6 +164,7 @@ table {
 #inpform {
   padding: 0 5px;
   display: flex;
+  justify-content: space-between;
 }
 
 #inpform input,
@@ -174,17 +177,15 @@ table {
   transition: 0.5s;
   outline: none;
   flex: 1;
-}
-
-#inpform input[name=permission] {
-
+  max-width: 16vw;
 }
 
 #inpform input[name=value] + label {
-  background:red;
-  color: #FFF;
+  background: #FFF;
+  text-transform: lowercase;
+  color: #F00;
   padding: 0.33em 1em;
-  font-weight: bold;
+  /* font-weight: bold; */
   border-radius: 4px;
   cursor: pointer;
   vertical-align: middle;
@@ -193,6 +194,9 @@ table {
   border: 0;
   outline: none;
   line-height: 1.5;
+  font-family: monospace;
+  width: 3em;
+  text-align: center;
 }
 
 #inpform input[name=value] {
@@ -204,7 +208,9 @@ table {
 }
 
 #inpform input[name=value]:checked + label {
-  background: green;
+  /* background: green; */
+  color: limegreen;
+  /* font-family: "Source code pro", monospace; */
 }
 
 #inpform input[name=value]:checked + label:after {
@@ -263,8 +269,18 @@ table {
   background: #669e00;
 }
 
-.row.new td {
-  background: rgba(0,200,0,0.2);
+.row.new td:first-child {
+  border-left: limegreen 4px solid;
+  position: relative;
+}
+
+.row.new td:first-child:before {
+  content: '+';
+	position: absolute;
+	right: 103%;
+	color: limegreen;
+	font-size: 2em;
+	font-weight: bold;
 }
 
 .cell {

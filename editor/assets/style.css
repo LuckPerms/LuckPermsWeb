@@ -164,6 +164,7 @@ table {
 #inpform {
   padding: 0 5px;
   display: flex;
+  justify-content: space-between;
 }
 
 #inpform input,
@@ -176,6 +177,7 @@ table {
   transition: 0.5s;
   outline: none;
   flex: 1;
+  max-width: 16vw;
 }
 
 #inpform input[name=value] + label {

@@ -60,11 +60,11 @@ function loadCss() {
 
 // try to load the page from the url parameters when the page loads
 function loadContent() {
-    let params = document.location.search;
+    let params = document.location.search || window.location.hash;
     if (params) {
-        console.log("Found location parameters to load from");
+        console.log("Found params to load from");
 
-        if (params.startsWith("?")) {
+        if (params.startsWith("?") || params.startsWith("#")) {
             params = params.substring(1);
         }
 

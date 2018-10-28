@@ -132,28 +132,40 @@ function reloadTable() {
     // append the content
     content += '<table class="table">';
     content += '<tr class="row header">';
-    for (const col of ["Target", "Permission", "Result", ""]) {
+    for (const col of ["Target", "Request", "Result", ""]) {
         content += '<th class="cell">' + col + '</th>';
     }
     content += '</tr>';
 
     let i = 0;
     for (const entry of log) {
+        const type = entry.type || "permission";
         const target = entry.who.identifier;
-        const permission = entry.permission;
-        const result = entry.result;
 
         // begin row
         content += '<tr id="e' + i + '" class="row clickable">';
         content += '<td class="cell target">' + escapeHtml(target) + '</td>';
-        content += '<td class="cell permission">' + escapeHtml(permission) + '</td>';
 
-        if (result === "true") {
-            content += '<td class="cell result"><span class="value" data-type="true">true</span></td>';
-        } else if (result === "false") {
-            content += '<td class="cell result"><span class="value" data-type="false">false</span></td>';
-        } else {
-            content += '<td class="cell result"><span class="value" data-type="undefined">undefined</span></td>';
+        if (type === "permission") {
+            const permission = entry.permission;
+            const result = entry.result;
+
+            content += '<td class="cell request">' + escapeHtml(permission) + '</td>';
+
+            if (result === "true") {
+                content += '<td class="cell result"><span class="value" data-type="true">true</span></td>';
+            } else if (result === "false") {
+                content += '<td class="cell result"><span class="value" data-type="false">false</span></td>';
+            } else {
+                content += '<td class="cell result"><span class="value" data-type="undefined">undefined</span></td>';
+            }
+
+        } else if (type === "meta") {
+            const key = entry.key;
+            const result = entry.result;
+
+            content += '<td class="cell request">meta: ' + escapeHtml(key) + '</td>';
+            content += '<td class="cell result"><span class="value" data-type="undefined">' + escapeHtml(result) + '</span></td>';
         }
 
         content += '<td class="cell buttons">';

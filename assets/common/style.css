@@ -35,6 +35,7 @@ body {
   top: 0;
   width: 100%;
   color: #EEEEEE;
+  z-index: 1;
 }
 
 #bar .tiny-logo {
@@ -74,8 +75,8 @@ ul.flex-center {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 7px;
+  width: 15px;
+  height: 15px;
 }
 
 ::-webkit-scrollbar-track {

@@ -926,6 +926,15 @@ function loadData(data) {
     reloadTable();
     pushHistory();
     populateTab();
+    positionInputBar();
+}
+
+function positionInputBar() {
+    let barHeight = $('#bar').height();
+    let tableInputBarHeight = $('.table-input-bar').height();
+
+    $('.table-input-bar').css({top: barHeight});
+    $('#table-section').css({marginTop: (barHeight + tableInputBarHeight)});
 }
 
 function showHelp() {

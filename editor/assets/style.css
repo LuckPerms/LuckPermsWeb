@@ -90,7 +90,6 @@ table {
 }
 
 .content {
-  margin-top: 113px;
   flex-grow: 1;
 }
 
@@ -145,10 +144,6 @@ table {
   background: #eeeeee;
   padding-bottom: 10px;
   position: relative;
-}
-
-#table-section {
-  margin-top: 85px;
 }
 
 .newentry:before {
@@ -232,6 +227,7 @@ table {
 
 .awesomplete {
   position: inherit;
+  display: flex;
 }
 
 .awesomplete > ul {
@@ -272,15 +268,6 @@ table {
 .row.new td:first-child {
   border-left: limegreen 4px solid;
   position: relative;
-}
-
-.row.new td:first-child:before {
-  content: '+';
-	position: absolute;
-	right: 103%;
-	color: limegreen;
-	font-size: 2em;
-	font-weight: bold;
 }
 
 .cell {

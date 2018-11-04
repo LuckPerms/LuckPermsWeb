@@ -60,11 +60,11 @@ function loadCss() {
 
 // try to load the page from the url parameters when the page loads
 function loadContent() {
-    let params = document.location.search;
+    let params = document.location.search || window.location.hash;
     if (params) {
-        console.log("Found location parameters to load from");
+        console.log("Found params to load from");
 
-        if (params.startsWith("?")) {
+        if (params.startsWith("?") || params.startsWith("#")) {
             params = params.substring(1);
         }
 
@@ -926,6 +926,15 @@ function loadData(data) {
     reloadTable();
     pushHistory();
     populateTab();
+    positionInputBar();
+}
+
+function positionInputBar() {
+    let barHeight = $('#bar').height();
+    let tableInputBarHeight = $('.table-input-bar').height();
+
+    $('.table-input-bar').css({top: barHeight});
+    $('#table-section').css({marginTop: (barHeight + tableInputBarHeight)});
 }
 
 function showHelp() {

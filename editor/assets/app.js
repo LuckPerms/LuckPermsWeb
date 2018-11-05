@@ -598,7 +598,7 @@ function handleSave() {
 
         const popup = $("#popup");
         popup.append(content);
-        popup.find(".alert").last().hide().slideDown();
+        popup.addClass('active');
 
         // Change save button back
         $("#save-button").removeClass("loading").addClass("save").text("save");
@@ -642,9 +642,8 @@ function handleSave() {
 }
 
 function handleAlertClose() {
-    $(this).parents(".alert").slideUp(function() {
-        $(this).remove();
-    });
+    $(this).parents("#popup").removeClass('active');
+    $(this).parents(".alert").remove();
 }
 
 function handleShortcuts(event) {

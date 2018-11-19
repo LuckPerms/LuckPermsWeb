@@ -1,5 +1,5 @@
 const JENKINS_URL = "https://ci.lucko.me/job/LuckPerms/";
-const DISCORD_INVITE_CODE = "W3FzxHA";
+const DISCORD_INVITE_CODE = "luckperms";
 
 $.getJSON(JENKINS_URL + "lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]", function(info) {
     const buildUrl = info["url"];
@@ -16,9 +16,7 @@ $.getJSON(JENKINS_URL + "lastSuccessfulBuild/api/json?tree=url,artifacts[fileNam
         }
 
         const selector = "#" + id.toLowerCase() + "-dl";
-        $(selector).click(function() {
-            window.location.href = buildUrl + "artifact/" + relativePath;
-        });
+        $(selector).attr("href", buildUrl + "artifact/" + relativePath);
     }
 
     if (version) {

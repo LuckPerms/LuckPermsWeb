@@ -1,3 +1,5 @@
+const BYTEBIN_URL = "https://bytebin.lucko.me/";
+
 // the tabs currently open in the editor
 const tabs = [];
 
@@ -632,7 +634,7 @@ function handleSave() {
     };
 
     // post the data, and then send a popup when the save is complete
-    $.ajax("https://bytebin.lucko.me/post", {
+    $.ajax(BYTEBIN_URL + "post", {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify(data, null, 2),
@@ -866,7 +868,7 @@ function populateNewTab(data) {
 
 function loadFromParams(params) {
     // get data
-    const url = "https://bytebin.lucko.me/" + params;
+    const url = BYTEBIN_URL + params;
     console.log("Loading from URL: " + url);
     $.getJSON(url, loadData).fail(showLoadingError)
 }

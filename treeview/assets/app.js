@@ -1,3 +1,5 @@
+const BYTEBIN_URL = "https://bytebin.lucko.me/";
+
 // the data currently in the editor
 let metadata = {};
 let tree = {};
@@ -84,7 +86,7 @@ function hidePanel() {
 
 function loadFromParams(params) {
     // get data
-    const url = "https://bytebin.lucko.me/" + params;
+    const url = BYTEBIN_URL + params;
     console.log("Loading from URL: " + url);
     $.getJSON(url, loadData).fail(showLoadingError)
 }

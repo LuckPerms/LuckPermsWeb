@@ -2,7 +2,7 @@
 <div class="editor-header">
   <h1>
     <small>{{sessionData.type}}:</small>
-    {{session.who.friendly}}
+    <code>{{session.who.friendly}}</code>
     <span v-if="sessionData.type == 'group' && displayGroupName(session)">{{ displayGroupName(session) }}</span>
     <img v-if="sessionData.type == 'user'" :src="`https://minotar.net/helm/${session.who.uuid}/100.png`">
   </h1>
@@ -48,7 +48,6 @@ export default {
     small {
       margin-right: .5em;
       text-transform: capitalize;
-      opacity: .5;
     }
 
     span {

@@ -7,11 +7,16 @@ import {
   faSave,
   faUndo,
   faRedo,
+  faPlusCircle,
+  faTimesCircle,
+  faChevronCircleDown,
 } from '@fortawesome/free-solid-svg-icons';
 
 import store from './store';
 import App from './App.vue';
 import router from './router';
+
+Vue.use(Vuex);
 
 Vue.config.productionTip = false;
 
@@ -19,12 +24,13 @@ library.add(
   faSave,
   faUndo,
   faRedo,
+  faPlusCircle,
+  faTimesCircle,
+  faChevronCircleDown,
 );
 Vue.component('font-awesome', FontAwesomeIcon);
 
 Vue.use(require('vue-moment'));
-
-Vue.use(Vuex);
 
 new Vue({
   router,

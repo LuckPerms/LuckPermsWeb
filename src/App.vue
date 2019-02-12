@@ -38,6 +38,19 @@
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  width: .5em;
+
+  &-track {
+    background: rgb(10, 10, 24);
+    border-left: 1px solid rgba(255,255,255,.1);
+  }
+
+  &-thumb {
+    background: rgba(255, 255, 255, .4);
+  }
+}
+
 html {
   height: 100%;
 }
@@ -157,5 +170,12 @@ code {
   background: rgba(0,0,0,.2);
   font-size: .8em;
   border-radius: 2px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>

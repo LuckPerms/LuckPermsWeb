@@ -1,22 +1,48 @@
 <template>
 <div class="node-list">
-  <h2>Permission nodes</h2>
+  <h2>Permission nodes <span>({{ nodes.length }})</span></h2>
+
   <div class="node-list-header">
-    <span @click="sort.method = 'permission'">Permission</span>
-    <span @click="sort.method = 'value'">Value</span>
-    <span @click="sort.method = 'expiry'">Expiry</span>
-    <span @click="sort.method = 'server'">Server</span>
-    <span @click="sort.method = 'world'">World</span>
-    <span @click="sort.method = 'context'">Contexts</span>
+    <span :class="{'active': sort.method == 'permission'}" @click="changeSort('permission')">
+      Permission
+      <font-awesome v-if="sort.method == 'permission'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+    </span>
+
+    <span :class="{'active': sort.method == 'value'}" @click="changeSort('value')">
+      Value
+      <font-awesome v-if="sort.method == 'value'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+    </span>
+
+    <span :class="{'active': sort.method == 'expiry'}" @click="changeSort('expiry')">
+      Expiry
+      <font-awesome v-if="sort.method == 'expiry'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+    </span>
+
+    <span :class="{'active': sort.method == 'server'}" @click="changeSort('server')">
+      Server
+      <font-awesome v-if="sort.method == 'server'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+    </span>
+
+    <span :class="{'active': sort.method == 'world'}" @click="changeSort('world')">
+      World
+      <font-awesome v-if="sort.method == 'world'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+    </span>
+
+    <span :class="{'active': sort.method == 'contexts'}" @click="changeSort('contexts')">
+      Contexts
+      <font-awesome v-if="sort.method == 'contexts'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+    </span>
   </div>
   <ul>
-    <Node v-for="(node, i) in sortedNodes" :node="node" :key="`${i}_${node.permission}`" />
+    <Node v-for="(node, i) in sortedNodes" :node="node" :key="`node_${node.id}`" />
   </ul>
 </div>
 </template>
 
 <script>
 import Node from '@/components/Editor/Node.vue';
+
+const sortBy = require('lodash.sortby');
 
 export default {
   name: 'NodeList',
@@ -36,71 +62,24 @@ export default {
   },
   computed: {
     sortedNodes: function() {
-      if (this.sort.method == 'permission') {
-        return this.nodes.sort(this.sortByPermission);
-      } else if (this.sort.method == 'value') {
-        return this.nodes.sort(this.sortByValue);
-      } else if (this.sort.method == 'expiry') {
-        return this.nodes.sort(this.sortByExpiry);
-      } else if (this.sort.method == 'server') {
-        return this.nodes.sort(this.sortByServer);
-      } else if (this.sort.method == 'world') {
-        return this.nodes.sort(this.sortByWorld);
-      } else if (this.sort.method == 'context') {
-        return this.nodes.sort(this.sortByContext);
+      let sorted = sortBy(this.nodes, [this.sort.method]);
+
+      if (this.sort.desc) {
+        return sorted;
       } else {
-        return this.nodes;
+        return sorted.reverse();
       }
     }
   },
   methods: {
-    sortByPermission: function(a, b) {
-      if (a.permission < b.permission) {
-        return -1;
-      } else if (a.permission > b.permission) {
-        return 1;
+    changeSort: function(method) {
+      if (this.sort.method == method) {
+        this.sort.desc = !this.sort.desc;
       } else {
-        return 0;
+        this.sort.desc = true;
       }
-    },
-    sortByValue: function(a, b) {
-      if (a.value < b.value) {
-        return -1;
-      } else if (a.value > b.value) {
-        return 1;
-      } else {
-        return 0;
-      }
-    },
-    sortByExpiry: function(a, b) {
-      return a - b;
-    },
-    sortByServer: function(a, b) {
-      if (a.server < b.server) {
-        return -1;
-      } else if (a.server > b.server) {
-        return 1;
-      } else {
-        return 0;
-      }
-    },
-    sortByWorld: function(a, b) {
-      if (a.world < b.world) {
-        return -1;
-      } else if (a.world > b.world) {
-        return 1;
-      } else {
-        return 0;
-      }
-    },
-    sortByContext: function(a, b) {
-      if (a.context < b.context) {
-        return -1;
-      } else if (a.context > b.context) {
-        return 1;
-      } else {
-        return 0;
-      }
+
+      this.sort.method = method;
     },
   }
 };
@@ -114,7 +93,13 @@ export default {
 
   h2 {
     margin: 0;
+    margin-bottom: .5em;
     padding: .5em 1rem 0;
+
+    span {
+      margin-left: .5em;
+      opacity: .5;
+    }
   }
 
   .node-list-header {
@@ -129,6 +114,22 @@ export default {
       flex: 1 1 12%;
       padding: .5em 1em;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &.active {
+        background: rgba(255,255,255,.1);
+      }
+
+      svg {
+        opacity: .5;
+        transition: transform .3s;
+
+        &.reverse {
+          transform: rotate(180deg);
+        }
+      }
 
       &:hover {
         background: rgba(255,255,255,0.2);

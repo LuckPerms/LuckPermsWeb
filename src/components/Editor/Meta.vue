@@ -1,10 +1,10 @@
 <template>
 <div class="editor-meta">
   <div class="meta-weight" v-if="sessionData.type == 'group'">
-    <strong>Weight: </strong> {{formatWeight(sessionData.weight)}}
+    <strong>Weight: </strong> <code>{{formatWeight(sessionData.weight)}}</code> 
   </div>
   <div class="meta-parents" v-if="sessionData.parents.length > 0">
-    <strong>Parents:</strong>
+    <strong>Parent groups:</strong>
     <ul>
       <li v-for="parent in sessionData.parents" @click="$emit('changeCurrentSession', parent)">
         <code>{{formatParent(parent)}}</code>

@@ -17,7 +17,7 @@
     </div>
 
     <div v-else class="editor-container">
-      <div v-if="!data" class="editor-intro">
+      <div v-if="!sessions" class="editor-intro">
         <div>
           <p>Loading data...</p>
         </div>
@@ -25,9 +25,12 @@
       <div v-else class="editor-wrap">
         <nav>
           <div class="groups">
-            <h2>Groups</h2>
+            <h2>
+              Groups
+              <font-awesome icon="plus-circle" @click="createGroup" />
+            </h2>
             <ul>
-              <li v-for="group in groups" @click="currentSession = group" :class="{'active': currentSession == group}">
+              <li v-for="group in groups" @click="changeCurrentSession(group.id)" :class="{'active': currentSession == group}" :key="group.id">
                 {{group.who.friendly}} <span v-if="displayGroupName(group)">{{ displayGroupName(group) }}</span>
               </li>
             </ul>
@@ -35,7 +38,7 @@
           <div class="users">
             <h2>Users</h2>
             <ul>
-              <li v-for="user in users" @click="currentSession = user" :class="{'active': currentSession == user}">
+              <li v-for="user in users" @click="changeCurrentSession(user.id)" :class="{'active': currentSession == user}" :key="user.id">
                 <img :src="`https://minotar.net/helm/${user.who.uuid}/100.png`"> {{user.who.friendly}}
               </li>
             </ul>
@@ -55,18 +58,27 @@
             </div>
           </nav>
 
-          <div v-if="!currentSession">
-            <h1>Choose a group or user from the side bar</h1>
-          </div>
+          <transition name="fade" mode="in-out">
+            <div class="editor-no-session" v-if="!currentSession">
+              <h1>Choose a group or user from the side bar</h1>
+            </div>
+          </transition>
 
-          <div v-else>
-            <Header :session="currentSession" :sessionData="currentSessionData" :key="currentSession.who.id" />
-            <Meta :session="currentSession" :sessionData="currentSessionData" />
-            <NodeList :nodes="currentSession.nodes" />
-          </div>
+          <transition name="fade" mode="out-in">
+            <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.who.id}`">
+              <Header :session="currentSession" :sessionData="currentSessionData" />
+              <Meta :session="currentSession" :sessionData="currentSessionData" />
+              <NodeList :nodes="currentNodes" />
+            </div>
+          </transition>
+
         </div>
       </div>
     </div>
+
+    <transition name="fade">
+      <Modal v-if="modal.type" :modal="modal" />
+    </transition>
 
   </main>
 </template>
@@ -75,7 +87,7 @@
 import Header from '@/components/Editor/Header.vue';
 import Meta from '@/components/Editor/Meta.vue';
 import NodeList from '@/components/Editor/NodeList.vue';
-import axios from 'axios';
+import Modal from '@/components/Editor/Modal.vue';
 
 export default {
   name: 'Editor',
@@ -83,66 +95,78 @@ export default {
     Header,
     Meta,
     NodeList,
+    Modal,
   },
   data: function() {
     return {
       sessionId: '',
-      // data: null,
-      currentSession: null,
     }
   },
 
   computed: {
-    data() {
-      return this.$store.state.editor.data;
+    sessions() {
+      return this.$store.getters.sessionSet;
     },
-    groups: function() {
-      return this.data.sessions.filter(session => {
+    groups() {
+      return this.sessions.filter(session => {
         return session.who.id.indexOf('group') == 0;
       });
     },
-    users: function() {
-      return this.data.sessions.filter(session => {
+    users() {
+      return this.sessions.filter(session => {
         return session.who.id.indexOf('user') == 0;
       });
     },
-    currentSessionData: function() {
-      let data = {};
-
-      if (this.currentSession.who.id.indexOf('group') == 0) {
-        data.type = 'group';
-      } else if (this.currentSession.who.id.indexOf('user') == 0) {
-        data.type = 'user';
+    currentSession() {
+      return this.$store.getters.currentSession || null;
+    },
+    currentNodes() {
+      return this.$store.getters.currentNodes || null;
+    },
+    currentSessionData() {
+      if (this.currentNodes.length) {
+        let data = {};
+  
+        if (this.currentSession.who.id.indexOf('group') == 0) {
+          data.type = 'group';
+        } else if (this.currentSession.who.id.indexOf('user') == 0) {
+          data.type = 'user';
+        } else {
+          data.type = null;
+        }
+  
+        data.parents = this.currentNodes.filter(node => {
+          return node.permission.indexOf('group') == 0;
+        });
+  
+        data.displayname = this.currentNodes.filter(node => {
+          return node.permission.indexOf('displayname') == 0;
+        });
+  
+        data.weight = this.currentNodes.filter(node => {
+          return node.permission.indexOf('weight') == 0;
+        });
+  
+        data.prefixes = this.currentNodes.filter(node => {
+          return node.permission.indexOf('prefix') == 0;
+        });
+  
+        data.suffixes = this.currentNodes.filter(node => {
+          return node.permission.indexOf('suffix') == 0;
+        });
+  
+        data.meta = this.currentNodes.filter(node => {
+          return node.permission.indexOf('meta') == 0;
+        });
+  
+        return data;
       } else {
-        data.type = null;
+        return null;
       }
-
-      data.parents = this.currentSession.nodes.filter(node => {
-        return node.permission.indexOf('group') == 0;
-      });
-
-      data.displayname = this.currentSession.nodes.filter(node => {
-        return node.permission.indexOf('displayname') == 0;
-      });
-
-      data.weight = this.currentSession.nodes.filter(node => {
-        return node.permission.indexOf('weight') == 0;
-      });
-
-      data.prefixes = this.currentSession.nodes.filter(node => {
-        return node.permission.indexOf('prefix') == 0;
-      });
-
-      data.suffixes = this.currentSession.nodes.filter(node => {
-        return node.permission.indexOf('suffix') == 0;
-      });
-
-      data.meta = this.currentSession.nodes.filter(node => {
-        return node.permission.indexOf('meta') == 0;
-      });
-
-      return data;
-    }
+    },
+    modal() {
+      return this.$store.state.editor.modal;
+    },
   },
 
   created() {
@@ -150,18 +174,12 @@ export default {
       this.sessionId = this.$route.params.id;
 
       this.$store.dispatch('getEditorData', this.sessionId);
-
-      // axios.get(`https://bytebin.lucko.me/${this.sessionId}`)
-      // .then(res => {
-      //   this.data = res.data;
-      // })
-      // .catch(console.error);
     }
   },
 
   methods: {
-    changeCurrentSession: function(session) {
-      this.currentSession = session;
+    changeCurrentSession: function(sessionId) {
+      this.$store.commit('setCurrentSession', sessionId);
     },
     displayGroupName: function(group) {
       const friendly = group.who.friendly;
@@ -172,7 +190,10 @@ export default {
       } else {
         return null;
       }
-    }
+    },
+    createGroup: function() {
+      this.$store.commit('setModal', { type:'createGroup', object: this.groups });
+    },
   }
 }
 </script>
@@ -259,6 +280,19 @@ main.editor {
           top: 0;
           z-index: 5;
           background-color: #101022;
+
+          svg {
+            position: absolute;
+            right: 1em;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: .5;
+            cursor: pointer;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
         }
 
         ul {
@@ -313,6 +347,7 @@ main.editor {
         flex: 4;
         display: flex;
         flex-direction: column;
+        position: relative;
 
         > nav {
           display: flex;
@@ -342,10 +377,20 @@ main.editor {
 
         > div {
           max-height: 100%;
+          width: 100%;
           overflow-y: auto;
           flex: 1;
           display: flex;
           flex-direction: column;
+        }
+
+        .editor-no-session {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         h1 {

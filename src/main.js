@@ -10,6 +10,7 @@ import {
   faPlusCircle,
   faTimesCircle,
   faChevronCircleDown,
+  faAsterisk,
 } from '@fortawesome/free-solid-svg-icons';
 
 import store from './store';
@@ -27,6 +28,7 @@ library.add(
   faPlusCircle,
   faTimesCircle,
   faChevronCircleDown,
+  faAsterisk,
 );
 Vue.component('font-awesome', FontAwesomeIcon);
 

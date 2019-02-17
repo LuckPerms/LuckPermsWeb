@@ -1,5 +1,6 @@
 <template>
   <main class="editor">
+
     <div v-if="!sessionId" class="editor-intro">
       <div>
         <img alt="LuckPerms logo" src="../assets/logo.png">
@@ -17,63 +18,80 @@
     </div>
 
     <div v-else class="editor-container">
-      <div v-if="!sessions" class="editor-intro">
-        <div>
-          <p>Loading data...</p>
-        </div>
-      </div>
-      <div v-else class="editor-wrap">
-        <nav>
-          <div class="groups">
-            <h2>
-              Groups
-              <font-awesome icon="plus-circle" @click="createGroup" />
-            </h2>
-            <ul>
-              <li v-for="group in groups" @click="changeCurrentSession(group.id)" :class="{'active': currentSession == group}" :key="group.id">
-                {{group.who.friendly}} <span v-if="displayGroupName(group)">{{ displayGroupName(group) }}</span>
-              </li>
-            </ul>
-          </div>
-          <div class="users">
-            <h2>Users</h2>
-            <ul>
-              <li v-for="user in users" @click="changeCurrentSession(user.id)" :class="{'active': currentSession == user}" :key="user.id">
-                <img :src="`https://minotar.net/helm/${user.who.uuid}/100.png`"> {{user.who.friendly}}
-              </li>
-            </ul>
-          </div>
-        </nav>
 
-        <div class="editor-main">
-          <nav>
-            <div class="logo">
-              <img alt="LuckPerms logo" src="../assets/logo.png">
-              Web Permissions Editor
+      <transition name="fade" mode="out-in">
+        <div v-if="!sessions.length" class="editor-intro" key="loading">
+          <div>
+            <img alt="LuckPerms logo" src="../assets/logo.png">
+            <div class="text">
+              <h1>LuckPerms</h1>
+              <p>Web Permissions Editor</p>
+              <p v-if="!errors.load">
+                <font-awesome icon="asterisk" :spin="true" />
+                Loading data...
+              </p>
+              <div v-else class="error">
+                <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong or the session has expired.</p>
+                <p>Please generate another editor session with <code>/lp editor</code>.</p>
+              </div>
             </div>
-            <div class="buttons">
-              <font-awesome icon="undo" />
-              <font-awesome icon="redo" />
-              <font-awesome icon="save" />
+          </div>
+        </div>
+
+        <div v-else class="editor-wrap" :key="sessionId">
+          <nav>
+            <div class="groups" v-if="groups.length">
+              <h2>
+                Groups
+                <font-awesome icon="plus-circle" @click="createGroup" />
+              </h2>
+              <ul>
+                <li v-for="group in groups" @click="changeCurrentSession(group.id)" :class="{'active': currentSession == group}" :key="group.id">
+                  {{group.who.friendly}} <span v-if="displayGroupName(group)">{{ displayGroupName(group) }}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="users" v-if="users.length">
+              <h2>Users</h2>
+              <ul>
+                <li v-for="user in users" @click="changeCurrentSession(user.id)" :class="{'active': currentSession == user}" :key="user.id">
+                  <img :src="`https://minotar.net/helm/${user.who.uuid}/100.png`"> {{user.who.friendly}}
+                </li>
+              </ul>
             </div>
           </nav>
 
-          <transition name="fade" mode="in-out">
-            <div class="editor-no-session" v-if="!currentSession">
-              <h1>Choose a group or user from the side bar</h1>
-            </div>
-          </transition>
+          <div class="editor-main">
+            <nav>
+              <div class="logo">
+                <img alt="LuckPerms logo" src="../assets/logo.png">
+                Web Permissions Editor
+              </div>
+              <div class="buttons">
+                <font-awesome icon="undo" />
+                <font-awesome icon="redo" />
+                <font-awesome icon="save" />
+              </div>
+            </nav>
 
-          <transition name="fade" mode="out-in">
-            <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.who.id}`">
-              <Header :session="currentSession" :sessionData="currentSessionData" />
-              <Meta :session="currentSession" :sessionData="currentSessionData" />
-              <NodeList :nodes="currentNodes" />
-            </div>
-          </transition>
+            <transition name="fade" mode="in-out">
+              <div class="editor-no-session" v-if="!currentSession">
+                <h1>Choose a group or user from the side bar</h1>
+              </div>
+            </transition>
 
+            <transition name="fade" mode="out-in">
+              <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.who.id}`">
+                <Header :session="currentSession" :sessionData="currentSessionData" />
+                <Meta :session="currentSession" :sessionData="currentSessionData" />
+                <NodeList :nodes="currentNodes" />
+              </div>
+            </transition>
+
+          </div>
         </div>
-      </div>
+      </transition>
+
     </div>
 
     <transition name="fade">
@@ -167,6 +185,9 @@ export default {
     modal() {
       return this.$store.state.editor.modal;
     },
+    errors() {
+      return this.$store.state.editor.errors;
+    },
   },
 
   created() {
@@ -215,7 +236,7 @@ main.editor {
       align-items: center;
       background: rgba(255,255,255,.2);
       padding: 2em;
-      max-width: 500px;
+      max-width: 550px;
       border-radius: 2px;
     }
 
@@ -231,12 +252,23 @@ main.editor {
       + p {
         font-size: 1.5em;
         margin-top: 0;
-        margin-bottom: 1em;
+        margin-bottom: 1rem;
+      }
+    }
+
+    p {
+      &:first-of-type {
+        margin-top: 0;
+      }
+
+      &:last-of-type {
+        margin-bottom: 0;
       }
     }
 
     ul {
       margin: 0;
+      margin-top: 1em;
       padding-left: 1.5em;
 
       li {
@@ -246,6 +278,16 @@ main.editor {
           margin: 0;
         }
       }
+    }
+
+    svg {
+      margin-right: .5em;
+      opacity: .5;
+    }
+
+    .error {
+      margin-top: 1em;
+      color: tomato;
     }
   }
 

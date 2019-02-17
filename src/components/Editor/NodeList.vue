@@ -36,6 +36,44 @@
   <ul>
     <Node v-for="(node, i) in sortedNodes" :node="node" :key="`node_${node.id}`" />
   </ul>
+
+  <div class="add-node">
+    <ul class="known-permissions" v-if="addNode.list && sortedKnownPermissions">
+      <li v-for="(node, i) in sortedKnownPermissions" :key="i + '_' + node" @click="addNode.permission = node; addNode.list = false">{{node}}</li>
+    </ul>
+
+    <div class="row">
+      <div class="form-group">
+        <label for="permission">Add permission</label>
+        <input type="text" id="permission" name="permission" v-model="addNode.permission" @focus="addNode.list = true">
+      </div>
+
+      <div class="form-group">
+        <label for="value">Value</label>
+        <code @click="addNode.value = !addNode.value" :class="{'true': addNode.value}">{{addNode.value}}</code>
+      </div>
+
+      <div class="form-group">
+        <label for="expiry">Expiry</label>
+        <input type="text" id="expiry" name="expiry" v-model="addNode.expiry" placeholder="never">
+      </div>
+
+      <div class="form-group">
+        <label for="server">Server</label>
+        <input type="text" id="server" name="server" v-model="addNode.server"  placeholder="global">
+      </div>
+
+      <div class="form-group">
+        <label for="world">World</label>
+        <input type="text" id="world" name="world" v-model="addNode.world"  placeholder="global">
+      </div>
+
+      <div class="form-group">
+        <label for="contexts">Contexts</label>
+        <input type="text" id="contexts" name="contexts" v-model="addNode.contexts"  placeholder="none">
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -57,7 +95,16 @@ export default {
       sort: {
         method: null,
         desc: true,
-      }
+      },
+      addNode: {
+        permission: '',
+        list: false,
+        value: true,
+        expiry: null,
+        server: null,
+        world: null,
+        contexts: null,
+      },
     }
   },
   computed: {
@@ -69,7 +116,19 @@ export default {
       } else {
         return sorted.reverse();
       }
-    }
+    },
+    knownPermissions() {
+      return this.$store.state.editor.knownPermissions;
+    },
+    sortedKnownPermissions() {
+      if (this.addNode.permission != '') {
+        return this.knownPermissions.filter(node => {
+          return node.indexOf(this.addNode.permission) >= 0;
+        });
+      } else {
+        return null;
+      }
+    },
   },
   methods: {
     changeSort: function(method) {
@@ -146,6 +205,82 @@ export default {
     padding: 0;
     list-style: none;
 
+  }
+
+  .add-node {
+    position: sticky;
+    bottom: 0;
+    background-color: #565660;
+    border-top: 1px solid rgba(0,0,0,0.2);
+
+    .known-permissions {
+      position: absolute;
+      bottom: 100%;
+      background: #565660;
+      z-index: 15;
+      width: 40%;
+      max-height: 50vh;
+      overflow-y: auto;
+      padding: .5em 0;
+      
+      li {
+        padding: .2em 1em;
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+        cursor: pointer;
+
+        &:hover {
+          background: rgba(255,255,255,.2);
+        }
+      }
+    }
+
+    .row {
+      display: flex;
+      padding: 1em .5em;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 12%;
+        padding: 0 .5em;
+        align-items: flex-start;
+        position: relative;
+
+        &:first-child {
+          flex: 2 2 40%;
+        }
+
+        label {
+          line-height: 1;
+          margin-bottom: .5em;
+        }
+
+        input {
+          width: 100%;
+          border: 0;
+          background: rgba(0,0,0,0.2);
+          border-radius: 2px;
+          padding: .2em .5em;
+          color: #FFF;
+          font-family: 'Source Code Pro', monospace;
+          line-height: 1.5;
+        }
+
+
+        code {
+          color: tomato;
+          cursor: pointer;
+
+          &.true {
+            color: lawngreen;
+          }
+
+          &:hover {
+            opacity: .8;
+          }
+        }
+      }
+    }
   }
 }
 </style>

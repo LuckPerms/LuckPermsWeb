@@ -6,24 +6,30 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    editor: {
-      sessions: {},
-      sessionList: [],
-      nodes: [],
-      knownPermissions: [],
-      currentSession: null,
-      modal: {
-        type: null,
-        object: null,
-      },
-    },
+    editor: {},
   },
   getters: {
     sessionSet: state => state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]),
     currentSession: state => state.editor.sessions[state.editor.currentSession],
-    currentNodes: state => state.editor.nodes.filter(node => node.sessionId == state.editor.currentSession),
+    currentNodes: state => state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession),
   },
   mutations: {
+    initEditorData(state) {
+      state.editor = {
+        sessions: {},
+        sessionList: [],
+        nodes: [],
+        knownPermissions: [],
+        currentSession: null,
+        modal: {
+          type: null,
+          object: null,
+        },
+        errors: {
+          load: false,
+        },
+      };
+    },
     setKnownPermissions(state, array) {
       state.editor.knownPermissions = array;
     },
@@ -44,9 +50,14 @@ export default new Vuex.Store({
     toggleNodeValue(state, node) {
       node.value = !node.value;
     },
+    setLoadError(state) {
+      state.editor.errors.load = true;
+    },
   },
   actions: {
     getEditorData({ state, commit }, sessionId) {
+      commit('initEditorData');
+      
       axios.get(`https://bytebin.lucko.me/${sessionId}`)
         .then((response) => {
           response.data.sessions.forEach((session, id) => {
@@ -63,6 +74,10 @@ export default new Vuex.Store({
           });
 
           commit('setKnownPermissions', response.data.knownPermissions);
+        })
+        .catch(() => {
+          console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+          commit('setLoadError');
         });
     },
     changeCurrentSession({ commit }, session) {

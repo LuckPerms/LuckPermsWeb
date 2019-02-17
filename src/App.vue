@@ -5,7 +5,9 @@
       <router-link to="/editor">Editor</router-link>
     </div> -->
 
-    <router-view/>
+    <transition name="fade" mode="out-in">
+      <router-view/>
+    </transition>
 
     <footer>
       <div class="footer">

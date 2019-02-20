@@ -150,18 +150,10 @@ function reloadTable() {
 
         if (type === "permission") {
             const permission = entry.permission;
-            const result = entry.result;
+            const result = entry.result || "undefined";
 
             content += '<td class="cell request">' + escapeHtml(permission) + '</td>';
-
-            if (result === "true") {
-                content += '<td class="cell result"><span class="value" data-type="true">true</span></td>';
-            } else if (result === "false") {
-                content += '<td class="cell result"><span class="value" data-type="false">false</span></td>';
-            } else {
-                content += '<td class="cell result"><span class="value" data-type="undefined">undefined</span></td>';
-            }
-
+            content += '<td class="cell result"><span class="value" data-type="' + result + '">' + result + '</span></td>';
         } else if (type === "meta") {
             const key = entry.key;
             const result = entry.result;
@@ -184,7 +176,17 @@ function reloadTable() {
         content += '<tr id="e' + i + '-extra" class="row extra" style="display: none">';
         content += '<td class="extra-cell" colspan="4">';
         content += '<p><b>Context: </b>' + formatContext(context) + '</p>';
-        content += '<p><b>Origin: &nbsp; &nbsp;</b><span>' + escapeHtml(origin.toUpperCase()) + '</span></p>';
+        content += '<p><b>Origin: </b><span>' + escapeHtml(origin.toUpperCase()) + '</span></p>';
+
+        if (type === "permission" && entry["resultInfo"]) {
+            if (entry["resultInfo"]["processorClass"]) {
+                content += '<p><b>Processor: </b>' + entry["resultInfo"]["processorClass"] + '</p>';
+            }
+            if (entry["resultInfo"]["cause"]) {
+                content += '<p><b>Cause: </b>' + entry["resultInfo"]["cause"] + '</p>';
+            }
+        }
+
         content += '<b>Trace: </b>';
         content += '<br>';
         content += '<div class="trace">';

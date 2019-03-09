@@ -3,77 +3,83 @@
   <h2>Permission nodes <span>({{ nodes.length }})</span></h2>
 
   <div class="node-list-header">
-    <span :class="{'active': sort.method == 'permission'}" @click="changeSort('permission')">
-      Permission
-      <font-awesome v-if="sort.method == 'permission'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-    </span>
+    <div class="add-node">
+      <ul class="known-permissions" v-if="addNode.list && sortedKnownPermissions">
+        <li v-for="(node, i) in sortedKnownPermissions" :key="i + '_' + node" @click="addNode.permission = node; addNode.list = false">{{node}}</li>
+      </ul>
 
-    <span :class="{'active': sort.method == 'value'}" @click="changeSort('value')">
-      Value
-      <font-awesome v-if="sort.method == 'value'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-    </span>
+      <div class="row">
+        <div class="form-group">
+          <label for="permission">Add permission</label>
+          <input type="text" id="permission" name="permission" v-model="addNode.permission" @focus="addNode.list = true" @blur="addNode.list = false">
+        </div>
 
-    <span :class="{'active': sort.method == 'expiry'}" @click="changeSort('expiry')">
-      Expiry
-      <font-awesome v-if="sort.method == 'expiry'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-    </span>
+        <div class="form-group">
+          <label for="value">Value</label>
+          <code @click="addNode.value = !addNode.value" :class="{'true': addNode.value}">{{addNode.value}}</code>
+        </div>
 
-    <span :class="{'active': sort.method == 'server'}" @click="changeSort('server')">
-      Server
-      <font-awesome v-if="sort.method == 'server'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-    </span>
+        <div class="form-group">
+          <label for="expiry">Expiry</label>
+          <input type="text" id="expiry" name="expiry" v-model="addNode.expiry" placeholder="never">
+        </div>
 
-    <span :class="{'active': sort.method == 'world'}" @click="changeSort('world')">
-      World
-      <font-awesome v-if="sort.method == 'world'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-    </span>
+        <div class="form-group">
+          <label for="server">Server</label>
+          <input type="text" id="server" name="server" v-model="addNode.server"  placeholder="global">
+        </div>
 
-    <span :class="{'active': sort.method == 'contexts'}" @click="changeSort('contexts')">
-      Contexts
-      <font-awesome v-if="sort.method == 'contexts'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-    </span>
+        <div class="form-group">
+          <label for="world">World</label>
+          <input type="text" id="world" name="world" v-model="addNode.world"  placeholder="global">
+        </div>
+
+        <div class="form-group">
+          <label for="contexts">Contexts</label>
+          <input type="text" id="contexts" name="contexts" v-model="addNode.contexts"  placeholder="none">
+        </div>
+      </div>
+    </div>
+
+    <div class="sorting-tabs">
+      <span :class="{'active': sort.method == 'permission'}" @click="changeSort('permission')">
+        Permission
+        <font-awesome v-if="sort.method == 'permission'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+      </span>
+
+      <span :class="{'active': sort.method == 'value'}" @click="changeSort('value')">
+        Value
+        <font-awesome v-if="sort.method == 'value'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+      </span>
+
+      <span :class="{'active': sort.method == 'expiry'}" @click="changeSort('expiry')">
+        Expiry
+        <font-awesome v-if="sort.method == 'expiry'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+      </span>
+
+      <span :class="{'active': sort.method == 'server'}" @click="changeSort('server')">
+        Server
+        <font-awesome v-if="sort.method == 'server'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+      </span>
+
+      <span :class="{'active': sort.method == 'world'}" @click="changeSort('world')">
+        World
+        <font-awesome v-if="sort.method == 'world'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+      </span>
+
+      <span :class="{'active': sort.method == 'contexts'}" @click="changeSort('contexts')">
+        Contexts
+        <font-awesome v-if="sort.method == 'contexts'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+      </span>
+    </div>
   </div>
+
+
   <ul>
     <Node v-for="(node, i) in sortedNodes" :node="node" :key="`node_${node.id}`" />
   </ul>
 
-  <div class="add-node">
-    <ul class="known-permissions" v-if="addNode.list && sortedKnownPermissions">
-      <li v-for="(node, i) in sortedKnownPermissions" :key="i + '_' + node" @click="addNode.permission = node; addNode.list = false">{{node}}</li>
-    </ul>
 
-    <div class="row">
-      <div class="form-group">
-        <label for="permission">Add permission</label>
-        <input type="text" id="permission" name="permission" v-model="addNode.permission" @focus="addNode.list = true">
-      </div>
-
-      <div class="form-group">
-        <label for="value">Value</label>
-        <code @click="addNode.value = !addNode.value" :class="{'true': addNode.value}">{{addNode.value}}</code>
-      </div>
-
-      <div class="form-group">
-        <label for="expiry">Expiry</label>
-        <input type="text" id="expiry" name="expiry" v-model="addNode.expiry" placeholder="never">
-      </div>
-
-      <div class="form-group">
-        <label for="server">Server</label>
-        <input type="text" id="server" name="server" v-model="addNode.server"  placeholder="global">
-      </div>
-
-      <div class="form-group">
-        <label for="world">World</label>
-        <input type="text" id="world" name="world" v-model="addNode.world"  placeholder="global">
-      </div>
-
-      <div class="form-group">
-        <label for="contexts">Contexts</label>
-        <input type="text" id="contexts" name="contexts" v-model="addNode.contexts"  placeholder="none">
-      </div>
-    </div>
-  </div>
 </div>
 </template>
 
@@ -162,40 +168,43 @@ export default {
   }
 
   .node-list-header {
-    display: flex;
     position: sticky;
     top: 4em;
     background-color: rgb(67,67,78);
     border-bottom: 1px solid rgba(0,0,0,0.2);
-    z-index: 5;
+    z-index: 4;
 
-    > span {
-      flex: 1 1 12%;
-      padding: .5em 1em;
-      cursor: pointer;
+    .sorting-tabs {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
 
-      &.active {
-        background: rgba(255,255,255,.1);
-      }
+      > span {
+        flex: 1 1 12%;
+        padding: .5em 1em;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-      svg {
-        opacity: .5;
-        transition: transform .3s;
-
-        &.reverse {
-          transform: rotate(180deg);
+        &.active {
+          background: rgba(255,255,255,.1);
         }
-      }
 
-      &:hover {
-        background: rgba(255,255,255,0.2);
-      }
+        svg {
+          opacity: .5;
+          transition: transform .3s;
 
-      &:first-child {
-        flex: 2 2 40%;
+          &.reverse {
+            transform: rotate(180deg);
+          }
+        }
+
+        &:hover {
+          background: rgba(255,255,255,0.2);
+        }
+
+        &:first-child {
+          flex: 2 2 40%;
+        }
       }
     }
   }
@@ -208,14 +217,11 @@ export default {
   }
 
   .add-node {
-    position: sticky;
-    bottom: 0;
-    background-color: #565660;
-    border-top: 1px solid rgba(0,0,0,0.2);
+    background-color: #666670;
 
     .known-permissions {
       position: absolute;
-      bottom: 100%;
+      top: 100%;
       background: #565660;
       z-index: 15;
       width: 40%;

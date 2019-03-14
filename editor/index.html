@@ -5,19 +5,19 @@
   <meta charset="utf-8">
   <title>LuckPerms - 网页权限编辑器</title>
 
-  <meta name="description" content="A web based permissions editor for LuckPerms.">
+  <meta name="description" content="可以修改某个用户或者某个权限组的权限,并可以保存在服务器内">
   <meta name="author" content="Luck">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="LuckPerms - Web Editor">
-  <meta name="twitter:description" content="A web based permissions editor for LuckPerms.">
+  <meta name="twitter:title" content="LuckPerms - 网页权限编辑器">
+  <meta name="twitter:description" content="可以修改某个用户或者某个权限组的权限,并可以保存在服务器内">
   <meta name="twitter:image" content="https://luckperms.github.io/assets/logo/720px.png">
-  <meta property="og:title" content="LuckPerms - Web Editor">
-  <meta property="og:description" content="A web based permissions editor for LuckPerms.">
+  <meta property="og:title" content="LuckPerms - 网页权限编辑器">
+  <meta property="og:description" content="可以修改某个用户或者某个权限组的权限,并可以保存在服务器内">
   <meta property="og:type" content="product">
   <meta property="og:image" content="https://luckperms.github.io/assets/logo/720px.png">
   <meta property="og:url" content="https://luckperms.github.io/">
-  <meta property="og:site_name" content="LuckPerms - An advanced permissions plugin for Bukkit/Spigot, BungeeCord, Sponge, Nukkit and Velocity">
+  <meta property="og:site_name" content="这是一个先进的权限插件,它支持了Bukkit/Spigot、BungeeCord、Sponge、Nukkit以及Velocity服务端">
   <link rel="apple-touch-icon" href="https://luckperms.github.io/assets/logo/720px.png">
 
   <link href="../assets/logo/16px.png" rel="shortcut icon" sizes="16x16" type="image/png">
@@ -52,13 +52,13 @@
   <ul class="flex-center">
     <li>
       <a href="../"><img alt="LuckPerms Logo" class="tiny-logo" width="40" height="40" src="../assets/logo/40px.png" srcset="../assets/logo/80px.png 2x, ../assets/logo/160px.png 4x"></a>
-      <h3>网页权限编辑器</h3>
+      <h3>LuckPerms 网页权限编辑器</h3>
     </li>
     <li id="identifier"></li>
     <li>
       <i id="undo-button" class="unclickable material-icons undo" title="撤销 (Ctrl + Z)">undo</i>
       <i id="redo-button" class="unclickable material-icons redo" title="还原 (Ctrl + Y)">redo</i>
-      <i id="save-button" class="clickable material-icons save" title="S保存 (Ctrl + S)">save</i>
+      <i id="save-button" class="clickable material-icons save" title="保存 (Ctrl + S)">save</i>
       <i style="display: none" id="help-button" class="clickable material-icons help" title="帮助 (Ctrl + H)">help</i>
     </li>
   </ul>
@@ -91,13 +91,13 @@
       <div class="table-input-bar">
         <div class="newentry">
           <div id="inpform">
-            <input type="text" class="autocomp" name="permission" placeholder="Permission" title="Filter through known permissions or add a new one.">
+            <input type="text" class="autocomp" name="permission" placeholder="权限节点" title="支持根据您的服务端的插件自动填充权限节点">
             <input type="text" name="expiry" class="datepicker-here" placeholder="Expiry" data-language="en" data-timepicker="true" title="When will the permission expire? Leave blank for no expiry.">
-            <input type="text" name="server" placeholder="Server" title="Restrict this permission to a certain server. Leave blank for global.">
-            <input type="text" name="world" placeholder="World" title="Restrict this permission to a certain world. Leave blank for global.">
+            <input type="text" name="server" placeholder="子服名称" title="区分子服名称设置权限，不设置将不区分子服。">
+            <input type="text" name="world" placeholder="世界名称" title="区分某个子服内的世界，如果不设置将默认设置为global">
             <input type="text" name="contexts" placeholder="Contexts" title="Add custom contexts.">
             <input type="checkbox" name="value" id="inpvalue" checked>
-            <label for="inpvalue" title="Click to toggle the true/false value."></label>
+            <label for="inpvalue" title="点击切换设置启用(true)还是禁用(false)该权限"></label>
             <i class="clickable material-icons add" title="Add permission.">add_box</i>
           </div>
         </div>

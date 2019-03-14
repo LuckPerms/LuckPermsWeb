@@ -1,2 +1,2 @@
 # LuckPermsWeb
-A collection of web resources for the LuckPerms plugin.
+该网站内设置的编辑适用于LuckPerms权限组插件

@@ -18,17 +18,16 @@ export default {
   },
 
   methods: {
-    displayGroupName: function(group) {
-      const friendly = group.who.friendly;
+    displayGroupName(group) {
+      const { friendly } = group.who;
       const id = group.who.id.split('/').pop();
 
       if (friendly != id) {
         return id;
-      } else {
-        return null;
       }
-    }
-  }
+      return null;
+    },
+  },
 };
 </script>
 

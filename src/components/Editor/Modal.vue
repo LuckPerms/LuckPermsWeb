@@ -27,10 +27,10 @@ export default {
     },
   },
   methods: {
-    closeModal: function() {
+    closeModal() {
       this.$store.commit('setModal', { type: null, object: null });
-    }
-  }
+    },
+  },
 };
 </script>
 

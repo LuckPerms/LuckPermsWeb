@@ -59,7 +59,7 @@ html {
 
 body {
   margin: 0;
-  min-height: 100%;
+  height: 100vh;
   display: flex;
 }
 
@@ -71,13 +71,13 @@ body {
   line-height: 1.5;
   background-color: #141422;
   width: 100%;
-  min-height: 100vh;
-  max-height: 100vh;
+  height: 100%;
   display: flex;
   flex-flow: column;
 
   > main {
     flex: 1;
+    height: 100%;
   }
 
   > footer {
@@ -152,14 +152,14 @@ body {
 }
 
 @keyframes octocat-wave {
-  0%, 100%{ 
+  0%, 100%{
     transform: rotate(0);
   }
-  
+
   20%, 60% {
     transform: rotate(-25deg);
   }
-  
+
   40%, 80% {
     transform: rotate(10deg);
   }

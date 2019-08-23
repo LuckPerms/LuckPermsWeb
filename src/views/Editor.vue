@@ -83,7 +83,7 @@
             <transition name="fade" mode="out-in">
               <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.who.id}`">
                 <Header :session="currentSession" :sessionData="currentSessionData" />
-                <Meta :session="currentSession" :sessionData="currentSessionData" />
+                <Meta @change-current-session="changeCurrentSession" :session="currentSession" :sessionData="currentSessionData" />
                 <NodeList :nodes="currentNodes" />
               </div>
             </transition>
@@ -115,10 +115,10 @@ export default {
     NodeList,
     Modal,
   },
-  data: function() {
+  data() {
     return {
       sessionId: '',
-    }
+    };
   },
 
   computed: {
@@ -126,14 +126,10 @@ export default {
       return this.$store.getters.sessionSet;
     },
     groups() {
-      return this.sessions.filter(session => {
-        return session.who.id.indexOf('group') == 0;
-      });
+      return this.sessions.filter(session => session.who.id.indexOf('group') == 0);
     },
     users() {
-      return this.sessions.filter(session => {
-        return session.who.id.indexOf('user') == 0;
-      });
+      return this.sessions.filter(session => session.who.id.indexOf('user') == 0);
     },
     currentSession() {
       return this.$store.getters.currentSession || null;
@@ -143,8 +139,8 @@ export default {
     },
     currentSessionData() {
       if (this.currentNodes.length) {
-        let data = {};
-  
+        const data = {};
+
         if (this.currentSession.who.id.indexOf('group') == 0) {
           data.type = 'group';
         } else if (this.currentSession.who.id.indexOf('user') == 0) {
@@ -152,35 +148,22 @@ export default {
         } else {
           data.type = null;
         }
-  
-        data.parents = this.currentNodes.filter(node => {
-          return node.permission.indexOf('group') == 0;
-        });
-  
-        data.displayname = this.currentNodes.filter(node => {
-          return node.permission.indexOf('displayname') == 0;
-        });
-  
-        data.weight = this.currentNodes.filter(node => {
-          return node.permission.indexOf('weight') == 0;
-        });
-  
-        data.prefixes = this.currentNodes.filter(node => {
-          return node.permission.indexOf('prefix') == 0;
-        });
-  
-        data.suffixes = this.currentNodes.filter(node => {
-          return node.permission.indexOf('suffix') == 0;
-        });
-  
-        data.meta = this.currentNodes.filter(node => {
-          return node.permission.indexOf('meta') == 0;
-        });
-  
+
+        data.parents = this.currentNodes.filter(node => node.permission.indexOf('group') == 0);
+
+        data.displayname = this.currentNodes.filter(node => node.permission.indexOf('displayname') == 0);
+
+        data.weight = this.currentNodes.filter(node => node.permission.indexOf('weight') == 0);
+
+        data.prefixes = this.currentNodes.filter(node => node.permission.indexOf('prefix') == 0);
+
+        data.suffixes = this.currentNodes.filter(node => node.permission.indexOf('suffix') == 0);
+
+        data.meta = this.currentNodes.filter(node => node.permission.indexOf('meta') == 0);
+
         return data;
-      } else {
-        return null;
       }
+      return null;
     },
     modal() {
       return this.$store.state.editor.modal;
@@ -199,24 +182,23 @@ export default {
   },
 
   methods: {
-    changeCurrentSession: function(sessionId) {
+    changeCurrentSession(sessionId) {
       this.$store.commit('setCurrentSession', sessionId);
     },
-    displayGroupName: function(group) {
-      const friendly = group.who.friendly;
+    displayGroupName(group) {
+      const { friendly } = group.who;
       const id = group.who.id.split('/').pop();
 
       if (friendly != id) {
         return id;
-      } else {
-        return null;
       }
+      return null;
     },
-    createGroup: function() {
-      this.$store.commit('setModal', { type:'createGroup', object: this.groups });
+    createGroup() {
+      this.$store.commit('setModal', { type: 'createGroup', object: this.groups });
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">

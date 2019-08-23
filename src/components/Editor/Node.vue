@@ -42,10 +42,10 @@ export default {
     },
   },
   methods: {
-    toggleValue: function(node) {
+    toggleValue(node) {
       this.$store.commit('toggleNodeValue', node);
     },
-  }
+  },
 };
 </script>
 

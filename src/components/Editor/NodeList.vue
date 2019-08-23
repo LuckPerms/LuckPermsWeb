@@ -4,18 +4,37 @@
 
   <div class="node-list-header">
     <div class="add-node">
-      <ul class="known-permissions" v-if="addNode.list && sortedKnownPermissions">
-        <li v-for="(node, i) in sortedKnownPermissions" :key="i + '_' + node" @click="addNode.permission = node; addNode.list = false">{{node}}</li>
-      </ul>
-
       <div class="row">
         <div class="form-group">
           <label for="permission">Add permission</label>
-          <input type="text" id="permission" name="permission" v-model="addNode.permission" @focus="addNode.list = true" @blur="addNode.list = false">
+          <input
+            type="text"
+            id="permission"
+            name="permission"
+            v-model="addNode.permission"
+            @focus="handlePermissionFocus"
+            @blur="handlePermissionBlur"
+            @keydown.down="handlePermissionKeyDown"
+            @keydown.up="handlePermissionKeyUp"
+            @keydown.enter="handlePermissionAddition(null)"
+            @keydown.tab="handlePermissionAddition(null)"
+          />
         </div>
 
+        <ul
+          class="known-permissions"
+          v-if="addNode.list && sortedKnownPermissions"
+        >
+          <li
+            v-for="(node, i) in sortedKnownPermissions"
+            :key="i + '_' + node"
+            :class="{ 'highlighted': i === addNode.highlightedNode }"
+            @click.stop="handlePermissionAddition(node)"
+          >{{node}}</li>
+        </ul>
+
         <div class="form-group">
-          <label for="value">Value</label>
+          <label>Value</label>
           <code @click="addNode.value = !addNode.value" :class="{'true': addNode.value}">{{addNode.value}}</code>
         </div>
 
@@ -96,7 +115,7 @@ export default {
   props: {
     nodes: Array,
   },
-  data: function() {
+  data() {
     return {
       sort: {
         method: null,
@@ -104,6 +123,7 @@ export default {
       },
       addNode: {
         permission: '',
+        highlightedNode: 0,
         list: false,
         value: true,
         expiry: null,
@@ -111,34 +131,33 @@ export default {
         world: null,
         contexts: null,
       },
-    }
+    };
   },
   computed: {
-    sortedNodes: function() {
-      let sorted = sortBy(this.nodes, [this.sort.method]);
+    sortedNodes() {
+      const sorted = sortBy(this.nodes, [this.sort.method]);
 
       if (this.sort.desc) {
         return sorted;
-      } else {
-        return sorted.reverse();
       }
+      return sorted.reverse();
     },
     knownPermissions() {
       return this.$store.state.editor.knownPermissions;
     },
     sortedKnownPermissions() {
-      if (this.addNode.permission != '') {
-        return this.knownPermissions.filter(node => {
-          return node.indexOf(this.addNode.permission) >= 0;
-        });
-      } else {
-        return null;
+      if (this.addNode.permission !== '') {
+        const sortedArray = this.$store.state.editor.knownPermissions
+          .filter((node) => node.indexOf(this.addNode.permission) >= 0);
+
+        return sortedArray.slice(0, 100);
       }
+      return null;
     },
   },
   methods: {
-    changeSort: function(method) {
-      if (this.sort.method == method) {
+    changeSort(method) {
+      if (this.sort.method === method) {
         this.sort.desc = !this.sort.desc;
       } else {
         this.sort.desc = true;
@@ -146,7 +165,39 @@ export default {
 
       this.sort.method = method;
     },
-  }
+    handlePermissionAddition(node) {
+      if (node) {
+        this.addNode.permission = node;
+      } else {
+        this.addNode.permission = this.sortedKnownPermissions[this.addNode.highlightedNode];
+      }
+
+      this.addNode.list = false;
+    },
+    handlePermissionFocus() {
+      this.addNode.highlightedNode = 0;
+      this.addNode.list = true;
+    },
+    handlePermissionBlur() {
+      setTimeout(() => {
+        this.addNode.list = false;
+      }, 500);
+    },
+    handlePermissionKeyDown() {
+      this.addNode.list = true;
+
+      if (this.addNode.highlightedNode < this.sortedKnownPermissions.length - 1) {
+        this.addNode.highlightedNode++;
+      }
+    },
+    handlePermissionKeyUp() {
+      this.addNode.list = true;
+
+      if (this.addNode.highlightedNode > 0) {
+        this.addNode.highlightedNode--;
+      }
+    },
+  },
 };
 </script>
 
@@ -219,22 +270,34 @@ export default {
   .add-node {
     background-color: #666670;
 
+    > .row {
+      position: relative;
+    }
+
     .known-permissions {
       position: absolute;
       top: 100%;
+      left: 0;
       background: #565660;
       z-index: 15;
       width: 40%;
       max-height: 50vh;
       overflow-y: auto;
       padding: .5em 0;
-      
+      box-shadow: 0 0 1em rgba(0,0,0,.2);
+
       li {
         padding: .2em 1em;
         border-bottom: 1px solid rgba(0,0,0,0.2);
         cursor: pointer;
+        word-break: break-all;
+        font-family: 'Source Code Pro', monospace;
 
         &:hover {
+          background: rgba(255,255,255,.2);
+        }
+
+        &.highlighted {
           background: rgba(255,255,255,.2);
         }
       }

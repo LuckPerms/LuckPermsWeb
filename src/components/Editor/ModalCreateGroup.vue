@@ -47,7 +47,7 @@
 
 export default {
   name: 'CreateGroup',
-  data: function() {
+  data() {
     return {
       groupName: '',
       displayName: '',
@@ -55,7 +55,7 @@ export default {
       parent: 0,
       prefix: '',
       suffix: '',
-    }
+    };
   },
   props: {
     groups: Array,
@@ -63,7 +63,7 @@ export default {
   computed: {
   },
   methods: {
-  }
+  },
 };
 </script>
 

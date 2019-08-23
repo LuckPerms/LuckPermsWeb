@@ -1,12 +1,12 @@
 <template>
 <div class="editor-meta">
   <div class="meta-weight" v-if="sessionData.type == 'group'">
-    <strong>Weight: </strong> <code>{{formatWeight(sessionData.weight)}}</code> 
+    <strong>Weight: </strong> <code>{{formatWeight(sessionData.weight)}}</code>
   </div>
   <div class="meta-parents" v-if="sessionData.parents.length > 0">
     <strong>Parent groups:</strong>
     <ul>
-      <li v-for="parent in sessionData.parents" @click="$emit('changeCurrentSession', parent)">
+      <li v-for="parent in sessionData.parents" @click="handleParentSessionSwitch(parent)">
         <code>{{formatParent(parent)}}</code>
       </li>
     </ul>
@@ -23,24 +23,30 @@ export default {
   },
 
   methods: {
-    formatWeight: function(weight) {
+    formatWeight(weight) {
       if (weight.length == 0) {
         return 'N/A';
-      } else if (weight.length == 1) {
+      } if (weight.length == 1) {
         return weight[0].permission.split('.').pop();
-      } else {
-        return 'Multiple';
       }
+      return 'Multiple';
     },
-    formatParent: function(parent) {
-      let group = parent.permission.split('.').pop();
+    formatParent(parent) {
+      const group = parent.permission.split('.').pop();
       if (parent.server || parent.world || parent.expiry || parent.context) {
-        return group + ' *';
-      } else {
-        return group;
+        return `${group} *`;
       }
-    }
-  }
+      return group;
+    },
+    handleParentSessionSwitch(parent) {
+      const sessionId = this.$store.state.editor.sessionList.find(session => {
+        const sessionObject = this.$store.state.editor.sessions[session];
+        return parent.permission.indexOf(sessionObject.who.friendly) > -1;
+      });
+
+      this.$store.commit('setCurrentSession', sessionId);
+    },
+  },
 };
 </script>
 

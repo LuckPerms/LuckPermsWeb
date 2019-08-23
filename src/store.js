@@ -57,7 +57,7 @@ export default new Vuex.Store({
   actions: {
     getEditorData({ state, commit }, sessionId) {
       commit('initEditorData');
-      
+
       axios.get(`https://bytebin.lucko.me/${sessionId}`)
         .then((response) => {
           response.data.sessions.forEach((session, id) => {
@@ -85,8 +85,6 @@ export default new Vuex.Store({
     },
     addNewGroup({ state, commit }, group) {
       const lastSession = state.editor.sessionList.length - 1;
-
-
-    }
+    },
   },
 });

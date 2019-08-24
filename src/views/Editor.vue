@@ -293,7 +293,6 @@ main.editor {
         max-height: 100%;
         text-align: center;
         border-right: 1px solid rgba(255,255,255,.2);
-        padding-bottom: 3em;
 
         h2 {
           margin: 0;
@@ -323,6 +322,7 @@ main.editor {
           margin: 0;
           padding: 0;
           list-style: none;
+          margin-bottom: 3rem;
 
           li {
             padding: .5em 2em;

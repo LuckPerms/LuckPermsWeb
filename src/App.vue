@@ -84,8 +84,8 @@ body {
   flex-flow: column;
 
   > main {
-    flex: 1;
     height: 100%;
+    max-height: calc(100% - 2.5rem);
   }
 
   > footer {
@@ -93,6 +93,8 @@ body {
     padding: .75em 1em;
     position: relative;
     font-size: .8em;
+    flex: 0 0 auto;
+    height: 2.5rem;
 
     .github-corner {
       position: absolute;

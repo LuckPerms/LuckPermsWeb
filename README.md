@@ -12,7 +12,7 @@ A collection of web resources for the LuckPerms plugin.
 - Tree report
 
 A working version of this fork can be used here:  
-[https://lpweb.turbotailz.com/#/editor/](https://lpweb.turbotailz.com/#/editor/)`<sessionID>`
+[https://luckperms.turbotailz.com/#/editor/](https://luckperms.turbotailz.com/#/editor/)`<sessionID>`
 
 Where `<sessionID>` is the 10 digit ID when you generate a new editor session.  
 
@@ -26,21 +26,19 @@ Then your session ID is `ewx0HjBMX9`
 (The part after the #)
 
 ## Project setup
+Setting up the project locally is simple, all you need is Node installed on your computer, then you can clone the repo and run:
 ```
 npm install
 ```
 
 ### Compile and setup hot-reloads for development
+Once you've installed the dependencies, you can run the project locally easily by running:
 ```
 npm run serve
 ```
 
 ### Compile and minify for production
+If you want to build the project to a folder that can be access via a webserver, running this command will build the project in the `dist` folder:
 ```
 npm run build
-```
-
-### Lint and fix files
-```
-npm run lint
 ```

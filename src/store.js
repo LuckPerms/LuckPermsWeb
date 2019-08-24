@@ -17,6 +17,8 @@ export default new Vuex.Store({
         return state.editor.nodes.sort((a, b) => a - b)[state.editor.nodes.length - 1].id
       }
     },
+    saveStatus: state => state.editor.save.status,
+    saveKey: state => state.editor.save.key,
   },
   mutations: {
     initEditorData(state) {
@@ -33,6 +35,10 @@ export default new Vuex.Store({
         errors: {
           load: false,
         },
+        save: {
+          status: null,
+          key: null,
+        }
       };
     },
     setKnownPermissions(state, array) {
@@ -64,6 +70,12 @@ export default new Vuex.Store({
     setLoadError(state) {
       state.editor.errors.load = true;
     },
+    setSaveStatus(state, status) {
+      state.editor.save.status = status;
+    },
+    setBytebinKey(state, key) {
+      state.editor.save.key = key;
+    }
   },
   actions: {
     getEditorData({ state, commit }, sessionId) {
@@ -97,5 +109,28 @@ export default new Vuex.Store({
     addNewGroup({ state, commit }, group) {
       const lastSession = state.editor.sessionList.length - 1;
     },
+    saveData({ state, getters, commit }) {
+      commit('setSaveStatus', 'saving');
+
+      let tabs = [];
+
+      getters.sessionSet.forEach(session => {
+        let tab = {};
+
+        tab.who = session.who.id;
+
+        tab.nodes = state.editor.nodes.filter(node => node.sessionId === session.id);
+
+        tabs.push(tab);
+      });
+
+      axios.post('https://bytebin.lucko.me/post', { tabs })
+        .then(response => {
+          commit('setBytebinKey', response.data.key);
+          commit('setSaveStatus', 'saved');
+          commit('setModal', { type: 'savedChanges', object: getters.saveKey });
+        })
+        .catch(console.error);
+    }
   },
 });

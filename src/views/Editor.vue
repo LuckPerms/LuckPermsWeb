@@ -68,9 +68,19 @@
                 Web Permissions Editor
               </div>
               <div class="buttons">
-                <font-awesome icon="undo" />
-                <font-awesome icon="redo" />
-                <font-awesome icon="save" />
+                <button>
+                  <font-awesome icon="undo" />
+                </button>
+                <button>
+                  <font-awesome icon="redo" />
+                </button>
+                <button @click="saveData">
+                  <font-awesome
+                    v-if="saving"
+                    icon="save"
+                  />
+                  <font-awesome v-else icon="sync-alt" :spin="true" />
+                </button>
               </div>
             </nav>
 
@@ -171,6 +181,12 @@ export default {
     errors() {
       return this.$store.state.editor.errors;
     },
+    saving() {
+      const status = this.$store.getters.saveStatus;
+      console.log(status);
+
+      return status === null || status === 'saved';
+    }
   },
 
   created() {
@@ -197,6 +213,9 @@ export default {
     createGroup() {
       this.$store.commit('setModal', { type: 'createGroup', object: this.groups });
     },
+    saveData() {
+      this.$store.dispatch('saveData');
+    }
   },
 };
 </script>
@@ -379,6 +398,8 @@ main.editor {
           align-items: center;
           padding: .5em 1rem;
           font-size: 1.5em;
+          position: relative;
+          z-index: 2;
 
           .logo {
             display: flex;
@@ -393,8 +414,18 @@ main.editor {
           }
 
           .buttons {
-            svg {
-              margin-left: 1em;
+            button {
+              background: transparent;
+              color: white;
+              font-size: 1em;
+              padding: .25rem .5rem;
+              border:0;
+              margin-left: .5rem;
+              cursor: pointer;
+
+              &:hover {
+                opacity: .8;
+              }
             }
           }
         }
@@ -410,6 +441,7 @@ main.editor {
 
         .editor-no-session {
           position: absolute;
+          z-index: 1;
           height: 100%;
           width: 100%;
           display: flex;

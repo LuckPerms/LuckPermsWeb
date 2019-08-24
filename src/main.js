@@ -25,7 +25,8 @@ library.add(
   fas.faTimesCircle,
   fas.faChevronCircleDown,
   fas.faAsterisk,
-  fas.faPlus
+  fas.faPlus,
+  fas.faSyncAlt
 );
 
 Vue.component('font-awesome', FontAwesomeIcon);

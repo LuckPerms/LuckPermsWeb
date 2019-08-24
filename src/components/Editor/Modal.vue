@@ -5,25 +5,29 @@
     <div class="close" @click="closeModal">
       <font-awesome icon="times-circle" />
     </div>
+
+<!--    Modals -->
     <CreateGroup v-if="modal.type == 'createGroup'" :groups="modal.object" />
+    <SavedChanges v-if="modal.type == 'savedChanges'" :save-key="modal.object" />
   </div>
 </div>
 </template>
 
 <script>
 import CreateGroup from '@/components/Editor/ModalCreateGroup.vue';
+import SavedChanges from '@/components/Editor/ModalSavedChanges.vue';
 
 export default {
   name: 'Modal',
   components: {
     CreateGroup,
+    SavedChanges,
   },
   props: {
     modal: Object,
   },
   computed: {
     sortedNodes() {
-
     },
   },
   methods: {

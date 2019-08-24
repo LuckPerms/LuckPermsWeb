@@ -40,6 +40,14 @@
   box-sizing: border-box;
 }
 
+:focus {
+  outline: lawngreen 1px solid;
+}
+
+input:focus {
+  outline-offset: unset;
+}
+
 ::-webkit-scrollbar {
   width: .5em;
 
@@ -165,13 +173,61 @@ body {
   }
 }
 
-code {
+code, .code {
+  border: 0;
   display: inline-block;
   font-family: 'Source Code Pro', monospace;
   padding: .2em .5em;
   background: rgba(0,0,0,.2);
   font-size: .8em;
   border-radius: 2px;
+  line-height: 1.5;
+}
+
+.vdp-datepicker {
+  .vdp-datepicker__calendar {
+    background: #2d2d38;
+    border: 0;
+    box-shadow: 0 0 1em rgba(0,0,0,.2);
+
+    header {
+      span {
+        &.prev {
+          &:after {
+            border-right-color: white;
+          }
+        }
+
+        &.next {
+          &:after {
+            border-left-color: white;
+          }
+        }
+
+        &:not(.disabled):hover {
+          background: rgba(255,255,255,.2);
+        }
+      }
+    }
+
+    .cell {
+      &:not(.blank):not(.day-header) {
+        &:not(.disabled) {
+          &:hover {
+            border-color: lawngreen;
+          }
+        }
+      }
+
+      &.selected {
+        background: lawngreen;
+      }
+    }
+
+    .disabled {
+      opacity: .3;
+    }
+  }
 }
 
 .fade-enter-active, .fade-leave-active {

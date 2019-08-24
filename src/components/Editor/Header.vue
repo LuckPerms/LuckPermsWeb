@@ -49,6 +49,10 @@ export default {
       text-transform: capitalize;
     }
 
+    code {
+      line-height: 1;
+    }
+
     span {
       opacity: .5;
       font-size: smaller;

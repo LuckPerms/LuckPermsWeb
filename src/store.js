@@ -12,6 +12,11 @@ export default new Vuex.Store({
     sessionSet: state => state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]),
     currentSession: state => state.editor.sessions[state.editor.currentSession],
     currentNodes: state => state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession),
+    lastNodeId: state => {
+      if (state.editor.nodes.length) {
+        return state.editor.nodes.sort((a, b) => a - b)[state.editor.nodes.length - 1].id
+      }
+    },
   },
   mutations: {
     initEditorData(state) {
@@ -49,6 +54,12 @@ export default new Vuex.Store({
     },
     toggleNodeValue(state, node) {
       node.value = !node.value;
+    },
+    updateNode(state, payload) {
+      payload.node[payload.type] = payload.data.value;
+    },
+    addNodeToSession(state, node) {
+      state.editor.nodes.push(node);
     },
     setLoadError(state) {
       state.editor.errors.load = true;

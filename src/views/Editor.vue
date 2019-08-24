@@ -84,7 +84,7 @@
               <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.who.id}`">
                 <Header :session="currentSession" :sessionData="currentSessionData" />
                 <Meta @change-current-session="changeCurrentSession" :session="currentSession" :sessionData="currentSessionData" />
-                <NodeList :nodes="currentNodes" />
+                <NodeList :nodes="currentNodes" :session="currentSession" />
               </div>
             </transition>
 
@@ -95,7 +95,7 @@
     </div>
 
     <transition name="fade">
-      <Modal v-if="modal.type" :modal="modal" />
+      <Modal v-if="modal && modal.type" :modal="modal" />
     </transition>
 
   </main>
@@ -139,7 +139,7 @@ export default {
     },
     currentSessionData() {
       if (this.currentNodes.length) {
-        const data = {};
+        let data = {};
 
         if (this.currentSession.who.id.indexOf('group') == 0) {
           data.type = 'group';
@@ -166,7 +166,7 @@ export default {
       return null;
     },
     modal() {
-      return this.$store.state.editor.modal;
+      return this.$store.state.editor.modal || null;
     },
     errors() {
       return this.$store.state.editor.errors;
@@ -288,7 +288,7 @@ main.editor {
       max-height: 100%;
 
       > nav {
-        flex: 1;
+        flex: 0 0 20em;
         overflow-y: auto;
         max-height: 100%;
         text-align: center;

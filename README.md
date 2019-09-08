@@ -6,11 +6,12 @@ A collection of web resources for the LuckPerms plugin.
 **Currently working on:** web editor
 
 **To do:**
-- Home page
-- Wiki
-- Verbose report
-- Debug report
-- Tree report
+- [ ] Home page
+- [ ] Wiki
+- [ ] Web editor
+- [ ] Verbose report
+- [ ] Debug report
+- [ ] Tree report
 
 ## Web Editor
 

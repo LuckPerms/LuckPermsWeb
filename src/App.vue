@@ -133,7 +133,7 @@ body {
     }
 
     a {
-      color: #8B8;
+      color: #94df03;
 
       &:hover {
         color: #4B4;

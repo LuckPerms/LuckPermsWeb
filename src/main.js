@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 
 import store from './store';
 import App from './App.vue';
@@ -26,7 +27,13 @@ library.add(
   fas.faChevronCircleDown,
   fas.faAsterisk,
   fas.faPlus,
-  fas.faSyncAlt
+  fas.faSyncAlt,
+  fas.faBook,
+  fas.faArrowAltCircleDown,
+
+  fab.faGithub,
+  fab.faDiscord,
+  fab.faPatreon
 );
 
 Vue.component('font-awesome', FontAwesomeIcon);

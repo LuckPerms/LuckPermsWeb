@@ -21,7 +21,7 @@
 
       <ul
         class="known-permissions"
-        v-if="list && sortedKnownPermissions"
+        v-if="list && sortedKnownPermissions.length"
       >
         <li
           v-for="(node, i) in sortedKnownPermissions"
@@ -102,7 +102,7 @@
 
           return sortedArray.slice(0, 100);
         }
-        return null;
+        return [];
       },
     },
     methods: {
@@ -147,18 +147,20 @@
         if (this.permission === '') return;
 
         const node = {
-          id: this.$store.getters.lastNodeId + 1,
-          permission: this.permission,
+          sessionId: this.session.id,
+          type: 'permission',
+          key: this.permission,
           value: this.value,
           expiry: this.expiry,
-          server: this.server,
-          world: this.world,
-          contexts: this.contexts,
-          sessionId: this.session.id,
-          new: true,
-        }
+          context: {
+            ...this.server && { server: this.server },
+            ...this.world && { world: this.world },
+          },
+          // TODO: contexts: this.contexts,
+          isNew: true,
+        };
 
-        this.$store.commit('addNodeToSession', node);
+        this.$store.dispatch('addNode', node);
 
         this.permission = '';
         this.highlightedNode = 0;

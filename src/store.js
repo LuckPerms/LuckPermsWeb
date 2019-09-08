@@ -8,25 +8,55 @@ export default new Vuex.Store({
   state: {
     editor: {},
   },
+
+
+
   getters: {
     sessionSet: state => state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]),
+
     currentSession: state => state.editor.sessions[state.editor.currentSession],
+
     currentNodes: state => state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession),
+
     lastNodeId: state => {
       if (state.editor.nodes.length) {
         return state.editor.nodes.sort((a, b) => a - b)[state.editor.nodes.length - 1].id
       }
+
+      return 0;
     },
+
+    modifiedSessions: (state, getters) => {
+      if (getters.sessionSet.length) {
+        let newGroups = getters.sessionSet.filter(session => session.new).map(session => session.id);
+
+        let modifiedSessions = state.editor.nodes.filter(node => {
+          return node.new || node.modified;
+        }).map(node => node.sessionId);
+
+        return new Set(newGroups.concat(newGroups, modifiedSessions));
+      }
+
+      return null;
+    },
+
     saveStatus: state => state.editor.save.status,
+
     saveKey: state => state.editor.save.key,
   },
+
+
+
   mutations: {
     initEditorData(state) {
       state.editor = {
         sessions: {},
         sessionList: [],
         nodes: [],
+        metaData: {},
+        tracks: [],
         knownPermissions: [],
+        potentialContexts: [],
         currentSession: null,
         modal: {
           type: null,
@@ -41,90 +71,222 @@ export default new Vuex.Store({
         }
       };
     },
+
+    setMetaData(state, object) {
+      state.editor.metaData = object;
+    },
+
     setKnownPermissions(state, array) {
       state.editor.knownPermissions = array;
     },
-    addEditorSession(state, session) {
-      state.editor.sessions[session.id] = session;
-      state.editor.sessionList.push(session.id);
+
+    setTracks(state, array) {
+      state.editor.tracks = array;
     },
+
+    setPotentialContexts(state, array) {
+      state.editor.potentialContexts = array;
+    },
+
+    addEditorSession(state, { id, type, displayName, isNew = false }) {
+      state.editor.sessions[id] = {
+        id,
+        type,
+        displayName,
+        new: isNew,
+      };
+      state.editor.sessionList.push(id);
+    },
+
     addEditorNode(state, node) {
+      if (node.expiry instanceof Date) node.expiry = node.expiry.getTime() / 1000;
+
       state.editor.nodes.push(node);
     },
+
     setCurrentSession(state, sessionId) {
       state.editor.currentSession = sessionId;
     },
+
     setModal(state, { type, object }) {
       state.editor.modal.type = type || null;
       state.editor.modal.object = object || null;
     },
+
     toggleNodeValue(state, node) {
       node.value = !node.value;
+      node.modified = true;
     },
+
     updateNode(state, payload) {
-      payload.node[payload.type] = payload.data.value;
+      if (payload.type !== 'expiry') {
+        payload.node[payload.type] = payload.data.value;
+      } else {
+        payload.node[payload.type] = payload.data.value.getTime() / 1000;
+      }
+
+      payload.node.modified = true;
     },
+
+    updateNodeContext(state, payload) {
+      payload.node.context[payload.type] = payload.data.value;
+      payload.node.modified = true;
+    },
+
     addNodeToSession(state, node) {
       state.editor.nodes.push(node);
     },
+
     setLoadError(state) {
       state.editor.errors.load = true;
     },
+
     setSaveStatus(state, status) {
       state.editor.save.status = status;
     },
+
     setBytebinKey(state, key) {
       state.editor.save.key = key;
     }
   },
+
+
+
   actions: {
-    getEditorData({ state, commit }, sessionId) {
+    getEditorData({ commit, dispatch }, sessionId) {
       commit('initEditorData');
 
       axios.get(`https://bytebin.lucko.me/${sessionId}`)
         .then((response) => {
-          response.data.sessions.forEach((session, id) => {
-            session.id = id + 1;
+          commit('setMetaData', response.data.metadata);
 
-            session.nodes.forEach((node, nodeId) => {
-              node.id = state.editor.nodes.length + nodeId + 1;
-              node.sessionId = session.id;
-
-              commit('addEditorNode', node);
+          response.data.permissionHolders.forEach((session) => {
+            session.nodes.forEach((node) => {
+              dispatch('addNode', {
+                sessionId: session.id,
+                type: node.type,
+                key: node.key,
+                value: node.value,
+                expiry: node.expiry,
+                context: node.context,
+              });
             });
 
-            commit('addEditorSession', { id: session.id, who: session.who });
+            commit('addEditorSession', session);
           });
 
           commit('setKnownPermissions', response.data.knownPermissions);
+          commit('setPotentialContexts', response.data.potentialContexts);
+          commit('setTracks', response.data.tracks);
         })
-        .catch(() => {
+        .catch(error => {
+          console.error(error);
           console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
           commit('setLoadError');
         });
     },
+
+    addNode({ commit, getters }, { sessionId, type, key, value = true, expiry = null, context = {}, isNew = false, modified = false }) {
+      let node = {
+        id: getters.lastNodeId + 1,
+        sessionId,
+        type,
+        key,
+        value,
+        expiry,
+        context,
+        new: isNew,
+        modified,
+      };
+
+      commit('addEditorNode', node);
+    },
+
     changeCurrentSession({ commit }, session) {
       commit('setCurrentSession', session);
     },
-    addNewGroup({ state, commit }, group) {
-      const lastSession = state.editor.sessionList.length - 1;
+
+    addGroup({ commit, dispatch }, group) {
+
+      let session = {
+        id: group.name,
+        displayName: group.displayName || group.name,
+        type: 'group',
+        isNew: true,
+      };
+
+      if (group.displayName !== '') dispatch('addNode', {
+        sessionId: session.id,
+        type: 'display_name',
+        key: 'displayname.' + group.displayName,
+        value: true,
+        isNew: true,
+      });
+
+      if (group.parent !== 0) dispatch('addNode', {
+        sessionId: session.id,
+        type: 'inheritance',
+        key: 'group.' + group.parent,
+        value: true,
+        isNew: true,
+      });
+
+      if (group.weight !== 0) dispatch('addNode', {
+        sessionId: session.id,
+        type: 'weight',
+        key: 'weight.' + group.weight,
+        value: true,
+        isNew: true,
+      });
+
+      if (group.prefix !== '') dispatch('addNode', {
+        sessionId: session.id,
+        type: 'prefix',
+        key: 'prefix.' + group.weight + '.' + group.prefix,
+        value: true,
+        isNew: true,
+      });
+
+      if (group.suffix !== '') dispatch('addNode', {
+        sessionId: session.id,
+        type: 'suffix',
+        key: 'suffix.' + group.weight + '.' + group.suffix,
+        value: true,
+        isNew: true,
+      });
+
+      commit('addEditorSession', session);
+      commit('setCurrentSession', session.id);
+      commit('setModal', { type: null, object: null });
     },
+
     saveData({ state, getters, commit }) {
       commit('setSaveStatus', 'saving');
 
-      let tabs = [];
+      let changes = [];
 
-      getters.sessionSet.forEach(session => {
-        let tab = {};
+      getters.modifiedSessions.forEach(modifiedSession => {
+        const session = state.editor.sessions[modifiedSession];
+        const sessionNodes = state.editor.nodes.filter(node => node.sessionId === session.id);
 
-        tab.who = session.who.id;
+        let nodes = [];
 
-        tab.nodes = state.editor.nodes.filter(node => node.sessionId === session.id);
+        sessionNodes.forEach(node => nodes.push({
+          type: node.type,
+          key: node.key,
+          value: node.value,
+          ...node.expiry && { expiry: node.expiry},
+          ...(Object.entries(node.context).length) && { context: node.context },
+        }));
 
-        tabs.push(tab);
+        changes.push({
+          type: session.type,
+          id: session.id,
+          nodes,
+        });
       });
 
-      axios.post('https://bytebin.lucko.me/post', { tabs })
+      axios.post('https://bytebin.lucko.me/post', { changes })
         .then(response => {
           commit('setBytebinKey', response.data.key);
           commit('setSaveStatus', 'saved');

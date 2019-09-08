@@ -46,8 +46,13 @@
                 <font-awesome icon="plus-circle" @click="createGroup" />
               </h2>
               <ul>
-                <li v-for="group in groups" @click="changeCurrentSession(group.id)" :class="{'active': currentSession == group}" :key="group.id">
-                  {{group.who.friendly}} <span v-if="displayGroupName(group)">{{ displayGroupName(group) }}</span>
+                <li
+                  v-for="group in groups"
+                  @click="changeCurrentSession(group.id)"
+                  :class="{ 'active': currentSession == group, 'modified': modifiedSessions.has(group.id), 'new': group.new }"
+                  :key="group.id"
+                >
+                  {{group.displayName}} <span v-if="group.displayName !== group.id">{{ group.id }}</span>
                 </li>
               </ul>
             </div>
@@ -55,7 +60,7 @@
               <h2>Users</h2>
               <ul>
                 <li v-for="user in users" @click="changeCurrentSession(user.id)" :class="{'active': currentSession == user}" :key="user.id">
-                  <img :src="`https://minotar.net/helm/${user.who.uuid}/100.png`"> {{user.who.friendly}}
+                  <img :src="`https://minotar.net/helm/${user.id}/100.png`"> {{user.displayName}}
                 </li>
               </ul>
             </div>
@@ -91,7 +96,7 @@
             </transition>
 
             <transition name="fade" mode="out-in">
-              <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.who.id}`">
+              <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.id}`">
                 <Header :session="currentSession" :sessionData="currentSessionData" />
                 <Meta @change-current-session="changeCurrentSession" :session="currentSession" :sessionData="currentSessionData" />
                 <NodeList :nodes="currentNodes" :session="currentSession" />
@@ -136,10 +141,10 @@ export default {
       return this.$store.getters.sessionSet;
     },
     groups() {
-      return this.sessions.filter(session => session.who.id.indexOf('group') == 0);
+      return this.sessions.filter(session => session.type === 'group');
     },
     users() {
-      return this.sessions.filter(session => session.who.id.indexOf('user') == 0);
+      return this.sessions.filter(session => session.type === 'user');
     },
     currentSession() {
       return this.$store.getters.currentSession || null;
@@ -148,31 +153,27 @@ export default {
       return this.$store.getters.currentNodes || null;
     },
     currentSessionData() {
-      if (this.currentNodes.length) {
+      if (this.currentSession) {
         let data = {};
 
-        if (this.currentSession.who.id.indexOf('group') == 0) {
+        if (this.currentSession.type === 'group') {
           data.type = 'group';
-        } else if (this.currentSession.who.id.indexOf('user') == 0) {
+        } else if (this.currentSession.type === 'user') {
           data.type = 'user';
         } else {
           data.type = null;
         }
 
-        data.parents = this.currentNodes.filter(node => node.permission.indexOf('group') == 0);
-
-        data.displayname = this.currentNodes.filter(node => node.permission.indexOf('displayname') == 0);
-
-        data.weight = this.currentNodes.filter(node => node.permission.indexOf('weight') == 0);
-
-        data.prefixes = this.currentNodes.filter(node => node.permission.indexOf('prefix') == 0);
-
-        data.suffixes = this.currentNodes.filter(node => node.permission.indexOf('suffix') == 0);
-
-        data.meta = this.currentNodes.filter(node => node.permission.indexOf('meta') == 0);
+        data.parents      = this.currentNodes.filter(node => node.type === 'inheritance');
+        data.displayname  = this.currentNodes.filter(node => node.type === 'display_name');
+        data.weight       = this.currentNodes.filter(node => node.type === 'weight');
+        data.prefixes     = this.currentNodes.filter(node => node.type === 'prefix');
+        data.suffixes     = this.currentNodes.filter(node => node.type === 'suffix');
+        data.meta         = this.currentNodes.filter(node => node.type === 'meta');
 
         return data;
       }
+
       return null;
     },
     modal() {
@@ -183,9 +184,11 @@ export default {
     },
     saving() {
       const status = this.$store.getters.saveStatus;
-      console.log(status);
 
       return status === null || status === 'saved';
+    },
+    modifiedSessions() {
+      return this.$store.getters.modifiedSessions || null;
     }
   },
 
@@ -200,15 +203,6 @@ export default {
   methods: {
     changeCurrentSession(sessionId) {
       this.$store.commit('setCurrentSession', sessionId);
-    },
-    displayGroupName(group) {
-      const { friendly } = group.who;
-      const id = group.who.id.split('/').pop();
-
-      if (friendly != id) {
-        return id;
-      }
-      return null;
     },
     createGroup() {
       this.$store.commit('setModal', { type: 'createGroup', object: this.groups });
@@ -351,6 +345,14 @@ main.editor {
 
             &.active {
               background-color: rgba(255,255,255,.1);
+            }
+
+            &.modified {
+              background-color: rgba(252, 252, 0, .1);
+            }
+
+            &.new {
+              background-color: rgba(124, 252, 0, .1);
             }
 
             &:hover {

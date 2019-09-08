@@ -27,13 +27,13 @@ export default {
       if (weight.length == 0) {
         return 'N/A';
       } if (weight.length == 1) {
-        return weight[0].permission.split('.').pop();
+        return weight[0].key.split('.').pop();
       }
       return 'Multiple';
     },
     formatParent(parent) {
-      const group = parent.permission.split('.').pop();
-      if (parent.server || parent.world || parent.expiry || parent.context) {
+      const group = parent.key.split('.').pop();
+      if (parent.contexts && (parent.contexts.server || parent.contexts.world || parent.contexts.expiry || parent.contexts.context)) {
         return `${group} *`;
       }
       return group;
@@ -41,7 +41,7 @@ export default {
     handleParentSessionSwitch(parent) {
       const sessionId = this.$store.state.editor.sessionList.find(session => {
         const sessionObject = this.$store.state.editor.sessions[session];
-        return parent.permission.indexOf(sessionObject.who.friendly) > -1;
+        return parent.key.indexOf(sessionObject.id) > -1;
       });
 
       this.$store.commit('setCurrentSession', sessionId);

@@ -4,7 +4,7 @@
 
   <div class="node-list-header">
     <div class="sorting-tabs">
-      <span :class="{'active': sort.method == 'permission'}" @click="changeSort('permission')">
+      <span :class="{'active': sort.method == 'permission'}" @click="changeSort('key')">
         Permission
         <font-awesome v-if="sort.method == 'permission'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </span>
@@ -69,7 +69,14 @@ export default {
   },
   computed: {
     sortedNodes() {
-      const sorted = sortBy(this.nodes, [this.sort.method]);
+      let sorted;
+      if (['key', 'value', 'expiry'].indexOf(this.sort.method) >= 0) {
+        sorted = sortBy(this.nodes, [this.sort.method]);
+      } else {
+        sorted = sortBy(this.nodes, node => {
+          return node.context[this.sort.method];
+        });
+      }
 
       if (this.sort.desc) {
         return sorted;

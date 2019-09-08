@@ -1,20 +1,22 @@
 <template>
-<li :class="{ 'permission-node': true, new: node.new }">
+<li :class="{ 'permission-node': true, modified: node.modified, new: node.new }">
+
+<!-- Permission node -->
   <div
     v-if="!permission.edit"
     class="permission"
     @click="permission.edit = true"
   >
-    <code>{{ node.permission }}</code>
+    <code>{{ node.key }}</code>
   </div>
   <div v-else class="permission">
     <input
       v-autofocus
       type="text"
       v-model="permission.value"
-      @keydown.enter="updateNode('permission', permission)"
-      @keydown.tab="updateNode('permission', permission)"
-      @blur="updateNode('permission', permission)"
+      @keydown.enter="updateNode('key', permission)"
+      @keydown.tab="updateNode('key', permission)"
+      @blur="updateNode('key', permission)"
     />
   </div>
 
@@ -22,6 +24,7 @@
     <code :class="{'true': node.value}">{{ node.value }}</code>
   </div>
 
+<!--  Expiry -->
   <div
     v-if="!expiry.edit"
     class="expiry"
@@ -39,12 +42,13 @@
     />
   </div>
 
+<!--  Server context -->
   <div
     v-if="!server.edit"
     class="server"
     @click="server.edit = true"
   >
-    <code v-if="node.server">{{ node.server }}</code>
+    <code v-if="node.context.server">{{ node.context.server }}</code>
     <code v-else disabled>global</code>
   </div>
   <div v-else>
@@ -58,12 +62,13 @@
     />
   </div>
 
+<!--  World context -->
   <div
     v-if="!world.edit"
     class="world"
     @click="world.edit = true"
   >
-    <code v-if="node.world">{{ node.world }}</code>
+    <code v-if="node.context.world">{{ node.context.world }}</code>
     <code v-else disabled>global</code>
   </div>
   <div v-else>
@@ -78,7 +83,7 @@
   </div>
 
   <div class="contexts">
-    <code v-if="node.contexts">{{ node.contexts }}</code>
+    <code v-if="customContexts.length">{{ customContexts.length }}</code>
     <code v-else disabled>none</code>
   </div>
 </li>
@@ -96,7 +101,7 @@ export default {
     return {
       permission: {
         edit: false,
-        value: this.node.permission,
+        value: this.node.key,
       },
       expiry: {
         edit: false,
@@ -104,15 +109,15 @@ export default {
       },
       server: {
         edit: false,
-        value: this.node.server,
+        value: this.node.context.server,
       },
       world: {
         edit: false,
-        value: this.node.world,
+        value: this.node.context.world,
       },
       contexts: {
         edit: false,
-        value: this.node.contexts,
+        value: this.customContexts,
       }
     }
   },
@@ -123,15 +128,39 @@ export default {
     session() {
       return this.$store.getters.currentSession;
     },
+    customContexts() {
+      let contexts = [];
+
+      for (let context in this.node.context) {
+        if (['server', 'world'].indexOf(context) === -1) contexts.push({
+          context: context[context],
+        });
+      }
+
+      return contexts;
+    }
   },
   methods: {
     toggleValue(node) {
       this.$store.commit('toggleNodeValue', node);
     },
     updateNode(type, data) {
-      if (this.node[type] !== data.value) {
-        this.$store.commit('updateNode', { node: this.node, type, data });
+      switch (type) {
+        case 'key':
+        case 'value':
+        case 'expiry':
+          if (this.node[type] !== data.value) {
+            this.$store.commit('updateNode', { node: this.node, type, data });
+          }
+          break;
+        case 'server':
+        case 'world':
+          if (this.node.context[type] !== data.value) {
+            this.$store.commit('updateNodeContext', { node: this.node, type, data });
+          }
+          break;
       }
+
 
       data.edit = false;
     }
@@ -147,6 +176,14 @@ export default {
 
   &:hover {
     background-color: rgba(255,255,255,.1);
+  }
+
+  &.modified {
+    background-color: rgba(252, 252, 0, .15);
+
+    &:hover {
+      background-color: rgba(252, 252, 0, .2);
+    }
   }
 
   &.new {

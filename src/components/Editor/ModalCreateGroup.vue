@@ -5,18 +5,18 @@
     <div class="col">
       <div class="form-group">
         <label for="groupName">Group name</label>
-        <input type="text" id="groupName" v-model="groupName" autofocus>
+        <input type="text" id="groupName" v-model="group.name" autofocus>
       </div>
       <div class="form-group">
         <label for="displayName">Display name</label>
-        <input type="text" id="displayName" v-model="displayName">
+        <input type="text" id="displayName" v-model="group.displayName">
       </div>
       <div class="form-group">
         <label for="parent">Parent</label>
-        <select name="parent" id="parent" v-model="parent">
+        <select name="parent" id="parent" v-model="group.parent">
           <option value="0">None</option>
-          <option v-for="group in groups" :value="group.id" :key="group.id">
-            {{group.who.friendly}}
+          <option v-for="groupItem in groups" :value="groupItem.id" :key="groupItem.id">
+            {{groupItem.displayName}}
           </option>
         </select>
       </div>
@@ -24,19 +24,19 @@
     <div class="col">
       <div class="form-group">
         <label for="weight">Weight</label>
-        <input type="number" id="weight" v-model="weight">
+        <input type="number" id="weight" v-model="group.weight">
       </div>
       <div class="form-group">
         <label for="prefix">Prefix</label>
-        <input type="text" id="prefix" v-model="prefix">
+        <input type="text" id="prefix" v-model="group.prefix">
       </div>
       <div class="form-group">
         <label for="suffix">Suffix</label>
-        <input type="text" id="suffix" v-model="suffix">
+        <input type="text" id="suffix" v-model="group.suffix">
       </div>
     </div>
   </div>
-  <button type="button">
+  <button type="button" @click="addGroup">
     <font-awesome icon="plus-circle" />
     Add group
   </button>
@@ -49,12 +49,14 @@ export default {
   name: 'CreateGroup',
   data() {
     return {
-      groupName: '',
-      displayName: '',
-      weight: 0,
-      parent: 0,
-      prefix: '',
-      suffix: '',
+      group: {
+        name: '',
+        displayName: '',
+        weight: 0,
+        parent: 0,
+        prefix: '',
+        suffix: '',
+      }
     };
   },
   props: {
@@ -63,6 +65,13 @@ export default {
   computed: {
   },
   methods: {
+    addGroup() {
+      if (this.group.name !== '') {
+        let result = this.$store.dispatch('addGroup', this.group);
+
+        if (result === 'success') this.$store.commit('closeModal');
+      }
+    }
   },
 };
 </script>

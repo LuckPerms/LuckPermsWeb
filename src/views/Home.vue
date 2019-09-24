@@ -105,8 +105,8 @@ export default {
       width: 34%;
 
       a {
-        background: #94df03;
-        color: #101022;
+        background: $brand-color;
+        color: $navy;
         font-size: 2em;
         padding: 1rem 2rem;
         text-align: center;
@@ -116,7 +116,7 @@ export default {
         transition: background .2s;
 
         &:hover {
-          background: lighten(#94df03, 10%);
+          background: lighten($brand-color, 10%);
         }
 
         span {
@@ -144,8 +144,8 @@ export default {
 
       a {
         display: block;
-        background: #2d2d38;
-        color: lawngreen;
+        background: $grey;
+        color: $brand-color;
         padding: 1.5rem;
         line-height: 1;
         text-decoration: none;
@@ -158,7 +158,7 @@ export default {
         }
 
         &:hover {
-          background: lighten(#2d2d38, 10%);
+          background: lighten($grey, 10%);
         }
 
         span {

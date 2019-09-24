@@ -113,7 +113,7 @@ export default {
     button {
       font: inherit;
       width: 100%;
-      background: lawngreen;
+      background: $brand-color;
       font-weight: bold;
       border: 0;
       border-radius: 2px;

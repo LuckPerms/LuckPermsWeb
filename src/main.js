@@ -23,6 +23,7 @@ library.add(
   fas.faUndo,
   fas.faRedo,
   fas.faPlusCircle,
+  fas.faTimes,
   fas.faTimesCircle,
   fas.faChevronCircleDown,
   fas.faAsterisk,
@@ -30,6 +31,7 @@ library.add(
   fas.faSyncAlt,
   fas.faBook,
   fas.faArrowAltCircleDown,
+  fas.faArrowLeft,
 
   fab.faGithub,
   fab.faDiscord,

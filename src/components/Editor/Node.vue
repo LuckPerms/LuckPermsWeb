@@ -1,5 +1,11 @@
 <template>
 <li :class="{ 'permission-node': true, modified: node.modified, new: node.new }">
+  <div
+    :class="{ 'node-select': true, 'selected': isSelected }"
+    @click="toggleNodeSelect(node.id)"
+  >
+    <span></span>
+  </div>
 
 <!-- Permission node -->
   <div
@@ -86,6 +92,10 @@
     <code v-if="customContexts.length">{{ customContexts.length }}</code>
     <code v-else disabled>none</code>
   </div>
+
+  <div class="delete" @click="deleteNode(node.id)">
+    <font-awesome icon="times" />
+  </div>
 </li>
 </template>
 
@@ -123,10 +133,14 @@ export default {
   },
   props: {
     node: Object,
+    selectedNodes: Array,
   },
   computed: {
     session() {
       return this.$store.getters.currentSession;
+    },
+    isSelected() {
+      return this.selectedNodes.indexOf(this.node.id) >= 0;
     },
     customContexts() {
       let contexts = [];
@@ -141,6 +155,9 @@ export default {
     }
   },
   methods: {
+    toggleNodeSelect(nodeId) {
+      this.$store.commit('toggleNodeSelect', nodeId);
+    },
     toggleValue(node) {
       this.$store.commit('toggleNodeValue', node);
     },
@@ -161,8 +178,10 @@ export default {
           break;
       }
 
-
       data.edit = false;
+    },
+    deleteNode(nodeId) {
+      this.$store.commit('deleteNode', nodeId);
     }
   },
 };
@@ -173,6 +192,7 @@ export default {
   border-bottom: 1px solid rgba(0,0,0,0.2);
   display: flex;
   cursor: pointer;
+  transition: all .3s;
 
   &:hover {
     background-color: rgba(255,255,255,.1);
@@ -203,6 +223,34 @@ export default {
     }
   }
 
+  .node-select {
+    flex: 0 0 auto;
+
+    span {
+      display: block;
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 2px solid $grey;
+      position: relative;
+    }
+
+    &.selected {
+      span {
+        &:after {
+          position: absolute;
+          display: block;
+          content: '';
+          width: 1rem;
+          height: .5rem;
+          border: 4px solid $brand-color;
+          border-top: 0;
+          border-right: 0;
+          transform: rotate(-45deg);
+        }
+      }
+    }
+  }
+
   .permission {
     flex: 2 2 40%;
   }
@@ -215,11 +263,17 @@ export default {
 
   .value {
     code {
-      color: tomato;
+      color: $red;
     }
     .true {
-      color: lawngreen;
+      color: $brand-color;
     }
+  }
+
+  .delete {
+    flex: 0 0 3rem;
+    color: $grey;
+    text-align: center;
   }
 
   input {

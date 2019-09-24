@@ -39,32 +39,7 @@
         </div>
 
         <div v-else class="editor-wrap" :key="sessionId">
-          <nav>
-            <div class="groups" v-if="groups.length">
-              <h2>
-                Groups
-                <font-awesome icon="plus-circle" @click="createGroup" />
-              </h2>
-              <ul>
-                <li
-                  v-for="group in groups"
-                  @click="changeCurrentSession(group.id)"
-                  :class="{ 'active': currentSession == group, 'modified': modifiedSessions.has(group.id), 'new': group.new }"
-                  :key="group.id"
-                >
-                  {{group.displayName}} <span v-if="group.displayName !== group.id">{{ group.id }}</span>
-                </li>
-              </ul>
-            </div>
-            <div class="users" v-if="users.length">
-              <h2>Users</h2>
-              <ul>
-                <li v-for="user in users" @click="changeCurrentSession(user.id)" :class="{'active': currentSession == user}" :key="user.id">
-                  <img :src="`https://minotar.net/helm/${user.id}/100.png`"> {{user.displayName}}
-                </li>
-              </ul>
-            </div>
-          </nav>
+          <editor-menu :sessions="sessions" :current-session="currentSession" />
 
           <div class="editor-main">
             <nav>
@@ -91,6 +66,7 @@
 
             <transition name="fade" mode="in-out">
               <div class="editor-no-session" v-if="!currentSession">
+                <font-awesome icon="arrow-left" />
                 <h1>Choose a group or user from the side bar</h1>
               </div>
             </transition>
@@ -98,7 +74,7 @@
             <transition name="fade" mode="out-in">
               <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.id}`">
                 <Header :session="currentSession" :sessionData="currentSessionData" />
-                <Meta @change-current-session="changeCurrentSession" :session="currentSession" :sessionData="currentSessionData" />
+                <Meta :session="currentSession" :sessionData="currentSessionData" />
                 <NodeList :nodes="currentNodes" :session="currentSession" />
               </div>
             </transition>
@@ -117,19 +93,23 @@
 </template>
 
 <script>
-import Header from '@/components/Editor/Header.vue';
-import Meta from '@/components/Editor/Meta.vue';
-import NodeList from '@/components/Editor/NodeList.vue';
-import Modal from '@/components/Editor/Modal.vue';
+  import EditorMenu from '@/components/Editor/EditorMenu';
+  import Header from '@/components/Editor/Header';
+import Meta from '@/components/Editor/Meta';
+import NodeList from '@/components/Editor/NodeList';
+import Modal from '@/components/Editor/Modal';
 
 export default {
   name: 'Editor',
+
   components: {
+    EditorMenu,
     Header,
     Meta,
     NodeList,
     Modal,
   },
+
   data() {
     return {
       sessionId: '',
@@ -139,12 +119,6 @@ export default {
   computed: {
     sessions() {
       return this.$store.getters.sessionSet;
-    },
-    groups() {
-      return this.sessions.filter(session => session.type === 'group');
-    },
-    users() {
-      return this.sessions.filter(session => session.type === 'user');
     },
     currentSession() {
       return this.$store.getters.currentSession || null;
@@ -186,9 +160,6 @@ export default {
       const status = this.$store.getters.saveStatus;
 
       return status === null || status === 'saved';
-    },
-    modifiedSessions() {
-      return this.$store.getters.modifiedSessions || null;
     }
   },
 
@@ -201,12 +172,6 @@ export default {
   },
 
   methods: {
-    changeCurrentSession(sessionId) {
-      this.$store.commit('setCurrentSession', sessionId);
-    },
-    createGroup() {
-      this.$store.commit('setModal', { type: 'createGroup', object: this.groups });
-    },
     saveData() {
       this.$store.dispatch('saveData');
     }
@@ -282,7 +247,7 @@ main.editor {
 
     .error {
       margin-top: 1em;
-      color: tomato;
+      color: $red;
     }
   }
 
@@ -299,92 +264,6 @@ main.editor {
       width: 100%;
       height: 100%;
       max-height: 100%;
-
-      > nav {
-        flex: 0 0 20em;
-        overflow-y: auto;
-        max-height: 100%;
-        text-align: center;
-        border-right: 1px solid rgba(255,255,255,.2);
-
-        h2 {
-          margin: 0;
-          padding: .5em 0;
-          border-bottom: 1px solid rgba(255,255,255,.1);
-          text-transform: uppercase;
-          position: sticky;
-          top: 0;
-          z-index: 5;
-          background-color: #101022;
-
-          svg {
-            position: absolute;
-            right: 1em;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: .5;
-            cursor: pointer;
-
-            &:hover {
-              opacity: 1;
-            }
-          }
-        }
-
-        ul {
-          margin: 0;
-          padding: 0;
-          list-style: none;
-          margin-bottom: 3rem;
-
-          li {
-            padding: .5em 2em;
-            border-bottom: 1px solid rgba(255,255,255,.1);
-            cursor: pointer;
-            position: relative;
-
-            &.active {
-              background-color: rgba(255,255,255,.1);
-            }
-
-            &.modified {
-              background-color: rgba(252, 252, 0, .1);
-            }
-
-            &.new {
-              background-color: rgba(124, 252, 0, .1);
-            }
-
-            &:hover {
-              background-color: rgba(255,255,255,.15);
-            }
-
-            span {
-              opacity: .5;
-              font-size: smaller;
-
-              &:before {
-                content: '(';
-              }
-
-              &:after {
-                content: ')';
-              }
-            }
-          }
-        }
-
-        .users {
-          img {
-            width: 1em;
-            height: auto;
-            position: absolute;
-            left: 1em;
-            top: 50%;
-            transform: translateY(-50%);
-          }
-        }
-      }
 
       .editor-main {
         max-height: 100%;
@@ -436,6 +315,7 @@ main.editor {
           max-height: 100%;
           width: 100%;
           overflow-y: auto;
+          overflow-x: hidden;
           flex: 1;
           display: flex;
           flex-direction: column;
@@ -447,8 +327,15 @@ main.editor {
           height: 100%;
           width: 100%;
           display: flex;
+          flex-direction: row;
           align-items: center;
           justify-content: center;
+
+          svg {
+            font-size: 2rem;
+            opacity: .33;
+            margin-right: 1rem;
+          }
         }
 
         h1 {

@@ -4,42 +4,53 @@
 
   <div class="node-list-header">
     <div class="sorting-tabs">
-      <span :class="{'active': sort.method == 'permission'}" @click="changeSort('key')">
+      <div :class="{ 'node-select-all': true }">
+        <span></span>
+      </div>
+
+      <div :class="{'active': sort.method == 'permission'}" @click="changeSort('key')">
         Permission
         <font-awesome v-if="sort.method == 'permission'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-      </span>
+      </div>
 
-      <span :class="{'active': sort.method == 'value'}" @click="changeSort('value')">
+      <div :class="{'active': sort.method == 'value'}" @click="changeSort('value')">
         Value
         <font-awesome v-if="sort.method == 'value'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-      </span>
+      </div>
 
-      <span :class="{'active': sort.method == 'expiry'}" @click="changeSort('expiry')">
+      <div :class="{'active': sort.method == 'expiry'}" @click="changeSort('expiry')">
         Expiry
         <font-awesome v-if="sort.method == 'expiry'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-      </span>
+      </div>
 
-      <span :class="{'active': sort.method == 'server'}" @click="changeSort('server')">
+      <div :class="{'active': sort.method == 'server'}" @click="changeSort('server')">
         Server
         <font-awesome v-if="sort.method == 'server'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-      </span>
+      </div>
 
-      <span :class="{'active': sort.method == 'world'}" @click="changeSort('world')">
+      <div :class="{'active': sort.method == 'world'}" @click="changeSort('world')">
         World
         <font-awesome v-if="sort.method == 'world'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-      </span>
+      </div>
 
-      <span :class="{'active': sort.method == 'contexts'}" @click="changeSort('contexts')">
+      <div :class="{'active': sort.method == 'contexts'}" @click="changeSort('contexts')">
         Contexts
         <font-awesome v-if="sort.method == 'contexts'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-      </span>
+      </div>
+
+      <div class="delete-column"></div>
     </div>
   </div>
 
 
-  <ul>
-    <Node v-for="(node, i) in sortedNodes" :node="node" :key="`node_${node.id}`" />
-  </ul>
+  <transition-group name="node-list" tag="ul">
+    <Node
+      v-for="(node, i) in sortedNodes"
+      :node="node"
+      :key="`node_${node.id}`"
+      :selected-nodes="selectedNodes"
+    />
+  </transition-group>
 
   <AddNode :session="session" />
 
@@ -83,6 +94,9 @@ export default {
       }
       return sorted.reverse();
     },
+    selectedNodes() {
+      return this.$store.getters.selectedNodes;
+    }
   },
   methods: {
     changeSort(method) {
@@ -125,16 +139,34 @@ export default {
     .sorting-tabs {
       display: flex;
 
-      > span {
+      > div {
         flex: 1 1 12%;
         padding: .5em 1em;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        font-weight: bold;
 
         &.active {
           background: rgba(255,255,255,.1);
+        }
+
+        &.node-select-all {
+          flex: 0 0 auto;
+
+          span {
+            display: block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid $grey;
+            position: relative;
+          }
+        }
+
+        &.delete-column {
+          pointer-events: none;
+          flex: 0 0 3rem;
         }
 
         svg {
@@ -150,7 +182,7 @@ export default {
           background: rgba(255,255,255,0.2);
         }
 
-        &:first-child {
+        &:nth-child(2) {
           flex: 2 2 40%;
         }
       }
@@ -162,6 +194,22 @@ export default {
     padding: 0;
     padding-bottom: 6.5em;
     list-style: none;
+  }
+
+  &-move {
+
+  }
+
+  &-enter, &-leave-to {
+    opacity: 0;
+    transform: translateX(10%);
+  }
+
+  &-leave-active {
+    position: absolute;
+    background: $red;
+    width: 100%;
+    pointer-events: none;
   }
 }
 </style>

@@ -191,8 +191,8 @@
 
       > button {
         margin: 0 .5rem;
-        background: #2d2d38;
-        color: lawngreen;
+        background: $grey;
+        color: $brand-color;
         border: 0;
         border-radius: 2px;
         width: 4em;
@@ -274,13 +274,13 @@
         }
 
         .code {
-          color: tomato;
+          color: $red;
           cursor: pointer;
           width: 100%;
           text-align: center;
 
           &.true {
-            color: lawngreen;
+            color: $brand-color;
           }
 
           &:hover {

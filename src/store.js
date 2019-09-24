@@ -18,6 +18,10 @@ export default new Vuex.Store({
 
     currentNodes: state => state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession),
 
+    tracks: state => state.editor.tracks,
+
+    selectedNodes: state => state.editor.selectedNodes,
+
     lastNodeId: state => {
       if (state.editor.nodes.length) {
         return state.editor.nodes.sort((a, b) => a - b)[state.editor.nodes.length - 1].id
@@ -58,6 +62,7 @@ export default new Vuex.Store({
         knownPermissions: [],
         potentialContexts: [],
         currentSession: null,
+        selectedNodes: [],
         modal: {
           type: null,
           object: null,
@@ -84,6 +89,10 @@ export default new Vuex.Store({
       state.editor.tracks = array;
     },
 
+    updateTrackOrder(state, value) {
+      state.editor.tracks = value;
+    },
+
     setPotentialContexts(state, array) {
       state.editor.potentialContexts = array;
     },
@@ -102,6 +111,10 @@ export default new Vuex.Store({
       if (node.expiry instanceof Date) node.expiry = node.expiry.getTime() / 1000;
 
       state.editor.nodes.push(node);
+    },
+
+    deleteNode(state, nodeId) {
+      state.editor.nodes = state.editor.nodes.filter(node => node.id !== nodeId);
     },
 
     setCurrentSession(state, sessionId) {
@@ -135,6 +148,14 @@ export default new Vuex.Store({
 
     addNodeToSession(state, node) {
       state.editor.nodes.push(node);
+    },
+
+    toggleNodeSelect(state, nodeId) {
+      if (state.editor.selectedNodes.indexOf(nodeId) >= 0) {
+        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(nodeId), 1);
+      } else {
+        state.editor.selectedNodes.push(nodeId);
+      }
     },
 
     setLoadError(state) {

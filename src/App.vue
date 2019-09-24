@@ -41,7 +41,7 @@
 }
 
 :focus {
-  outline: lawngreen 1px solid;
+  outline: $brand-color 1px solid;
 }
 
 input:focus {
@@ -89,7 +89,7 @@ body {
   }
 
   > footer {
-    background: #2d2d38;
+    background: $grey;
     padding: .75em 1em;
     position: relative;
     font-size: .8em;
@@ -106,7 +106,7 @@ body {
       svg {
         path {
           color: #141422;
-          fill: #2d2d38;
+          fill: $grey;
           transition: color 140ms ease-out, fill 140ms ease-out;
 
           &.octo-arm, &.octo-body {
@@ -133,7 +133,7 @@ body {
     }
 
     a {
-      color: #94df03;
+      color: $brand-color;
 
       &:hover {
         color: #4B4;
@@ -188,7 +188,7 @@ code, .code {
 
 .vdp-datepicker {
   .vdp-datepicker__calendar {
-    background: #2d2d38;
+    background: $grey;
     border: 0;
     box-shadow: 0 0 1em rgba(0,0,0,.2);
 
@@ -216,13 +216,13 @@ code, .code {
       &:not(.blank):not(.day-header) {
         &:not(.disabled) {
           &:hover {
-            border-color: lawngreen;
+            border-color: $brand-color;
           }
         }
       }
 
       &.selected {
-        background: lawngreen;
+        background: $brand-color;
       }
     }
 
@@ -230,12 +230,5 @@ code, .code {
       opacity: .3;
     }
   }
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .3s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
 }
 </style>

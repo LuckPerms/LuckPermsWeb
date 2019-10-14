@@ -142,7 +142,7 @@ export default new Vuex.Store({
     },
 
     updateNodeContext(state, payload) {
-      payload.node.context[payload.type] = payload.data.value;
+      payload.node.context = payload.data;
       payload.node.modified = true;
     },
 

@@ -8,32 +8,32 @@
         <span></span>
       </div>
 
-      <div :class="{'active': sort.method == 'permission'}" @click="changeSort('key')">
+      <div class="permission" :class="{'active': sort.method == 'permission'}" @click="changeSort('key')">
         Permission
         <font-awesome v-if="sort.method == 'permission'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
 
-      <div :class="{'active': sort.method == 'value'}" @click="changeSort('value')">
+      <div class="value" :class="{'active': sort.method == 'value'}" @click="changeSort('value')">
         Value
         <font-awesome v-if="sort.method == 'value'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
 
-      <div :class="{'active': sort.method == 'expiry'}" @click="changeSort('expiry')">
+      <div class="expiry" :class="{'active': sort.method == 'expiry'}" @click="changeSort('expiry')">
         Expiry
         <font-awesome v-if="sort.method == 'expiry'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
 
-      <div :class="{'active': sort.method == 'server'}" @click="changeSort('server')">
-        Server
-        <font-awesome v-if="sort.method == 'server'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-      </div>
+<!--      <div :class="{'active': sort.method == 'server'}" @click="changeSort('server')">-->
+<!--        Server-->
+<!--        <font-awesome v-if="sort.method == 'server'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />-->
+<!--      </div>-->
 
-      <div :class="{'active': sort.method == 'world'}" @click="changeSort('world')">
-        World
-        <font-awesome v-if="sort.method == 'world'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
-      </div>
+<!--      <div :class="{'active': sort.method == 'world'}" @click="changeSort('world')">-->
+<!--        World-->
+<!--        <font-awesome v-if="sort.method == 'world'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />-->
+<!--      </div>-->
 
-      <div :class="{'active': sort.method == 'contexts'}" @click="changeSort('contexts')">
+      <div class="context" :class="{'active': sort.method == 'contexts'}" @click="changeSort('contexts')">
         Contexts
         <font-awesome v-if="sort.method == 'contexts'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
@@ -140,7 +140,6 @@ export default {
       display: flex;
 
       > div {
-        flex: 1 1 12%;
         padding: .5em 1em;
         cursor: pointer;
         display: flex;
@@ -182,14 +181,26 @@ export default {
           background: rgba(255,255,255,0.2);
         }
 
-        &:nth-child(2) {
-          flex: 2 2 40%;
+        &.permission {
+          flex: 2 2 30%;
+        }
+
+        &.value {
+          flex: 1 1 10%;
+        }
+
+        &.expiry {
+          flex: 1 1 15%;
+        }
+
+        &.context {
+          flex: 1 1 20%;
         }
       }
     }
   }
 
-  ul {
+  > ul {
     margin: 0;
     padding: 0;
     padding-bottom: 6.5em;

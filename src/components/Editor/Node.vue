@@ -48,64 +48,57 @@
     />
   </div>
 
-<!--  Server context -->
-  <div
-    v-if="!server.edit"
-    class="server"
-    @click="server.edit = true"
-  >
-    <code v-if="node.context.server">{{ node.context.server }}</code>
-    <code v-else disabled>global</code>
-  </div>
-  <div v-else>
-    <input
-      v-autofocus
-      type="text"
-      v-model="server.value"
-      @keydown.enter="updateNode('server', server)"
-      @keydown.tab="updateNode('server', server)"
-      @blur="updateNode('server', server)"
-    />
-  </div>
-
-<!--  World context -->
-  <div
-    v-if="!world.edit"
-    class="world"
-    @click="world.edit = true"
-  >
-    <code v-if="node.context.world">{{ node.context.world }}</code>
-    <code v-else disabled>global</code>
-  </div>
-  <div v-else>
-    <input
-      v-autofocus
-      type="text"
-      v-model="world.value"
-      @keydown.enter="updateNode('world', world)"
-      @keydown.tab="updateNode('world', world)"
-      @blur="updateNode('world', world)"
-    />
-  </div>
-
-  <div class="contexts">
-    <code v-if="customContexts.length">{{ customContexts.length }}</code>
+  <div class="contexts" @click="context.ui = true">
+    <span v-if="Object.keys(node.context).length">
+      <code v-for="(value, key) in node.context"><small>{{ key }}:</small> {{ value }}</code>
+    </span>
     <code v-else disabled>none</code>
   </div>
 
   <div class="delete" @click="deleteNode(node.id)">
     <font-awesome icon="times" />
   </div>
+
+  <transition name="fade">
+    <div v-if="context.ui" class="context-ui" v-click-outside="closeContextUi">
+      <h4>Contexts <span>({{ Object.keys(node.context).length }})</span></h4>
+      <div class="close" @click="closeContextUi">
+        <font-awesome icon="times" />
+      </div>
+      <ul>
+        <li v-for="(value, key) in node.context">
+          <span v-html="key"></span>
+          <span v-html="value"></span>
+        </li>
+        <li>
+          <span class="edit">
+            <input type="text" v-model="context.key" placeholder="key">
+          </span>
+          <span class="edit">
+            <input type="text" v-model="context.value" placeholder="value">
+          </span>
+        </li>
+      </ul>
+      <button @click="addContext">
+        <font-awesome icon="plus" />
+        Add context
+      </button>
+    </div>
+  </transition>
 </li>
 </template>
 
 <script>
 import Datepicker from 'vuejs-datepicker';
+import vClickOutside from 'v-click-outside';
 
 export default {
   name: 'Node',
   components: {
     Datepicker
+  },
+  directives: {
+    clickOutside: vClickOutside.directive
   },
   data() {
     return {
@@ -117,17 +110,10 @@ export default {
         edit: false,
         value: this.node.expiry,
       },
-      server: {
-        edit: false,
-        value: this.node.context.server,
-      },
-      world: {
-        edit: false,
-        value: this.node.context.world,
-      },
-      contexts: {
-        edit: false,
-        value: this.customContexts,
+      context: {
+        ui: false,
+        key: '',
+        value: '',
       }
     }
   },
@@ -142,17 +128,6 @@ export default {
     isSelected() {
       return this.selectedNodes.indexOf(this.node.id) >= 0;
     },
-    customContexts() {
-      let contexts = [];
-
-      for (let context in this.node.context) {
-        if (['server', 'world'].indexOf(context) === -1) contexts.push({
-          context: context[context],
-        });
-      }
-
-      return contexts;
-    }
   },
   methods: {
     toggleNodeSelect(nodeId) {
@@ -169,19 +144,29 @@ export default {
           if (this.node[type] !== data.value) {
             this.$store.commit('updateNode', { node: this.node, type, data });
           }
+          data.edit = false;
           break;
-        case 'server':
-        case 'world':
-          if (this.node.context[type] !== data.value) {
-            this.$store.commit('updateNodeContext', { node: this.node, type, data });
-          }
+        case 'context':
+          this.$store.commit('updateNodeContext', { node: this.node, data });
           break;
       }
-
-      data.edit = false;
     },
     deleteNode(nodeId) {
       this.$store.commit('deleteNode', nodeId);
+    },
+    closeContextUi() {
+      this.context.ui = false;
+    },
+    addContext() {
+      if (this.context.key === '' || this.context.value === '') return;
+
+      let context = JSON.parse(JSON.stringify(this.node.context));
+
+      context[this.context.key] = this.context.value;
+
+      this.updateNode('context', context);
+      this.context.key = '';
+      this.context.value = '';
     }
   },
 };
@@ -193,6 +178,7 @@ export default {
   display: flex;
   cursor: pointer;
   transition: all .3s;
+  position: relative;
 
   &:hover {
     background-color: rgba(255,255,255,.1);
@@ -214,8 +200,7 @@ export default {
     }
   }
 
-  > div {
-    flex: 1 1 12%;
+  > div:not(.context-ui) {
     padding: .5em 1em;
 
     &:hover {
@@ -252,11 +237,126 @@ export default {
   }
 
   .permission {
-    flex: 2 2 40%;
+    flex: 2 2 30%;
+  }
+
+  .value {
+    flex: 1 1 10%;
+  }
+
+  .expiry {
+    flex: 1 1 15%;
+  }
+
+  .contexts {
+    flex: 1 1 20%;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+
+    code {
+      &:not(:last-child) {
+        margin-right: .5rem;
+      }
+    }
+  }
+
+  .context-ui {
+    position: absolute;
+    background: $grey;
+    padding: 0;
+    border-radius: 4px;
+    z-index: 10;
+    top: 50%;
+    right: 3rem;
+    transform: translateY(-50%);
+    box-shadow: 0 0 1em rgba(0,0,0,.2);
+    cursor: initial;
+    min-width: 25%;
+
+    .close {
+      position: absolute;
+      top: .7rem;
+      right: 1rem;
+      color: black;
+      opacity: .25;
+      cursor: pointer;
+
+      &:hover {
+        opacity: .5;
+      }
+    }
+
+    h4 {
+      padding: .8rem 1rem;
+      line-height: 1;
+      margin: 0;
+
+      span {
+        opacity: .4;
+      }
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      li {
+        width: 100%;
+        display: flex;
+        background: rgba(0,0,0,.1);
+        border-top: 1px solid rgba(0,0,0,0.2);
+        font-family: 'Source Code Pro', monospace;
+        font-size: .9rem;
+
+        span {
+          padding: .5rem 1rem;
+
+          &:first-child {
+            flex: none;
+            opacity: .5;
+          }
+
+          &:last-child {
+            flex: auto;
+          }
+
+          &.edit {
+            padding: 0;
+
+            input {
+              padding: .5rem 1rem;
+            }
+          }
+        }
+      }
+
+      + button {
+        width: 100%;
+        font: inherit;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        border: 0;
+        background: $brand-color;
+        padding: .5rem 1rem;
+        font-weight: bold;
+        cursor: pointer;
+
+        svg {
+          margin-right: .5rem;
+        }
+      }
+    }
   }
 
   code {
     &[disabled] {
+      opacity: .5;
+    }
+
+    small {
       opacity: .5;
     }
   }

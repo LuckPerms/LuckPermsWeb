@@ -85,16 +85,25 @@ body {
 
   > main {
     height: 100%;
-    max-height: calc(100% - 2.5rem);
+    max-height: calc(100% - 2rem);
+
+    @include breakpoint($md) {
+      max-height: calc(100% - 2.5rem);
+    }
   }
 
   > footer {
     background: $grey;
     padding: .75em 1em;
     position: relative;
-    font-size: .8em;
+    font-size: .66em;
     flex: 0 0 auto;
-    height: 2.5rem;
+    height: 2rem;
+
+    @include breakpoint($md) {
+      height: 2.5rem;
+      font-size: .8rem;
+    }
 
     .github-corner {
       position: absolute;

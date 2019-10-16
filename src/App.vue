@@ -141,14 +141,6 @@ body {
       }
     }
 
-    a {
-      color: $brand-color;
-
-      &:hover {
-        color: #4B4;
-      }
-    }
-
     ul {
       margin: 0;
       padding: 0;

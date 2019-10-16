@@ -2,7 +2,7 @@
   <main class="home">
     <section class="hero">
       <div class="logo">
-        <img alt="Vue logo" src="../assets/logo.png">
+        <img alt="LuckPerms logo" src="../assets/logo.png">
         <div>
           <h1>LuckPerms</h1>
           <p>An advanced permissions plugin for Minecraft servers</p>
@@ -10,7 +10,7 @@
       </div>
 
       <div class="download">
-        <a href="">
+        <router-link to="/download">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
             Download
@@ -19,7 +19,7 @@
             Version: {{ version }}
             <font-awesome icon="asterisk" :spin="true" v-if="!version" />
           </small>
-        </a>
+        </router-link>
         <small>
           Supports CraftBukkit, Spigot, Paper, BungeeCord, Sponge, Nukkit and Velocity servers
         </small>
@@ -27,34 +27,36 @@
     </section>
 
     <section class="resources">
-        <a href="https://github.com/lucko/LuckPerms/wiki">
+      <div>
+        <a href="https://github.com/lucko/LuckPerms/wiki" class="resource">
           <span>
             <font-awesome icon="book" />
             Wiki
           </span>
           <small>Learn how to install, setup, configure and effectively use LuckPerms</small>
         </a>
-        <a href="https://github.com/lucko/LuckPerms">
+        <a href="https://github.com/lucko/LuckPerms" class="resource">
           <span>
             <font-awesome :icon="['fab', 'github']" />
             GitHub
           </span>
           <small>Browse the source code, report issues and contribute code</small>
         </a>
-        <a href="https://discord.gg/luckperms">
+        <a href="https://discord.gg/luckperms" class="resource">
           <span>
             <font-awesome :icon="['fab', 'discord']" />
             Discord
           </span>
           <small>Join {{ discordUserCount }} others to discuss the project and ask/answer questions</small>
         </a>
-        <a href="https://patreon.com/luckdev">
+        <a href="https://patreon.com/luckdev" class="resource">
           <span>
             <font-awesome :icon="['fab', 'patreon']" />
             Patreon
           </span>
           <small>Join {{ patreonCount }} others supporting the project on Patreon</small>
         </a>
+      </div>
     </section>
   </main>
 </template>
@@ -106,16 +108,6 @@ export default {
   main.home {
     overflow-y: auto;
 
-    .hero {
-      background: black;
-      display: flex;
-      flex-wrap: wrap;
-
-      @include breakpoint($md) {
-        flex-wrap: nowrap;
-      }
-    }
-
     .logo {
       display: flex;
       flex-direction: column;
@@ -144,21 +136,6 @@ export default {
           margin-bottom: 0;
           margin-right: 2rem;
         }
-      }
-
-      h1 {
-        margin: 0 0 1rem;
-        line-height: 1;
-        font-size: 2em;
-
-        @include breakpoint($md) {
-          font-size: 3em;
-        }
-      }
-
-      p {
-        margin: 0;
-        opacity: .5;
       }
     }
 
@@ -220,55 +197,6 @@ export default {
         text-align: center;
         opacity: .5;
         margin-top: 1rem;
-      }
-    }
-
-    .resources {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      padding: 2rem;
-
-      @include breakpoint($md) {
-        width: 50%;
-        padding: 4rem;
-      }
-
-      a {
-        display: block;
-        background: $grey;
-        color: $brand-color;
-        padding: 1.5rem;
-        line-height: 1;
-        text-decoration: none;
-        border-radius: 2px;
-        font-size: 1.5em;
-        transition: background .2s;
-
-        &:not(:last-child) {
-          margin-bottom: 2rem;
-        }
-
-        &:hover {
-          background: lighten($grey, 10%);
-        }
-
-        span {
-          display: block;
-          font-weight: bold;
-          margin-bottom: .5rem;
-        }
-
-        svg {
-          margin-right: .5rem;
-          opacity: .5;
-        }
-
-        small {
-          color: white;
-          opacity: .4;
-          font-size: 1rem;
-        }
       }
     }
   }

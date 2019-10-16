@@ -12,18 +12,24 @@ export default new Vuex.Store({
 
 
   getters: {
-    sessionSet: state => state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]),
+    sessionSet: state => {
+      if (state.editor.sessionList) return state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]);
+    },
 
-    currentSession: state => state.editor.sessions[state.editor.currentSession],
+    currentSession: state => {
+      if (state.editor.sessions) return state.editor.sessions[state.editor.currentSession];
+    },
 
-    currentNodes: state => state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession),
+    currentNodes: state => {
+      if (state.editor.nodes) return state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession);
+    },
 
     tracks: state => state.editor.tracks,
 
     selectedNodes: state => state.editor.selectedNodes,
 
     lastNodeId: state => {
-      if (state.editor.nodes.length) {
+      if (state.editor.nodes && state.editor.nodes.length) {
         return state.editor.nodes.sort((a, b) => a - b)[state.editor.nodes.length - 1].id
       }
 
@@ -31,7 +37,7 @@ export default new Vuex.Store({
     },
 
     modifiedSessions: (state, getters) => {
-      if (getters.sessionSet.length) {
+      if (getters.sessionSet && getters.sessionSet.length) {
         let newGroups = getters.sessionSet.filter(session => session.new).map(session => session.id);
 
         let modifiedSessions = state.editor.nodes.filter(node => {
@@ -44,9 +50,13 @@ export default new Vuex.Store({
       return null;
     },
 
-    saveStatus: state => state.editor.save.status,
+    saveStatus: state => {
+      if (state.editor.save) return state.editor.save.status;
+    },
 
-    saveKey: state => state.editor.save.key,
+    saveKey: state => {
+      if (state.editor.save) return state.editor.save.key;
+    },
   },
 
 

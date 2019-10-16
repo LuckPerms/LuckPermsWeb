@@ -13,6 +13,11 @@ export default new Router({
       component: Home,
     },
     {
+      path: '/download',
+      name: 'download',
+      component: () => import(/* webpackChunkName: "download" */ './views/Download')
+    },
+    {
       path: '/editor',
       name: 'editor-home',
       component: () => import(/* webpackChunkName: "editor" */ './views/Editor')

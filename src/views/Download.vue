@@ -6,8 +6,9 @@
         Current version: {{ version }}
         <font-awesome icon="asterisk" :spin="true" v-if="!version" />
       </p>
-      <button class="button">Not sure which version?</button>
+      <button class="button" @click="openQuiz">Not sure which version?</button>
     </section>
+
     <section class="resources">
       <div>
         <a :href="downloads.bukkit" class="resource">
@@ -65,12 +66,16 @@
         <h2>Having trouble installing?</h2>
         <ul>
           <li>Make sure to check your console for any errors - especially during start up</li>
-          <li>Check the wiki to see if you missed any important steps during setup</li>
+          <li>Check the <a href="https://github.com/lucko/LuckPerms/wiki" target="_blank">wiki</a> to see if you missed any important steps during setup</li>
           <li>Delete the <code>libs</code> folder and restart the server to let it regenerate, sometimes this may fix the problem</li>
-          <li>If all else fails, join our <a href="https://discord.gg/luckperms">Discord</a> to get some support</li>
+          <li>If all else fails, join our <a href="https://discord.gg/luckperms" target="_blank">Discord</a> to get some support</li>
         </ul>
       </div>
     </section>
+
+    <transition name="fade">
+      <Quiz v-if="quiz.open" :downloads="downloads" @close="quiz.open = false" />
+    </transition>
   </main>
 </template>
 
@@ -78,6 +83,9 @@
 import axios from 'axios';
 export default {
   name: 'Download',
+  components: {
+    'Quiz': () => import('../components/Download/Quiz'),
+  },
   data() {
     return {
       version: null,
@@ -88,6 +96,9 @@ export default {
         nukkit: null,
         sponge: null,
         velocity: null,
+      },
+      quiz: {
+        open: false,
       }
     }
   },
@@ -98,7 +109,6 @@ export default {
     getBuildData() {
       axios.get('https://ci.lucko.me/job/LuckPerms/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]')
         .then(response => {
-          console.log(response.data);
           const filename = response.data.artifacts[0].fileName;
           this.version = filename.split('-').pop().slice(0, -4);
 
@@ -108,6 +118,14 @@ export default {
           });
         })
         .catch(console.error);
+    },
+
+    openQuiz() {
+      this.quiz.open = true;
+    },
+
+    closeQuiz() {
+      this.quiz.open = false;
     },
   }
 };

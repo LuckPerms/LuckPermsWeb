@@ -8,19 +8,19 @@
         <span></span>
       </div>
 
-      <div class="permission" :class="{'active': sort.method == 'permission'}" @click="changeSort('key')">
-        Permission
-        <font-awesome v-if="sort.method == 'permission'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+      <div class="permission" :class="{'active': sort.method === 'key'}" @click="changeSort('key')">
+        Permissions
+        <font-awesome v-if="sort.method === 'key'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
 
-      <div class="value" :class="{'active': sort.method == 'value'}" @click="changeSort('value')">
+      <div class="value" :class="{'active': sort.method === 'value'}" @click="changeSort('value')">
         Value
-        <font-awesome v-if="sort.method == 'value'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+        <font-awesome v-if="sort.method === 'value'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
 
-      <div class="expiry" :class="{'active': sort.method == 'expiry'}" @click="changeSort('expiry')">
+      <div class="expiry" :class="{'active': sort.method === 'expiry'}" @click="changeSort('expiry')">
         Expiry
-        <font-awesome v-if="sort.method == 'expiry'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+        <font-awesome v-if="sort.method === 'expiry'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
 
 <!--      <div :class="{'active': sort.method == 'server'}" @click="changeSort('server')">-->
@@ -41,6 +41,7 @@
       <div class="delete-column"></div>
     </div>
   </div>
+
 
 
   <transition-group name="node-list" tag="ul">

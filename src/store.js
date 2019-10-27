@@ -193,14 +193,14 @@ export default new Vuex.Store({
 
           response.data.permissionHolders.forEach((session) => {
             session.nodes.forEach((node) => {
-              dispatch('addNode', {
+              dispatch('addNodes', [{
                 sessionId: session.id,
                 type: node.type,
                 key: node.key,
                 value: node.value,
                 expiry: node.expiry,
                 context: node.context,
-              });
+              }]);
             });
 
             commit('addEditorSession', session);
@@ -217,20 +217,31 @@ export default new Vuex.Store({
         });
     },
 
-    addNode({ commit, getters }, { sessionId, type, key, value = true, expiry = null, context = {}, isNew = false, modified = false }) {
-      let node = {
-        id: getters.lastNodeId + 1,
-        sessionId,
-        type,
-        key,
-        value,
-        expiry,
-        context,
-        new: isNew,
-        modified,
-      };
+    addKnownPermission({ commit }, permission) {
+      commit('addKnownPermission', permission);
+    },
 
-      commit('addEditorNode', node);
+    addNodes({ commit, getters }, nodes) {
+      nodes.forEach((node, index) => {
+        node.id = getters.lastNodeId + index + 1;
+        node.expiry = node.expiry || null;
+        node.context = node.context || {};
+        commit('addEditorNode', node);
+      });
+
+      // props = { sessionId, type, key, value = true, expiry = null, context = {}, isNew = false, modified = false };
+      //
+      // let node = {
+      //   id: getters.lastNodeId + 1,
+      //   sessionId,
+      //   type,
+      //   key,
+      //   value,
+      //   expiry,
+      //   context,
+      //   new: isNew,
+      //   modified,
+      // };
     },
 
     changeCurrentSession({ commit }, session) {
@@ -246,45 +257,45 @@ export default new Vuex.Store({
         isNew: true,
       };
 
-      if (group.displayName !== '') dispatch('addNode', {
+      if (group.displayName !== '') dispatch('addNodes', [{
         sessionId: session.id,
         type: 'display_name',
         key: 'displayname.' + group.displayName,
         value: true,
         isNew: true,
-      });
+      }]);
 
-      if (group.parent !== 0) dispatch('addNode', {
+      if (group.parent !== 0) dispatch('addNodes', [{
         sessionId: session.id,
         type: 'inheritance',
         key: 'group.' + group.parent,
         value: true,
         isNew: true,
-      });
+      }]);
 
-      if (group.weight !== 0) dispatch('addNode', {
+      if (group.weight !== 0) dispatch('addNodes', [{
         sessionId: session.id,
         type: 'weight',
         key: 'weight.' + group.weight,
         value: true,
         isNew: true,
-      });
+      }]);
 
-      if (group.prefix !== '') dispatch('addNode', {
+      if (group.prefix !== '') dispatch('addNodes', [{
         sessionId: session.id,
         type: 'prefix',
         key: 'prefix.' + group.weight + '.' + group.prefix,
         value: true,
         isNew: true,
-      });
+      }]);
 
-      if (group.suffix !== '') dispatch('addNode', {
+      if (group.suffix !== '') dispatch('addNodes', [{
         sessionId: session.id,
         type: 'suffix',
         key: 'suffix.' + group.weight + '.' + group.suffix,
         value: true,
         isNew: true,
-      });
+      }]);
 
       commit('addEditorSession', session);
       commit('setCurrentSession', session.id);

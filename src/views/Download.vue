@@ -21,9 +21,9 @@
         <a :href="downloads.bungee" class="resource">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
-            BungeeCord
+            BungeeCord / Waterfall / Travertine
           </span>
-          <small>Supporting versions 1.8.8</small>
+          <small>Supporting versions 1.8.8 +</small>
         </a>
         <a :href="downloads.sponge" class="resource">
           <span>

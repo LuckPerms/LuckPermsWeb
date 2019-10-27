@@ -2,69 +2,58 @@
   <div class="add-node">
     <form class="row" autocomplete="off" @submit.prevent>
       <div class="form-group">
-        <label for="permission">Add permission</label>
-        <input
-          type="text"
-          id="permission"
-          name="permission"
-          v-model="permission"
-          @focus="handlePermissionFocus"
-          @blur="handlePermissionBlur"
-          @keydown.down="handlePermissionKeyDown"
-          @keydown.up="handlePermissionKeyUp"
-          @keydown.enter.prevent="handlePermissionAddition(null)"
-          @keydown.tab="handlePermissionAddition(null)"
-          ref="permissionInput"
-          required
-        />
+        <label for="permissions">Add permissions</label>
+        <multiselect
+          v-model="permissions"
+          :options="knownPermissions"
+          :multiple="true"
+          :taggable="true"
+          @tag="addPermission"
+          tag-placeholder="Press enter to select"
+        ></multiselect>
       </div>
 
-      <ul
-        class="known-permissions"
-        v-if="list && sortedKnownPermissions.length"
-      >
-        <li
-          v-for="(node, i) in sortedKnownPermissions"
-          :key="i + '_' + node"
-          :class="{ 'highlighted': i === highlightedNode }"
-          @click.stop="handlePermissionAddition(node)"
-        >{{node}}</li>
-      </ul>
+      <div>
+        <div class="form-group">
+          <label>Value</label>
+          <button type="button" @click="value = !value" :class="{ code: true, 'true': value}">
+            {{ value }}
+          </button>
+        </div>
 
-      <div class="form-group">
-        <label>Value</label>
-        <button type="button" @click="value = !value" :class="{ code: true, 'true': value}">
-          {{value}}
-        </button>
+        <div class="form-group">
+          <label for="expiry">Expiry</label>
+          <datepicker
+            id="expiry"
+            name="expiry"
+            v-model="expiry"
+            placeholder="never"
+            :disabled-dates="{ to: new Date() }"
+          />
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="expiry">Expiry</label>
-        <datepicker
-          id="expiry"
-          name="expiry"
-          v-model="expiry"
-          placeholder="never"
-          :disabled-dates="{ to: new Date() }"
-        />
+      <div class="form-group contexts">
+        <label>Contexts</label>
+        <button type="button" class="code">Add Contexts</button>
       </div>
 
-      <div class="form-group">
-        <label for="server">Server</label>
-        <input type="text" id="server" name="server" v-model="server"  placeholder="global">
-      </div>
+<!--      <div class="form-group">-->
+<!--        <label for="server">Server</label>-->
+<!--        <input type="text" id="server" name="server" v-model="server"  placeholder="global">-->
+<!--      </div>-->
 
-      <div class="form-group">
-        <label for="world">World</label>
-        <input type="text" id="world" name="world" v-model="world"  placeholder="global">
-      </div>
+<!--      <div class="form-group">-->
+<!--        <label for="world">World</label>-->
+<!--        <input type="text" id="world" name="world" v-model="world"  placeholder="global">-->
+<!--      </div>-->
 
-      <div class="form-group">
-        <label for="contexts">Contexts</label>
-        <input type="text" id="contexts" name="contexts" v-model="contexts"  placeholder="none">
-      </div>
+<!--      <div class="form-group">-->
+<!--        <label for="contexts">Contexts</label>-->
+<!--        <input type="text" id="contexts" name="contexts" v-model="contexts"  placeholder="none">-->
+<!--      </div>-->
 
-      <button type="submit" :disabled="permission === ''" @click="addNodeToSession">
+      <button type="submit" :disabled="permissions.length === 0" @click="addNodesToSession">
         <font-awesome icon="plus" />
       </button>
     </form>
@@ -73,17 +62,17 @@
 
 <script>
   import Datepicker from 'vuejs-datepicker';
+  import Multiselect from 'vue-multiselect';
 
   export default {
     name: 'AddNode',
     components: {
-      Datepicker
+      Datepicker,
+      Multiselect
     },
     data() {
       return {
-        permission: '',
-        highlightedNode: 0,
-        list: false,
+        permissions: [],
         value: true,
         expiry: null,
         server: null,
@@ -95,89 +84,54 @@
       session: Object,
     },
     computed: {
-      sortedKnownPermissions() {
-        if (this.permission !== '') {
-          const sortedArray = this.$store.state.editor.knownPermissions
-            .filter(node => node.indexOf(this.permission) >= 0);
-
-          return sortedArray.slice(0, 100);
-        }
-        return [];
+      knownPermissions() {
+        return this.$store.state.editor.knownPermissions;
       },
+      // sortedKnownPermissions() {
+      //   if (this.permission !== '') {
+      //     const sortedArray = this.$store.state.editor.knownPermissions
+      //       .filter(node => node.indexOf(this.permission) >= 0);
+      //
+      //     return sortedArray.slice(0, 100);
+      //   }
+      //   return [];
+      // },
     },
     methods: {
-      handlePermissionAddition(node) {
-        if (node) {
-          this.permission = node;
-        } else if (this.sortedKnownPermissions.length) {
-          this.permission = this.sortedKnownPermissions[this.highlightedNode];
-        }
-
-        this.highlightedNode = 0;
-        this.list = false;
+      addPermission(permisison) {
+        this.$store.dispatch('addKnownPermission', permission);
       },
-      handlePermissionFocus() {
-        this.highlightedNode = 0;
-        this.list = true;
-      },
-      handlePermissionBlur() {
-        setTimeout(() => {
-          this.list = false;
-        }, 500);
-      },
-      handlePermissionKeyUp() {
-        if (this.permission === '') return;
+      addNodesToSession() {
+        if (this.permissions.length === 0) return;
 
-        this.list = true;
+        let nodes = [];
 
-        if (this.highlightedNode < this.sortedKnownPermissions.length - 1) {
-          this.highlightedNode++;
-        }
-      },
-      handlePermissionKeyDown() {
-        if (this.permission === '') return;
+        this.permissions.forEach(key => {
+          nodes.push({
+            sessionId: this.session.id,
+            type: 'permission',
+            key,
+            value: this.value,
+            expiry: this.expiry,
+            // TODO: context,
+            context: {},
+            isNew: true,
+          })
+        });
 
-        this.list = true;
+        this.$store.dispatch('addNodes', nodes);
 
-        if (this.highlightedNode > 0) {
-          this.highlightedNode--;
-        }
-      },
-      addNodeToSession() {
-        if (this.permission === '') return;
-
-        const node = {
-          sessionId: this.session.id,
-          type: 'permission',
-          key: this.permission,
-          value: this.value,
-          expiry: this.expiry,
-          context: {
-            ...this.server && { server: this.server },
-            ...this.world && { world: this.world },
-          },
-          // TODO: contexts: this.contexts,
-          isNew: true,
-        };
-
-        this.$store.dispatch('addNode', node);
-
-        this.permission = '';
-        this.highlightedNode = 0;
-        this.list = false;
+        this.permissions = [];
         this.value = true;
         this.expiry = null;
-        this.server = null;
-        this.world = null;
-        this.contexts = null;
-
-        this.$refs.permissionInput.focus();
       }
     }
   }
 </script>
 
 <style lang="scss">
+  @import '~vue-multiselect/dist/vue-multiselect.min.css';
+
   .add-node {
     background-color: #666670;
     position: fixed;
@@ -262,8 +216,9 @@
           margin-bottom: .5em;
         }
 
-        input {
+        input, textarea {
           width: 100%;
+          height: 100%;
           border: 0;
           background: rgba(0,0,0,0.2);
           border-radius: 2px;

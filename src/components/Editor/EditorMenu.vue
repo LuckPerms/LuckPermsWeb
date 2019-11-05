@@ -1,79 +1,115 @@
 <template>
   <nav id="editor-menu">
-    <div class="tracks" v-if="tracks.length">
-      <h2 @click="toggle.tracks = !toggle.tracks">
-        Tracks
-        <font-awesome icon="plus-circle" @click="createTrack" />
-      </h2>
-      <transition name="slide">
-        <ul v-if="toggle.tracks">
-          <li
-            v-for="track in tracks"
-            :class="{ 'new': track.new }"
-            :key="`track_${track.id}`"
-          >
-            <h3>{{ track.id }}</h3>
-            <ul v-if="track.groups.length">
-              <li
-                v-for="group in track.groups"
-                @click="changeCurrentSession(group)"
-                :class="{ 'active': currentSession && currentSession.id === group, 'modified': modifiedSessions.has(group) }"
-                :key="`${track.id}_${group}`"
-              >
-                {{ group }}
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </transition>
+    <div class="filter">
+      <input type="text" placeholder="Search" v-model="filter" title="Filter tracks, groups and users">
+      <button class="delete" @click="filter = ''" v-if="filter !== ''">
+        <font-awesome icon="times" fixed-width />
+      </button>
     </div>
 
-    <div class="groups" v-if="groups.length">
-      <h2 @click="toggle.groups = !toggle.groups">
-        Groups
-        <font-awesome icon="plus-circle" @click="createGroup" />
-      </h2>
-      <transition name="slide">
-        <ul v-if="toggle.groups">
-          <li
-            v-for="group in groups"
-            @click="changeCurrentSession(group.id)"
-            :class="{ 'active': currentSession && currentSession === group, 'modified': modifiedSessions.has(group.id), 'new': group.new }"
-            :key="group.id"
-          >
-            {{group.displayName}} <span v-if="group.displayName !== group.id">{{ group.id }}</span>
-          </li>
-        </ul>
-      </transition>
+    <div class="sessions">
+      <div class="tracks" v-if="filteredTracks.length">
+        <h2>
+          <button @click="toggle.tracks = !toggle.tracks">
+            <font-awesome icon="caret-down" fixed-width :rotation="toggle.tracks ? null : 270" />
+          </button>
+          <span>
+          Tracks
+          <small>({{ filteredTracks.length }})</small>
+        </span>
+          <button @click="createTrack" title="Add a track">
+            <font-awesome icon="plus-circle" fixed-width />
+          </button>
+        </h2>
+        <transition name="slide">
+          <ul v-if="toggle.tracks">
+            <li
+              v-for="track in filteredTracks"
+              :class="{ 'new': track.new }"
+              :key="`track_${track.id}`"
+            >
+              <h3>{{ track.id }}</h3>
+              <ul v-if="track.groups.length">
+                <li
+                  v-for="group in track.groups"
+                  @click="changeCurrentSession(group)"
+                  :class="{ 'active': currentSession && currentSession.id === group, 'modified': modifiedSessions.has(group) }"
+                  :key="`${track.id}_${group}`"
+                >
+                  {{ group }}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </transition>
+      </div>
+
+      <div class="groups" v-if="filteredGroups.length">
+        <h2>
+          <button @click="toggle.groups = !toggle.groups">
+            <font-awesome icon="caret-down" fixed-width :rotation="toggle.groups ? null : 270" />
+          </button>
+          <span>
+          Groups
+          <small>({{ filteredGroups.length }})</small>
+        </span>
+          <button @click="createGroup" title="Add a group">
+            <font-awesome icon="plus-circle" fixed-width />
+          </button>
+        </h2>
+        <transition name="slide">
+          <ul v-if="toggle.groups">
+            <li
+              v-for="group in filteredGroups"
+              @click="changeCurrentSession(group.id)"
+              :class="{ 'active': currentSession && currentSession === group, 'modified': modifiedSessions.has(group.id), 'new': group.new }"
+              :key="group.id"
+            >
+            <EditorMenuGroup :group="group" />
+            </li>
+          </ul>
+        </transition>
+      </div>
+
+      <div class="users" v-if="filteredUsers.length">
+        <h2>
+          <button @click="toggle.users = !toggle.users">
+            <font-awesome icon="caret-down" fixed-width :rotation="toggle.users ? null : 270" />
+          </button>
+          <span>
+          Users
+          <small>({{ filteredUsers.length }})</small>
+        </span>
+          <button disabled></button>
+        </h2>
+        <transition name="slide">
+          <ul v-if="toggle.users">
+            <li v-for="user in filteredUsers" @click="changeCurrentSession(user.id)" :class="{'active': currentSession && currentSession === user}" :key="user.id">
+              <img :src="`https://minotar.net/helm/${user.id}/100.png`"> {{user.displayName}}
+            </li>
+          </ul>
+        </transition>
+      </div>
     </div>
 
-    <div class="users" v-if="users.length">
-      <h2 @click="toggle.tracks = !toggle.tracks">
-        Users
-      </h2>
-      <transition name="slide">
-        <ul v-if="toggle.users">
-          <li v-for="user in users" @click="changeCurrentSession(user.id)" :class="{'active': currentSession && currentSession === user}" :key="user.id">
-            <img :src="`https://minotar.net/helm/${user.id}/100.png`"> {{user.displayName}}
-          </li>
-        </ul>
-      </transition>
-    </div>
+
   </nav>
 </template>
 
 <script>
   // import draggable from 'vuedraggable';
+  import EditorMenuGroup from './EditorMenuGroup';
 
   export default {
     name: 'editor-menu',
 
-    // components: {
-    //   draggable
-    // },
+    components: {
+      EditorMenuGroup
+    },
 
     data() {
       return {
+        filter: '',
         toggle: {
           tracks: false,
           groups: false,
@@ -102,6 +138,25 @@
       users() {
         return this.sessions.filter(session => session.type === 'user');
       },
+      filteredTracks() {
+        return this.tracks.filter(track => {
+          const trackGroups = track.groups.filter(group => {
+            return group.includes(this.filter);
+          });
+
+          return track.id.includes(this.filter) || trackGroups.length;
+        });
+      },
+      filteredGroups() {
+        return this.groups.filter(group => {
+          return group.id.includes(this.filter) || group.displayName.includes(this.filter);
+        });
+      },
+      filteredUsers() {
+        return this.users.filter(user => {
+          return user.displayName.includes(this.filter);
+        });
+      },
       modifiedSessions() {
         return this.$store.getters.modifiedSessions || null;
       }
@@ -112,43 +167,97 @@
         this.$store.commit('setCurrentSession', sessionId);
       },
       createTrack() {
-
+        this.$store.commit('setModal', {
+          type: 'createTrack',
+          object: {
+            groups: this.groups,
+            tracks: this.tracks,
+          }
+        });
       },
       createGroup() {
         this.$store.commit('setModal', { type: 'createGroup', object: this.groups });
-      },
+      }
     }
   }
 </script>
 
 <style lang="scss">
-  nav#editor-menu {
+  #editor-menu {
     flex: 0 0 20em;
     overflow-y: auto;
     max-height: 100%;
-    text-align: center;
     border-right: 1px solid rgba(255,255,255,.2);
+
+    .filter {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: $navy;
+
+      input {
+        font: inherit;
+        color: white;
+        background: rgba(255,255,255,.1);
+        border: none;
+        padding: .5rem 1rem;
+        width: 100%;
+        outline-offset: -1px;
+      }
+
+      .delete {
+        position: absolute;
+        right: .5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        color: white;
+        opacity: .5;
+        border: 0;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 1;
+        }
+      }
+    }
 
     h2 {
       margin: 0;
-      padding: .5em 0;
+      padding: .5em 1em;
       border-bottom: 1px solid rgba(255,255,255,.1);
       text-transform: uppercase;
       position: sticky;
-      top: 0;
+      top: 2.5rem;
       z-index: 5;
       background-color: $navy;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-      svg {
-        position: absolute;
-        right: 1em;
-        top: 50%;
-        transform: translateY(-50%);
+      small {
+        opacity: .6;
+      }
+
+      button {
+        background: transparent;
+        border: none;
         opacity: .5;
         cursor: pointer;
+        color: white;
+        font-size: 1.5rem;
+        padding: 0;
+
+        svg {
+          transition: transform .2s;
+        }
 
         &:hover {
           opacity: 1;
+        }
+
+        &[disabled] {
+          width: 1em;
         }
       }
     }
@@ -163,7 +272,8 @@
         padding: .5em 2em;
         border-bottom: 1px solid rgba(255,255,255,.1);
         cursor: pointer;
-        position: relative;
+        display: flex;
+        align-items: center;
 
         &.active {
           background-color: rgba(255,255,255,.1);
@@ -181,7 +291,7 @@
           background-color: rgba(255,255,255,.15);
         }
 
-        span {
+        small {
           opacity: .5;
           font-size: smaller;
 
@@ -200,6 +310,8 @@
       > ul {
         > li {
           padding: 0;
+          flex-direction: column;
+          align-items: stretch;
 
           &:hover {
             background: transparent;
@@ -219,10 +331,24 @@
 
       h3 {
         margin: 0;
-        padding: .5rem 0;
+        padding: .5rem 1rem;
         color: $brand-color;
         border-bottom: $grey 1px solid;
         text-transform: uppercase;
+      }
+    }
+
+    .groups {
+      li {
+        > span {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+
+          .weight {
+            opacity: .5;
+          }
+        }
       }
     }
 
@@ -230,10 +356,7 @@
       img {
         width: 1em;
         height: auto;
-        position: absolute;
-        left: 1em;
-        top: 50%;
-        transform: translateY(-50%);
+        margin-right: .5em;
       }
     }
   }

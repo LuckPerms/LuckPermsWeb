@@ -4,21 +4,40 @@
 
   <div class="node-list-header">
     <div class="sorting-tabs">
-      <div :class="{ 'node-select-all': true }">
+      <div
+        :class="{ 'node-select-all': true, 'selected': allSelected }"
+        @click="selectAll"
+        title="Select all nodes for mass operations"
+      >
         <span></span>
       </div>
 
-      <div class="permission" :class="{'active': sort.method === 'key'}" @click="changeSort('key')">
+      <div
+        class="permission"
+        :class="{'active': sort.method === 'key'}"
+        @click="changeSort('key')"
+        title="Sort nodes by permission"
+      >
         Permissions
         <font-awesome v-if="sort.method === 'key'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
 
-      <div class="value" :class="{'active': sort.method === 'value'}" @click="changeSort('value')">
+      <div
+        class="value"
+        :class="{'active': sort.method === 'value'}"
+        @click="changeSort('value')"
+        title="Sort nodes by true/false"
+      >
         Value
         <font-awesome v-if="sort.method === 'value'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
 
-      <div class="expiry" :class="{'active': sort.method === 'expiry'}" @click="changeSort('expiry')">
+      <div
+        class="expiry"
+        :class="{'active': sort.method === 'expiry'}"
+        @click="changeSort('expiry')"
+        title="Sort nodes by expiry"
+      >
         Expiry
         <font-awesome v-if="sort.method === 'expiry'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
@@ -33,7 +52,12 @@
 <!--        <font-awesome v-if="sort.method == 'world'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />-->
 <!--      </div>-->
 
-      <div class="context" :class="{'active': sort.method == 'contexts'}" @click="changeSort('contexts')">
+      <div
+        class="context"
+        :class="{'active': sort.method == 'contexts'}"
+        @click="changeSort('contexts')"
+        title="Sort nodes by contexts"
+      >
         Contexts
         <font-awesome v-if="sort.method == 'contexts'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
       </div>
@@ -97,6 +121,16 @@ export default {
     },
     selectedNodes() {
       return this.$store.getters.selectedNodes;
+    },
+    currentSelectedNodes() {
+      const map = this.nodes.map(node => node.id);
+
+      return this.selectedNodes.filter(nodeId => {
+        return map.indexOf(nodeId) !== -1;
+      });
+    },
+    allSelected() {
+      return this.nodes.length === this.currentSelectedNodes.length;
     }
   },
   methods: {
@@ -109,6 +143,13 @@ export default {
 
       this.sort.method = method;
     },
+    selectAll() {
+      if (this.allSelected) {
+        this.$store.commit('deselectAllSessionNodes', this.nodes);
+      } else {
+        this.$store.commit('selectAllSessionNodes', this.nodes);
+      }
+    }
   },
 };
 </script>
@@ -161,6 +202,22 @@ export default {
             height: 1.5rem;
             border: 2px solid $grey;
             position: relative;
+          }
+
+          &.selected {
+            span {
+              &:after {
+                position: absolute;
+                display: block;
+                content: '';
+                width: 1rem;
+                height: .5rem;
+                border: 4px solid $brand-color;
+                border-top: 0;
+                border-right: 0;
+                transform: rotate(-45deg);
+              }
+            }
           }
         }
 

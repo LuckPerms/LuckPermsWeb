@@ -7,28 +7,25 @@
     </div>
 
 <!--    Modals -->
-    <CreateGroup v-if="modal.type == 'createGroup'" :groups="modal.object" />
-    <SavedChanges v-if="modal.type == 'savedChanges'" :save-key="modal.object" />
+    <component :is="modal.type" :props="modal.object" />
   </div>
 </div>
 </template>
 
 <script>
-import CreateGroup from '@/components/Editor/ModalCreateGroup.vue';
-import SavedChanges from '@/components/Editor/ModalSavedChanges.vue';
+import CreateGroup from './Modals/CreateGroup';
+import CreateTrack from './Modals/CreateTrack';
+import SavedChanges from './Modals/SavedChanges';
 
 export default {
   name: 'Modal',
   components: {
     CreateGroup,
+    CreateTrack,
     SavedChanges,
   },
   props: {
     modal: Object,
-  },
-  computed: {
-    sortedNodes() {
-    },
   },
   methods: {
     closeModal() {
@@ -55,7 +52,8 @@ export default {
   .modal-box {
     background: rgba(255,255,255,.2);
     padding: 2em;
-    max-width: 80%;
+    width: 100%;
+    max-width: 600px;
     border-radius: 2px;
     position: relative;
 
@@ -80,6 +78,8 @@ export default {
       .col {
         width: 50%;
         padding: 0 1em;
+        display: flex;
+        flex-direction: column;
       }
     }
 

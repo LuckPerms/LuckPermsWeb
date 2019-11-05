@@ -6,8 +6,13 @@
   <div class="meta-parents" v-if="sessionData.parents.length > 0">
     <strong>Parent groups:</strong>
     <ul>
-      <li v-for="parent in sessionData.parents" @click="handleParentSessionSwitch(parent)">
-        <code>{{formatParent(parent)}}</code>
+      <li v-for="parent in sessionData.parents">
+        <code
+          @click="handleParentSessionSwitch(parent)"
+          :title="`Go to the ${formatParent(parent)} group`"
+        >
+          {{ formatParent(parent) }}
+        </code>
       </li>
     </ul>
   </div>
@@ -70,10 +75,11 @@ export default {
       flex-wrap: wrap;
 
       li {
-        // padding: .2em .5em;
-        // background: rgba(0,0,0,0.2);
         margin-right: .5em;
-        // border-radius: 2px;
+
+        code {
+          cursor: pointer;
+        }
       }
     }
   }

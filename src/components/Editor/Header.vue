@@ -4,7 +4,7 @@
     <small>{{sessionData.type}}:</small>
     <code>{{session.displayName}}</code>
     <span v-if="sessionData.type == 'group' && session.displayName !== session.id">{{ session.id }}</span>
-    <img v-if="sessionData.type == 'user'" :src="`https://minotar.net/helm/${session.who.uuid}/100.png`">
+    <img v-if="sessionData.type == 'user'" :src="`https://minotar.net/helm/${session.id}/100.png`">
   </h1>
 </div>
 </template>

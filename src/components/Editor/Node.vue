@@ -3,6 +3,7 @@
   <div
     :class="{ 'node-select': true, 'selected': isSelected }"
     @click="toggleNodeSelect(node.id)"
+    title="Select node for mass operations"
   >
     <span></span>
   </div>
@@ -12,6 +13,7 @@
     v-if="!permission.edit"
     class="permission"
     @click="permission.edit = true"
+    title="Click to edit the permission"
   >
     <code>{{ node.key }}</code>
   </div>
@@ -26,7 +28,11 @@
     />
   </div>
 
-  <div class="value" @click="toggleValue(node)">
+  <div
+    class="value"
+    @click="toggleValue(node)"
+    title="Click to toggle true/false"
+  >
     <code :class="{'true': node.value}">{{ node.value }}</code>
   </div>
 
@@ -35,6 +41,7 @@
     v-if="!expiry.edit"
     class="expiry"
     @click="expiry.edit = true"
+    title="Click to choose an expiry"
   >
     <code v-if="node.expiry">{{ node.expiry | moment('from') }}</code>
     <code v-else disabled>never</code>
@@ -48,7 +55,11 @@
     />
   </div>
 
-  <div class="contexts" @click="context.ui = true">
+  <div
+    class="contexts"
+    @click="context.ui = true"
+    title="Click to edit the contexts for this node"
+  >
     <span v-if="Object.keys(node.context).length">
       <code v-for="(value, key) in node.context"><small>{{ key }}:</small> {{ value }}</code>
     </span>

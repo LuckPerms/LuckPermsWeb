@@ -1,6 +1,5 @@
 <template>
   <main class="editor">
-
     <div v-if="!sessionId" class="editor-intro">
       <div>
         <img alt="LuckPerms logo" src="../assets/logo.png">
@@ -46,20 +45,25 @@
               <div class="logo">
                 <img alt="LuckPerms logo" src="../assets/logo.png">
                 Web Permissions Editor
+                <span>BETA</span>
+                <small>Please send any bugs, suggestions or feedback to <a href="https://github.com/lucko/LuckPermsWeb/issues" target="_blank">GitHub</a>.</small>
               </div>
               <div class="buttons">
-                <button>
-                  <font-awesome icon="undo" />
-                </button>
-                <button>
-                  <font-awesome icon="redo" />
-                </button>
+<!--                <button>-->
+<!--                  <font-awesome icon="undo" />-->
+<!--                </button>-->
+<!--                <button>-->
+<!--                  <font-awesome icon="redo" />-->
+<!--                </button>-->
                 <button @click="saveData">
-                  <font-awesome
-                    v-if="saving"
-                    icon="save"
-                  />
-                  <font-awesome v-else icon="sync-alt" :spin="true" />
+                  <span v-if="saveStatus !== 'saving'">
+                    <font-awesome icon="save" fixed-width />
+                    Save
+                  </span>
+                  <span v-else>
+                    <font-awesome icon="sync-alt" fixed-width :spin="true" />
+                    Saving...
+                  </span>
                 </button>
               </div>
             </nav>
@@ -156,10 +160,8 @@ export default {
     errors() {
       return this.$store.state.editor.errors;
     },
-    saving() {
-      const status = this.$store.getters.saveStatus;
-
-      return status === null || status === 'saved';
+    saveStatus() {
+      return this.$store.getters.saveStatus;
     }
   },
 
@@ -292,12 +294,30 @@ main.editor {
               width: auto;
               margin-right: .5em;
             }
+
+            span {
+              background: tomato;
+              display: inline-block;
+              padding: .1rem .5rem;
+              margin-left: 1rem;
+              border-radius: 2px;
+            }
+
+            small {
+              font-weight: normal;
+              opacity: .6;
+              font-size: 1rem;
+              max-width: 15em;
+              line-height: 1;
+              margin-left: 1rem;
+            }
           }
 
           .buttons {
             button {
               background: transparent;
               color: white;
+              font: inherit;
               font-size: 1em;
               padding: .25rem .5rem;
               border:0;

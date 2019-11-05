@@ -5,7 +5,7 @@
     <div class="col">
       <div class="form-group">
         <label for="groupName">Group name</label>
-        <input type="text" id="groupName" v-model="group.name" autofocus>
+        <input type="text" id="groupName" :value="group.name" @input="updateGroupName($event)">
       </div>
       <div class="form-group">
         <label for="displayName">Display name</label>
@@ -15,8 +15,8 @@
         <label for="parent">Parent</label>
         <select name="parent" id="parent" v-model="group.parent">
           <option value="0">None</option>
-          <option v-for="groupItem in groups" :value="groupItem.id" :key="groupItem.id">
-            {{groupItem.displayName}}
+          <option v-for="groupItem in props" :value="groupItem.id" :key="groupItem.id">
+            {{ groupItem.displayName }}
           </option>
         </select>
       </div>
@@ -60,11 +60,15 @@ export default {
     };
   },
   props: {
-    groups: Array,
+    props: Array,
   },
   computed: {
   },
   methods: {
+    updateGroupName(event) {
+      this.group.name = event.target.value.toLowerCase().replace(' ', '-');
+    },
+
     addGroup() {
       if (this.group.name !== '') {
         let result = this.$store.dispatch('addGroup', this.group);

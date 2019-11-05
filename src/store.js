@@ -13,7 +13,9 @@ export default new Vuex.Store({
 
   getters: {
     sessionSet: state => {
-      if (state.editor.sessionList) return state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]);
+      if (state.editor.sessionList) {
+        return state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]);
+      }
     },
 
     currentSession: state => {
@@ -48,6 +50,10 @@ export default new Vuex.Store({
       }
 
       return null;
+    },
+
+    weightNodes: state => {
+      if (state.editor.nodes) return state.editor.nodes.filter(node => node.key.startsWith('weight'));
     },
 
     saveStatus: state => {
@@ -97,6 +103,10 @@ export default new Vuex.Store({
 
     setTracks(state, array) {
       state.editor.tracks = array;
+    },
+
+    addTrack(state, track) {
+      state.editor.tracks.push(track);
     },
 
     updateTrackOrder(state, value) {
@@ -166,6 +176,22 @@ export default new Vuex.Store({
       } else {
         state.editor.selectedNodes.push(nodeId);
       }
+    },
+
+    selectAllSessionNodes(state, nodes) {
+      nodes.forEach(node => {
+        if (state.editor.selectedNodes.indexOf(node.id) === -1) {
+          state.editor.selectedNodes.push(node.id);
+        }
+      });
+    },
+
+    deselectAllSessionNodes(state, nodes) {
+      nodes.forEach(node => {
+        if (state.editor.selectedNodes.indexOf(node.id) >= 0) {
+          state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(node.id), 1);
+        }
+      });
     },
 
     setLoadError(state) {
@@ -249,7 +275,6 @@ export default new Vuex.Store({
     },
 
     addGroup({ commit, dispatch }, group) {
-
       let session = {
         id: group.name,
         displayName: group.displayName || group.name,
@@ -300,6 +325,11 @@ export default new Vuex.Store({
       commit('addEditorSession', session);
       commit('setCurrentSession', session.id);
       commit('setModal', { type: null, object: null });
+    },
+
+    addTrack({ commit }, track) {
+      commit('addTrack', track);
+      commit('setModal', { type: null, object: null});
     },
 
     saveData({ state, getters, commit }) {

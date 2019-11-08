@@ -26,7 +26,7 @@ export default new Vuex.Store({
       if (state.editor.nodes) return state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession);
     },
 
-    tracks: state => state.editor.tracks.sort((a, b) => a.id.localeCompare(b.id)),
+    tracks: state => state.editor.tracks,
 
     selectedNodes: state => state.editor.selectedNodes,
 
@@ -110,11 +110,11 @@ export default new Vuex.Store({
     },
 
     updateTrack(state, { id, newTrack }) {
-      const index = state.editor.tracks.findIndex(track => {
+      let track = state.editor.tracks.find(track => {
         return track.id === id;
       });
 
-      state.editor.tracks[index] = newTrack;
+      track.groups = newTrack.groups;
     },
 
     deleteTrack(state, trackId) {

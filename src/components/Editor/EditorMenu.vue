@@ -101,7 +101,6 @@
 </template>
 
 <script>
-  // import draggable from 'vuedraggable';
   import EditorMenuTrack from './EditorMenuTrack';
   import EditorMenuGroup from './EditorMenuGroup';
 
@@ -130,13 +129,8 @@
     },
 
     computed: {
-      tracks: {
-        get() {
-          return this.$store.getters.tracks || null;
-        },
-        set(value) {
-          this.$store.commit('updateTrackOrder', value);
-        }
+      tracks() {
+        return this.$store.getters.tracks || null;
       },
       groups() {
         return this.sessions.filter(session => session.type === 'group');
@@ -151,7 +145,7 @@
           });
 
           return track.id.includes(this.filter) || trackGroups.length;
-        });
+        }).sort((a, b) => a.id.localeCompare(b.id));
       },
       filteredGroups() {
         return this.groups.filter(group => {

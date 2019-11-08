@@ -2,7 +2,7 @@
   <nav id="editor-menu">
     <div class="filter">
       <input type="text" placeholder="Search" v-model="filter" title="Filter tracks, groups and users">
-      <button class="delete" @click="filter = ''" v-if="filter !== ''">
+      <button class="delete" @click="filter = ''" v-if="filter !== ''" title="Clear filter">
         <font-awesome icon="times" fixed-width />
       </button>
     </div>
@@ -10,8 +10,8 @@
     <div class="sessions">
       <div class="tracks" v-if="filteredTracks.length">
         <h2>
-          <button @click="toggle.tracks = !toggle.tracks">
-            <font-awesome icon="caret-down" fixed-width :rotation="toggle.tracks ? null : 270" />
+          <button @click="toggle.tracks = !toggle.tracks" title="Show/hide tracks">
+            <font-awesome icon="caret-right" fixed-width :rotation="toggle.tracks ? 90 : null" />
           </button>
           <span>
           Tracks
@@ -28,17 +28,12 @@
               :class="{ 'new': track.new }"
               :key="`track_${track.id}`"
             >
-              <h3>{{ track.id }}</h3>
-              <ul v-if="track.groups.length">
-                <li
-                  v-for="group in track.groups"
-                  @click="changeCurrentSession(group)"
-                  :class="{ 'active': currentSession && currentSession.id === group, 'modified': modifiedSessions.has(group) }"
-                  :key="`${track.id}_${group}`"
-                >
-                  {{ group }}
-                </li>
-              </ul>
+              <editor-menu-track
+                :track="track"
+                :filter="filter"
+                :current-session="currentSession"
+                :modified-sessions="modifiedSessions"
+              ></editor-menu-track>
             </li>
           </ul>
         </transition>
@@ -46,8 +41,8 @@
 
       <div class="groups" v-if="filteredGroups.length">
         <h2>
-          <button @click="toggle.groups = !toggle.groups">
-            <font-awesome icon="caret-down" fixed-width :rotation="toggle.groups ? null : 270" />
+          <button @click="toggle.groups = !toggle.groups" title="Show/hide groups">
+            <font-awesome icon="caret-right" fixed-width :rotation="toggle.groups ? 90 : null" />
           </button>
           <span>
           Groups
@@ -64,6 +59,7 @@
               @click="changeCurrentSession(group.id)"
               :class="{ 'active': currentSession && currentSession === group, 'modified': modifiedSessions.has(group.id), 'new': group.new }"
               :key="group.id"
+              title="Edit group"
             >
             <EditorMenuGroup :group="group" />
             </li>
@@ -73,19 +69,27 @@
 
       <div class="users" v-if="filteredUsers.length">
         <h2>
-          <button @click="toggle.users = !toggle.users">
-            <font-awesome icon="caret-down" fixed-width :rotation="toggle.users ? null : 270" />
+          <button @click="toggle.users = !toggle.users" title="Show/hide users">
+            <font-awesome icon="caret-right" fixed-width :rotation="toggle.users ? 90 : null" />
           </button>
           <span>
           Users
           <small>({{ filteredUsers.length }})</small>
         </span>
+<!--      Add a fake button to force the flex layout-->
           <button disabled></button>
         </h2>
         <transition name="slide">
           <ul v-if="toggle.users">
-            <li v-for="user in filteredUsers" @click="changeCurrentSession(user.id)" :class="{'active': currentSession && currentSession === user}" :key="user.id">
-              <img :src="`https://minotar.net/helm/${user.id}/100.png`"> {{user.displayName}}
+            <li
+              v-for="user in filteredUsers"
+              @click="changeCurrentSession(user.id)"
+              :class="{'active': currentSession && currentSession === user}"
+              :key="user.id"
+              title="Edit user"
+            >
+              <img :src="`https://minotar.net/helm/${user.id}/100.png`">
+              {{user.displayName}}
             </li>
           </ul>
         </transition>
@@ -98,12 +102,14 @@
 
 <script>
   // import draggable from 'vuedraggable';
+  import EditorMenuTrack from './EditorMenuTrack';
   import EditorMenuGroup from './EditorMenuGroup';
 
   export default {
     name: 'editor-menu',
 
     components: {
+      EditorMenuTrack,
       EditorMenuGroup
     },
 
@@ -169,14 +175,22 @@
       createTrack() {
         this.$store.commit('setModal', {
           type: 'createTrack',
-          object: {
-            groups: this.groups,
-            tracks: this.tracks,
-          }
         });
       },
       createGroup() {
         this.$store.commit('setModal', { type: 'createGroup', object: this.groups });
+      }
+    },
+
+    watch: {
+      filter(newValue) {
+        if (newValue !== '') {
+          this.toggle = {
+            tracks: true,
+            groups: true,
+            users: true,
+          }
+        }
       }
     }
   }
@@ -327,14 +341,6 @@
             }
           }
         }
-      }
-
-      h3 {
-        margin: 0;
-        padding: .5rem 1rem;
-        color: $brand-color;
-        border-bottom: $grey 1px solid;
-        text-transform: uppercase;
       }
     }
 

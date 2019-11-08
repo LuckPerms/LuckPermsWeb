@@ -12,6 +12,7 @@
 .slide {
   &-enter-active, &-leave-active {
     transition-duration: .3s;
+    transition-timing-function: ease-in-out;
   }
 
   &-enter-to, &-leave {

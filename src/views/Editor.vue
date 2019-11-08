@@ -55,7 +55,7 @@
 <!--                <button>-->
 <!--                  <font-awesome icon="redo" />-->
 <!--                </button>-->
-                <button @click="saveData">
+                <button @click="saveData" title="Save and generate code">
                   <span v-if="saveStatus !== 'saving'">
                     <font-awesome icon="save" fixed-width />
                     Save

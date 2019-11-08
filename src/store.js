@@ -26,7 +26,7 @@ export default new Vuex.Store({
       if (state.editor.nodes) return state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession);
     },
 
-    tracks: state => state.editor.tracks,
+    tracks: state => state.editor.tracks.sort((a, b) => a.id.localeCompare(b.id)),
 
     selectedNodes: state => state.editor.selectedNodes,
 
@@ -107,6 +107,22 @@ export default new Vuex.Store({
 
     addTrack(state, track) {
       state.editor.tracks.push(track);
+    },
+
+    updateTrack(state, { id, newTrack }) {
+      const index = state.editor.tracks.findIndex(track => {
+        return track.id === id;
+      });
+
+      state.editor.tracks[index] = newTrack;
+    },
+
+    deleteTrack(state, trackId) {
+      const index = state.editor.tracks.findIndex(track => {
+        return track.id === trackId;
+      });
+
+      state.editor.tracks.splice(index, 1);
     },
 
     updateTrackOrder(state, value) {
@@ -330,6 +346,21 @@ export default new Vuex.Store({
     addTrack({ commit }, track) {
       commit('addTrack', track);
       commit('setModal', { type: null, object: null});
+    },
+
+    updateTrack({ commit }, { id, newTrack }) {
+      if (id === newTrack.id) {
+        commit('updateTrack', { id, newTrack });
+      } else {
+        commit('deleteTrack', id);
+        commit('addTrack', newTrack);
+      }
+
+      commit('setModal', { type: null, object: null });
+    },
+
+    deleteTrack({ commit }, trackId) {
+      commit('deleteTrack', trackId);
     },
 
     saveData({ state, getters, commit }) {

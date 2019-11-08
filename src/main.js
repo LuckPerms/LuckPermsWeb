@@ -32,7 +32,8 @@ library.add(
   fas.faBook,
   fas.faArrowAltCircleDown,
   fas.faArrowLeft,
-  fas.faCaretDown,
+  fas.faCaretRight,
+  fas.faEdit,
 
   fab.faGithub,
   fab.faDiscord,

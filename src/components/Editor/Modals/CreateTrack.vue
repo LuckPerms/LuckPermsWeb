@@ -1,6 +1,6 @@
 <template>
 <div class="add-track">
-  <h2>Create a track</h2>
+  <h2>{{ isAddingTrack ? 'Create a' : 'Edit' }} track</h2>
   <div class="row">
     <div class="col">
       <div class="form-group">
@@ -23,14 +23,15 @@
       <h3>Add groups</h3>
       <ul class="available-groups">
         <li v-for="group in availableGroups" @click="track.groups.push(group.id)">
-          {{ group.id }}
+          <span>{{ group.id }}</span>
+          <font-awesome icon="plus" fixed-width />
         </li>
       </ul>
     </div>
   </div>
   <button type="button" @click="addTrack" :disabled="buttonDisabled">
     <font-awesome icon="plus-circle" />
-    Add track
+    {{ isAddingTrack ? 'Add' : 'Save' }} track
   </button>
 </div>
 </template>
@@ -52,7 +53,7 @@ export default {
         groups: [],
         type: 'track'
       },
-      groups: this.props.groups,
+      error: null,
     };
   },
 
@@ -61,15 +62,46 @@ export default {
   },
 
   computed: {
+    groups() {
+      return this.$store.getters.sessionSet.filter(session => session.type === 'group');
+    },
+    tracks() {
+      return this.$store.getters.tracks;
+    },
     availableGroups() {
       return this.groups.filter(group => {
         return !this.track.groups.includes(group.id);
       })
     },
     buttonDisabled() {
+      // track has no name
       if (this.track.id === '') return true;
+
+      // track has no groups
       if (this.track.groups.length === 0) return true;
+
+      const existingTrack = this.tracks.find(track => track.id === this.track.id);
+
+      // new track with existing name
+      if (this.isAddingTrack && existingTrack) return true;
+
+      // todo - editing track with existing name (that isn't the track's name)
+      // if (!this.isAddingTrack && !existingTrack.id === this.track.id) return true;
+      // else we good
       return false;
+    },
+    isAddingTrack() {
+      return !(this.props && this.props.track);
+    }
+  },
+
+  created() {
+    if (!this.isAddingTrack) {
+      this.track = {
+        id: this.props.track.id,
+        groups: this.props.track.groups,
+        type: 'track',
+      }
     }
   },
 
@@ -81,7 +113,15 @@ export default {
     addTrack() {
       if (this.buttonDisabled) return;
 
-      this.$store.dispatch('addTrack', this.track);
+      if (!this.isAddingTrack) {
+        // todo - updateTrack action
+        this.$store.dispatch('updateTrack', {
+          id: this.props.track.id,
+          newTrack: this.track,
+        });
+      } else {
+        this.$store.dispatch('addTrack', this.track);
+      }
     }
   },
 };
@@ -152,13 +192,57 @@ export default {
       }
     }
 
+    ol {
+      li {
+        cursor: grab;
+        position: relative;
+
+        &.sortable-chosen {
+          cursor: grabbing;
+        }
+
+        &:not(:last-child) {
+          &:before {
+            content: '';
+            position: absolute;
+            left: 1.2rem;
+            top: 2.5rem;
+            width: 0;
+            height: .7rem;
+            border: 1px solid $brand-color;
+          }
+
+          &:after {
+            content: '';
+            position: absolute;
+            left: 0.95rem;
+            top: 2.7rem;
+            width: .5rem;
+            height: .5rem;
+            border: 2px solid $brand-color;
+            border-left: 0;
+            border-top: 0;
+            transform: rotate(45deg);
+          }
+        }
+      }
+    }
+
     ul {
       li {
         padding: .25rem 1rem;
         cursor: pointer;
 
+        svg {
+          opacity: 0;
+        }
+
         &:hover {
           background: rgba(0,0,0,.1);
+
+          svg {
+            opacity: .5;
+          }
         }
       }
     }

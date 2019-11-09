@@ -7,8 +7,9 @@ A collection of web resources for the LuckPerms plugin.
 
 **To do:**
 - [ ] Home page
+- [ ] Download page
 - [ ] Wiki
-- [ ] Web editor
+- [x] Web editor (in beta)
 - [ ] Verbose report
 - [ ] Debug report
 - [ ] Tree report

@@ -1,0 +1,143 @@
+.hero {
+  background: black;
+  display: flex;
+  flex-wrap: wrap;
+
+  @include breakpoint($md) {
+    flex-wrap: nowrap;
+  }
+
+  h1 {
+    margin: 0 0 1rem;
+    line-height: 1;
+    font-size: 2em;
+
+    @include breakpoint($md) {
+      font-size: 3em;
+    }
+  }
+
+  p {
+    margin: 0;
+    opacity: .5;
+  }
+}
+
+a {
+  color: $brand-color;
+
+  &:hover {
+    color: #4B4;
+  }
+}
+
+.button {
+  border: 0;
+  font: inherit;
+  font-weight: bold;
+  background: $brand-color;
+  color: $navy;
+  font-size: 1.5em;
+  padding: 1rem 2rem;
+  text-align: center;
+  line-height: 1;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: background .2s;
+  cursor: pointer;
+
+  @include breakpoint($md) {
+    font-size: 2em;
+  }
+
+  &:hover {
+    background: lighten($brand-color, 10%);
+  }
+
+  span {
+    display: block;
+    font-weight: bold;
+
+    svg {
+      margin-right: .5rem;
+      opacity: .5;
+    }
+  }
+
+  small {
+    font-size: 1rem;
+    font-weight: normal;
+    opacity: .75;
+
+    @include breakpoint($md) {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+.resources {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @include breakpoint($md) {
+    flex-direction: row;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2rem;
+
+    @include breakpoint($md) {
+      width: 50%;
+      padding: 4rem;
+
+      &:first-child {
+        padding-right: 2rem;
+      }
+
+      &:last-child {
+        padding-left: 2rem;
+      }
+    }
+  }
+
+  a.resource {
+    display: block;
+    background: $grey;
+    color: $brand-color;
+    padding: 1.5rem;
+    line-height: 1;
+    text-decoration: none;
+    border-radius: 2px;
+    font-size: 1.5em;
+    transition: background .2s;
+
+    &:not(:last-child) {
+      margin-bottom: 2rem;
+    }
+
+    &:hover {
+      background: lighten($grey, 10%);
+    }
+
+    span {
+      display: block;
+      font-weight: bold;
+      margin-bottom: .5rem;
+    }
+
+    svg {
+      margin-right: .5rem;
+      opacity: .5;
+    }
+
+    small {
+      color: white;
+      opacity: .4;
+      font-size: 1rem;
+    }
+  }
+}

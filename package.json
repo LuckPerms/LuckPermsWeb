@@ -1,0 +1,43 @@
+{
+  "name": "luckperms-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --open --port 8083",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.22",
+    "@fortawesome/free-brands-svg-icons": "^5.10.2",
+    "@fortawesome/free-solid-svg-icons": "^5.10.2",
+    "@fortawesome/vue-fontawesome": "^0.1.6",
+    "axios": "^0.18.1",
+    "i": "^0.3.6",
+    "lodash.sortby": "^4.7.0",
+    "npm": "^6.12.0",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
+    "v-click-outside": "^2.1.4",
+    "vue": "^2.6.10",
+    "vue-autofocus-directive": "^1.0.4",
+    "vue-moment": "^4.0.0",
+    "vue-multiselect": "^2.1.6",
+    "vue-router": "^3.1.2",
+    "vuedraggable": "^2.23.1",
+    "vuejs-datepicker": "turbotailz/vuejs-datepicker",
+    "vuex": "^3.1.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "@vue/eslint-config-airbnb": "^4.0.1",
+    "babel-eslint": "^10.0.2",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.2.3",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.3.1",
+    "vue-template-compiler": "^2.6.10"
+  }
+}

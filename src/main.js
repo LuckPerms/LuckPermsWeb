@@ -3,8 +3,28 @@ import Vuex from 'vuex';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import { fab } from '@fortawesome/free-brands-svg-icons';
+import {
+  faSave,
+  faUndo,
+  faRedo,
+  faPlusCircle,
+  faTimes,
+  faTimesCircle,
+  faChevronCircleDown,
+  faAsterisk,
+  faPlus,
+  faSyncAlt,
+  faBook,
+  faArrowAltCircleDown,
+  faArrowLeft,
+  faCaretRight,
+  faEdit,
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  faGithub,
+  faDiscord,
+  faPatreon,
+} from '@fortawesome/free-brands-svg-icons';
 
 import autofocus from 'vue-autofocus-directive';
 import store from './store';
@@ -19,25 +39,25 @@ Vue.directive('autofocus', autofocus);
 Vue.config.productionTip = false;
 
 library.add(
-  fas.faSave,
-  fas.faUndo,
-  fas.faRedo,
-  fas.faPlusCircle,
-  fas.faTimes,
-  fas.faTimesCircle,
-  fas.faChevronCircleDown,
-  fas.faAsterisk,
-  fas.faPlus,
-  fas.faSyncAlt,
-  fas.faBook,
-  fas.faArrowAltCircleDown,
-  fas.faArrowLeft,
-  fas.faCaretRight,
-  fas.faEdit,
+  faSave,
+  faUndo,
+  faRedo,
+  faPlusCircle,
+  faTimes,
+  faTimesCircle,
+  faChevronCircleDown,
+  faAsterisk,
+  faPlus,
+  faSyncAlt,
+  faBook,
+  faArrowAltCircleDown,
+  faArrowLeft,
+  faCaretRight,
+  faEdit,
 
-  fab.faGithub,
-  fab.faDiscord,
-  fab.faPatreon,
+  faGithub,
+  faDiscord,
+  faPatreon,
 );
 
 Vue.component('font-awesome', FontAwesomeIcon);

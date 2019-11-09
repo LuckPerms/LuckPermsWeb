@@ -1,5 +1,5 @@
 <template>
-<li :class="{ 'permission-node': true, modified: node.modified, new: node.new }">
+<li :class="{ 'permission-node': true, modified: node.modified, new: node.isNew }">
 <!--  TODO: mass-select nodes -->
 <!--  <div-->
 <!--    :class="{ 'node-select': true, 'selected': isSelected }"-->

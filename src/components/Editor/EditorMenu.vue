@@ -57,7 +57,7 @@
             <li
               v-for="group in filteredGroups"
               @click="changeCurrentSession(group.id)"
-              :class="{ 'active': currentSession && currentSession === group, 'modified': modifiedSessions.has(group.id), 'new': group.new }"
+              :class="{ 'active': currentSession && currentSession === group, 'modified': modifiedSessions.includes(group.id), 'new': group.new }"
               :key="group.id"
               title="Edit group"
             >
@@ -158,7 +158,7 @@
         });
       },
       modifiedSessions() {
-        return this.$store.getters.modifiedSessions || null;
+        return this.$store.getters.modifiedSessions;
       }
     },
 
@@ -282,6 +282,22 @@
         cursor: pointer;
         display: flex;
         align-items: center;
+        position: relative;
+
+        &:before {
+          position: absolute;
+          left: .5em;
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: 1rem;
+          font-size: .8rem;
+          font-family: "Source Code Pro", monospace;
+          padding: 0.25rem;
+          width: 1em;
+          text-align: center;
+          height: 1em;
+          line-height: 1;
+          opacity: .75;
+        }
 
         &.active {
           background-color: rgba(255,255,255,.1);
@@ -289,10 +305,18 @@
 
         &.modified {
           background-color: rgba(252, 252, 0, .1);
+
+          &:before {
+            content: 'M';
+          }
         }
 
         &.new {
           background-color: rgba(124, 252, 0, .1);
+
+          &:before {
+            content: 'N';
+          }
         }
 
         &:hover {

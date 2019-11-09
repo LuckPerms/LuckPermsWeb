@@ -21,7 +21,7 @@
         <li
           v-for="group in filteredGroups"
           @click="changeCurrentSession(group)"
-          :class="{ 'active': currentSession && currentSession.id === group, 'modified': modifiedSessions.has(group) }"
+          :class="{ 'active': currentSession && currentSession.id === group, 'modified': modifiedSessions.includes(group) }"
           :key="`${track.id}_${group}`"
           title="Edit group"
         >
@@ -49,7 +49,7 @@ export default {
       required: true,
     },
     modifiedSessions: {
-      type: Set,
+      type: Array,
       required: true,
     }
   },

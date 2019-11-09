@@ -4,13 +4,14 @@
 
   <div class="node-list-header">
     <div class="sorting-tabs">
-      <div
-        :class="{ 'node-select-all': true, 'selected': allSelected }"
-        @click="selectAll"
-        title="Select all nodes for mass operations"
-      >
-        <span></span>
-      </div>
+<!--      TODO: mass-select nodes -->
+<!--      <div-->
+<!--        :class="{ 'node-select-all': true, 'selected': allSelected }"-->
+<!--        @click="selectAll"-->
+<!--        title="Select all nodes for mass operations"-->
+<!--      >-->
+<!--        <span></span>-->
+<!--      </div>-->
 
       <div
         class="permission"
@@ -261,7 +262,7 @@ export default {
   > ul {
     margin: 0;
     padding: 0;
-    padding-bottom: 6.5em;
+    padding-bottom: 8em;
     list-style: none;
   }
 

@@ -1,12 +1,13 @@
 <template>
 <li :class="{ 'permission-node': true, modified: node.modified, new: node.new }">
-  <div
-    :class="{ 'node-select': true, 'selected': isSelected }"
-    @click="toggleNodeSelect(node.id)"
-    title="Select node for mass operations"
-  >
-    <span></span>
-  </div>
+<!--  TODO: mass-select nodes -->
+<!--  <div-->
+<!--    :class="{ 'node-select': true, 'selected': isSelected }"-->
+<!--    @click="toggleNodeSelect(node.id)"-->
+<!--    title="Select node for mass operations"-->
+<!--  >-->
+<!--    <span></span>-->
+<!--  </div>-->
 
 <!-- Permission node -->
   <div
@@ -80,6 +81,9 @@
         <li v-for="(value, key) in node.context">
           <span v-html="key"></span>
           <span v-html="value"></span>
+          <button @click="removeContext(key)">
+            <font-awesome icon="times" fixed-width />
+          </button>
         </li>
         <li>
           <span class="edit">
@@ -178,6 +182,13 @@ export default {
       this.updateNode('context', context);
       this.context.key = '';
       this.context.value = '';
+    },
+    removeContext(key) {
+      let context = JSON.parse(JSON.stringify(this.node.context));
+
+      delete context[key];
+
+      this.updateNode('context', context);
     }
   },
 };
@@ -273,95 +284,6 @@ export default {
     }
   }
 
-  .context-ui {
-    position: absolute;
-    background: $grey;
-    padding: 0;
-    border-radius: 4px;
-    z-index: 10;
-    top: 50%;
-    right: 3rem;
-    transform: translateY(-50%);
-    box-shadow: 0 0 1em rgba(0,0,0,.2);
-    cursor: initial;
-    min-width: 25%;
-
-    .close {
-      position: absolute;
-      top: .7rem;
-      right: 1rem;
-      color: black;
-      opacity: .25;
-      cursor: pointer;
-
-      &:hover {
-        opacity: .5;
-      }
-    }
-
-    h4 {
-      padding: .8rem 1rem;
-      line-height: 1;
-      margin: 0;
-
-      span {
-        opacity: .4;
-      }
-    }
-
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-
-      li {
-        width: 100%;
-        display: flex;
-        background: rgba(0,0,0,.1);
-        border-top: 1px solid rgba(0,0,0,0.2);
-        font-family: 'Source Code Pro', monospace;
-        font-size: .9rem;
-
-        span {
-          padding: .5rem 1rem;
-
-          &:first-child {
-            flex: none;
-            opacity: .5;
-          }
-
-          &:last-child {
-            flex: auto;
-          }
-
-          &.edit {
-            padding: 0;
-
-            input {
-              padding: .5rem 1rem;
-            }
-          }
-        }
-      }
-
-      + button {
-        width: 100%;
-        font: inherit;
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
-        border: 0;
-        background: $brand-color;
-        padding: .5rem 1rem;
-        font-weight: bold;
-        cursor: pointer;
-
-        svg {
-          margin-right: .5rem;
-        }
-      }
-    }
-  }
-
   code {
     &[disabled] {
       opacity: .5;
@@ -396,6 +318,115 @@ export default {
     color: #FFF;
     font-family: 'Source Code Pro', monospace;
     line-height: 1.5;
+  }
+}
+
+.context-ui {
+  position: absolute;
+  background: $grey;
+  padding: 0;
+  border-radius: 4px;
+  z-index: 10;
+  top: 50%;
+  right: 3rem;
+  transform: translateY(-50%);
+  box-shadow: 0 0 1em rgba(0,0,0,.2);
+  cursor: initial;
+  min-width: 25%;
+
+  .close {
+    position: absolute;
+    top: .7rem;
+    right: 1rem;
+    color: black;
+    opacity: .25;
+    cursor: pointer;
+
+    &:hover {
+      opacity: .5;
+    }
+  }
+
+  h4 {
+    padding: .8rem 1rem;
+    line-height: 1;
+    margin: 0;
+
+    span {
+      opacity: .4;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      width: 100%;
+      display: flex;
+      background: rgba(0,0,0,.1);
+      border-top: 1px solid rgba(0,0,0,0.2);
+      font-family: 'Source Code Pro', monospace;
+      font-size: .9rem;
+
+      span {
+        padding: .5rem 1rem;
+
+        &:first-child {
+          flex: none;
+          opacity: .5;
+        }
+
+        &:last-child {
+          flex: auto;
+        }
+
+        &.edit {
+          padding: 0;
+
+          input {
+            padding: .5rem 1rem;
+          }
+        }
+      }
+
+      &:hover {
+        button {
+          opacity: .25;
+        }
+      }
+
+      button {
+        position: absolute;
+        right: .2rem;
+        background: transparent;
+        border: 0;
+        padding: .7rem;
+        opacity: 0;
+        cursor: pointer;
+
+        &:hover {
+          opacity: .5;
+        }
+      }
+    }
+
+    + button {
+      width: 100%;
+      font: inherit;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      border: 0;
+      background: $brand-color;
+      padding: .5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+
+      svg {
+        margin-right: .5rem;
+      }
+    }
   }
 }
 </style>

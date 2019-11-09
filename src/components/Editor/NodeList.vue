@@ -68,7 +68,6 @@
   </div>
 
 
-
   <transition-group name="node-list" tag="ul">
     <Node
       v-for="(node, i) in sortedNodes"
@@ -110,9 +109,7 @@ export default {
       if (['key', 'value', 'expiry'].indexOf(this.sort.method) >= 0) {
         sorted = sortBy(this.nodes, [this.sort.method]);
       } else {
-        sorted = sortBy(this.nodes, node => {
-          return node.context[this.sort.method];
-        });
+        sorted = sortBy(this.nodes, node => node.context[this.sort.method]);
       }
 
       if (this.sort.desc) {
@@ -126,13 +123,11 @@ export default {
     currentSelectedNodes() {
       const map = this.nodes.map(node => node.id);
 
-      return this.selectedNodes.filter(nodeId => {
-        return map.indexOf(nodeId) !== -1;
-      });
+      return this.selectedNodes.filter(nodeId => map.indexOf(nodeId) !== -1);
     },
     allSelected() {
       return this.nodes.length === this.currentSelectedNodes.length;
-    }
+    },
   },
   methods: {
     changeSort(method) {
@@ -150,7 +145,7 @@ export default {
       } else {
         this.$store.commit('selectAllSessionNodes', this.nodes);
       }
-    }
+    },
   },
 };
 </script>

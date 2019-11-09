@@ -15,17 +15,17 @@ export default new Router({
     {
       path: '/download',
       name: 'download',
-      component: () => import(/* webpackChunkName: "download" */ './views/Download')
+      component: () => import(/* webpackChunkName: "download" */ './views/Download'),
     },
     {
       path: '/editor',
       name: 'editor-home',
-      component: () => import(/* webpackChunkName: "editor" */ './views/Editor')
+      component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),
     },
     {
       path: '/editor/:id',
       name: 'editor',
-      component: () => import(/* webpackChunkName: "editor" */ './views/Editor')
+      component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),
     },
     // {
     //   path: '/about',

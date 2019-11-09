@@ -101,93 +101,87 @@
 </template>
 
 <script>
-  import EditorMenuTrack from './EditorMenuTrack';
-  import EditorMenuGroup from './EditorMenuGroup';
+import EditorMenuTrack from './EditorMenuTrack';
+import EditorMenuGroup from './EditorMenuGroup';
 
-  export default {
-    name: 'editor-menu',
+export default {
+  name: 'editor-menu',
 
-    components: {
-      EditorMenuTrack,
-      EditorMenuGroup
+  components: {
+    EditorMenuTrack,
+    EditorMenuGroup,
+  },
+
+  data() {
+    return {
+      filter: '',
+      toggle: {
+        tracks: false,
+        groups: false,
+        users: false,
+      },
+    };
+  },
+
+  props: {
+    sessions: Array,
+    currentSession: Object,
+  },
+
+  computed: {
+    tracks() {
+      return this.$store.getters.tracks || null;
     },
+    groups() {
+      return this.sessions.filter(session => session.type === 'group');
+    },
+    users() {
+      return this.sessions.filter(session => session.type === 'user');
+    },
+    filteredTracks() {
+      return this.tracks.filter((track) => {
+        const trackGroups = track.groups.filter(group => group.includes(this.filter));
 
-    data() {
-      return {
-        filter: '',
-        toggle: {
-          tracks: false,
-          groups: false,
-          users: false,
-        }
+        return track.id.includes(this.filter) || trackGroups.length;
+      }).sort((a, b) => a.id.localeCompare(b.id));
+    },
+    filteredGroups() {
+      return this.groups.filter(group => group.id.includes(this.filter) || group.displayName.includes(this.filter));
+    },
+    filteredUsers() {
+      return this.users.filter(user => user.displayName.includes(this.filter));
+    },
+    modifiedSessions() {
+      return this.$store.getters.modifiedSessions;
+    },
+  },
+
+  methods: {
+    changeCurrentSession(sessionId) {
+      this.$store.commit('setCurrentSession', sessionId);
+    },
+    createTrack() {
+      this.$store.commit('setModal', {
+        type: 'createTrack',
+      });
+    },
+    createGroup() {
+      this.$store.commit('setModal', { type: 'createGroup', object: this.groups });
+    },
+  },
+
+  watch: {
+    filter(newValue) {
+      if (newValue !== '') {
+        this.toggle = {
+          tracks: true,
+          groups: true,
+          users: true,
+        };
       }
     },
-
-    props: {
-      sessions: Array,
-      currentSession: Object,
-    },
-
-    computed: {
-      tracks() {
-        return this.$store.getters.tracks || null;
-      },
-      groups() {
-        return this.sessions.filter(session => session.type === 'group');
-      },
-      users() {
-        return this.sessions.filter(session => session.type === 'user');
-      },
-      filteredTracks() {
-        return this.tracks.filter(track => {
-          const trackGroups = track.groups.filter(group => {
-            return group.includes(this.filter);
-          });
-
-          return track.id.includes(this.filter) || trackGroups.length;
-        }).sort((a, b) => a.id.localeCompare(b.id));
-      },
-      filteredGroups() {
-        return this.groups.filter(group => {
-          return group.id.includes(this.filter) || group.displayName.includes(this.filter);
-        });
-      },
-      filteredUsers() {
-        return this.users.filter(user => {
-          return user.displayName.includes(this.filter);
-        });
-      },
-      modifiedSessions() {
-        return this.$store.getters.modifiedSessions;
-      }
-    },
-
-    methods: {
-      changeCurrentSession(sessionId) {
-        this.$store.commit('setCurrentSession', sessionId);
-      },
-      createTrack() {
-        this.$store.commit('setModal', {
-          type: 'createTrack',
-        });
-      },
-      createGroup() {
-        this.$store.commit('setModal', { type: 'createGroup', object: this.groups });
-      }
-    },
-
-    watch: {
-      filter(newValue) {
-        if (newValue !== '') {
-          this.toggle = {
-            tracks: true,
-            groups: true,
-            users: true,
-          }
-        }
-      }
-    }
-  }
+  },
+};
 </script>
 
 <style lang="scss">

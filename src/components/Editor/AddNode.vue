@@ -90,109 +90,107 @@
 </template>
 
 <script>
-  import Datepicker from 'vuejs-datepicker';
-  import Multiselect from 'vue-multiselect';
-  import vClickOutside from 'v-click-outside';
+import Datepicker from 'vuejs-datepicker';
+import Multiselect from 'vue-multiselect';
+import vClickOutside from 'v-click-outside';
 
-  export default {
-    name: 'AddNode',
-    components: {
-      Datepicker,
-      Multiselect
-    },
-    directives: {
-      clickOutside: vClickOutside.directive
-    },
-    data() {
-      return {
-        permissions: [],
-        value: true,
-        expiry: null,
-        server: null,
-        world: null,
-        context: {
-          contexts: {},
-          ui: null,
-          key: '',
-          value: '',
-        },
-      }
-    },
-    props: {
-      session: Object,
-    },
-    computed: {
-      knownPermissions() {
-        return this.$store.state.editor.knownPermissions;
+export default {
+  name: 'AddNode',
+  components: {
+    Datepicker,
+    Multiselect,
+  },
+  directives: {
+    clickOutside: vClickOutside.directive,
+  },
+  data() {
+    return {
+      permissions: [],
+      value: true,
+      expiry: null,
+      server: null,
+      world: null,
+      context: {
+        contexts: {},
+        ui: null,
+        key: '',
+        value: '',
       },
-      // sortedKnownPermissions() {
-      //   if (this.permission !== '') {
-      //     const sortedArray = this.$store.state.editor.knownPermissions
-      //       .filter(node => node.indexOf(this.permission) >= 0);
-      //
-      //     return sortedArray.slice(0, 100);
-      //   }
-      //   return [];
-      // },
+    };
+  },
+  props: {
+    session: Object,
+  },
+  computed: {
+    knownPermissions() {
+      return this.$store.state.editor.knownPermissions;
     },
-    methods: {
-      onTag(tag) {
-        const permissions = tag.split(/,\s*|,|\s+/);
+    // sortedKnownPermissions() {
+    //   if (this.permission !== '') {
+    //     const sortedArray = this.$store.state.editor.knownPermissions
+    //       .filter(node => node.indexOf(this.permission) >= 0);
+    //
+    //     return sortedArray.slice(0, 100);
+    //   }
+    //   return [];
+    // },
+  },
+  methods: {
+    onTag(tag) {
+      const permissions = tag.split(/,\s*|,|\s+/);
 
-        permissions.forEach(permission => {
-          if (permission === '') return;
+      permissions.forEach((permission) => {
+        if (permission === '') return;
 
-          this.permissions.push(permission);
+        this.permissions.push(permission);
 
-          if (!this.knownPermissions.find(knownPermission => {
-            return knownPermission === permission;
-          })) {
-            this.addKnownPermission(permission);
-          }
+        if (!this.knownPermissions.find(knownPermission => knownPermission === permission)) {
+          this.addKnownPermission(permission);
+        }
+      });
+    },
+    addKnownPermission(permission) {
+      this.$store.dispatch('addKnownPermission', permission);
+    },
+    addNodesToSession() {
+      if (this.permissions.length === 0) return;
+
+      const nodes = [];
+
+      this.permissions.forEach((key) => {
+        nodes.push({
+          sessionId: this.session.id,
+          type: 'permission',
+          key,
+          value: this.value,
+          expiry: this.expiry,
+          context: this.context.contexts,
+          isNew: true,
         });
-      },
-      addKnownPermission(permission) {
-        this.$store.dispatch('addKnownPermission', permission);
-      },
-      addNodesToSession() {
-        if (this.permissions.length === 0) return;
+      });
 
-        let nodes = [];
+      this.$store.dispatch('addNodes', nodes);
 
-        this.permissions.forEach(key => {
-          nodes.push({
-            sessionId: this.session.id,
-            type: 'permission',
-            key,
-            value: this.value,
-            expiry: this.expiry,
-            context: this.context.contexts,
-            isNew: true,
-          })
-        });
+      this.permissions = [];
+      this.value = true;
+      this.expiry = null;
+      this.context.contexts = {};
+    },
+    closeContextUi() {
+      this.context.ui = false;
+      this.context.key = '';
+      this.context.value = '';
+    },
+    addContext() {
+      if (this.context.key === '' || this.context.value === '') return;
 
-        this.$store.dispatch('addNodes', nodes);
+      this.context.contexts[this.context.key] = this.context.value;
 
-        this.permissions = [];
-        this.value = true;
-        this.expiry = null;
-        this.context.contexts = {};
-      },
-      closeContextUi() {
-        this.context.ui = false;
-        this.context.key = '';
-        this.context.value = '';
-      },
-      addContext() {
-        if (this.context.key === '' || this.context.value === '') return;
-
-        this.context.contexts[this.context.key] = this.context.value;
-
-        this.context.key = '';
-        this.context.value = '';
-      }
-    }
-  }
+      this.context.key = '';
+      this.context.value = '';
+    },
+  },
+};
 </script>
 
 <style lang="scss">

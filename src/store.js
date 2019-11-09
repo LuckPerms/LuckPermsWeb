@@ -10,19 +10,18 @@ export default new Vuex.Store({
   },
 
 
-
   getters: {
-    sessionSet: state => {
+    sessionSet: (state) => {
       if (state.editor.sessionList) {
         return state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]);
       }
     },
 
-    currentSession: state => {
+    currentSession: (state) => {
       if (state.editor.sessions) return state.editor.sessions[state.editor.currentSession];
     },
 
-    currentNodes: state => {
+    currentNodes: (state) => {
       if (state.editor.nodes) return state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession);
     },
 
@@ -30,32 +29,29 @@ export default new Vuex.Store({
 
     selectedNodes: state => state.editor.selectedNodes,
 
-    lastNodeId: state => {
+    lastNodeId: (state) => {
       if (state.editor.nodes && state.editor.nodes.length) {
-        return state.editor.nodes.sort((a, b) => a - b)[state.editor.nodes.length - 1].id
+        return state.editor.nodes.sort((a, b) => a - b)[state.editor.nodes.length - 1].id;
       }
 
       return 0;
     },
 
-    modifiedSessions: (state, getters) => {
-      return getters.sessionSet.filter(session => (session.new || session.modified))
-          .map(session => session.id);
-    },
+    modifiedSessions: (state, getters) => getters.sessionSet.filter(session => (session.new || session.modified))
+      .map(session => session.id),
 
-    weightNodes: state => {
+    weightNodes: (state) => {
       if (state.editor.nodes) return state.editor.nodes.filter(node => node.key.startsWith('weight'));
     },
 
-    saveStatus: state => {
+    saveStatus: (state) => {
       if (state.editor.save) return state.editor.save.status;
     },
 
-    saveKey: state => {
+    saveKey: (state) => {
       if (state.editor.save) return state.editor.save.key;
     },
   },
-
 
 
   mutations: {
@@ -82,7 +78,7 @@ export default new Vuex.Store({
         save: {
           status: null,
           key: null,
-        }
+        },
       };
     },
 
@@ -103,17 +99,13 @@ export default new Vuex.Store({
     },
 
     updateTrack(state, { id, newTrack }) {
-      let track = state.editor.tracks.find(track => {
-        return track.id === id;
-      });
+      const track = state.editor.tracks.find(track => track.id === id);
 
       track.groups = newTrack.groups;
     },
 
     deleteTrack(state, trackId) {
-      const index = state.editor.tracks.findIndex(track => {
-        return track.id === trackId;
-      });
+      const index = state.editor.tracks.findIndex(track => track.id === trackId);
 
       state.editor.tracks.splice(index, 1);
       state.editor.deletedTracks.push(trackId);
@@ -127,7 +119,9 @@ export default new Vuex.Store({
       state.editor.potentialContexts = array;
     },
 
-    addEditorSession(state, { id, type, displayName, isNew = false }) {
+    addEditorSession(state, {
+      id, type, displayName, isNew = false,
+    }) {
       Vue.set(state.editor.sessions, id, {
         id,
         type,
@@ -148,7 +142,7 @@ export default new Vuex.Store({
     },
 
     deleteNode(state, nodeId) {
-      let node = state.editor.nodes.find(node => node.id === nodeId);
+      const node = state.editor.nodes.find(node => node.id === nodeId);
 
       state.editor.nodes = state.editor.nodes.filter(node => node.id !== nodeId);
 
@@ -165,7 +159,7 @@ export default new Vuex.Store({
     },
 
     toggleNodeValue(state, node) {
-      let nodeState = state.editor.nodes.find(nodeItem => nodeItem.id === node.id);
+      const nodeState = state.editor.nodes.find(nodeItem => nodeItem.id === node.id);
 
       nodeState.value = !node.value;
       nodeState.modified = true;
@@ -203,7 +197,7 @@ export default new Vuex.Store({
     },
 
     selectAllSessionNodes(state, nodes) {
-      nodes.forEach(node => {
+      nodes.forEach((node) => {
         if (state.editor.selectedNodes.indexOf(node.id) === -1) {
           state.editor.selectedNodes.push(node.id);
         }
@@ -211,7 +205,7 @@ export default new Vuex.Store({
     },
 
     deselectAllSessionNodes(state, nodes) {
-      nodes.forEach(node => {
+      nodes.forEach((node) => {
         if (state.editor.selectedNodes.indexOf(node.id) >= 0) {
           state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(node.id), 1);
         }
@@ -232,9 +226,8 @@ export default new Vuex.Store({
 
     setBytebinKey(state, key) {
       state.editor.save.key = key;
-    }
+    },
   },
-
 
 
   actions: {
@@ -264,7 +257,7 @@ export default new Vuex.Store({
           commit('setPotentialContexts', response.data.potentialContexts);
           commit('setTracks', response.data.tracks);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
           console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
           commit('setLoadError');
@@ -303,52 +296,62 @@ export default new Vuex.Store({
     },
 
     addGroup({ commit, dispatch }, group) {
-      let session = {
+      const session = {
         id: group.name,
         displayName: group.displayName || group.name,
         type: 'group',
         isNew: true,
       };
 
-      if (group.displayName !== '') dispatch('addNodes', [{
-        sessionId: session.id,
-        type: 'display_name',
-        key: 'displayname.' + group.displayName,
-        value: true,
-        isNew: true,
-      }]);
+      if (group.displayName !== '') {
+        dispatch('addNodes', [{
+          sessionId: session.id,
+          type: 'display_name',
+          key: `displayname.${group.displayName}`,
+          value: true,
+          isNew: true,
+        }]);
+      }
 
-      if (group.parent !== 0) dispatch('addNodes', [{
-        sessionId: session.id,
-        type: 'inheritance',
-        key: 'group.' + group.parent,
-        value: true,
-        isNew: true,
-      }]);
+      if (group.parent !== 0) {
+        dispatch('addNodes', [{
+          sessionId: session.id,
+          type: 'inheritance',
+          key: `group.${group.parent}`,
+          value: true,
+          isNew: true,
+        }]);
+      }
 
-      if (group.weight !== 0) dispatch('addNodes', [{
-        sessionId: session.id,
-        type: 'weight',
-        key: 'weight.' + group.weight,
-        value: true,
-        isNew: true,
-      }]);
+      if (group.weight !== 0) {
+        dispatch('addNodes', [{
+          sessionId: session.id,
+          type: 'weight',
+          key: `weight.${group.weight}`,
+          value: true,
+          isNew: true,
+        }]);
+      }
 
-      if (group.prefix !== '') dispatch('addNodes', [{
-        sessionId: session.id,
-        type: 'prefix',
-        key: 'prefix.' + group.weight + '.' + group.prefix,
-        value: true,
-        isNew: true,
-      }]);
+      if (group.prefix !== '') {
+        dispatch('addNodes', [{
+          sessionId: session.id,
+          type: 'prefix',
+          key: `prefix.${group.weight}.${group.prefix}`,
+          value: true,
+          isNew: true,
+        }]);
+      }
 
-      if (group.suffix !== '') dispatch('addNodes', [{
-        sessionId: session.id,
-        type: 'suffix',
-        key: 'suffix.' + group.weight + '.' + group.suffix,
-        value: true,
-        isNew: true,
-      }]);
+      if (group.suffix !== '') {
+        dispatch('addNodes', [{
+          sessionId: session.id,
+          type: 'suffix',
+          key: `suffix.${group.weight}.${group.suffix}`,
+          value: true,
+          isNew: true,
+        }]);
+      }
 
       commit('addEditorSession', session);
       commit('setCurrentSession', session.id);
@@ -357,7 +360,7 @@ export default new Vuex.Store({
 
     addTrack({ commit }, track) {
       commit('addTrack', track);
-      commit('setModal', { type: null, object: null});
+      commit('setModal', { type: null, object: null });
     },
 
     updateTrack({ commit }, { id, newTrack }) {
@@ -378,23 +381,23 @@ export default new Vuex.Store({
     saveData({ state, getters, commit }) {
       commit('setSaveStatus', 'saving');
 
-      let payload = {
+      const payload = {
         changes: [],
         groupDeletions: state.editor.deletedGroups,
         trackDeletions: state.editor.deletedTracks,
       };
 
-      getters.modifiedSessions.forEach(modifiedSession => {
+      getters.modifiedSessions.forEach((modifiedSession) => {
         const session = state.editor.sessions[modifiedSession];
         const sessionNodes = state.editor.nodes.filter(node => node.sessionId === session.id);
 
-        let nodes = [];
+        const nodes = [];
 
         sessionNodes.forEach(node => nodes.push({
           type: node.type,
           key: node.key,
           value: node.value,
-          ...node.expiry && { expiry: node.expiry},
+          ...node.expiry && { expiry: node.expiry },
           ...(Object.entries(node.context).length) && { context: node.context },
         }));
 
@@ -406,12 +409,12 @@ export default new Vuex.Store({
       });
 
       axios.post('https://bytebin.lucko.me/post', payload)
-        .then(response => {
+        .then((response) => {
           commit('setBytebinKey', response.data.key);
           commit('setSaveStatus', 'saved');
           commit('setModal', { type: 'savedChanges', object: getters.saveKey });
         })
         .catch(console.error);
-    }
+    },
   },
 });

@@ -110,10 +110,10 @@ import vClickOutside from 'v-click-outside';
 export default {
   name: 'Node',
   components: {
-    Datepicker
+    Datepicker,
   },
   directives: {
-    clickOutside: vClickOutside.directive
+    clickOutside: vClickOutside.directive,
   },
   data() {
     return {
@@ -129,8 +129,8 @@ export default {
         ui: false,
         key: '',
         value: '',
-      }
-    }
+      },
+    };
   },
   props: {
     node: Object,
@@ -175,7 +175,7 @@ export default {
     addContext() {
       if (this.context.key === '' || this.context.value === '') return;
 
-      let context = JSON.parse(JSON.stringify(this.node.context));
+      const context = JSON.parse(JSON.stringify(this.node.context));
 
       context[this.context.key] = this.context.value;
 
@@ -184,12 +184,12 @@ export default {
       this.context.value = '';
     },
     removeContext(key) {
-      let context = JSON.parse(JSON.stringify(this.node.context));
+      const context = JSON.parse(JSON.stringify(this.node.context));
 
       delete context[key];
 
       this.updateNode('context', context);
-    }
+    },
   },
 };
 </script>
@@ -198,6 +198,7 @@ export default {
 .permission-node {
   border-bottom: 1px solid rgba(0,0,0,0.2);
   display: flex;
+  align-items: center;
   cursor: pointer;
   transition: all .3s;
   position: relative;
@@ -260,6 +261,7 @@ export default {
 
   .permission {
     flex: 2 2 30%;
+    word-break: break-all;
   }
 
   .value {
@@ -273,7 +275,6 @@ export default {
   .contexts {
     flex: 1 1 20%;
     min-width: 0;
-    white-space: nowrap;
     overflow: hidden;
     position: relative;
 

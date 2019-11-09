@@ -63,6 +63,7 @@
 
 <script>
 import axios from 'axios';
+
 export default {
   name: 'Home',
   data() {
@@ -70,7 +71,7 @@ export default {
       version: null,
       discordUserCount: null,
       patreonCount: null,
-    }
+    };
   },
   created() {
     this.getVersion();
@@ -80,7 +81,7 @@ export default {
   methods: {
     getVersion() {
       axios.get('https://ci.lucko.me/job/LuckPerms/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]')
-        .then(response => {
+        .then((response) => {
           const filename = response.data.artifacts[0].fileName;
           this.version = filename.split('-').pop().slice(0, -4);
         })
@@ -88,19 +89,19 @@ export default {
     },
     getDiscordUserCount() {
       axios.get('https://discordapp.com/api/invites/luckperms?with_counts=true')
-        .then(response => {
+        .then((response) => {
           this.discordUserCount = response.data.approximate_member_count;
         })
         .catch(console.error);
     },
     getPatreonCount() {
       axios.get('https://cors-anywhere.herokuapp.com/https://www.patreon.com/api/campaigns/2298876?include=patron_count&fields[campaign]=patron_count')
-        .then(response => {
+        .then((response) => {
           this.patreonCount = response.data.data.attributes.patron_count;
         })
         .catch(console.error);
     },
-  }
+  },
 };
 </script>
 

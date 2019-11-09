@@ -56,7 +56,7 @@ export default {
         parent: 0,
         prefix: '',
         suffix: '',
-      }
+      },
     };
   },
   props: {
@@ -71,11 +71,11 @@ export default {
 
     addGroup() {
       if (this.group.name !== '') {
-        let result = this.$store.dispatch('addGroup', this.group);
+        const result = this.$store.dispatch('addGroup', this.group);
 
         if (result === 'success') this.$store.commit('closeModal');
       }
-    }
+    },
   },
 };
 </script>

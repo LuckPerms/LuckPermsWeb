@@ -92,8 +92,8 @@ export default {
         legacy: false,
         latest: false,
         unsupported: false,
-      }
-    }
+      },
+    };
   },
   props: {
     downloads: Object,
@@ -104,7 +104,7 @@ export default {
       if (this.options.sponge) return 'Sponge';
       if (this.options.nukkit) return 'Nukkit';
       return null;
-    }
+    },
   },
   methods: {
     proceed(page, answer) {
@@ -113,16 +113,16 @@ export default {
     },
     reset() {
       this.page = 1;
-      for (let option in this.options) {
+      for (const option in this.options) {
         this.options[option] = false;
       }
     },
     closeModal() {
       this.reset();
       this.$emit('close');
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">

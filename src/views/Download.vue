@@ -81,10 +81,11 @@
 
 <script>
 import axios from 'axios';
+
 export default {
   name: 'Download',
   components: {
-    'Quiz': () => import('../components/Download/Quiz'),
+    Quiz: () => import('../components/Download/Quiz'),
   },
   data() {
     return {
@@ -99,8 +100,8 @@ export default {
       },
       quiz: {
         open: false,
-      }
-    }
+      },
+    };
   },
   created() {
     this.getBuildData();
@@ -108,13 +109,13 @@ export default {
   methods: {
     getBuildData() {
       axios.get('https://ci.lucko.me/job/LuckPerms/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]')
-        .then(response => {
+        .then((response) => {
           const filename = response.data.artifacts[0].fileName;
           this.version = filename.split('-').pop().slice(0, -4);
 
-          response.data.artifacts.forEach(artifact => {
+          response.data.artifacts.forEach((artifact) => {
             const download = artifact.relativePath.split('/')[0];
-            this.downloads[download] = response.data.url + 'artifact/' + artifact.relativePath;
+            this.downloads[download] = `${response.data.url}artifact/${artifact.relativePath}`;
           });
         })
         .catch(console.error);
@@ -127,7 +128,7 @@ export default {
     closeQuiz() {
       this.quiz.open = false;
     },
-  }
+  },
 };
 </script>
 

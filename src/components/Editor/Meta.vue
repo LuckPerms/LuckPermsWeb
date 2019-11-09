@@ -44,7 +44,7 @@ export default {
       return group;
     },
     handleParentSessionSwitch(parent) {
-      const sessionId = this.$store.state.editor.sessionList.find(session => {
+      const sessionId = this.$store.state.editor.sessionList.find((session) => {
         const sessionObject = this.$store.state.editor.sessions[session];
         return parent.key.indexOf(sessionObject.id) > -1;
       });

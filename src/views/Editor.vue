@@ -97,8 +97,8 @@
 </template>
 
 <script>
-  import EditorMenu from '@/components/Editor/EditorMenu';
-  import Header from '@/components/Editor/Header';
+import EditorMenu from '@/components/Editor/EditorMenu';
+import Header from '@/components/Editor/Header';
 import Meta from '@/components/Editor/Meta';
 import NodeList from '@/components/Editor/NodeList';
 import Modal from '@/components/Editor/Modal';
@@ -132,7 +132,7 @@ export default {
     },
     currentSessionData() {
       if (this.currentSession) {
-        let data = {};
+        const data = {};
 
         if (this.currentSession.type === 'group') {
           data.type = 'group';
@@ -142,12 +142,12 @@ export default {
           data.type = null;
         }
 
-        data.parents      = this.currentNodes.filter(node => node.type === 'inheritance');
-        data.displayname  = this.currentNodes.filter(node => node.type === 'display_name');
-        data.weight       = this.currentNodes.filter(node => node.type === 'weight');
-        data.prefixes     = this.currentNodes.filter(node => node.type === 'prefix');
-        data.suffixes     = this.currentNodes.filter(node => node.type === 'suffix');
-        data.meta         = this.currentNodes.filter(node => node.type === 'meta');
+        data.parents = this.currentNodes.filter(node => node.type === 'inheritance');
+        data.displayname = this.currentNodes.filter(node => node.type === 'display_name');
+        data.weight = this.currentNodes.filter(node => node.type === 'weight');
+        data.prefixes = this.currentNodes.filter(node => node.type === 'prefix');
+        data.suffixes = this.currentNodes.filter(node => node.type === 'suffix');
+        data.meta = this.currentNodes.filter(node => node.type === 'meta');
 
         return data;
       }
@@ -162,7 +162,7 @@ export default {
     },
     saveStatus() {
       return this.$store.getters.saveStatus;
-    }
+    },
   },
 
   created() {
@@ -176,7 +176,7 @@ export default {
   methods: {
     saveData() {
       this.$store.dispatch('saveData');
-    }
+    },
   },
 };
 </script>

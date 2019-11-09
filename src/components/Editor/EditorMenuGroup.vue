@@ -12,20 +12,20 @@
 </template>
 
 <script>
-  export default {
-    name: 'EditorMenuGroup',
-    props: { group: Object },
-    computed: {
-      weightNodes() {
-        return this.$store.getters.weightNodes;
-      },
-      weight() {
-        const node = this.weightNodes.find(node => node.sessionId === this.group.id);
+export default {
+  name: 'EditorMenuGroup',
+  props: { group: Object },
+  computed: {
+    weightNodes() {
+      return this.$store.getters.weightNodes;
+    },
+    weight() {
+      const node = this.weightNodes.find(node => node.sessionId === this.group.id);
 
-        if (!node) return null;
+      if (!node) return null;
 
-        return node.key.split('weight.')[1];
-      }
-    }
-  };
+      return node.key.split('weight.')[1];
+    },
+  },
+};
 </script>

@@ -41,7 +41,7 @@ import draggable from 'vuedraggable';
 
 export default {
   components: {
-    draggable
+    draggable,
   },
 
   name: 'CreateTrack',
@@ -51,7 +51,7 @@ export default {
       track: {
         id: '',
         groups: [],
-        type: 'track'
+        type: 'track',
       },
       error: null,
     };
@@ -69,9 +69,7 @@ export default {
       return this.$store.getters.tracks;
     },
     availableGroups() {
-      return this.groups.filter(group => {
-        return !this.track.groups.includes(group.id);
-      })
+      return this.groups.filter(group => !this.track.groups.includes(group.id));
     },
     buttonDisabled() {
       // track has no name
@@ -92,7 +90,7 @@ export default {
     },
     isAddingTrack() {
       return !(this.props && this.props.track);
-    }
+    },
   },
 
   created() {
@@ -101,7 +99,7 @@ export default {
         id: this.props.track.id,
         groups: this.props.track.groups,
         type: 'track',
-      }
+      };
     }
   },
 
@@ -122,7 +120,7 @@ export default {
       } else {
         this.$store.dispatch('addTrack', this.track);
       }
-    }
+    },
   },
 };
 </script>

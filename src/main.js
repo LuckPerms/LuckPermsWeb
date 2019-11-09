@@ -6,11 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
+import autofocus from 'vue-autofocus-directive';
 import store from './store';
 import App from './App.vue';
 import router from './router';
 
-import autofocus from 'vue-autofocus-directive';
 
 Vue.use(Vuex);
 
@@ -37,7 +37,7 @@ library.add(
 
   fab.faGithub,
   fab.faDiscord,
-  fab.faPatreon
+  fab.faPatreon,
 );
 
 Vue.component('font-awesome', FontAwesomeIcon);

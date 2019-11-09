@@ -51,20 +51,18 @@ export default {
     modifiedSessions: {
       type: Array,
       required: true,
-    }
+    },
   },
 
   data() {
     return {
       toggle: false,
-    }
+    };
   },
 
   computed: {
     filteredGroups() {
-      return this.track.groups.filter(group => {
-        return group.includes(this.filter);
-      });
+      return this.track.groups.filter(group => group.includes(this.filter));
     },
   },
 
@@ -78,13 +76,13 @@ export default {
         type: 'createTrack',
         object: {
           track: this.track,
-        }
+        },
       });
     },
 
     deleteTrack() {
       this.$store.dispatch('deleteTrack', this.track.id);
-    }
+    },
   },
 
   watch: {
@@ -92,9 +90,9 @@ export default {
       if (newValue !== '') {
         this.toggle = true;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">

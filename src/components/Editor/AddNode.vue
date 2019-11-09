@@ -8,7 +8,7 @@
           :options="knownPermissions"
           :multiple="true"
           :taggable="true"
-          @tag="addPermission"
+          @tag="onTag"
           tag-placeholder="Press enter to select"
         ></multiselect>
       </div>
@@ -98,7 +98,22 @@
       // },
     },
     methods: {
-      addPermission(permisison) {
+      onTag(tag) {
+        const permissions = tag.split(/,\s*|,|\s+/);
+
+        permissions.forEach(permission => {
+          if (permission === '') return;
+
+          this.permissions.push(permission);
+
+          if (!this.knownPermissions.find(knownPermission => {
+            return knownPermission === permission;
+          })) {
+            this.addKnownPermission(permission);
+          }
+        });
+      },
+      addKnownPermission(permission) {
         this.$store.dispatch('addKnownPermission', permission);
       },
       addNodesToSession() {

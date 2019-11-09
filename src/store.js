@@ -210,6 +210,10 @@ export default new Vuex.Store({
       });
     },
 
+    addKnownPermission(state, permission) {
+      state.editor.knownPermissions.push(permission);
+    },
+
     setLoadError(state) {
       state.editor.errors.load = true;
     },

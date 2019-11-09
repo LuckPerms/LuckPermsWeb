@@ -234,34 +234,46 @@ export default new Vuex.Store({
     getEditorData({ commit, dispatch }, sessionId) {
       commit('initEditorData');
 
-      axios.get(`https://bytebin.lucko.me/${sessionId}`)
-        .then((response) => {
-          commit('setMetaData', response.data.metadata);
-
-          response.data.permissionHolders.forEach((session) => {
-            session.nodes.forEach((node) => {
-              dispatch('addNodes', [{
-                sessionId: session.id,
-                type: node.type,
-                key: node.key,
-                value: node.value,
-                expiry: node.expiry,
-                context: node.context,
-              }]);
-            });
-
-            commit('addEditorSession', session);
+      if (sessionId === 'demo') {
+        import('./data/editor-demo.json').then(json => {
+          dispatch('setEditorData', json.default);
+        });
+      } else {
+        axios.get(`https://bytebin.lucko.me/${sessionId}`)
+          .then((response) => {
+            const data = response.data;
+            dispatch('setEditorData', data);
+          })
+          .catch((error) => {
+            console.error(error);
+            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+            commit('setLoadError');
           });
 
-          commit('setKnownPermissions', response.data.knownPermissions);
-          commit('setPotentialContexts', response.data.potentialContexts);
-          commit('setTracks', response.data.tracks);
-        })
-        .catch((error) => {
-          console.error(error);
-          console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-          commit('setLoadError');
+      }
+    },
+
+    setEditorData({ commit, dispatch }, data) {
+      commit('setMetaData', data.metadata);
+
+      data.permissionHolders.forEach((session) => {
+        session.nodes.forEach((node) => {
+          dispatch('addNodes', [{
+            sessionId: session.id,
+            type: node.type,
+            key: node.key,
+            value: node.value,
+            expiry: node.expiry,
+            context: node.context,
+          }]);
         });
+
+        commit('addEditorSession', session);
+      });
+
+      commit('setKnownPermissions', data.knownPermissions);
+      commit('setPotentialContexts', data.potentialContexts);
+      commit('setTracks', data.tracks);
     },
 
     addKnownPermission({ commit }, permission) {
@@ -275,20 +287,6 @@ export default new Vuex.Store({
         node.context = node.context || {};
         commit('addEditorNode', node);
       });
-
-      // props = { sessionId, type, key, value = true, expiry = null, context = {}, isNew = false, modified = false };
-      //
-      // let node = {
-      //   id: getters.lastNodeId + 1,
-      //   sessionId,
-      //   type,
-      //   key,
-      //   value,
-      //   expiry,
-      //   context,
-      //   new: isNew,
-      //   modified,
-      // };
     },
 
     changeCurrentSession({ commit }, session) {

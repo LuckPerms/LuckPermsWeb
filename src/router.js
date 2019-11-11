@@ -7,23 +7,25 @@ Vue.use(Router);
 export default new Router({
   mode: 'history',
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: Home,
+    // },
+    // {
+    //   path: '/download',
+    //   name: 'download',
+    //   component: () => import(/* webpackChunkName: "download"  './views/Download'),
+    // },
     {
+      //path: '/editor',
       path: '/',
-      name: 'home',
-      component: Home,
-    },
-    {
-      path: '/download',
-      name: 'download',
-      component: () => import(/* webpackChunkName: "download" */ './views/Download'),
-    },
-    {
-      path: '/editor',
       name: 'editor-home',
       component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),
     },
     {
-      path: '/editor/:id',
+      //path: '/editor/:id',
+      path: '/:id',
       name: 'editor',
       component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),
     },

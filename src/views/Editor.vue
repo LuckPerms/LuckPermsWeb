@@ -168,7 +168,11 @@ export default {
   created() {
     if (this.$route.params.id) {
       this.sessionId = this.$route.params.id;
-
+    }
+    if (this.$route.query.id) {
+      this.sessionId = this.$route.query.id;
+    }
+    if (this.sessionId) {
       this.$store.dispatch('getEditorData', this.sessionId);
     }
   },

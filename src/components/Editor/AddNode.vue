@@ -137,7 +137,7 @@ export default {
   },
   methods: {
     onTag(tag) {
-      const permissions = tag.split(/,\s*|,|\s+/);
+      const permissions = tag.split(/,\s*|,|\s+|\s*-{1}\s+/);
 
       permissions.forEach((permission) => {
         if (permission === '') return;

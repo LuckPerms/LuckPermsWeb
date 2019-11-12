@@ -260,7 +260,6 @@ export default new Vuex.Store({
         session.nodes.forEach((node) => {
           dispatch('addNodes', [{
             sessionId: session.id,
-            type: node.type,
             key: node.key,
             value: node.value,
             expiry: node.expiry,

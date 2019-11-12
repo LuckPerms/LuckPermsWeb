@@ -142,12 +142,12 @@ export default {
           data.type = null;
         }
 
-        data.parents = this.currentNodes.filter(node => node.type === 'inheritance');
-        data.displayname = this.currentNodes.filter(node => node.type === 'display_name');
-        data.weight = this.currentNodes.filter(node => node.type === 'weight');
-        data.prefixes = this.currentNodes.filter(node => node.type === 'prefix');
-        data.suffixes = this.currentNodes.filter(node => node.type === 'suffix');
-        data.meta = this.currentNodes.filter(node => node.type === 'meta');
+        data.parents = this.currentNodes.filter(node => node.key.startsWith('group.'));
+        data.displayname = this.currentNodes.filter(node => node.key.startsWith('displayname.'));
+        data.weight = this.currentNodes.filter(node => node.key.startsWith('weight.'));
+        data.prefixes = this.currentNodes.filter(node => node.key.startsWith('prefix.'));
+        data.suffixes = this.currentNodes.filter(node => node.key.startsWith('suffix.'));
+        data.meta = this.currentNodes.filter(node => node.key.startsWith('meta.'));
 
         return data;
       }

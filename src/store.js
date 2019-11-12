@@ -392,7 +392,6 @@ export default new Vuex.Store({
         const nodes = [];
 
         sessionNodes.forEach(node => nodes.push({
-          type: node.type,
           key: node.key,
           value: node.value,
           ...node.expiry && { expiry: node.expiry },

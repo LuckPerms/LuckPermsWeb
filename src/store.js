@@ -404,6 +404,14 @@ export default new Vuex.Store({
         });
       });
 
+      getters.tracks.forEach(track => {
+        payload.changes.push({
+          type: 'track',
+          id: track.id,
+          groups: track.groups,
+        });
+      });
+
       axios.post('https://bytebin.lucko.me/post', payload)
         .then((response) => {
           commit('setBytebinKey', response.data.key);

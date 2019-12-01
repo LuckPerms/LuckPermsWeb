@@ -8,7 +8,7 @@
     </div>
 
     <div class="sessions">
-      <div class="tracks" v-if="filteredTracks.length">
+      <div class="tracks">
         <h2>
           <button @click="toggle.tracks = !toggle.tracks" title="Show/hide tracks">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.tracks ? 90 : null" />

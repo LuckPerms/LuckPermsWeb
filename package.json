@@ -15,7 +15,7 @@
     "axios": "^0.18.1",
     "i": "^0.3.6",
     "lodash.sortby": "^4.7.0",
-    "npm": "^6.12.0",
+    "npm": "^6.13.1",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "v-click-outside": "^2.1.4",

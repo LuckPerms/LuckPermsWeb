@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker';
+import Datepicker from '@turbotailz/vuejs-datepicker';
 import vClickOutside from 'v-click-outside';
 
 export default {

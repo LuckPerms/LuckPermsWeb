@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker';
+import Datepicker from '@turbotailz/vuejs-datepicker';
 import Multiselect from 'vue-multiselect';
 import vClickOutside from 'v-click-outside';
 

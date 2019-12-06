@@ -320,6 +320,7 @@ export default {
         small {
           opacity: .5;
           font-size: smaller;
+          display: block;
 
           &:before {
             content: '(';
@@ -362,6 +363,7 @@ export default {
           width: 100%;
           display: flex;
           justify-content: space-between;
+          align-items: center;
 
           .weight {
             opacity: .5;

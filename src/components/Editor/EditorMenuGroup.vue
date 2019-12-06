@@ -1,8 +1,8 @@
 <template>
   <intersect @enter="isVisible = true" @leave="isVisible = false">
     <span>
-      <span>
-        {{ group.displayName }}
+      <span class="group-name">
+        <span class="group-display">{{ group.displayName }}</span>
         <small v-if="group.displayName !== group.id">{{ group.id }}</small>
       </span>
 
@@ -46,3 +46,17 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+  .group-name {
+    max-width: 85%;
+  }
+
+  .group-display {
+    white-space: nowrap;
+    max-width: 100%;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>

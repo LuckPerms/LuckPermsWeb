@@ -33,7 +33,7 @@
                 :filter="filter"
                 :current-session="currentSession"
                 :modified-sessions="modifiedSessions"
-              ></editor-menu-track>
+              />
             </li>
           </ul>
         </transition>
@@ -58,10 +58,10 @@
               v-for="group in filteredGroups"
               @click="changeCurrentSession(group.id)"
               :class="{ 'active': currentSession && currentSession === group, 'modified': modifiedSessions.includes(group.id), 'new': group.new }"
-              :key="group.id"
+              :key="`group_${group.id}`"
               title="Edit group"
             >
-            <EditorMenuGroup :group="group" />
+              <EditorMenuGroup :group="group" />
             </li>
           </ul>
         </transition>
@@ -77,7 +77,7 @@
           <small>({{ filteredUsers.length }})</small>
         </span>
 <!--      Add a fake button to force the flex layout-->
-          <button disabled></button>
+          <button disabled />
         </h2>
         <transition name="slide">
           <ul v-if="toggle.users">

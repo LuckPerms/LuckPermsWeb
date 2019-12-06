@@ -22,6 +22,7 @@
     "v-click-outside": "^2.1.4",
     "vue": "^2.6.10",
     "vue-autofocus-directive": "^1.0.4",
+    "vue-intersect": "^1.1.3",
     "vue-moment": "^4.0.0",
     "vue-multiselect": "^2.1.6",
     "vue-router": "^3.1.2",

@@ -1,20 +1,37 @@
 <template>
-  <span>
+  <intersect @enter="isVisible = true" @leave="isVisible = false">
     <span>
-      {{ group.displayName }}
-      <small v-if="group.displayName !== group.id">{{ group.id }}</small>
-    </span>
+      <span>
+        {{ group.displayName }}
+        <small v-if="group.displayName !== group.id">{{ group.id }}</small>
+      </span>
 
-    <span v-if="weight" class="weight" title="Weight">
-      {{ weight }}
+
+
+        <span v-if="isVisible && weight" class="weight" title="Weight">
+          {{ weight }}
+        </span>
     </span>
-  </span>
+  </intersect>
 </template>
 
 <script>
+import Intersect from 'vue-intersect';
+
 export default {
   name: 'EditorMenuGroup',
+
+  components: {
+    Intersect,
+  },
+
+  data() {
+    return {
+      isVisible: false,
+    }
+  },
   props: { group: Object },
+
   computed: {
     weightNodes() {
       return this.$store.getters.weightNodes;

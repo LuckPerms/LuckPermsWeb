@@ -27,6 +27,8 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 
 import autofocus from 'vue-autofocus-directive';
+import VueClipboard from 'vue-clipboard2';
+
 import store from './store';
 import App from './App.vue';
 import router from './router';
@@ -63,6 +65,7 @@ library.add(
 Vue.component('font-awesome', FontAwesomeIcon);
 
 Vue.use(require('vue-moment'));
+Vue.use(VueClipboard);
 
 new Vue({
   router,

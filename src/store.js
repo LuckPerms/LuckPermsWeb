@@ -11,6 +11,10 @@ export default new Vuex.Store({
 
 
   getters: {
+    metaData: (state) => {
+      return state.editor.metaData;
+    },
+
     sessionSet: (state) => {
       if (state.editor.sessionList) {
         return state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]);

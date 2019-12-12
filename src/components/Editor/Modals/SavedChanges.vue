@@ -8,7 +8,7 @@
 
   <div class="command">
     <code class="apply-edits" @click="copyCommand" title="Copy to clipboard">
-      /lp applyedits {{ props }}
+      /{{ metaData.commandAlias }} applyedits {{ props }}
     </code>
     <span class="command-copied" v-if="commandCopied">
     Command copied to clipboard
@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: 'CreateGroup',
+  name: 'SavedChanges',
 
   data() {
     return {
@@ -35,9 +35,15 @@ export default {
     props: String,
   },
 
+  computed: {
+    metaData() {
+      return this.$store.getters.metaData;
+    }
+  },
+
   methods: {
     copyCommand() {
-      this.$copyText(`/lp applyedits ${this.props}`)
+      this.$copyText(`/${this.metaData.commandAlias} applyedits ${this.props}`)
       .then(() => {
         this.commandCopied = true;
       }).catch(console.error);

@@ -19,6 +19,7 @@
     "npm": "^6.13.1",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
+    "uuid": "^3.3.3",
     "v-click-outside": "^2.1.4",
     "vue": "^2.6.10",
     "vue-autofocus-directive": "^1.0.4",

@@ -25,10 +25,13 @@
             <div class="text">
               <h1>LuckPerms</h1>
               <p>Web Permissions Editor</p>
-              <p v-if="!errors.load">
-                <font-awesome icon="asterisk" :spin="true" />
-                Loading data...
-              </p>
+              <div v-if="!errors.load">
+                <p>
+                  <font-awesome icon="asterisk" :spin="true" />
+                  Loading data...
+                </p>
+              </div>
+
               <div v-else class="error">
                 <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong or the session has expired.</p>
                 <p>Please generate another editor session with <code>/lp editor</code>.</p>

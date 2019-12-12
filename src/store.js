@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
+const uuid = require('uuid/v4');
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -253,14 +255,13 @@ export default new Vuex.Store({
             console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
             commit('setLoadError');
           });
-
       }
     },
 
     setEditorData({ commit, dispatch }, data) {
       commit('setMetaData', data.metadata);
 
-      data.permissionHolders.forEach((session) => {
+      data.permissionHolders.forEach((session, index) => {
         session.nodes.forEach((node) => {
           dispatch('addNodes', [{
             sessionId: session.id,
@@ -284,8 +285,8 @@ export default new Vuex.Store({
     },
 
     addNodes({ commit, getters }, nodes) {
-      nodes.forEach((node, index) => {
-        node.id = getters.lastNodeId + index + 1;
+      nodes.forEach(node => {
+        node.id = uuid();
         node.expiry = node.expiry || null;
         node.context = node.context || {};
         commit('addEditorNode', node);

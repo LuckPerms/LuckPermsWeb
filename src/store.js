@@ -35,14 +35,6 @@ export default new Vuex.Store({
 
     selectedNodes: state => state.editor.selectedNodes,
 
-    lastNodeId: (state) => {
-      if (state.editor.nodes && state.editor.nodes.length) {
-        return state.editor.nodes.sort((a, b) => a - b)[state.editor.nodes.length - 1].id;
-      }
-
-      return 0;
-    },
-
     modifiedSessions: (state, getters) => getters.sessionSet.filter(session => (session.new || session.modified))
       .map(session => session.id),
 

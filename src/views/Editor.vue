@@ -80,9 +80,11 @@
 
             <transition name="fade" mode="out-in">
               <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.id}`">
-                <Header :session="currentSession" :sessionData="currentSessionData" />
-                <Meta :session="currentSession" :sessionData="currentSessionData" />
-                <NodeList :nodes="currentNodes" :session="currentSession" />
+                <div>
+                  <Header :session="currentSession" :sessionData="currentSessionData" />
+                  <Meta :session="currentSession" :sessionData="currentSessionData" />
+                  <NodeList :nodes="currentNodes" :session="currentSession" />
+                </div>
               </div>
             </transition>
 

@@ -204,6 +204,7 @@ export default {
     left: 20.5em;
     right: 1em;
     box-shadow: 0 0 1em rgba(0,0,0,.2);
+    z-index: 10;
 
     > .row {
       position: relative;

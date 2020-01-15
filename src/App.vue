@@ -11,7 +11,7 @@
 
     <footer>
       <div class="footer">
-        <a href="https://github.com/lucko/LuckPermsWeb" class="github-corner">
+        <a href="https://github.com/lucko/LuckPermsWeb" target="_blank" class="github-corner">
           <svg width="60" height="60" viewBox="0 0 250 250">
             <path d="M0 0l115 115h15l12 27 108 108v-250z"></path>
             <path d="M128.3 109c-14.5-9.3-9.3-19.4-9.3-19.4 3-6.9 1.5-11 1.5-11-1.3-6.6 2.9-2.3 2.9-2.3 3.9 4.6 2.1 11 2.1 11-2.6 10.3 5.1 14.6 8.9 15.9" style="transform-origin:130px 106px" class="octo-arm"></path>

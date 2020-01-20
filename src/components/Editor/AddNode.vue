@@ -4,19 +4,15 @@
       <div class="form-group">
         <label for="permissions">Add permissions</label>
         <multiselect
-          v-model="permissions"
           id="permissions"
-          placeholder="Enter permissions or paste many"
-          tag-placeholder="Press enter to select"
-          :clear-on-select="false"
-          :close-on-select="false"
-          :internal-search="false"
-          :loading="loading"
+          v-model="permissions"
+          :options="knownPermissions"
           :multiple="true"
-          :options="filteredPermissions"
           :taggable="true"
-          @search-change="findPermissions"
           @tag="onTag"
+          tag-placeholder="Press enter to select"
+          placeholder="Enter permissions or paste many"
+          :close-on-select="false"
         />
       </div>
 
@@ -121,8 +117,6 @@ export default {
         key: '',
         value: '',
       },
-      filteredPermissions: [],
-      loading: false,
     };
   },
   props: {
@@ -132,6 +126,15 @@ export default {
     knownPermissions() {
       return this.$store.state.editor.knownPermissions;
     },
+    // sortedKnownPermissions() {
+    //   if (this.permission !== '') {
+    //     const sortedArray = this.$store.state.editor.knownPermissions
+    //       .filter(node => node.indexOf(this.permission) >= 0);
+    //
+    //     return sortedArray.slice(0, 100);
+    //   }
+    //   return [];
+    // },
   },
   methods: {
     onTag(tag) {
@@ -186,21 +189,6 @@ export default {
 
       this.context.key = '';
       this.context.value = '';
-    },
-    findPermissions(query) {
-      if (query === '') {
-        this.filteredPermissions = [];
-
-        return;
-      }
-
-      this.loading = true;
-
-      this.filteredPermissions = this.knownPermissions.filter(permission => {
-        return permission.includes(query);
-      });
-
-      this.loading = false;
     },
   },
 };

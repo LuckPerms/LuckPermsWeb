@@ -5,9 +5,11 @@
         <span class="group-display">{{ group.displayName }}</span>
         <small v-if="group.displayName !== group.id">{{ group.id }}</small>
       </span>
-      <span v-if="isVisible && weight" class="weight" title="Weight">
-        {{ weight }}
-        <button @click="deleteGroup">
+      <span v-if="isVisible">
+        <span v-if="weight" class="weight" title="Weight">
+          {{ weight }}
+        </span>
+        <button @click="deleteGroup" v-if="group.id !== 'default'">
           <font-awesome icon="times" fixed-width />
         </button>
       </span>

@@ -271,7 +271,7 @@ export default {
       margin-bottom: 3rem;
 
       li {
-        padding: .5em 2em;
+        padding: .5em 1em .5em 2em;
         border-bottom: 1px solid rgba(255,255,255,.1);
         cursor: pointer;
         display: flex;
@@ -366,6 +366,11 @@ export default {
           align-items: center;
 
           .weight {
+            opacity: .5;
+          }
+        }
+        &:hover {
+          button {
             opacity: .5;
           }
         }

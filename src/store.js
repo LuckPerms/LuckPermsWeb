@@ -113,6 +113,16 @@ export default new Vuex.Store({
       state.editor.tracks = value;
     },
 
+    deleteGroup(state, groupId) {
+      const sessionListIndex = state.editor.sessionList.findIndex(group => group === groupId);
+
+      state.editor.sessionList.splice(sessionListIndex, 1);
+
+      delete state.editor.sessions[groupId];
+
+      state.editor.deletedGroups.push(groupId);
+    },
+
     setPotentialContexts(state, array) {
       state.editor.potentialContexts = array;
     },

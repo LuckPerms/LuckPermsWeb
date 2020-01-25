@@ -1,16 +1,16 @@
 <template>
   <intersect @enter="isVisible = true" @leave="isVisible = false">
-    <span>
+    <span class="group">
       <span class="group-name">
         <span class="group-display">{{ group.displayName }}</span>
         <small v-if="group.displayName !== group.id">{{ group.id }}</small>
       </span>
-
-
-
-        <span v-if="isVisible && weight" class="weight" title="Weight">
-          {{ weight }}
-        </span>
+      <span v-if="isVisible && weight" class="weight" title="Weight">
+        {{ weight }}
+        <button @click="deleteGroup">
+          <font-awesome icon="times" fixed-width />
+        </button>
+      </span>
     </span>
   </intersect>
 </template>
@@ -30,7 +30,10 @@ export default {
       isVisible: false,
     }
   },
-  props: { group: Object },
+
+  props: {
+    group: Object
+  },
 
   computed: {
     weightNodes() {
@@ -44,10 +47,16 @@ export default {
       return node.key.split('weight.')[1];
     },
   },
+
+  methods: {
+    deleteGroup() {
+      this.$store.commit('deleteGroup', this.group.id);
+    }
+  }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .group-name {
     max-width: 85%;
   }
@@ -58,5 +67,18 @@ export default {
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  button {
+    background: transparent;
+    color: white;
+    opacity: 0;
+    border: 0;
+    cursor: pointer;
+    padding: 0 .5rem;
+
+    &:hover {
+      opacity: 1 !important;
+    }
   }
 </style>

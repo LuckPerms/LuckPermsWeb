@@ -187,6 +187,10 @@ function reloadTable() {
             }
         }
 
+        if (entry["thread"]) {
+            content += '<p><b>Thread: </b><span>' + escapeHtml(entry["thread"]) + '</span></p>';
+        }
+
         content += '<b>Trace: </b>';
         content += '<br>';
         content += '<div class="trace">';

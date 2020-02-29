@@ -19,6 +19,7 @@ import {
   faArrowLeft,
   faCaretRight,
   faEdit,
+  faCheck
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -56,6 +57,7 @@ library.add(
   faArrowLeft,
   faCaretRight,
   faEdit,
+  faCheck,
 
   faGithub,
   faDiscord,

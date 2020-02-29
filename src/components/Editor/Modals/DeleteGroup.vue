@@ -9,7 +9,7 @@
   </p>
   <div>
     <button type="button" @click="deleteGroup">
-      <font-awesome icon="plus-circle" />
+      <font-awesome icon="check" />
       Delete group
     </button>
     <button type="button" class="red" @click="$emit('close')">

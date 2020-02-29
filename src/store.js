@@ -121,6 +121,8 @@ export default new Vuex.Store({
       delete state.editor.sessions[groupId];
 
       state.editor.deletedGroups.push(groupId);
+
+      state.editor.nodes = state.editor.nodes.filter(node => node.sessionId !== groupId);
     },
 
     setPotentialContexts(state, array) {
@@ -139,6 +141,12 @@ export default new Vuex.Store({
       });
       // state.editor.sessions[id] = ;
       state.editor.sessionList.push(id);
+
+      const deletedGroups = state.editor.deletedGroups;
+
+      if (deletedGroups.includes(id)) {
+        deletedGroups.splice(deletedGroups.findIndex(groupId => groupId === id), 1);
+      }
     },
 
     addEditorNode(state, node) {

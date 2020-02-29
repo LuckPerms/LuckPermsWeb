@@ -77,7 +77,7 @@
 			      <img alt="LuckPerms logo" src="@/assets/logo.png">
 			      <h1>You need LuckPerms{{ legacy }} for {{ serverType }}</h1>
 			      <div class="options">
-			        <a :href="downloads.['bukkit-legacy']" v-if="options.bukkit" download>
+			        <a :href="downloads['bukkit-legacy']" v-if="options.bukkit" download>
 				        Download
 			        </a>
 			      </div>

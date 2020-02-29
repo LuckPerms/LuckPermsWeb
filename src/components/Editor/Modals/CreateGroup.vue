@@ -73,7 +73,7 @@ export default {
       if (this.group.name !== '') {
         const result = this.$store.dispatch('addGroup', this.group);
 
-        if (result === 'success') this.$store.commit('closeModal');
+        if (result === 'success') this.$emit('close');
       }
     },
   },

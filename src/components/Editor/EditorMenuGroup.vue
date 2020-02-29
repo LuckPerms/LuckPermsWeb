@@ -52,7 +52,10 @@ export default {
 
   methods: {
     deleteGroup() {
-      this.$store.commit('deleteGroup', this.group.id);
+      this.$store.commit('setModal', { type: 'deleteGroup', object: {
+          groupId: this.group.id
+        }
+      });
     }
   }
 };

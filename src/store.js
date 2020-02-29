@@ -31,6 +31,10 @@ export default new Vuex.Store({
       if (state.editor.nodes) return state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession);
     },
 
+    allNodes: (state) => {
+      if (state.editor.nodes) return state.editor.nodes;
+    },
+
     tracks: state => state.editor.tracks,
 
     selectedNodes: state => state.editor.selectedNodes,
@@ -122,6 +126,10 @@ export default new Vuex.Store({
 
       state.editor.deletedGroups.push(groupId);
 
+      if (state.editor.currentSession === groupId) {
+        state.editor.currentSession = null;
+      }
+
       state.editor.nodes = state.editor.nodes.filter(node => node.sessionId !== groupId);
     },
 
@@ -172,6 +180,11 @@ export default new Vuex.Store({
     setModal(state, { type, object }) {
       state.editor.modal.type = type || null;
       state.editor.modal.object = object || null;
+    },
+
+    closeModal(state) {
+      state.editor.modal.type = null;
+      state.editor.modal.object = null;
     },
 
     toggleNodeValue(state, node) {

@@ -7,13 +7,14 @@
     </div>
 
 <!--    Modals -->
-    <component :is="modal.type" :props="modal.object" />
+    <component :is="modal.type" :props="modal.object" @close="closeModal" />
   </div>
 </div>
 </template>
 
 <script>
 import CreateGroup from './Modals/CreateGroup';
+import DeleteGroup from './Modals/DeleteGroup';
 import CreateTrack from './Modals/CreateTrack';
 import SavedChanges from './Modals/SavedChanges';
 
@@ -21,6 +22,7 @@ export default {
   name: 'Modal',
   components: {
     CreateGroup,
+    DeleteGroup,
     CreateTrack,
     SavedChanges,
   },
@@ -29,7 +31,7 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$store.commit('setModal', { type: null, object: null });
+      this.$store.commit('closeModal');
     },
   },
 };
@@ -123,6 +125,14 @@ export default {
 
       &:hover {
         opacity: .8;
+      }
+
+      &.red {
+        background-color: $red;
+      }
+
+      &:not(:first-child) {
+        margin-left: 1em;
       }
     }
   }

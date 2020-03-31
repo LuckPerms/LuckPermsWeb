@@ -9,7 +9,7 @@
         <span v-if="weight" class="weight" title="Weight">
           {{ weight }}
         </span>
-        <button @click="deleteGroup" v-if="group.id !== 'default'">
+        <button @click="deleteGroup" :disabled="group.id === 'default'">
           <font-awesome icon="times" fixed-width />
         </button>
       </span>
@@ -52,6 +52,8 @@ export default {
 
   methods: {
     deleteGroup() {
+      if (this.group.id === 'default') return;
+
       this.$store.commit('setModal', { type: 'deleteGroup', object: {
           groupId: this.group.id
         }
@@ -84,6 +86,10 @@ export default {
 
     &:hover {
       opacity: 1 !important;
+    }
+
+    &[disabled] {
+      opacity: 0 !important;
     }
   }
 </style>

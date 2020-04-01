@@ -5,21 +5,21 @@
     <code>{{ groupWeight }}</code>
   </div>
   <div class="meta-parents">
-    <strong>Parent groups:</strong>
+    <div class="add-group">
+      <strong>Parent groups </strong>
+      <button
+        @click="addingGroup = true"
+        :title="`Add a group to ${session.id}`"
+      >
+        +
+      </button>
+      <ul v-if="addingGroup" v-click-outside="closeGroups">
+        <li v-for="group in groups" @click="addParentToGroup(group.id)">
+          {{ group.id }}
+        </li>
+      </ul>
+    </div>
     <ul>
-      <li class="add-group">
-        <button
-          @click="addingGroup = true"
-          :title="`Add a group to ${session.id}`"
-        >
-          + add group
-        </button>
-        <ul v-if="addingGroup" v-click-outside="closeGroups">
-          <li v-for="group in groups" @click="addParentToGroup(group.id)">
-            {{ group.id }}
-          </li>
-        </ul>
-      </li>
       <li v-for="parent in sessionData.parents">
         <code
           @click="handleParentSessionSwitch(parent)"
@@ -154,43 +154,45 @@ export default {
             }
           }
         }
+      }
+    }
 
-        button {
-          cursor: pointer;
-          background: $brand-color;
-          font: inherit;
-          border: 0;
-          border-radius: 2px;
+    .add-group {
+      position: relative;
+
+      button {
+        cursor: pointer;
+        background: $brand-color;
+        font: inherit;
+        border: 0;
+        border-radius: 2px;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 0 .5rem;
+        margin-left: .5rem;
+      }
+
+      ul {
+        position: absolute;
+        top: 100%;
+        background: $grey;
+        flex-direction: column;
+        z-index: 100;
+        box-shadow: 0 .2rem 1rem rgba(0,0,0,.2);
+
+        li {
+          padding: .25rem 1rem;
+          margin: 0;
+          font-family: "Source Code Pro", monospace;
           font-size: .8rem;
-          font-weight: bold;
-          padding: .1rem .5rem;
-        }
+          cursor: pointer;
 
-        &.add-group {
-          position: relative;
+          &:not(:last-child) {
+            border-bottom: 1px solid rgba(0,0,0,.2);
+          }
 
-          ul {
-            position: absolute;
-            top: 100%;
-            background: $grey;
-            flex-direction: column;
-            z-index: 100;
-
-            li {
-              padding: .25rem 1rem;
-              margin: 0;
-              font-family: "Source Code Pro", monospace;
-              font-size: .8rem;
-              cursor: pointer;
-
-              &:not(:last-child) {
-                border-bottom: 1px solid rgba(0,0,0,.2);
-              }
-
-              &:hover {
-                background: rgba(255,255,255,.05);
-              }
-            }
+          &:hover {
+            background: rgba(255,255,255,.05);
           }
         }
       }

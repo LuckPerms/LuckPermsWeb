@@ -73,12 +73,43 @@
             <span v-html="value"></span>
           </li>
           <li>
-          <span class="edit">
-            <input type="text" v-model="context.key" placeholder="key">
-          </span>
+            <h5>
+              Add context:
+              <span class="lighter">(world, server, etc.)</span>
+            </h5>
+          </li>
+          <li>
             <span class="edit">
-            <input type="text" v-model="context.value" placeholder="value" @keydown.enter="addContext">
-          </span>
+              <input
+                type="text"
+                v-model="context.key"
+                placeholder="key"
+                @focus="context.keyFocus = true"
+                @blur="blurField('keyFocus')"
+              >
+              <ul class="context-list" v-if="context.keyFocus">
+                <li
+                  v-for="(value, key) in potentialContexts"
+                  @click="context.key = key"
+                >{{ key }}</li>
+              </ul>
+            </span>
+            <span class="edit">
+              <input
+                type="text"
+                v-model="context.value"
+                placeholder="value"
+                @focus="context.valueFocus = true"
+                @blur="blurField('valueFocus')"
+                @keydown.enter="addContext"
+              >
+              <ul class="context-list" v-if="context.valueFocus">
+              <li
+                v-for="value in potentialContexts[context.key]"
+                @click="context.value = value"
+              >{{ value }}</li>
+            </ul>
+            </span>
           </li>
         </ul>
         <button @click="addContext">
@@ -116,6 +147,8 @@ export default {
         ui: null,
         key: '',
         value: '',
+        keyFocus: false,
+        valueFocus: false,
       },
     };
   },
@@ -126,15 +159,9 @@ export default {
     knownPermissions() {
       return this.$store.state.editor.knownPermissions;
     },
-    // sortedKnownPermissions() {
-    //   if (this.permission !== '') {
-    //     const sortedArray = this.$store.state.editor.knownPermissions
-    //       .filter(node => node.indexOf(this.permission) >= 0);
-    //
-    //     return sortedArray.slice(0, 100);
-    //   }
-    //   return [];
-    // },
+    potentialContexts() {
+      return this.$store.getters.potentialContexts;
+    }
   },
   methods: {
     onTag(tag) {
@@ -190,6 +217,11 @@ export default {
       this.context.key = '';
       this.context.value = '';
     },
+    blurField(type) {
+      setTimeout(() => {
+        this.context[type] = false;
+      }, 100);
+    }
   },
 };
 </script>

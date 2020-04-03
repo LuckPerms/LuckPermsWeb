@@ -39,6 +39,8 @@ export default new Vuex.Store({
 
     selectedNodes: state => state.editor.selectedNodes,
 
+    potentialContexts: state => state.editor.potentialContexts,
+
     modifiedSessions: (state, getters) => getters.sessionSet.filter(session => (session.new || session.modified))
       .map(session => session.id),
 

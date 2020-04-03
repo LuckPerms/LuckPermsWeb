@@ -1,6 +1,5 @@
 <template>
 <li :class="{ 'permission-node': true, modified: node.modified, new: node.isNew }">
-<!--  TODO: mass-select nodes -->
 <!--  <div-->
 <!--    :class="{ 'node-select': true, 'selected': isSelected }"-->
 <!--    @click="toggleNodeSelect(node.id)"-->
@@ -79,18 +78,49 @@
       </div>
       <ul>
         <li v-for="(value, key) in node.context">
-          <span v-html="key"></span>
-          <span v-html="value"></span>
+          <span>{{ key }}</span>
+          <span>{{ value }}</span>
           <button @click="removeContext(key)">
             <font-awesome icon="times" fixed-width />
           </button>
         </li>
         <li>
+          <h5>
+            Add context:
+            <span class="lighter">(world, server, etc.)</span>
+          </h5>
+        </li>
+        <li>
           <span class="edit">
-            <input type="text" v-model="context.key" placeholder="key">
+            <input
+              type="text"
+              v-model="context.key"
+              placeholder="key"
+              @focus="context.keyFocus = true"
+              @blur="blurField('keyFocus')"
+            >
+            <ul class="context-list" v-if="context.keyFocus">
+              <li
+                v-for="(value, key) in potentialContexts"
+                @click="context.key = key"
+              >{{ key }}</li>
+            </ul>
           </span>
           <span class="edit">
-            <input type="text" v-model="context.value" placeholder="value">
+            <input
+              type="text"
+              v-model="context.value"
+              placeholder="value"
+              @focus="context.valueFocus = true"
+              @blur="blurField('valueFocus')"
+              @keydown.enter="addContext"
+            >
+            <ul class="context-list" v-if="context.valueFocus">
+              <li
+                v-for="value in potentialContexts[context.key]"
+                @click="context.value = value"
+              >{{ value }}</li>
+            </ul>
           </span>
         </li>
       </ul>
@@ -129,6 +159,8 @@ export default {
         ui: false,
         key: '',
         value: '',
+        keyFocus: false,
+        valueFocus: false,
       },
     };
   },
@@ -143,6 +175,9 @@ export default {
     isSelected() {
       return this.selectedNodes.indexOf(this.node.id) >= 0;
     },
+    potentialContexts() {
+      return this.$store.getters.potentialContexts;
+    }
   },
   methods: {
     toggleNodeSelect(nodeId) {
@@ -190,6 +225,11 @@ export default {
 
       this.updateNode('context', context);
     },
+    blurField(type) {
+      setTimeout(() => {
+        this.context[type] = false;
+      }, 100);
+    }
   },
 };
 </script>
@@ -358,7 +398,7 @@ export default {
     }
   }
 
-  ul {
+  > ul {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -371,20 +411,26 @@ export default {
       font-family: 'Source Code Pro', monospace;
       font-size: .9rem;
 
-      span {
-        padding: .5rem 1rem;
+      h5 {
+        padding: .25rem 1rem;
+        margin: 0;
+        width: 100%;
+        background: rgba(0,0,0,.25);
+        color: #FFF;
 
-        &:first-child {
-          flex: none;
+        span {
+          padding: 0;
           opacity: .5;
         }
+      }
 
-        &:last-child {
-          flex: auto;
-        }
+      span {
+        padding: .5rem 1rem;
+        flex: 1;
 
         &.edit {
           padding: 0;
+          position: relative;
 
           input {
             padding: .5rem 1rem;
@@ -426,6 +472,24 @@ export default {
 
       svg {
         margin-right: .5rem;
+      }
+    }
+  }
+
+  .context-list {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    margin: 0;
+    padding: 0;
+    background: $grey;
+
+    li {
+      padding: .5rem 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(255,255,255,.05);
       }
     }
   }

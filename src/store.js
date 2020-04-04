@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
+const config = require('../config');
 const uuid = require('uuid/v4');
 
 Vue.use(Vuex);
@@ -270,7 +271,7 @@ export default new Vuex.Store({
           dispatch('setEditorData', json.default);
         });
       } else {
-        axios.get(`https://bytebin.lucko.me/${sessionId}`)
+        axios.get(`${config.bytebin_url}${sessionId}`)
           .then((response) => {
             const data = response.data;
             dispatch('setEditorData', data);
@@ -442,7 +443,7 @@ export default new Vuex.Store({
         });
       });
 
-      axios.post('https://bytebin.lucko.me/post', payload)
+      axios.post(`${config.bytebin_url}post`, payload)
         .then((response) => {
           commit('setBytebinKey', response.data.key);
           commit('setSaveStatus', 'saved');

@@ -4,7 +4,6 @@
 
   <div class="node-list-header">
     <div class="sorting-tabs">
-<!--      TODO: mass-select nodes -->
 <!--      <div-->
 <!--        :class="{ 'node-select-all': true, 'selected': allSelected }"-->
 <!--        @click="selectAll"-->

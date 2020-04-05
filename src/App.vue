@@ -1,9 +1,79 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/editor">Editor</router-link>
-    </div> -->
+    <div id="nav">
+      <div>
+        <router-link to="/" class="logo">
+          <img alt="LuckPerms logo" src="@/assets/logo.png">
+          <span>LuckPerms</span>
+        </router-link>
+        <span v-if="version">v{{ version }}</span>
+      </div>
+
+      <ul>
+        <li>
+          <router-link to="/">
+            <font-awesome icon="home" />
+            Home
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/download">
+            <font-awesome icon="arrow-alt-circle-down" />
+            Download
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/wiki">
+            <font-awesome icon="book" />
+            Wiki
+          </router-link>
+        </li>
+        <li>
+          <span :class="{ 'router-link-active': isToolsRoute }">
+            <font-awesome icon="tools"/>
+            Tools
+          </span>
+          <ul>
+            <li>
+              <router-link to="/editor">
+                <font-awesome icon="edit" fixed-width />
+                Editor
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/verbose">
+                <font-awesome icon="comment-alt" fixed-width />
+                Verbose
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/tree">
+                <font-awesome icon="sitemap" fixed-width />
+                Tree
+              </router-link>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <router-link to="/github">
+            <font-awesome  :icon="['fab', 'github']" />
+            Github
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/discord">
+            <font-awesome  :icon="['fab', 'discord']" />
+            Discord
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/patreon">
+            <font-awesome  :icon="['fab', 'patreon']" />
+            Patreon
+          </router-link>
+        </li>
+      </ul>
+    </div>
 
     <transition name="fade" mode="out-in">
       <router-view/>
@@ -34,6 +104,28 @@
     </footer>
   </div>
 </template>
+
+<script>
+  export default {
+    computed: {
+      version() {
+        return this.$store.getters.version;
+      },
+      isToolsRoute() {
+        return [
+          'editor',
+          'editor-home',
+          'verbose',
+          'verbose-home',
+          'tree'
+        ].includes(this.$route.name);
+      }
+    },
+    created() {
+      this.$store.dispatch('getAppData');
+    }
+  }
+</script>
 
 <style lang="scss">
 * {
@@ -152,12 +244,102 @@ body {
 }
 
 #nav {
-  padding: 30px;
-  a {
+  padding: .5rem;
+  display: flex;
+  justify-content: space-between;
+  z-index: 50;
+  box-shadow: 0 0 0.5rem rgba(0,0,0,.25);
+
+  > div {
+    display: flex;
+    align-items: center;
+
+    > span {
+      opacity: .5;
+      margin-left: .5rem;
+    }
+  }
+
+  .logo {
+    height: 3rem;
+    padding: .5rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    color: #FFF;
+    text-decoration: none;
+    transition: all .2s;
     font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+
+    &:hover {
+      background: rgba(255,255,255,.1);
+    }
+
+    img {
+      height: 100%;
+      width: auto;
+      margin-right: .5rem;
+    }
+  }
+
+  ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: flex;
+      position: relative;
+
+      &:hover {
+        background: rgba(255,255,255,.1);
+      }
+
+      a, span {
+        color: $brand-color;
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        padding: .5em 1rem;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: all .2s;
+        cursor: pointer;
+
+        &.router-link-exact-active {
+          color: #FFF;
+        }
+
+        svg {
+          margin-right: .5rem;
+          opacity: .5;
+        }
+      }
+
+      &:not(:first-child) {
+        a, span {
+          &.router-link-active {
+            color: #FFF;
+          }
+        }
+      }
+
+      > ul {
+        display: none;
+        position: absolute;
+        top: 100%;
+        flex-direction: column;
+        min-width: 100%;
+        background: $navy;
+        z-index: 100;
+      }
+
+      &:hover {
+        ul {
+          display: flex;
+        }
+      }
     }
   }
 }
@@ -174,17 +356,6 @@ body {
   40%, 80% {
     transform: rotate(10deg);
   }
-}
-
-code, .code {
-  border: 0;
-  display: inline-block;
-  font-family: 'Source Code Pro', monospace;
-  padding: .2em .5em;
-  background: rgba(0,0,0,.2);
-  font-size: .8em;
-  border-radius: 2px;
-  line-height: 1.5;
 }
 
 .vdp-datepicker {

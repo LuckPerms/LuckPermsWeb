@@ -11,47 +11,48 @@
 
     <section class="resources">
       <div>
+        <h2>Choose your version</h2>
         <a :href="downloads.bukkit" class="resource">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
-            CraftBukkit / Spigot / Paper
+            Bukkit
           </span>
-          <small>Supporting versions 1.8.8 +</small>
+          <small>Versions 1.8.8 and above</small>
         </a>
         <a :href="downloads.bungee" class="resource">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
-            BungeeCord / Waterfall / Travertine
+            BungeeCord
           </span>
-          <small>Supporting versions 1.8.8 +</small>
+          <small>Versions 1.8.8 and above (or 1.7.10 if using Travertine)</small>
         </a>
         <a :href="downloads.sponge" class="resource">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
             Sponge
           </span>
-          <small>Supporting SpongeAPI versions 5-8</small>
+          <small>SpongeAPI versions 5-8</small>
         </a>
         <a :href="downloads.nukkit" class="resource">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
             Nukkit
           </span>
-          <small>Supporting NukkitX b93 +</small>
+          <small>Version NukkitX b93 and above</small>
         </a>
         <a :href="downloads.velocity" class="resource">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
             Velocity
           </span>
-          <small>Supporting version 1.0</small>
+          <small>Version 1.0</small>
         </a>
         <a :href="downloads['bukkit-legacy']" class="resource">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
             Bukkit Legacy
           </span>
-          <small>Supporting version 1.7.10</small>
+          <small>Version 1.7.10</small>
         </a>
       </div>
 
@@ -80,8 +81,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   name: 'Download',
   components: {
@@ -89,38 +88,16 @@ export default {
   },
   data() {
     return {
-      version: null,
-      downloads: {
-        bukkit: null,
-        'bukkit-legacy': null,
-        bungee: null,
-        nukkit: null,
-        sponge: null,
-        velocity: null,
-      },
       quiz: {
         open: false,
       },
     };
   },
-  created() {
-    this.getBuildData();
+  computed: {
+    downloads() { return this.$store.getters.downloads },
+    version() { return this.$store.getters.version }
   },
   methods: {
-    getBuildData() {
-      axios.get('https://ci.lucko.me/job/LuckPerms/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]')
-        .then((response) => {
-          const filename = response.data.artifacts[0].fileName;
-          this.version = filename.split('-').pop().slice(0, -4);
-
-          response.data.artifacts.forEach((artifact) => {
-            const download = artifact.relativePath.split('/')[0];
-            this.downloads[download] = `${response.data.url}artifact/${artifact.relativePath}`;
-          });
-        })
-        .catch(console.error);
-    },
-
     openQuiz() {
       this.quiz.open = true;
     },
@@ -147,6 +124,16 @@ export default {
 
       button {
         margin-top: 2rem;
+      }
+    }
+
+    .resource {
+      display: flex;
+      align-items: center;
+
+      span {
+        margin: 0 1rem 0 0;
+        white-space: nowrap;
       }
     }
   }

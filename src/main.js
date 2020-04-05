@@ -19,7 +19,14 @@ import {
   faArrowLeft,
   faCaretRight,
   faEdit,
-  faCheck
+  faCheck,
+  faHome,
+  faCommentAlt,
+  faTools,
+  faMinus,
+  faSitemap,
+  faPlusSquare,
+  faMinusSquare
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -58,6 +65,13 @@ library.add(
   faCaretRight,
   faEdit,
   faCheck,
+  faHome,
+  faCommentAlt,
+  faTools,
+  faMinus,
+  faSitemap,
+  faPlusSquare,
+  faMinusSquare,
 
   faGithub,
   faDiscord,

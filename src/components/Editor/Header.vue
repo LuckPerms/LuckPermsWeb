@@ -4,23 +4,32 @@
     <small>{{sessionData.type}}:</small>
     <code>{{session.displayName}}</code>
     <span v-if="sessionData.type == 'group' && session.displayName !== session.id">{{ session.id }}</span>
-    <img v-if="sessionData.type == 'user'" :src="`https://minotar.net/helm/${session.id}/100.png`">
+    <avatar
+      v-if="sessionData.type == 'user'"
+      :id="session.id"
+      :name="session.displayName"
+    />
   </h1>
 </div>
 </template>
 
 <script>
-export default {
-  name: 'Header',
-  props: {
-    session: Object,
-    sessionData: Object,
-  },
+  import Avatar from '../Avatar';
 
-  methods: {
+  export default {
+    components: {
+      Avatar
+    },
+    name: 'Header',
+    props: {
+      session: Object,
+      sessionData: Object,
+    },
 
-  },
-};
+    methods: {
+
+    },
+  }
 </script>
 
 <style lang="scss">

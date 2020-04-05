@@ -46,7 +46,6 @@
           <div class="editor-main">
             <nav>
               <div class="logo">
-                <img alt="LuckPerms logo" src="../assets/logo.png">
                 Web Permissions Editor
                 <span>BETA</span>
                 <small>Please send any bugs, suggestions or feedback to <a href="https://github.com/lucko/LuckPermsWeb/issues" target="_blank">GitHub</a>.</small>
@@ -119,13 +118,10 @@ export default {
     Modal,
   },
 
-  data() {
-    return {
-      sessionId: '',
-    };
-  },
-
   computed: {
+    sessionId() {
+      return this.$store.getters.editorSessionId;
+    },
     sessions() {
       return this.$store.getters.sessionSet;
     },
@@ -171,14 +167,18 @@ export default {
   },
 
   created() {
+    if (this.sessions && this.sessions.length) return;
+
+    let sessionId;
+
     if (this.$route.params.id) {
-      this.sessionId = this.$route.params.id;
+      sessionId = this.$route.params.id;
     }
     if (this.$route.query.id) {
-      this.sessionId = this.$route.query.id;
+      sessionId = this.$route.query.id;
     }
-    if (this.sessionId) {
-      this.$store.dispatch('getEditorData', this.sessionId);
+    if (sessionId) {
+      this.$store.dispatch('getEditorData', sessionId);
     }
   },
 

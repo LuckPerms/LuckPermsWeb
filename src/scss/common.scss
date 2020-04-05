@@ -27,7 +27,30 @@ a {
   color: $brand-color;
 
   &:hover {
-    color: #4B4;
+    color: lighten($brand-color, 10%);
+  }
+}
+
+code, .code {
+  border: 0;
+  display: inline-block;
+  font-family: 'Source Code Pro', monospace;
+  padding: .2em .5em;
+  background: rgba(0,0,0,.2);
+  font-size: .8em;
+  border-radius: 2px;
+  line-height: 1.5;
+
+  &.true {
+    color: $brand-color;
+  }
+
+  &.false {
+    color: tomato;
+  }
+
+  &.undefined {
+    color: grey;
   }
 }
 
@@ -79,6 +102,8 @@ a {
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
 
   @include breakpoint($md) {
     flex-direction: row;
@@ -89,6 +114,14 @@ a {
     flex-direction: column;
     width: 100%;
     padding: 2rem;
+
+    h2 {
+      margin-top: 0;
+    }
+
+    p {
+      margin-top: 0;
+    }
 
     @include breakpoint($md) {
       width: 50%;

@@ -28,6 +28,10 @@
 
     <section class="resources">
       <div>
+        <h2>Why LuckPerms?</h2>
+        <p>LuckPerms is an advanced permissions implementation aiming to be a fast, reliable and flexible alternative to existing permission plugins. The project's main goals are centered around high performance and a wide feature set, filling the gaps of functionality and building upon existing features found in other plugins. LuckPerms also includes an extensive API for developers, and support for a variety of Minecraft server software & data storage options.</p>
+      </div>
+      <div>
         <a href="https://github.com/lucko/LuckPerms/wiki" class="resource">
           <span>
             <font-awesome icon="book" />
@@ -40,7 +44,7 @@
             <font-awesome :icon="['fab', 'github']" />
             GitHub
           </span>
-          <small>Browse the source code, report issues and contribute code</small>
+          <small>Browse the source code, report issues and contribute to the project</small>
         </a>
         <a href="https://discord.gg/luckperms" class="resource">
           <span>
@@ -68,39 +72,19 @@ export default {
   name: 'Home',
   data() {
     return {
-      version: null,
-      discordUserCount: null,
-      patreonCount: null,
+
     };
   },
-  created() {
-    this.getVersion();
-    this.getDiscordUserCount();
-    this.getPatreonCount();
-  },
-  methods: {
-    getVersion() {
-      axios.get('https://ci.lucko.me/job/LuckPerms/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]')
-        .then((response) => {
-          const filename = response.data.artifacts[0].fileName;
-          this.version = filename.split('-').pop().slice(0, -4);
-        })
-        .catch(console.error);
+  computed: {
+    version() {
+      return this.$store.getters.version;
     },
-    getDiscordUserCount() {
-      axios.get('https://discordapp.com/api/invites/luckperms?with_counts=true')
-        .then((response) => {
-          this.discordUserCount = response.data.approximate_member_count;
-        })
-        .catch(console.error);
+    discordUserCount () {
+      return this.$store.getters.discordUserCount;
     },
-    getPatreonCount() {
-      axios.get('https://cors-anywhere.herokuapp.com/https://www.patreon.com/api/campaigns/2298876?include=patron_count&fields[campaign]=patron_count')
-        .then((response) => {
-          this.patreonCount = response.data.data.attributes.patron_count;
-        })
-        .catch(console.error);
-    },
+    patreonCount() {
+      return this.$store.getters.patreonCount;
+    }
   },
 };
 </script>

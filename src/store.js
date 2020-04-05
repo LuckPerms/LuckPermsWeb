@@ -9,11 +9,48 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    editor: {},
+    version: null,
+    downloads: {
+      bukkit: null,
+      'bukkit-legacy': null,
+      bungee: null,
+      nukkit: null,
+      sponge: null,
+      velocity: null,
+    },
+    discordUserCount: null,
+    patreonCount: null,
+    editor: {
+      sessionId: null,
+    },
+    verbose: {
+      sessionId: null,
+      metadata: null,
+      data: null,
+    },
+    tree: {
+      sessionId: null,
+      metadata: null,
+      data: null,
+    }
   },
 
 
   getters: {
+    version: (state) => state.version,
+
+    downloads: (state) => state.downloads,
+
+    discordUserCount: (state) => state.discordUserCount,
+
+    patreonCount: (state) => state.patreonCount,
+
+    editorSessionId: (state) => state.editor.sessionId,
+
+    verbose: (state) => state.verbose,
+
+    tree: (state) => state.tree,
+
     metaData: (state) => {
       return state.editor.metaData;
     },
@@ -60,8 +97,25 @@ export default new Vuex.Store({
 
 
   mutations: {
-    initEditorData(state) {
+    setVersion: (state, version) => {
+      state.version = version;
+    },
+
+    setDownloads: (state, downloads) => {
+      state.downloads = downloads;
+    },
+
+    setDiscordUserCount: (state, discordUserCount) => {
+      state.discordUserCount = discordUserCount;
+    },
+
+    setPatreonCount: (state, patreonCount) => {
+      state.patreonCount = patreonCount;
+    },
+
+    initEditorData(state, sessionId) {
       state.editor = {
+        sessionId,
         sessions: {},
         sessionList: [],
         nodes: [],
@@ -259,12 +313,49 @@ export default new Vuex.Store({
     setBytebinKey(state, key) {
       state.editor.save.key = key;
     },
+
+    // VERBOSE
+    setVerboseData(state, data) {
+      state.verbose = data;
+    },
+
+    // TREE
+    setTreeData(state, data) {
+      state.tree = data;
+    }
   },
 
 
   actions: {
+    getAppData({ commit }) {
+      axios.get('https://ci.lucko.me/job/LuckPerms/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]')
+        .then((response) => {
+          const filename = response.data.artifacts[0].fileName;
+          commit('setVersion', filename.split('-').pop().slice(0, -4));
+          let downloads = {};
+          response.data.artifacts.forEach((artifact) => {
+            const download = artifact.relativePath.split('/')[0];
+            downloads[download] = `${response.data.url}artifact/${artifact.relativePath}`;
+          });
+          commit('setDownloads', downloads);
+        })
+        .catch(console.error);
+
+      axios.get('https://discordapp.com/api/invites/luckperms?with_counts=true')
+        .then((response) => {
+          commit('setDiscordUserCount', response.data.approximate_member_count);
+        })
+        .catch(console.error);
+
+      axios.get('https://cors-anywhere.herokuapp.com/https://www.patreon.com/api/campaigns/2298876?include=patron_count&fields[campaign]=patron_count')
+        .then((response) => {
+          commit('setPatreonCount', response.data.data.attributes.patron_count);
+        })
+        .catch(console.error);
+    },
+
     getEditorData({ commit, dispatch }, sessionId) {
-      commit('initEditorData');
+      commit('initEditorData', sessionId);
 
       if (sessionId === 'demo') {
         import('./data/editor-demo.json').then(json => {
@@ -274,7 +365,7 @@ export default new Vuex.Store({
         axios.get(`${config.bytebin_url}${sessionId}`)
           .then((response) => {
             const data = response.data;
-            dispatch('setEditorData', data);
+            dispatch('setEditorData', data, sessionId);
           })
           .catch((error) => {
             console.error(error);
@@ -451,5 +542,37 @@ export default new Vuex.Store({
         })
         .catch(console.error);
     },
+
+    getVerboseData({ state, commit }, sessionId) {
+      axios.get(`${config.bytebin_url}${sessionId}`)
+        .then((response) => {
+          const data = {
+            ...response.data,
+            sessionId
+          };
+          commit('setVerboseData', data);
+        })
+        .catch((error) => {
+          console.error(error);
+          console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+          commit('setVerboseLoadError');
+        });
+    },
+
+    getTreeData({ state, commit }, sessionId) {
+      axios.get(`${config.bytebin_url}${sessionId}`)
+        .then((response) => {
+          const data = {
+            ...response.data,
+            sessionId
+          };
+          commit('setTreeData', data);
+        })
+        .catch((error) => {
+          console.error(error);
+          console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+          commit('setTreeLoadError');
+        });
+    }
   },
 });

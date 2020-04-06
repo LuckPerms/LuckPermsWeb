@@ -26,7 +26,8 @@ import {
   faMinus,
   faSitemap,
   faPlusSquare,
-  faMinusSquare
+  faMinusSquare,
+  faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -72,6 +73,7 @@ library.add(
   faSitemap,
   faPlusSquare,
   faMinusSquare,
+  faQuestionCircle,
 
   faGithub,
   faDiscord,

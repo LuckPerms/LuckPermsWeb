@@ -1,78 +1,77 @@
 <template>
   <div id="app">
     <div id="nav">
-      <div>
-        <router-link to="/" class="logo">
-          <img alt="LuckPerms logo" src="@/assets/logo.png">
-          <span>LuckPerms</span>
-        </router-link>
-        <span v-if="version">v{{ version }}</span>
-      </div>
+      <div class="container">
+        <div>
+          <router-link to="/" class="logo">
+            <img alt="LuckPerms logo" src="@/assets/logo.png">
+            <span>LuckPerms</span>
+          </router-link>
+          <span v-if="version">v{{ version }}</span>
+        </div>
 
-      <ul>
-        <li>
-          <router-link to="/">
-            <font-awesome icon="home" />
-            Home
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/download">
-            <font-awesome icon="arrow-alt-circle-down" />
-            Download
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/wiki">
-            <font-awesome icon="book" />
-            Wiki
-          </router-link>
-        </li>
-        <li>
+        <ul>
+          <li>
+            <router-link to="/">
+              <font-awesome icon="home" />
+              Home
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/download">
+              <font-awesome icon="arrow-alt-circle-down" />
+              Download
+            </router-link>
+          </li>
+          <li>
+            <a href="https://github.com/lucko/LuckPerms/wiki" target="_blank" class="github">
+              <font-awesome icon="book" />
+              Wiki
+            </a>
+          </li>
+          <li>
           <span :class="{ 'router-link-active': isToolsRoute }">
             <font-awesome icon="tools"/>
             Tools
           </span>
-          <ul>
-            <li>
-              <router-link to="/editor">
-                <font-awesome icon="edit" fixed-width />
-                Editor
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/verbose">
-                <font-awesome icon="comment-alt" fixed-width />
-                Verbose
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/tree">
-                <font-awesome icon="sitemap" fixed-width />
-                Tree
-              </router-link>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <router-link to="/github">
-            <font-awesome  :icon="['fab', 'github']" />
-            Github
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/discord">
-            <font-awesome  :icon="['fab', 'discord']" />
-            Discord
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/patreon">
-            <font-awesome  :icon="['fab', 'patreon']" />
-            Patreon
-          </router-link>
-        </li>
-      </ul>
+            <ul>
+              <li>
+                <router-link to="/editor">
+                  <font-awesome icon="edit" fixed-width />
+                  Editor
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/verbose">
+                  <font-awesome icon="comment-alt" fixed-width />
+                  Verbose
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/tree">
+                  <font-awesome icon="sitemap" fixed-width />
+                  Tree
+                </router-link>
+              </li>
+            </ul>
+          </li>
+          <li class="external">
+            <a href="https://github.com/lucko/LuckPerms" target="_blank" class="github">
+              <font-awesome  :icon="['fab', 'github']" />
+            </a>
+          </li>
+          <li class="external">
+            <a href="https://discord.gg/luckperms" target="_blank" class="discord">
+              <font-awesome  :icon="['fab', 'discord']" />
+            </a>
+          </li>
+          <li class="external">
+            <a href="https://patreon.com/luckdev" target="_blank" class="patreon">
+              <font-awesome  :icon="['fab', 'patreon']" />
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <transition name="fade" mode="out-in">
@@ -245,18 +244,21 @@ body {
 
 #nav {
   padding: .5rem;
-  display: flex;
-  justify-content: space-between;
   z-index: 50;
   box-shadow: 0 0 0.5rem rgba(0,0,0,.25);
 
-  > div {
+  .container {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
 
-    > span {
-      opacity: .5;
-      margin-left: .5rem;
+    > div {
+      display: flex;
+      align-items: center;
+
+      > span {
+        opacity: .5;
+        margin-left: .5rem;
+      }
     }
   }
 
@@ -329,15 +331,52 @@ body {
         display: none;
         position: absolute;
         top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
         flex-direction: column;
         min-width: 100%;
-        background: $navy;
+        background: $grey;
         z-index: 100;
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
+
+        li {
+          &:hover {
+            background: rgba(255,255,255,.1);
+          }
+        }
+
+        a {
+          width: 100%;
+        }
       }
 
       &:hover {
         ul {
           display: flex;
+        }
+      }
+
+      &.external {
+        svg {
+          margin-right: 0;
+          opacity: 1;
+        }
+
+        a {
+          padding: 0 1rem;
+          font-size: 1.5rem;
+
+          &.github {
+            color: #FFF;
+          }
+
+          &.discord {
+            color: #7289DA;
+          }
+
+          &.patreon {
+            color: #f96854;
+          }
         }
       }
     }

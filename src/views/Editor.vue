@@ -1,6 +1,6 @@
 <template>
   <main class="editor">
-    <div v-if="!sessionId" class="editor-intro">
+    <div v-if="!sessionId" class="tool-intro">
       <div>
         <img alt="LuckPerms logo" src="../assets/logo.png">
         <div class="text">
@@ -19,7 +19,7 @@
     <div v-else class="editor-container">
 
       <transition name="fade" mode="out-in">
-        <div v-if="!sessions.length" class="editor-intro" key="loading">
+        <div v-if="!sessions.length" class="tool-intro" key="loading">
           <div>
             <img alt="LuckPerms logo" src="../assets/logo.png">
             <div class="text">
@@ -194,73 +194,6 @@ export default {
 main.editor {
   display: flex;
   flex-direction: column;
-
-  .editor-intro {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    > div {
-      display: flex;
-      align-items: center;
-      background: rgba(255,255,255,.2);
-      padding: 2em;
-      max-width: 550px;
-      border-radius: 2px;
-    }
-
-    img {
-      margin-right: 2em;
-    }
-
-    h1 {
-      font-size: 3em;
-      line-height: 1;
-      margin: 0;
-
-      + p {
-        font-size: 1.5em;
-        margin-top: 0;
-        margin-bottom: 1rem;
-      }
-    }
-
-    p {
-      &:first-of-type {
-        margin-top: 0;
-      }
-
-      &:last-of-type {
-        margin-bottom: 0;
-      }
-    }
-
-    ul {
-      margin: 0;
-      margin-top: 1em;
-      padding-left: 1.5em;
-
-      li {
-        margin-bottom: .25em;
-
-        &:last-child {
-          margin: 0;
-        }
-      }
-    }
-
-    svg {
-      margin-right: .5em;
-      opacity: .5;
-    }
-
-    .error {
-      margin-top: 1em;
-      color: $red;
-    }
-  }
 
   .editor-container {
     width: 100%;

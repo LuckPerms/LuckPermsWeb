@@ -1,8 +1,8 @@
 <template>
-  <main class="tree">
-    <div class="tree-viewer" v-if="!!treeData.metadata">
+  <main class="tree container">
+    <div class="tree-viewer" v-if="treeData.metadata">
       <div class="col-1">
-        <h1>Tree viewer</h1>
+        <h1>Permission Tree viewer</h1>
         <div class="meta-info">
           <table>
             <tr>
@@ -36,6 +36,20 @@
       </div>
       <div class="col-2">
         <branch v-for="branch in treeData.data" :branch-data="branch" />
+      </div>
+    </div>
+    <div v-else class="tool-intro">
+      <div>
+        <img alt="LuckPerms logo" src="../assets/logo.png">
+        <div class="text">
+          <h1>LuckPerms</h1>
+          <p>Permission Tree Viewer</p>
+          <p>To generate a permission tree, do the following in game or from the console:</p>
+          <ul>
+            <li><code>/lp tree [scope] [player]</code></li>
+            <li>Follow the URL that is generated</li>
+          </ul>
+        </div>
       </div>
     </div>
   </main>

@@ -139,7 +139,7 @@ export default {
     justify-content: center;
 
     .modal {
-      background-color: $grey;
+      background: $bg-gradient-dark;
       padding: 4rem;
       border-radius: 4px;
       width: 100%;

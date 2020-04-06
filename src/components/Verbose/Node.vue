@@ -100,7 +100,7 @@
 <style lang="scss">
   .verbose-viewer {
     .node {
-      margin: .25rem 0;
+      margin-bottom: .25rem;
 
       &:focus {
         outline: 1px $brand-color solid;

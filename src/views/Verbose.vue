@@ -1,6 +1,6 @@
 <template>
-  <main class="verbose">
-    <div class="verbose-viewer" v-if="!!verboseData.metadata">
+  <main class="verbose container">
+    <div class="verbose-viewer" v-if="verboseData.metadata">
       <div class="col-1">
         <h1>Verbose viewer</h1>
         <div class="meta-info">
@@ -74,6 +74,22 @@
             <Node :node="node" />
           </li>
         </ul>
+      </div>
+    </div>
+    <div v-else class="tool-intro">
+      <div>
+        <img alt="LuckPerms logo" src="../assets/logo.png">
+        <div class="text">
+          <h1>LuckPerms</h1>
+          <p>Verbose Viewer</p>
+          <p>To generate a verbose report, do the following in game or from the console:</p>
+          <ul>
+            <li><code>/lp verbose record [filter]</code></li>
+            <li>Perform a series of actions that require permissions</li>
+            <li><code>/lp verbose paste</code></li>
+            <li>Follow the URL that is generated</li>
+          </ul>
+        </div>
       </div>
     </div>
   </main>
@@ -186,7 +202,7 @@
         overflow: auto;
         list-style: none;
         margin: 0;
-        padding: 0;
+        padding: 1rem 1rem 0 0;
 
         > li {
           background: $grey;

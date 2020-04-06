@@ -87,7 +87,7 @@
           </template>
         </div>
       </transition>
-	  
+
 	  <transition name="fade" mode="out-in">
 	    <div v-if="page === 5" class="page page-5">
 		    <h1>What version of {{ serverType }} are you running?</h1>
@@ -132,7 +132,7 @@ export default {
       if (this.options.sponge) return 'Sponge';
       if (this.options.nukkit) return 'Nukkit';
 	    if (this.options.bungee) return 'Bungeecord / Waterfall / Travertine';
-	    if (this.options.velocity) return 'Velocity'
+	    if (this.options.velocity) return 'Velocity';
       return null;
     },
     legacy() {
@@ -240,6 +240,7 @@ export default {
             cursor: pointer;
             font-size: 1.5rem;
             text-align: center;
+            text-decoration: none;
 
             &:hover {
               background: lighten($brand-color, 10%);

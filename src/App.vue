@@ -176,10 +176,10 @@ body {
 
   > main {
     height: 100%;
-    max-height: calc(100% - 2rem);
+    max-height: calc(100% - 6rem);
 
     @include breakpoint($md) {
-      max-height: calc(100% - 2.5rem);
+      max-height: calc(100% - 6.5rem);
     }
   }
 

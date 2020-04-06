@@ -152,10 +152,10 @@ export default {
       },
     };
   },
-  props: {
-    session: Object,
-  },
   computed: {
+    session() {
+      return this.$store.getters.currentSession || null;
+    },
     knownPermissions() {
       return this.$store.state.editor.knownPermissions;
     },
@@ -231,10 +231,6 @@ export default {
 
   .add-node {
     background-color: #666670;
-    position: fixed;
-    bottom: 3em;
-    left: 20.5em;
-    right: 1em;
     box-shadow: 0 0 1em rgba(0,0,0,.2);
     z-index: 10;
 

@@ -75,24 +75,20 @@
       :selected-nodes="selectedNodes"
     />
   </transition-group>
-
-  <AddNode :session="session" />
-
 </div>
 </template>
 
 <script>
-const sortBy = require('lodash.sortby');
+import Node from './Node';
+import sortBy from 'lodash.sortby';
 
 export default {
   name: 'NodeList',
   components: {
-    Node: () => import('./Node'),
-    AddNode: () => import('./AddNode'),
+    Node
   },
   props: {
     nodes: Array,
-    session: Object,
   },
   data() {
     return {

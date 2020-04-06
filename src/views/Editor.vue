@@ -17,7 +17,6 @@
     </div>
 
     <div v-else class="editor-container">
-
       <transition name="fade" mode="out-in">
         <div v-if="!sessions.length" class="tool-intro" key="loading">
           <div>
@@ -40,7 +39,7 @@
           </div>
         </div>
 
-        <div v-else class="editor-wrap" :key="sessionId">
+        <div v-else class="editor-wrap container" :key="sessionId">
           <editor-menu :sessions="sessions" :current-session="currentSession" />
 
           <div class="editor-main">
@@ -79,11 +78,12 @@
 
             <transition name="fade" mode="out-in">
               <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.id}`">
-                <div>
+                <div class="session-container">
                   <Header :session="currentSession" :sessionData="currentSessionData" />
                   <Meta :session="currentSession" :sessionData="currentSessionData" />
-                  <NodeList :nodes="currentNodes" :session="currentSession" />
+                  <NodeList :nodes="currentNodes" />
                 </div>
+                <AddNode />
               </div>
             </transition>
 
@@ -105,6 +105,7 @@ import EditorMenu from '@/components/Editor/EditorMenu';
 import Header from '@/components/Editor/Header';
 import Meta from '@/components/Editor/Meta';
 import NodeList from '@/components/Editor/NodeList';
+import AddNode from '@/components/Editor/AddNode';
 import Modal from '@/components/Editor/Modal';
 
 export default {
@@ -115,6 +116,7 @@ export default {
     Header,
     Meta,
     NodeList,
+    AddNode,
     Modal,
   },
 
@@ -258,10 +260,11 @@ main.editor {
 
           .buttons {
             button {
-              background: transparent;
-              color: white;
+              background: $brand-color;
+              color: $navy;
               font: inherit;
-              font-size: 1em;
+              font-size: 1rem;
+              font-weight: bold;
               padding: .25rem .5rem;
               border:0;
               margin-left: .5rem;
@@ -274,14 +277,17 @@ main.editor {
           }
         }
 
-        > div {
+        .editor-session {
           max-height: 100%;
           width: 100%;
-          overflow-y: auto;
-          overflow-x: hidden;
+          overflow: hidden;
           flex: 1;
           display: flex;
           flex-direction: column;
+
+          .session-container {
+            overflow: auto;
+          }
         }
 
         .editor-no-session {

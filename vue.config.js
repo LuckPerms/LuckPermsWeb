@@ -3,7 +3,8 @@ module.exports = {
     loaderOptions: {
       sass: {
         data: `
-          @import "@/scss/_index.scss";
+          @import "@/scss/variables.scss";
+          @import "@/scss/breakpoints.scss";
         `,
       },
     },

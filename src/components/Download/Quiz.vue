@@ -24,8 +24,8 @@
             <li @click="proceed(3, 'nukkit')">Nukkit</li>
           </ul>
           <ul class="options" v-if="options.network">
-            <li @click="proceed(6, 'bungee')">Bungeecord / Waterfall / Travertine</li>
-            <li @click="proceed(6, 'velocity')">Velocity</li>
+            <li @click="proceed(5, 'bungee')">Bungeecord / Waterfall / Travertine</li>
+            <li @click="proceed(5, 'velocity')">Velocity</li>
           </ul>
         </div>
       </transition>
@@ -65,13 +65,41 @@
               <a :href="downloads.nukkit" v-if="options.nukkit" download>
                 Download
               </a>
+			        <a :href="downloads.bungee" v-if="options.bungee" download>
+			          Download
+			        </a>
+			        <a :href="downloads.velocity" v-if="options.velocity" download>
+			          Download
+			        </a>
             </div>
           </template>
+		      <template v-if="options.legacy">
+			      <img alt="LuckPerms logo" src="@/assets/logo.png">
+			      <h1>You need LuckPerms{{ legacy }} for {{ serverType }}</h1>
+			      <div class="options">
+			        <a :href="downloads['bukkit-legacy']" v-if="options.bukkit" download>
+				        Download
+			        </a>
+			      </div>
+		      </template>
           <template v-if="options.unsupported">
             <h1>Your version of {{ serverType }} is not supported, you must upgrade if you want to use LuckPerms</h1>
           </template>
         </div>
       </transition>
+	  
+	  <transition name="fade" mode="out-in">
+	    <div v-if="page === 5" class="page page-5">
+		    <h1>What version of {{ serverType }} are you running?</h1>
+        <ul class="options" v-if="options.bungee">
+          <li @click="proceed(4, 'latest')">1.8.8 or higher</li>
+          <li @click="proceed(4, 'unsupported')">1.8.7 or lower</li>
+        </ul>
+        <ul class="options" v-if="options.velocity">
+          <li @click="proceed(4, 'latest')">Velocity 1.0 or higher</li>
+        </ul>
+		  </div>
+	  </transition>
     </div>
   </div>
 </template>
@@ -103,8 +131,14 @@ export default {
       if (this.options.bukkit) return 'CraftBukkit / Spigot / Paper';
       if (this.options.sponge) return 'Sponge';
       if (this.options.nukkit) return 'Nukkit';
+	    if (this.options.bungee) return 'Bungeecord / Waterfall / Travertine';
+	    if (this.options.velocity) return 'Velocity'
       return null;
     },
+    legacy() {
+	    if (this.options.legacy) return ' Legacy';
+	    return null;
+	  }
   },
   methods: {
     proceed(page, answer) {

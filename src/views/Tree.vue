@@ -35,7 +35,9 @@
         </button>
       </div>
       <div class="col-2">
-        <branch v-for="branch in treeData.data" :branch-data="branch" />
+        <div>
+          <branch v-for="branch in treeData.data" :branch-data="branch" />
+        </div>
       </div>
     </div>
     <div v-else class="tool-intro">
@@ -73,9 +75,10 @@
 
         if (this.$route.params.id) {
           sessionId = this.$route.params.id;
-        }
-        if (this.$route.query.id) {
+        } else if (this.$route.query.id) {
           sessionId = this.$route.query.id;
+        } else if (this.$route.hash) {
+          sessionId = this.$route.hash.split('#')[1];
         }
         if (sessionId) {
           this.$store.dispatch('getTreeData', sessionId);
@@ -151,11 +154,13 @@
     > .col-2 {
       flex: 0 0 70%;
       display: flex;
-      flex-direction: column;
-      overflow: auto;
-      margin: 1rem 0;
-      padding: 1rem;
-      background: $grey;
+      padding: 1rem 1rem 1rem 0;
+
+      > div {
+        width: 100%;
+        overflow: auto;
+        padding-right: 1rem;
+      }
     }
   }
 </style>

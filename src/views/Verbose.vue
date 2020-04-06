@@ -128,9 +128,10 @@
 
         if (this.$route.params.id) {
           sessionId = this.$route.params.id;
-        }
-        if (this.$route.query.id) {
+        } else if (this.$route.query.id) {
           sessionId = this.$route.query.id;
+        } else if (this.$route.hash) {
+          sessionId = this.$route.hash.split('#')[1];
         }
         if (sessionId) {
           this.$store.dispatch('getVerboseData', sessionId);
@@ -196,13 +197,14 @@
       flex: 0 0 70%;
       display: flex;
       flex-direction: column;
+      padding: 1rem 1rem 1rem 0;
 
       ul.data {
         flex: 1;
         overflow: auto;
         list-style: none;
         margin: 0;
-        padding: 1rem 1rem 0 0;
+        padding: 0 1rem 0 0;
 
         > li {
           background: $grey;

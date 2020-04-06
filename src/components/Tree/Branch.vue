@@ -1,9 +1,11 @@
 <template>
-  <div class="branch" :class="hasChildren ? 'has-children' : 'no-children'">
-    <button @click="open = !open" v-if="hasChildren && node">
-      <font-awesome icon="caret-right" :rotation="open ? 90 : 0" />
-    </button>
-    <code v-if="node">{{ node }}</code>
+  <div class="branch" :class="!node ? 'no-node' : ''">
+    <div class="node" @click="open = !open" v-if="node">
+      <button v-if="hasChildren && node">
+        <font-awesome icon="caret-right" :rotation="open ? 90 : 0" />
+      </button>
+      <code>{{ node }}</code>
+    </div>
     <branch
       v-for="(branch, node) in branchData"
       :node="node"
@@ -49,16 +51,37 @@
 
 <style lang="scss">
   .branch {
-    padding-left: 1rem;
+    padding-left: 2rem;
 
-    &.no-children {
-      padding-left: 2em;
+    &.no-node {
+      padding-left: 0;
+
+      > .branch {
+        padding-left: 0;
+      }
+    }
+
+    .node {
+      background: $grey;
+      border-radius: 2px;
+      margin-bottom: .2rem;
+      cursor: pointer;
+
+      &:hover {
+        background: lighten($grey, 10%);
+      }
+
+      code {
+        background: transparent;
+      }
     }
 
     button {
       background: transparent;
       color: #FFF;
       border: 0;
+      padding: 0 .8rem;
+      cursor: pointer;
     }
   }
 </style>

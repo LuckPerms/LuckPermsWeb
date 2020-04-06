@@ -167,15 +167,16 @@ export default {
   },
 
   created() {
-    if (this.sessions && this.sessions.length) return;
+    if (this.sessions?.length) return;
 
     let sessionId;
 
     if (this.$route.params.id) {
       sessionId = this.$route.params.id;
-    }
-    if (this.$route.query.id) {
+    } else if (this.$route.query.id) {
       sessionId = this.$route.query.id;
+    } else if (this.$route.hash) {
+      sessionId = this.$route.hash.split('#')[1];
     }
     if (sessionId) {
       this.$store.dispatch('getEditorData', sessionId);

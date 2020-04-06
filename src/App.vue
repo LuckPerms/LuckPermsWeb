@@ -18,16 +18,16 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/download">
+			<router-link to="/download">
               <font-awesome icon="arrow-alt-circle-down" />
               Download
             </router-link>
           </li>
           <li>
-            <a href="https://github.com/lucko/LuckPerms/wiki" target="_blank" class="github">
+			<router-link to="/wiki">
               <font-awesome icon="book" />
               Wiki
-            </a>
+            </router-link>
           </li>
           <li>
           <span :class="{ 'router-link-active': isToolsRoute }">

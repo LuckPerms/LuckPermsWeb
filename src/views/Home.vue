@@ -53,7 +53,7 @@
           </div>
         </div>
         <div>
-          <a href="https://github.com/lucko/LuckPerms/wiki" class="resource">
+          <a href="/wiki" class="resource">
             <span>
               <font-awesome icon="book" />
               Wiki

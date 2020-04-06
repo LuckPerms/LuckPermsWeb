@@ -17,15 +17,19 @@ export default new Router({
       name: 'download',
       component: () => import(/* webpackChunkName: "download" */ './views/Download'),
     },
-	{
-	  path: '/wiki',
-	  redirect: '/wiki/Home',
-	},
-	{
-	  path: '/wiki/:page',
-	  name: 'wiki',
-	  component: () => import(/* webpackChunkName: "wiki" */ './views/Wiki'),
-	},
+    {
+      path: '/wiki',
+      name: 'wiki',
+      component: () => import(/* webpackChunkName: "wiki" */ './views/Wiki'),
+      redirect: '/wiki/Home',
+      children: [
+        {
+          path: ':page',
+          name: 'wiki-article',
+          component: () => import(/* webpackChunkName: "wiki" */ './components/Wiki/Article'),
+        }
+      ]
+    },
     {
       path: '/editor',
       name: 'editor-home',

@@ -4,8 +4,8 @@
       <h1>Wiki</h1>
       <sidebar />
     </aside>
-    <article>
-      <component :is="html"></component>
+    <article id="article">
+      <router-view />
     </article>
   </main>
 </template>
@@ -17,22 +17,6 @@
     components: {
       Sidebar
     },
-    data() {
-      return {
-        html: null,
-      }
-    },
-    created() {
-      const page = this.$route.params.page;
-      if (page) {
-        this.html = require('@/wiki/'+page+'.md').default;
-      } else {
-        this.$router.push('/wiki/Home');
-      }
-    },
-    mounted() {
-
-    }
   }
 </script>
 
@@ -76,10 +60,17 @@
   }
 
   article {
-    padding: 2em;
     max-width: 100%;
     height: 100%;
     overflow: auto;
+    position: relative;
+    width: 100%;
+
+    section {
+      position: absolute;
+      width: 100%;
+      padding: 2rem;
+    }
   }
 
   img {

@@ -21,39 +21,38 @@
         this.getArticle();
       }
     },
-    mounted() {
-      document.querySelectorAll('.wiki a').forEach(link => {
-        link.addEventListener('click', event => {
-          event.preventDefault();
-
-          let target;
-
-          if (event.target.tagName === 'STRONG') {
-            target = event.target.parentNode;
-          } else if (event.target.tagName === 'A') {
-            target = event.target;
-          }
-
-          if (target.href.startsWith(window.origin)) {
-            this.$router.push({
-              path: target.pathname,
-              hash: target.hash
-            }).then(test => {
-              console.log('test', test);
-            }).catch(() => {});
-          } else {
-            window.open(target.href);
-          }
-        });
-      });
-
-      if (this.$route.hash) {
-        this.scrollTo(this.$route.hash);
-      }
-    },
     methods: {
       getArticle() {
         this.article = require(`@/wiki/${this.route}.md`).default;
+
+        this.$nextTick().then(() => {
+          document.querySelectorAll('.wiki a').forEach(link => {
+            link.addEventListener('click', event => {
+              event.preventDefault();
+
+              let target;
+
+              if (['STRONG', 'CODE'].includes(event.target.tagName)) {
+                target = event.target.parentNode;
+              } else if (event.target.tagName === 'A') {
+                target = event.target;
+              }
+
+              if (target.href.startsWith(window.origin)) {
+                this.$router.push({
+                  path: target.pathname,
+                  hash: target.hash
+                }).catch(() => {});
+              } else {
+                window.open(target.href);
+              }
+            });
+          });
+
+          if (this.$route.hash) {
+            this.scrollTo(this.$route.hash);
+          }
+        });
       },
       scrollTo(hash) {
         const element = document.getElementById(hash.split('#')[1]);
@@ -63,7 +62,7 @@
       }
     },
     watch: {
-      $route(to, from) {
+      $route(to) {
         if (to.hash) {
           this.$nextTick().then(() => {
             this.scrollTo(to.hash);

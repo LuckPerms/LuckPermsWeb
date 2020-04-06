@@ -20,6 +20,11 @@
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "uuid": "^3.3.3",
+    "core-js": "^2.6.5",
+    "html-loader": "^0.5.5",
+    "markdown-it": "^9.1.0",
+    "markdown-loader": "^5.1.0",
+    "showdown": "^1.9.0",
     "v-click-outside": "^2.1.5",
     "vue": "^2.6.11",
     "vue-autofocus-directive": "^1.0.4",
@@ -42,6 +47,8 @@
     "eslint-plugin-vue": "^5.2.3",
     "node-sass": "^4.13.1",
     "sass-loader": "^7.3.1",
+    "vue-markdown-loader": "^2.4.1",
+    "vue-md-loader": "^1.1.0",
     "vue-template-compiler": "^2.6.11"
   }
 }

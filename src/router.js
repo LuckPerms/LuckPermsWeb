@@ -17,6 +17,15 @@ export default new Router({
       name: 'download',
       component: () => import(/* webpackChunkName: "download" */ './views/Download'),
     },
+	{
+	  path: '/wiki',
+	  redirect: '/wiki/Home',
+	},
+	{
+	  path: '/wiki/:page',
+	  name: 'wiki',
+	  component: () => import(/* webpackChunkName: "wiki" */ './views/Wiki'),
+	},
     {
       path: '/editor',
       name: 'editor-home',

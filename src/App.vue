@@ -24,10 +24,11 @@
             </router-link>
           </li>
           <li>
-            <a href="https://github.com/lucko/LuckPerms/wiki" target="_blank" class="github">
+			<router-link to="/wiki">
+            <!--<a href="https://github.com/lucko/LuckPerms/wiki" target="_blank" class="github">-->
               <font-awesome icon="book" />
               Wiki
-            </a>
+            </router-link>
           </li>
           <li>
           <span :class="{ 'router-link-active': isToolsRoute }">

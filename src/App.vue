@@ -190,6 +190,7 @@ body {
     font-size: .66em;
     flex: 0 0 auto;
     height: 2rem;
+    box-shadow: 0 0 1rem rgba(0,0,0,0.2);
 
     @include breakpoint($md) {
       height: 2.5rem;

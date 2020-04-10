@@ -1,5 +1,5 @@
 {
-    "host": "127.8.2.7",
+    "host": "<IP>",
     "port": 80,
     "keyLength": 4,
     "lifetimeMinutes": 10080,

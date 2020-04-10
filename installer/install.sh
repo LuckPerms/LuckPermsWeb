@@ -7,10 +7,12 @@
 # Get base dirs
 INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 REPO_DIR="$(cd "$INSTALLER_DIR/.." >/dev/null 2>&1 && pwd)"
-BASE_DIR="/opt/luckperms"
+BASE_DIR="/opt/luckpermsweb"
 # User info
 USER="$(id -un)"
 GROUP="$(id -gn)"
+# Misc
+BYTEBIN_IP="127.8.2.7"
 
 ################################################################################
 # Functions
@@ -30,8 +32,8 @@ install_bytebin() {
     pushd bytebin > /dev/null
 
     curl -sSLO https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
-    cp "$INSTALLER_DIR/files/bytebin/config.json" .
-    sudo sed -e "s@<PATH>@$(pwd)@g" -e "s/<USER>/$USER/g" -e "s/<GROUP>/$GROUP/g" "$INSTALLER_DIR/files/bytebin/bytebin.service" > /etc/systemd/system/bytebin.service
+    sed -e "s/<IP>/$BYTEBIN_IP/g" "$INSTALLER_DIR/files/bytebin/config.json" > config.json
+    sudo sed -e "s@<PATH>@$BASE_DIR/bytebin@g" -e "s/<USER>/$USER/g" -e "s/<GROUP>/$GROUP/g" "$INSTALLER_DIR/files/bytebin/bytebin.service" > /etc/systemd/system/bytebin.service
     sudo systemctl daemon-reload
     sudo systemctl enable bytebin.service
     sudo systemctl restart bytebin.service
@@ -50,6 +52,19 @@ install_webfiles() {
     mv "$REPO_DIR/dist/" webfiles
 }
 
+configure_nginx() {
+    pushd /etc/nginx > /dev/null
+
+    # Create config file
+    sudo sed -e "s@<PATH>@$BASE_DIR/webfiles@g" -e "s/<IP>/$BYTEBIN_IP/g" "$INSTALLER_DIR/files/nginx/luckpermsweb.conf" > sites-available/luckpermsweb.conf
+    sudo ln -s ../sites-available/luckpermsweb.conf sites-enabled/
+
+    # Reload nginx
+    sudo nginx -t && sudo nginx -s reload
+
+    popd > /dev/null
+}
+
 ################################################################################
 # Actual Code
 ################################################################################
@@ -57,3 +72,4 @@ install_webfiles() {
 prepare_installation_location
 install_bytebin
 install_webfiles
+configure_nginx

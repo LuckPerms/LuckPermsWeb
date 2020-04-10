@@ -24,8 +24,8 @@ install_bytebin() {
     pushd bytebin > /dev/null
     
     curl -O https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
-    cp "$BASE_DIR/bytebin/config.json" .
-    sudo sed -e "s@<PATH>@$(pwd)@" -e "s/<USER>/$USER/" -e "s/<GROUP>/$GROUP/" "$BASE_DIR/bytebin/bytebin.service" > /etc/systemd/system/bytebin.service
+    cp "$BASE_DIR/files/bytebin/config.json" .
+    sudo sed -e "s@<PATH>@$(pwd)@" -e "s/<USER>/$USER/" -e "s/<GROUP>/$GROUP/" "$BASE_DIR/files/bytebin/bytebin.service" > /etc/systemd/system/bytebin.service
     sudo systemctl daemon-reload
     sudo systemctl enable --now bytebin.service
     

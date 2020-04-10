@@ -5,7 +5,8 @@
 ################################################################################
 
 # Get base dir
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+BASE_DIR="$(cd "$INSTALLER_DIR/.." >/dev/null 2>&1 && pwd)
 USER="$(id -un)"
 GROUP="$(id -gn)"
 
@@ -24,8 +25,8 @@ install_bytebin() {
     pushd bytebin > /dev/null
 
     curl -O https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
-    cp "$BASE_DIR/files/bytebin/config.json" .
-    sudo sed -e "s@<PATH>@$(pwd)@g" -e "s/<USER>/$USER/g" -e "s/<GROUP>/$GROUP/g" "$BASE_DIR/files/bytebin/bytebin.service" > /etc/systemd/system/bytebin.service
+    cp "$INSTALLER_DIR/files/bytebin/config.json" .
+    sudo sed -e "s@<PATH>@$(pwd)@g" -e "s/<USER>/$USER/g" -e "s/<GROUP>/$GROUP/g" "$INSTALLER_DIR/files/bytebin/bytebin.service" > /etc/systemd/system/bytebin.service
     sudo systemctl daemon-reload
     sudo systemctl enable --now bytebin.service
 
@@ -41,7 +42,7 @@ install_webfiles() {
     npm install
     npm run build
     popd > /dev/null
-    
+
     cp -r "$BASE_DIR/dist/" .
 
     popd > /dev/null

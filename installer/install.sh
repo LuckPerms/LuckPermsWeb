@@ -19,9 +19,10 @@ GROUP="$(id -gn)"
 prepare_installation_location() {
     if [ ! -d "$BASE_DIR" ]; then
         sudo mkdir "$BASE_DIR" 
-        cd "$BASE_DIR"
-        sudo chown "$USER:$GROUP" .
+        sudo chown "$USER:$GROUP" "$BASE_DIR"
     fi
+
+    cd "$BASE_DIR"
 }
 
 install_bytebin() {

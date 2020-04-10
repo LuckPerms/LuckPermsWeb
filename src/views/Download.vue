@@ -20,45 +20,45 @@
         <div>
           <h2>Choose your version</h2>
           <a :href="downloads.bukkit" class="resource">
-          <span>
-            <font-awesome icon="arrow-alt-circle-down" />
-            Bukkit
-          </span>
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Bukkit
+            </span>
             <small>Versions 1.8.8 and above</small>
           </a>
           <a :href="downloads.bungee" class="resource">
-          <span>
-            <font-awesome icon="arrow-alt-circle-down" />
-            BungeeCord
-          </span>
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              BungeeCord
+            </span>
             <small>Versions 1.8.8 and above (or 1.7.10 if using Travertine)</small>
           </a>
           <a :href="downloads.sponge" class="resource">
-          <span>
-            <font-awesome icon="arrow-alt-circle-down" />
-            Sponge
-          </span>
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Sponge
+            </span>
             <small>SpongeAPI versions 5-8</small>
           </a>
           <a :href="downloads.nukkit" class="resource">
-          <span>
-            <font-awesome icon="arrow-alt-circle-down" />
-            Nukkit
-          </span>
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Nukkit
+            </span>
             <small>Version NukkitX b93 and above</small>
           </a>
           <a :href="downloads.velocity" class="resource">
-          <span>
-            <font-awesome icon="arrow-alt-circle-down" />
-            Velocity
-          </span>
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Velocity
+            </span>
             <small>Version 1.0</small>
           </a>
           <a :href="downloads['bukkit-legacy']" class="resource">
-          <span>
-            <font-awesome icon="arrow-alt-circle-down" />
-            Bukkit Legacy
-          </span>
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Bukkit Legacy
+            </span>
             <small>Version 1.7.10</small>
           </a>
         </div>
@@ -80,6 +80,17 @@
           </ul>
         </div>
       </section>
+      <section class="hero">
+        <h1>Extensions</h1>
+      </section>
+      <div class="container">
+        <div class="resources">
+          <div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor doloribus eos facilis fuga harum id illum iste, laboriosam molestiae nam necessitatibus non obcaecati quas repellat temporibus veritatis vitae, voluptates voluptatum.</p>
+          </div>
+          <div></div>
+        </div>
+      </div>
     </div>
 
     <transition name="fade">

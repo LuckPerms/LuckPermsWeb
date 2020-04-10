@@ -1,6 +1,9 @@
 <template>
   <transition name="fade">
-    <component :is="article" />
+    <div>
+      <h1>{{ title }}</h1>
+      <component :is="article" />
+    </div>
   </transition>
 </template>
 
@@ -14,6 +17,9 @@
     computed: {
       route() {
         return this.$route.params.page;
+      },
+      title() {
+        return this.route.split('-').join(' ');
       }
     },
     created() {
@@ -42,7 +48,7 @@
                 this.$router.push({
                   path: target.pathname,
                   hash: target.hash
-                }).catch(() => {});
+                }).then().catch(() => {});
               } else {
                 window.open(target.href);
               }

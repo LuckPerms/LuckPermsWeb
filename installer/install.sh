@@ -47,7 +47,7 @@ install_webfiles() {
     popd > /dev/null
 
     rm -rf webfiles
-    cp -r "$REPO_DIR/dist/" webfiles
+    mv "$REPO_DIR/dist/" webfiles
 }
 
 ################################################################################

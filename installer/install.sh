@@ -6,7 +6,7 @@
 
 # Get base dir
 INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-BASE_DIR="$(cd "$INSTALLER_DIR/.." >/dev/null 2>&1 && pwd)
+BASE_DIR="$(cd "$INSTALLER_DIR/.." >/dev/null 2>&1 && pwd)"
 USER="$(id -un)"
 GROUP="$(id -gn)"
 

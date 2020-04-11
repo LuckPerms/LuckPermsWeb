@@ -37,14 +37,14 @@ ask_for_value() {
 }
 
 get_nginx_ip() {
-    if [ $# -ne 2 ]; return 1
+    [ $# -ne 2 ] && return 1
 
     local ip_version="$1"
     local port="$2"
 
     # Try detecting the IP nginx listens to (and filter out localhosts)
     local socket="$(
-        netstat -tpln -"$ip_version" |
+        netstat -tplnW -"$ip_version" |
         grep nginx |
         grep "$port" |
         tr -s ' ' |
@@ -58,6 +58,8 @@ get_nginx_ip() {
 }
 
 get_nginx_sed_directive() {
+    [ $# -ne 2 ] && return 1
+    
     local ip_version="$1"
     local port="$2"
 

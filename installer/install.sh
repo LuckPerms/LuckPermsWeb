@@ -108,7 +108,7 @@ install_bytebin() {
     jq \
         --arg ip "$BYTEBIN_IP" \
         --arg port "$BYTEBIN_PORT" \
-        '.host = $ip, .port = $port' \
+        '.host = $ip | .port = $port' \
         "$INSTALLER_DIR/files/bytebin/config.json" > config.json
     sudo sed \
         -e "s@<PATH>@$BASE_DIR/bytebin@g" \

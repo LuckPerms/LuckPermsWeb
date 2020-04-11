@@ -21,6 +21,9 @@ EXTERNAL_ADDRESS="$(hostname -f)"
 # Functions
 ################################################################################
 
+#
+# Utils
+#
 ask_for_value() {
     local variable_name="$2"        
     local default_value="${!variable_name}"
@@ -33,6 +36,43 @@ ask_for_value() {
     declare -g "$variable_name=${answer:-$default_value}"
 }
 
+get_nginx_ip() {
+    if [ $# -ne 2 ]; return 1
+
+    local ip_version="$1"
+    local port="$2"
+
+    # Try detecting the IP nginx listens to (and filter out localhosts)
+    local socket="$(
+        netstat -tpln -"$ip_version" |
+        grep nginx |
+        grep "$port" |
+        tr -s ' ' |
+        cut -d' ' -f4 |
+        grep -v " 127." |
+        grep -v " ::1:" |
+        head -n1
+    )"
+
+    echo "${socket%:*}"
+}
+
+get_nginx_sed_directive() {
+    local ip_version="$1"
+    local port="$2"
+
+    local ip="$(get_nginx_ip "$ip_version" "$port")"
+
+    if [ -z "$ip" ]; then
+        echo "/<IPv$ip_version>/d"
+    else
+        echo "s/<IPv$ip_version>/$ip/g"
+    fi
+}
+
+#
+# Tasks
+#
 ask_questions() {
     echo "This installer will install LuckPermsWeb and all dependencies and prerequisites for you fully automatically."
     echo "However we need to know a few things first"
@@ -57,7 +97,11 @@ install_bytebin() {
     # Download and Copy the Files
     curl -sSLO https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
     jq --arg ip "$BYTEBIN_IP" '.host = $ip' "$INSTALLER_DIR/files/bytebin/config.json" > config.json
-    sudo sed -e "s@<PATH>@$BASE_DIR/bytebin@g" -e "s/<USER>/$USER/g" -e "s/<GROUP>/$GROUP/g" "$INSTALLER_DIR/files/bytebin/bytebin.service" > /etc/systemd/system/bytebin.service
+    sudo sed \
+        -e "s@<PATH>@$BASE_DIR/bytebin@g" \
+        -e "s/<USER>/$USER/g" \
+        -e "s/<GROUP>/$GROUP/g" \
+        "$INSTALLER_DIR/files/bytebin/bytebin.service" > /etc/systemd/system/bytebin.service
 
     # Enable and (Re)Start the Service
     sudo systemctl daemon-reload
@@ -88,7 +132,13 @@ configure_nginx() {
     pushd /etc/nginx > /dev/null
 
     # Create config file
-    sudo sed -e "s/<HOST_ADDRESS>/$EXTERNAL_ADDRESS/g" -e "s@<PATH>@$BASE_DIR/webfiles@g" -e "s/<IP>/$BYTEBIN_IP/g" "$INSTALLER_DIR/files/nginx/luckpermsweb.conf" > sites-available/luckpermsweb.conf
+    sudo sed \
+        -e "$(get_nginx_sed_directive 4 80)" \
+        -e "$(get_nginx_sed_directive 6 80)" \
+        -e "s/<HOST_ADDRESS>/$EXTERNAL_ADDRESS/g" \
+        -e "s@<PATH>@$BASE_DIR/webfiles@g" \
+        -e "s/<IP>/$BYTEBIN_IP/g" \
+        "$INSTALLER_DIR/files/nginx/luckpermsweb.conf" > sites-available/luckpermsweb.conf
     sudo ln -fs ../sites-available/luckpermsweb.conf sites-enabled/
 
     # Reload nginx

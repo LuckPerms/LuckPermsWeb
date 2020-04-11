@@ -13,6 +13,7 @@ USER="$(id -un)"
 GROUP="$(id -gn)"
 # Misc
 BYTEBIN_IP="127.8.2.7"
+BYTEBIN_PORT="8123"
 
 # User input variables (and their default values)
 EXTERNAL_ADDRESS="$(hostname -f)"
@@ -96,9 +97,19 @@ install_bytebin() {
     mkdir -p bytebin
     pushd bytebin > /dev/null
 
+    # Find free port
+    while ! nc -z "$BYTEBIN_IP" "$BYTEBIN_PORT"; do
+        BYTEBIN_PORT=$((BYTEBIN_PORT + 1))
+    done
+
     # Download and Copy the Files
     curl -sSLO https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
-    jq --arg ip "$BYTEBIN_IP" '.host = $ip' "$INSTALLER_DIR/files/bytebin/config.json" > config.json
+    jq \
+        --arg ip "$BYTEBIN_IP" \
+        --arg port "$BYTEBIN_PORT" \
+        '.host = $ip' \
+        '.port = $port' \
+        "$INSTALLER_DIR/files/bytebin/config.json" > config.json
     sudo sed \
         -e "s@<PATH>@$BASE_DIR/bytebin@g" \
         -e "s/<USER>/$USER/g" \
@@ -139,7 +150,7 @@ configure_nginx() {
         -e "$(get_nginx_sed_directive 6 80)" \
         -e "s/<HOST_ADDRESS>/$EXTERNAL_ADDRESS/g" \
         -e "s@<PATH>@$BASE_DIR/webfiles@g" \
-        -e "s/<IP>/$BYTEBIN_IP/g" \
+        -e "s/<BYTEBIN_HOST>/$BYTEBIN_IP:$BYTEBIN_PORT/g" \
         "$INSTALLER_DIR/files/nginx/luckpermsweb.conf" > sites-available/luckpermsweb.conf
     sudo ln -fs ../sites-available/luckpermsweb.conf sites-enabled/
 

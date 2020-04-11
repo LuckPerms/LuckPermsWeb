@@ -97,8 +97,9 @@ install_bytebin() {
     mkdir -p bytebin
     pushd bytebin > /dev/null
 
-    # Find free port
-    while ! nc -z "$BYTEBIN_IP" "$BYTEBIN_PORT"; do
+    # Find free port (stop the service if running)
+    sudo systemctl stop bytebin.service 2> /dev/null
+    while nc -z "$BYTEBIN_IP" "$BYTEBIN_PORT"; do
         BYTEBIN_PORT=$((BYTEBIN_PORT + 1))
     done
 
@@ -118,8 +119,7 @@ install_bytebin() {
 
     # Enable and (Re)Start the Service
     sudo systemctl daemon-reload
-    sudo systemctl enable bytebin.service
-    sudo systemctl restart bytebin.service
+    sudo systemctl enable --now bytebin.service
 
     popd > /dev/null
 }

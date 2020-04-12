@@ -13,6 +13,7 @@ USER="$(id -un)"
 GROUP="$(id -gn)"
 # Misc
 declare -a PACKAGES_TO_INSTALL
+export NODE_VERSION=12
 BYTEBIN_IP="127.8.2.7"
 BYTEBIN_PORT="8123"
 
@@ -96,7 +97,7 @@ check_nodejs() {
 
         echo -n "node.js installed: version $node_version - "
 
-        if [ "$node_major_version" -ne 12 ]; then
+        if [ "$node_major_version" -ne "$NODE_VERSION" ]; then
             echo "unsupported!"
         else
             echo "supported"
@@ -117,7 +118,7 @@ check_nodejs() {
         
         # Install NVM in local dir
         # https://github.com/nvm-sh/nvm
-        curl -sSLo- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | NODE_VERSION=12 PROFILE=/dev/null bash
+        curl -sSLo- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | PROFILE=/dev/null bash
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         nvm use node
     fi

@@ -96,7 +96,7 @@ check_nodejs() {
 
         echo -n "node.js installed: version $node_version - "
 
-        if [ "$node_major_version" -lt 10 ] || [ "$node_major_version" -gt 12 ]; then
+        if [ "$node_major_version" -ne 12 ]; then
             echo "unsupported!"
         else
             echo "supported"

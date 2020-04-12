@@ -83,11 +83,13 @@ check_package() {
 }
 
 check_nodejs() {
+    echo
+    echo "Checking for node.js..."
     echo -n "> "
 
     local nvm_needed=true
 
-    if which nodejs > /dev/null; then
+    if (which nodejs && which npm) > /dev/null; then
         local node_version="$(nodejs --version)"
         local node_major_version="${node_version%%.*}"
         node_major_version="${node_major_version#v}"
@@ -188,10 +190,6 @@ install_prerequisites() {
     else
         echo "All packages installed!"
     fi
-
-    echo
-    echo "Checking for node.js..."
-    echo
 
     check_nodejs
 

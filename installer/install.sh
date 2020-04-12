@@ -12,6 +12,7 @@ BASE_DIR="/opt/luckpermsweb"
 USER="$(id -un)"
 GROUP="$(id -gn)"
 # Misc
+declare -a PACKAGES_TO_INSTALL
 BYTEBIN_IP="127.8.2.7"
 BYTEBIN_PORT="8123"
 
@@ -72,6 +73,15 @@ ask_for_value() {
     declare -g "$variable_name=${answer:-$default_value}"
 }
 
+check_package() {
+    local program="$1"
+    local package="$2"
+    
+    if ! which "$program" > /dev/null; then
+        PACKAGES_TO_INSTALL+=("$package")
+    fi
+}
+
 get_nginx_ip() {
     [ $# -ne 2 ] && return 1
 
@@ -121,6 +131,28 @@ ask_questions() {
     ask_for_value "Host's public address" EXTERNAL_ADDRESS
 
     ask_sudo_pw
+}
+
+install_prerequisites() {
+    echo "Checking if all prerequisites are installed..."
+
+    local -A packages=([curl]=curl [jq]=jq [nc]=netcat [netstat]=net-tools [sed]=sed)
+    for key in "${!packages[@]}"; do
+        check_package "$key" "${packages[$key]}"
+    done
+
+    if [ "${#PACKAGES_TO_INSTALL[@]}" -ne 0 ]; then
+        echo "The following packages are missing and are now being installed: ${PACKAGES_TO_INSTALL[@]}"
+
+        sudo apt-get update
+        sudo apt-get install "${PACKAGES_TO_INSTALL[@]}"
+    else
+        echo "All packages installed!"
+    fi
+
+    echo
+    echo "Now installing LuckPermsWeb..."
+    echo
 }
 
 prepare_installation_location() {
@@ -207,6 +239,7 @@ configure_nginx() {
 ################################################################################
 
 ask_questions
+install_prerequisites
 prepare_installation_location
 install_bytebin
 install_webfiles

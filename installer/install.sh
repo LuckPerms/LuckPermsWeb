@@ -26,7 +26,7 @@ EXTERNAL_ADDRESS="$(hostname -f)"
 # Utils
 #
 ask_for_value() {
-    local variable_name="$2"        
+    local variable_name="$2"
     local default_value="${!variable_name}"
     local question="$1 [$default_value]: "
     local answer
@@ -60,7 +60,7 @@ get_nginx_ip() {
 
 get_nginx_sed_directive() {
     [ $# -ne 2 ] && return 1
-    
+
     local ip_version="$1"
     local port="$2"
 
@@ -87,10 +87,8 @@ check_sudo() {
     prompt=$(sudo -nv 2>&1)
     if [ $? -eq 0 ]; then
         # Has sudo permissions and password entered recently
-        echo "Yes"
     elif echo $prompt | grep -q '^sudo:'; then
         # Has sudo permissions but needs password
-        echo "Yes"
     else
         # No sudo permissions whatsoever
         echo "No"
@@ -99,12 +97,15 @@ check_sudo() {
 
         exit 1
     fi
+
+    echo "Yes"
+    echo
 }
 
 ask_sudo_pw() {
     # Skipping because we are root
     [ "$EUID" -eq 0 ] && return 0
-    
+
     echo "Everything ready."
     echo "Please enter your sudo password to proceed..."
     sudo -v
@@ -114,7 +115,7 @@ ask_questions() {
     echo "This installer will install LuckPermsWeb and all dependencies and prerequisites for you fully automatically."
     echo "However we need to know a few things first"
     echo
-    
+
     check_sudo
 
     ask_for_value "Host's public address" EXTERNAL_ADDRESS

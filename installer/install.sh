@@ -82,6 +82,45 @@ check_package() {
     fi
 }
 
+check_nodejs() {
+    echo -n "> "
+
+    local nvm_needed=true
+
+    if which nodejs > /dev/null; then
+        local node_version="$(nodejs --version)"
+        local node_major_version="${node_version%%.*}"
+        node_major_version="${node_major_version#v}"
+
+        echo -n "node.js installed: version $node_version - "
+
+        if [ "$node_major_version" -lt 10 ] || [ "$node_major_version" -gt 12 ]; then
+            echo "unsupported!"
+        else
+            echo "supported"
+
+            nvm_needed=false
+        fi
+    else
+       echo "node.js not installed on the system"
+    fi
+    
+    if "$nvm_needed"; then
+        echo
+        echo "No supported node.js version found. Using NVM to install a temporary version..."
+        echo
+
+        NVM_DIR="$INSTALLER_DIR/.nvm"
+        mkdir -p "$NVM_DIR"
+        
+        # Install NVM in local dir
+        # https://github.com/nvm-sh/nvm
+        curl -sSLo- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | NODE_VERSION=12 PROFILE=/dev/null bash
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        nvm use node
+    fi
+}
+
 get_nginx_ip() {
     [ $# -ne 2 ] && return 1
 
@@ -151,11 +190,18 @@ install_prerequisites() {
     fi
 
     echo
-    echo "Now installing LuckPermsWeb..."
+    echo "Checking for node.js..."
+    echo
+
+    check_nodejs
+
     echo
 }
 
 prepare_installation_location() {
+    echo "Now installing LuckPermsWeb..."
+    echo
+
     if [ ! -d "$BASE_DIR" ]; then
         sudo mkdir "$BASE_DIR" 
         sudo chown "$USER:$GROUP" "$BASE_DIR"

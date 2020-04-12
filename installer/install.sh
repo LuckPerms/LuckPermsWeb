@@ -187,7 +187,7 @@ install_prerequisites() {
         echo "The following packages are missing and are now being installed: ${PACKAGES_TO_INSTALL[@]}"
 
         sudo apt-get update
-        sudo apt-get install "${PACKAGES_TO_INSTALL[@]}"
+        sudo apt-get install -y "${PACKAGES_TO_INSTALL[@]}"
     else
         echo "All packages installed!"
     fi

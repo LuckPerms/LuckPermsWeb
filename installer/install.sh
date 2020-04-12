@@ -183,14 +183,15 @@ configure_nginx() {
     pushd /etc/nginx > /dev/null
 
     # Create config file
+    local nginx_config_file="sites-available/luckpermsweb_$EXTERNAL_ADDRESS.conf"
     sudo sed \
         -e "$(get_nginx_sed_directive 4 80)" \
         -e "$(get_nginx_sed_directive 6 80)" \
         -e "s/<HOST_ADDRESS>/$EXTERNAL_ADDRESS/g" \
         -e "s@<PATH>@$BASE_DIR/webfiles@g" \
         -e "s/<BYTEBIN_HOST>/$BYTEBIN_IP:$BYTEBIN_PORT/g" \
-        "$INSTALLER_DIR/files/nginx/luckpermsweb.conf" > sites-available/luckpermsweb.conf
-    sudo ln -fs ../sites-available/luckpermsweb.conf sites-enabled/
+        "$INSTALLER_DIR/files/nginx/luckpermsweb.conf" > "$nginx_config_file"
+    sudo ln -fs "../$nginx_config_file" sites-enabled/
 
     # Reload nginx
     sudo nginx -t && sudo nginx -s reload

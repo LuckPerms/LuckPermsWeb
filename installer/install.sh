@@ -80,7 +80,10 @@ check_sudo() {
     # We are root, no need to check.
     [ "$EUID" -eq 0 ] && return 0
 
-    prompt=$(sudo -nv 2>&1)
+    echo "First we need to make sure that you have sudo permissions"
+    echo -n "Can use sudo: "
+
+    local prompt=$(sudo -nv 2>&1)
     if [ $? -eq 0 ]; then
         # Has sudo permissions and password entered recently
         echo "Yes"

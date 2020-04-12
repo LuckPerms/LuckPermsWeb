@@ -25,6 +25,41 @@ EXTERNAL_ADDRESS="$(hostname -f)"
 #
 # Utils
 #
+check_sudo() {
+    # We are root, no need to check.
+    [ "$EUID" -eq 0 ] && return 0
+
+    echo "First we need to make sure that you have sudo permissions"
+    echo -n "Can use sudo: "
+
+    local prompt
+    prompt=$(sudo -nv 2>&1)
+    if [ $? -eq 0 ]; then
+        # Has sudo permissions and password entered recently
+    elif echo $prompt | grep -q '^sudo:'; then
+        # Has sudo permissions but needs password
+    else
+        # No sudo permissions whatsoever
+        echo "No"
+        echo
+        echo "Exiting installer. Run again with a user that has sudo permissions"
+
+        exit 1
+    fi
+
+    echo "Yes"
+    echo
+}
+
+ask_sudo_pw() {
+    # Skipping because we are root
+    [ "$EUID" -eq 0 ] && return 0
+
+    echo "Everything ready."
+    echo "Please enter your sudo password to proceed..."
+    sudo -v
+}
+
 ask_for_value() {
     local variable_name="$2"
     local default_value="${!variable_name}"
@@ -76,41 +111,6 @@ get_nginx_sed_directive() {
 #
 # Tasks
 #
-check_sudo() {
-    # We are root, no need to check.
-    [ "$EUID" -eq 0 ] && return 0
-
-    echo "First we need to make sure that you have sudo permissions"
-    echo -n "Can use sudo: "
-
-    local prompt
-    prompt=$(sudo -nv 2>&1)
-    if [ $? -eq 0 ]; then
-        # Has sudo permissions and password entered recently
-    elif echo $prompt | grep -q '^sudo:'; then
-        # Has sudo permissions but needs password
-    else
-        # No sudo permissions whatsoever
-        echo "No"
-        echo
-        echo "Exiting installer. Run again with a user that has sudo permissions"
-
-        exit 1
-    fi
-
-    echo "Yes"
-    echo
-}
-
-ask_sudo_pw() {
-    # Skipping because we are root
-    [ "$EUID" -eq 0 ] && return 0
-
-    echo "Everything ready."
-    echo "Please enter your sudo password to proceed..."
-    sudo -v
-}
-
 ask_questions() {
     echo "This installer will install LuckPermsWeb and all dependencies and prerequisites for you fully automatically."
     echo "However we need to know a few things first"

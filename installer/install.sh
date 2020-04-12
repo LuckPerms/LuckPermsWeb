@@ -78,11 +78,7 @@ get_nginx_sed_directive() {
 #
 check_sudo() {
     # We are root, no need to check.
-    # Also let's get rid of all sudo calls
-    if [ "$EUID" -eq 0 ]; then
-        alias sudo=''
-        return 0
-    fi
+    [ "$EUID" -eq 0 ] && return 0
 
     prompt=$(sudo -nv 2>&1)
     if [ $? -eq 0 ]; then

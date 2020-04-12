@@ -76,12 +76,50 @@ get_nginx_sed_directive() {
 #
 # Tasks
 #
+check_sudo() {
+    # We are root, no need to check.
+    # Also let's get rid of all sudo calls
+    if [ "$EUID" -eq 0 ]; then
+        alias sudo=''
+        return 0
+    fi
+
+    prompt=$(sudo -nv 2>&1)
+    if [ $? -eq 0 ]; then
+        # Has sudo permissions and password entered recently
+        echo "Yes"
+    elif echo $prompt | grep -q '^sudo:'; then
+        # Has sudo permissions but needs password
+        echo "Yes"
+    else
+        # No sudo permissions whatsoever
+        echo "No"
+        echo
+        echo "Exiting installer. Run again with a user that has sudo permissions"
+
+        exit 1
+    fi
+}
+
+ask_sudo_pw() {
+    # Skipping because we are root
+    [ "$EUID" -eq 0 ] && return 0
+    
+    echo "Everything ready."
+    echo "Please enter your sudo password to proceed..."
+    sudo -v
+}
+
 ask_questions() {
     echo "This installer will install LuckPermsWeb and all dependencies and prerequisites for you fully automatically."
     echo "However we need to know a few things first"
     echo
+    
+    check_sudo
 
     ask_for_value "Host's public address" EXTERNAL_ADDRESS
+
+    ask_sudo_pw
 }
 
 prepare_installation_location() {

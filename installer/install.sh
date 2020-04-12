@@ -110,7 +110,7 @@ check_nodejs() {
         echo "No supported node.js version found. Using NVM to install a temporary version..."
         echo
 
-        NVM_DIR="$INSTALLER_DIR/.nvm"
+        export NVM_DIR="$INSTALLER_DIR/.nvm"
         mkdir -p "$NVM_DIR"
         
         # Install NVM in local dir

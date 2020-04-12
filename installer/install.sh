@@ -223,7 +223,7 @@ install_bytebin() {
     curl -sSLO https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
     jq \
         --arg ip "$BYTEBIN_IP" \
-        --arg port "$BYTEBIN_PORT" \
+        --argjson port "$BYTEBIN_PORT" \
         '.host = $ip | .port = $port' \
         "$INSTALLER_DIR/files/bytebin/config.json" > config.json
     sudo sed \

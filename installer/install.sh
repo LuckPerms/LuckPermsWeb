@@ -173,6 +173,10 @@ ask_questions() {
     ask_for_value "Host's public address" EXTERNAL_ADDRESS
 
     ask_sudo_pw
+
+    # Configure global variables based on the input values
+    EDITOR_URL="http://$EXTERNAL_ADDRESS/"
+    BYTEBIN_URL="${EDITOR_URL}bytebin/"
 }
 
 install_prerequisites() {
@@ -212,6 +216,9 @@ prepare_installation_location() {
 }
 
 install_bytebin() {
+    echo "Installing bytebin..."
+    echo
+
     mkdir -p bytebin
     pushd bytebin > /dev/null
 
@@ -242,10 +249,13 @@ install_bytebin() {
 }
 
 install_webfiles() {
+    echo "Installing web files..."
+    echo
+
     pushd "$REPO_DIR" > /dev/null
 
     # Configure web application
-    jq --arg url "http://$EXTERNAL_ADDRESS/bytebin/" '.bytebin_url = $url' config.json > config.json.tmp
+    jq --arg url "$BYTEBIN_URL" '.bytebin_url = $url' config.json > config.json.tmp
     mv -f config.json.tmp config.json
 
     # Render webfiles
@@ -259,6 +269,9 @@ install_webfiles() {
 }
 
 configure_nginx() {
+    echo "Setting up nginx..."
+    echo
+
     pushd /etc/nginx > /dev/null
 
     # Create config file
@@ -279,6 +292,18 @@ configure_nginx() {
 
     # Ensure correct file ownership
     sudo chgrp -R www-data webfiles
+}
+
+print_config_instructions() {
+    echo
+    echo
+    echo "Installation done!"
+    echo
+    echo "Now all that's left to do is add these lines to the end of your LuckPerms config:"
+    echo
+    echo "# Using a selfhosted web editor instance"
+    echo "web-editor-url: '$EDITOR_URL'"
+    echo "bytebin-url: '$BYTEBIN_URL'"
 }
 
 ################################################################################

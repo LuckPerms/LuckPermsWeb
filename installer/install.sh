@@ -118,7 +118,7 @@ check_nodejs() {
         
         # Install NVM in local dir
         # https://github.com/nvm-sh/nvm
-        curl -sSLo- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | PROFILE=/dev/null bash
+        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | PROFILE=/dev/null bash
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         nvm use node
     fi
@@ -182,7 +182,7 @@ ask_questions() {
 install_prerequisites() {
     echo "Checking if all prerequisites are installed..."
 
-    local -A packages=([curl]=curl [jq]=jq [nc]=netcat [netstat]=net-tools [sed]=sed)
+    local -A packages=([jq]=jq [nc]=netcat [netstat]=net-tools [sed]=sed [wget]=wget)
     for key in "${!packages[@]}"; do
         check_package "$key" "${packages[$key]}"
     done
@@ -229,7 +229,7 @@ install_bytebin() {
     done
 
     # Download and Copy the Files
-    curl -sSLO https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
+    wget -q --show-progress --progress=dot:mega https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
     jq \
         --arg ip "$BYTEBIN_IP" \
         --argjson port "$BYTEBIN_PORT" \

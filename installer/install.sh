@@ -316,3 +316,4 @@ prepare_installation_location
 install_bytebin
 install_webfiles
 configure_nginx
+print_config_instructions

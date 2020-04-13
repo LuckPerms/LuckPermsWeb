@@ -217,7 +217,6 @@ prepare_installation_location() {
 
 install_bytebin() {
     echo "Installing bytebin..."
-    echo
 
     mkdir -p bytebin
     pushd bytebin > /dev/null
@@ -230,6 +229,7 @@ install_bytebin() {
 
     # Download and Copy the Files
     wget -q --show-progress --progress=dot:mega https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
+    echo
     jq \
         --arg ip "$BYTEBIN_IP" \
         --argjson port "$BYTEBIN_PORT" \
@@ -246,6 +246,8 @@ install_bytebin() {
     sudo systemctl enable --now bytebin.service
 
     popd > /dev/null
+
+    echo
 }
 
 install_webfiles() {

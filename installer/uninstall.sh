@@ -34,13 +34,15 @@ deconfigure_nginx() {
 
     # Reload nginx
     sudo nginx -t && sudo nginx -s reload
+
+    echo
 }
 
 uninstall_bytebin() {
     echo "Uninstalling bytebin..."
     echo
 
-    sudo systemctl disable --now bytebin.service 2> /dev/null
+    sudo systemctl disable --now bytebin.service
 }
 
 remove_files() {

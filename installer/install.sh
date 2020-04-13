@@ -191,7 +191,7 @@ ask_questions() {
 install_prerequisites() {
     echo "Checking if all prerequisites are installed..."
 
-    local -A packages=([jq]=jq [nc]=netcat [netstat]=net-tools [sed]=sed [wget]=wget)
+    local -A packages=([java]=default-jre-headless [jq]=jq [nc]=netcat [netstat]=net-tools [sed]=sed [wget]=wget)
     for key in "${!packages[@]}"; do
         check_package "$key" "${packages[$key]}"
     done

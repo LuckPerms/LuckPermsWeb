@@ -43,6 +43,8 @@ uninstall_bytebin() {
     echo
 
     sudo systemctl disable --now bytebin.service
+
+    echo
 }
 
 remove_files() {

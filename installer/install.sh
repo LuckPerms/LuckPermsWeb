@@ -74,11 +74,17 @@ ask_for_value() {
     declare -g "$variable_name=${answer:-$default_value}"
 }
 
+command_exists() {
+    local program="$1"
+
+    which "$program" > /dev/null
+}
+
 check_package() {
     local program="$1"
     local package="$2"
     
-    if ! which "$program" > /dev/null; then
+    if ! command_exists "$program"; then
         PACKAGES_TO_INSTALL+=("$package")
     fi
 }
@@ -90,7 +96,7 @@ check_nodejs() {
 
     local nvm_needed=true
 
-    if (which nodejs && which npm) > /dev/null; then
+    if command_exists nodejs && command_exists npm; then
         local node_version="$(nodejs --version)"
         local node_major_version="${node_version%%.*}"
         node_major_version="${node_major_version#v}"

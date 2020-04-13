@@ -167,7 +167,7 @@ get_nginx_sed_directive() {
 }
 
 # Stop execution if we are uninstalling because all we want are variables and utils
-[ -n "$UNINSTALL" ] && exit 0
+[ -n "$UNINSTALL" ] && return 0
 
 #
 # Tasks

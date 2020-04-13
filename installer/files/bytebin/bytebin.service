@@ -5,7 +5,7 @@ After=network-online.target NetworkManager-wait-online.service
 [Service]
 Type=simple
 WorkingDirectory=<PATH>
-ExecStart=java -jar bytebin.jar
+ExecStart=/usr/bin/env java -jar bytebin.jar
 User=<USER>
 Group=<GROUP>
 

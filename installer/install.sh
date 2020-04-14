@@ -206,8 +206,8 @@ create_nginx_file() {
         -e "$(get_nginx_sed_directive 4 "$HTTP_PORT")" \
         -e "$(get_nginx_sed_directive 6 "$HTTP_PORT")" \
         -e "s/<HOST_ADDRESS>/$EXTERNAL_ADDRESS/g" \
-        -e "s/<CERT_PATH>/$HTTPS_CERT_PATH/g" \
-        -e "s/<KEY_PATH>/$HTTPS_KEY_PATH/g" \
+        -e "s@<CERT_PATH>@$HTTPS_CERT_PATH@g" \
+        -e "s@<KEY_PATH>@$HTTPS_KEY_PATH@g" \
         -e "s@<PATH>@$BASE_DIR/webfiles@g" \
         -e "s/<BYTEBIN_HOST>/$BYTEBIN_IP:$BYTEBIN_PORT/g" \
         "$@"

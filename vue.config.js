@@ -23,7 +23,7 @@ module.exports = {
         linkify: true,
         use: [
           require('markdown-it-anchor'),
-		  require('markdown-it-emoji')
+          require('markdown-it-emoji')
         ]
       })
   },

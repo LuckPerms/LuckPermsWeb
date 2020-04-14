@@ -80,45 +80,45 @@
           </ul>
         </div>
       </section>
-      <section class="hero">
-        <h1>Extensions</h1>
-      </section>
-      <div class="container">
-        <div class="resources">
-          <div style="width: auto;">
-            <table>
-              <tr>
-                <td>
-                  <a :href="extensions['extension-legacy-api']" class="resource">
-                    <span>
-                      <font-awesome icon="arrow-alt-circle-down" />
-                      Legacy API Extension
-                    </span>
-                    <small>LuckPerms 5.0 and above</small>
-                  </a>
-                </td>
-                <td>
-                  <p>Allows some common API methods to be used by plugins that haven't upgraded to v5 version of the api yet.</p>
-                  <p>Check out the <a href="/wiki/Extensions#extension-legacy-api">wiki section</a> for more information!</p>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <a :href="extensions['extension-default-assignments']" class="resource">
-                    <span>
-                      <font-awesome icon="arrow-alt-circle-down" />
-                      Default Assignments Extension
-                    </span>
-                    <small>LuckPerms 5.0 and above</small>
-                  </a>
-                </td>
-                <td>
-                  <p>Allows for other ways for making <a href="/wiki/Default-Groups">Default Groups</a> if the workarounds are not possible.</p>
-                  <p>Check out the <a href="/wiki/Extensions#extension-default-assignments">wiki section</a> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about default groups!</p>
-                </td>
-              </tr>
-            </table>
-          </div>
+    </div>
+    <section class="hero">
+      <h1>Extensions</h1>
+    </section>
+    <div class="container">
+      <div class="resources">
+        <div style="width: auto;">
+          <table>
+            <tr>
+              <td>
+                <a :href="extensions['extension-legacy-api']" class="resource">
+                  <span>
+                    <font-awesome icon="arrow-alt-circle-down" />
+                    Legacy API Extension
+                  </span>
+                  <small>LuckPerms 5.0 and above</small>
+                </a>
+              </td>
+              <td>
+                <p>Allows some common API methods to be used by plugins that haven't upgraded to v5 version of the api yet.</p>
+                <p>Check out the <a href="/wiki/Extensions#extension-legacy-api">wiki section</a> for more information!</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a :href="extensions['extension-default-assignments']" class="resource">
+                  <span>
+                    <font-awesome icon="arrow-alt-circle-down" />
+                    Default Assignments Extension
+                  </span>
+                  <small>LuckPerms 5.0 and above</small>
+                </a>
+              </td>
+              <td>
+                <p>Allows for other ways for making <a href="/wiki/Default-Groups">Default Groups</a> if the workarounds are not possible.</p>
+                <p>Check out the <a href="/wiki/Extensions#extension-default-assignments">wiki section</a> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about default groups!</p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>

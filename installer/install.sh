@@ -239,7 +239,7 @@ ask_questions() {
     
     if "$USE_HTTPS"; then
         HTTPS_CERT_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
-        HTTPS_KEY_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
+        HTTPS_KEY_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/privkey.pem"
     fi
 }
 

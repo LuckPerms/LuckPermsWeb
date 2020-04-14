@@ -86,9 +86,21 @@
       <div class="container">
         <div class="resources">
           <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor doloribus eos facilis fuga harum id illum iste, laboriosam molestiae nam necessitatibus non obcaecati quas repellat temporibus veritatis vitae, voluptates voluptatum.</p>
+            <a :href="extensions['extension-legacy-api']" class="resource">
+              <span>
+                <font-awesome icon="arrow-alt-circle-down" />
+                Legacy API Extension
+              </span>
+              <small>LuckPerms 5.0 and above</small>
+            </a>
+            <a :href="extensions['extension-default-assignments']" class="resource">
+              <span>
+                <font-awesome icon="arrow-alt-circle-down" />
+                Default Assignments Extension
+              </span>
+              <small>LuckPerms 5.0 and above</small>
+            </a>
           </div>
-          <div></div>
         </div>
       </div>
     </div>
@@ -113,6 +125,7 @@ export default {
     };
   },
   computed: {
+    extensions() { return this.$store.getters.extensions },
     downloads() { return this.$store.getters.downloads },
     version() { return this.$store.getters.version }
   },

@@ -18,6 +18,10 @@ export default new Vuex.Store({
       sponge: null,
       velocity: null,
     },
+    extensions: {
+      'extension-legacy-api': null,
+      'extension-default-assignments': null,
+    },
     discordUserCount: null,
     patreonCount: null,
     editor: {
@@ -40,6 +44,8 @@ export default new Vuex.Store({
     version: (state) => state.version,
 
     downloads: (state) => state.downloads,
+    
+    extensions: (state) => state.extensions,
 
     discordUserCount: (state) => state.discordUserCount,
 
@@ -103,6 +109,10 @@ export default new Vuex.Store({
 
     setDownloads: (state, downloads) => {
       state.downloads = downloads;
+    },
+    
+    addExtension: (state, { extension, extensionName }) => {
+      state.extensions[extensionName] = extension;
     },
 
     setDiscordUserCount: (state, discordUserCount) => {
@@ -335,11 +345,26 @@ export default new Vuex.Store({
           let downloads = {};
           response.data.artifacts.forEach((artifact) => {
             const download = artifact.relativePath.split('/')[0];
+            
             downloads[download] = `${response.data.url}artifact/${artifact.relativePath}`;
           });
           commit('setDownloads', downloads);
         })
         .catch(console.error);
+        
+      const extensions = [ 'extension-legacy-api', 'extension-default-assignments' ];
+      extensions.forEach(( extensionId ) => {
+        axios.get(`https://ci.lucko.me/job/${extensionId}/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]`)
+          .then((response) => {
+            response.data.artifacts.forEach((artifact) => {
+              const extension = `${response.data.url}artifact/${artifact.relativePath}`;
+              const extensionName = `${response.data.url.split('/')[4]}`;
+            
+              commit('addExtension', { extension, extensionName });
+            });
+          })
+          .catch(console.error);
+      });
 
       axios.get('https://discordapp.com/api/invites/luckperms?with_counts=true')
         .then((response) => {

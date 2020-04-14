@@ -149,6 +149,17 @@ check_nodejs() {
     fi
 }
 
+find_free_port() {
+    local ip="$1"
+    local port="$2"
+
+    while nc -z "$ip" "$port"; do
+        port=$((port + 1))
+    done
+
+    echo "$port"
+}
+
 get_nginx_ip() {
     [ $# -ne 2 ] && return 1
 
@@ -177,12 +188,29 @@ get_nginx_sed_directive() {
     local port="$2"
 
     local ip="$(get_nginx_ip "$ip_version" "$port")"
+    
+    if [ -z "$ip" ] && [ "$port" == 443 ]; then
+        # If we can't find a HTTPS port, we look for a HTTP port
+        ip="$(get_nginx_ip "$ip_version" 80)"
+    fi
 
     if [ -z "$ip" ]; then
         echo "/<IPv$ip_version>/d"
     else
         echo "s/<IPv$ip_version>/$ip/g"
     fi
+}
+
+create_nginx_file() {
+    sed \
+        -e "$(get_nginx_sed_directive 4 "$HTTP_PORT")" \
+        -e "$(get_nginx_sed_directive 6 "$HTTP_PORT")" \
+        -e "s/<HOST_ADDRESS>/$EXTERNAL_ADDRESS/g" \
+        -e "s/<CERT_PATH>/$HTTPS_CERT_PATH/g" \
+        -e "s/<KEY_PATH>/$HTTPS_KEY_PATH/g" \
+        -e "s@<PATH>@$BASE_DIR/webfiles@g" \
+        -e "s/<BYTEBIN_HOST>/$BYTEBIN_IP:$BYTEBIN_PORT/g" \
+        "$@"
 }
 
 # Stop execution if we are uninstalling because all we want are variables and utils
@@ -264,9 +292,7 @@ install_bytebin() {
 
     # Find free port (stop the service if running)
     sudo systemctl stop bytebin.service 2> /dev/null
-    while nc -z "$BYTEBIN_IP" "$BYTEBIN_PORT"; do
-        BYTEBIN_PORT=$((BYTEBIN_PORT + 1))
-    done
+    BYTEBIN_PORT="$(find_free_port "$BYTEBIN_IP" "$BYTEBIN_PORT")"
 
     # Download and Copy the Files
     wget -q --show-progress --progress=dot:mega https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
@@ -276,11 +302,11 @@ install_bytebin() {
         --argjson port "$BYTEBIN_PORT" \
         '.host = $ip | .port = $port' \
         "$INSTALLER_DIR/files/bytebin/config.json" > config.json
-    sudo sed \
+    sed \
         -e "s@<PATH>@$BASE_DIR/bytebin@g" \
         -e "s/<USER>/$USER/g" \
         -e "s/<GROUP>/$GROUP/g" \
-        "$INSTALLER_DIR/files/bytebin/bytebin.service" > /etc/systemd/system/bytebin.service
+        "$INSTALLER_DIR/files/bytebin/bytebin.service" | sudo dd of=/etc/systemd/system/bytebin.service
 
     # Enable and (Re)Start the Service
     sudo systemctl daemon-reload
@@ -311,6 +337,30 @@ install_webfiles() {
     mv "$REPO_DIR/dist/" webfiles
 }
 
+generate_https_cert() {
+    # We don't need to generate the HTTPS certificate if it already exists
+    [ -f "$HTTPS_CERT_PATH" ] && [ -f "$HTTPS_KEY_PATH" ] && return 0
+
+    echo "Generating HTTPS certificate"
+    echo
+
+    local nginx_config_file="/etc/nginx/sites-enabled/certbot_helper_$RANDOM.conf"
+    local certdir="$BASE_DIR/webfiles"
+    
+    # Configure nginx for the cerbot
+    create_nginx_file \
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_header_http.conf" \
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer_certbot.conf" | sudo dd of="$nginx_config_file"
+
+    ## Reload nginx
+    sudo nginx -t && sudo nginx -s reload
+
+    # Get certificate
+    sudo certbot certonly --webroot --rsa-key-size 4096 -w "$certdir" -d "$EXTERNAL_ADDRESS"
+
+    sudo rm -rf "$nginx_config_file" "$certdir/.well-known" 
+}
+
 configure_nginx() {
     echo "Setting up nginx..."
     echo
@@ -319,13 +369,9 @@ configure_nginx() {
 
     # Create config file
     local nginx_config_file="sites-available/luckpermsweb_$EXTERNAL_ADDRESS.conf"
-    sudo sed \
-        -e "$(get_nginx_sed_directive 4 "$HTTP_PORT")" \
-        -e "$(get_nginx_sed_directive 6 "$HTTP_PORT")" \
-        -e "s/<HOST_ADDRESS>/$EXTERNAL_ADDRESS/g" \
-        -e "s@<PATH>@$BASE_DIR/webfiles@g" \
-        -e "s/<BYTEBIN_HOST>/$BYTEBIN_IP:$BYTEBIN_PORT/g" \
-        "$INSTALLER_DIR/files/nginx/luckpermsweb_header_$PROTOCOL.conf" "$INSTALLER_DIR/files/nginx/luckpermsweb_footer.conf" > "$nginx_config_file"
+    create_nginx_file \
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_header_$PROTOCOL.conf" \
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer.conf" | sudo dd of="$nginx_config_file"
     sudo ln -fs "../$nginx_config_file" sites-enabled/
 
     # Reload nginx
@@ -358,5 +404,6 @@ install_prerequisites
 prepare_installation_location
 install_bytebin
 install_webfiles
+"$USE_HTTPS" && generate_https_cert
 configure_nginx
 print_config_instructions

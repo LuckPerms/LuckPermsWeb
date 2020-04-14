@@ -306,7 +306,7 @@ install_bytebin() {
         -e "s@<PATH>@$BASE_DIR/bytebin@g" \
         -e "s/<USER>/$USER/g" \
         -e "s/<GROUP>/$GROUP/g" \
-        "$INSTALLER_DIR/files/bytebin/bytebin.service" | sudo dd of=/etc/systemd/system/bytebin.service
+        "$INSTALLER_DIR/files/bytebin/bytebin.service" | sudo dd of=/etc/systemd/system/bytebin.service 2> /dev/null
 
     # Enable and (Re)Start the Service
     sudo systemctl daemon-reload
@@ -350,7 +350,7 @@ generate_https_cert() {
     # Configure nginx for the cerbot
     create_nginx_file \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_header_http.conf" \
-        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer_certbot.conf" | sudo dd of="$nginx_config_file"
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer_certbot.conf" | sudo dd of="$nginx_config_file" 2> /dev/null
 
     ## Reload nginx
     sudo nginx -t && sudo nginx -s reload
@@ -371,7 +371,7 @@ configure_nginx() {
     local nginx_config_file="sites-available/luckpermsweb_$EXTERNAL_ADDRESS.conf"
     create_nginx_file \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_header_$PROTOCOL.conf" \
-        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer.conf" | sudo dd of="$nginx_config_file"
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer.conf" | sudo dd of="$nginx_config_file" 2> /dev/null
     sudo ln -fs "../$nginx_config_file" sites-enabled/
 
     # Reload nginx

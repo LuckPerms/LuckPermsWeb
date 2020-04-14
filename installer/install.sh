@@ -241,6 +241,8 @@ ask_questions() {
         HTTPS_CERT_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
         HTTPS_KEY_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/privkey.pem"
     fi
+
+    echo
 }
 
 install_prerequisites() {

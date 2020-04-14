@@ -19,6 +19,7 @@ BYTEBIN_PORT="8123"
 
 # User input variables (and their default values)
 EXTERNAL_ADDRESS="$(hostname -f)"
+USE_HTTPS=true
 
 ################################################################################
 # Functions
@@ -72,6 +73,24 @@ ask_for_value() {
     echo
 
     declare -g "$variable_name=${answer:-$default_value}"
+}
+
+ask_yes_no() {
+    local variable_name="$2"
+    local choice_indicator="$(([ -n "${!variable_name}" ] && "${!variable_name}") && echo "Y/n" || echo "y/N")"
+    local question="$1 [$choice_indicator]: "
+    local answer
+
+    read -p "$question" answer
+    while [ -n "$answer" ] && [ "$answer" != "Y" ] && [ "$answer" != "y" ] && [ "$answer" != "N" ] && [ "$answer" != "n" ]; do
+        read -p "Please answer with \"y\" or \"n\" [$choice_indicator]: " answer
+    done
+
+    if [ "$answer" == "Y" ] || [ "$answer" == "y" ]; then
+         declare -g "$variable_name=true"
+    elif [ "$answer" == "N" ] || [ "$answer" == "n" ] || [ -z "${!variable_name}" ]; then
+         declare -g "$variable_name=false"
+    fi
 }
 
 command_exists() {
@@ -180,18 +199,31 @@ ask_questions() {
     check_sudo
 
     ask_for_value "Host's public address" EXTERNAL_ADDRESS
+    ask_yes_no "Use HTTPS" USE_HTTPS
 
     ask_sudo_pw
 
     # Configure global variables based on the input values
-    EDITOR_URL="http://$EXTERNAL_ADDRESS/"
+    PROTOCOL="$("$USE_HTTPS" && echo "https" || echo "http")"
+    HTTP_PORT="$("$USE_HTTPS" && echo "443" || echo "80")"
+    EDITOR_URL="$PROTOCOL://$EXTERNAL_ADDRESS/"
     BYTEBIN_URL="${EDITOR_URL}bytebin/"
+    
+    if "$USE_HTTPS"; then
+        HTTPS_CERT_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
+        HTTPS_KEY_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
+    fi
 }
 
 install_prerequisites() {
     echo "Checking if all prerequisites are installed..."
 
     local -A packages=([java]=default-jre-headless [jq]=jq [nc]=netcat [netstat]=net-tools [sed]=sed [wget]=wget)
+
+    # Conditional packages
+    "$USE_HTTPS" && packages+=([certbot]=letsencrypt)
+
+    #
     for key in "${!packages[@]}"; do
         check_package "$key" "${packages[$key]}"
     done
@@ -288,12 +320,12 @@ configure_nginx() {
     # Create config file
     local nginx_config_file="sites-available/luckpermsweb_$EXTERNAL_ADDRESS.conf"
     sudo sed \
-        -e "$(get_nginx_sed_directive 4 80)" \
-        -e "$(get_nginx_sed_directive 6 80)" \
+        -e "$(get_nginx_sed_directive 4 "$HTTP_PORT")" \
+        -e "$(get_nginx_sed_directive 6 "$HTTP_PORT")" \
         -e "s/<HOST_ADDRESS>/$EXTERNAL_ADDRESS/g" \
         -e "s@<PATH>@$BASE_DIR/webfiles@g" \
         -e "s/<BYTEBIN_HOST>/$BYTEBIN_IP:$BYTEBIN_PORT/g" \
-        "$INSTALLER_DIR/files/nginx/luckpermsweb.conf" > "$nginx_config_file"
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_header_$PROTOCOL.conf" "$INSTALLER_DIR/files/nginx/luckpermsweb_footer.conf" > "$nginx_config_file"
     sudo ln -fs "../$nginx_config_file" sites-enabled/
 
     # Reload nginx

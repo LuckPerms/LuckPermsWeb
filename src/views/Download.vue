@@ -74,7 +74,7 @@
           <h2>Having trouble installing?</h2>
           <ul>
             <li>Make sure to check your console for any errors - especially during start up</li>
-            <li>Check the <a href="https://github.com/lucko/LuckPerms/wiki" target="_blank">wiki</a> to see if you missed any important steps during setup</li>
+            <li>Check the <a href="/wiki" target="_blank">wiki</a> to see if you missed any important steps during setup</li>
             <li>Delete the <code>libs</code> folder and restart the server to let it regenerate, sometimes this may fix the problem</li>
             <li>If all else fails, join our <a href="https://discord.gg/luckperms" target="_blank">Discord</a> to get some support</li>
           </ul>

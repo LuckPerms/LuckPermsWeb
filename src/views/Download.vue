@@ -84,8 +84,14 @@
     <section class="hero">
       <h1>Extensions</h1>
     </section>
+    <div class="container" style="margin-bottom: -80px;">
+      <div class="resources">
+        <div style="width: 100%;">
+          <p style="text-align: center; font-size: 24px;">Extensions can modify the behaviour of LuckPerms, you can read more about them <a href="/wiki/Extensions">on the wiki</a></p>
+        </div>
+      </div>
+    </div>
     <div class="container">
-      <p style="text-align: center; font-size: 24px;">Extensions can modify the behaviour of LuckPerms, you can read more about them <a href="/wiki/Extensions">on the wiki</a></p>
       <div class="resources">
         <div style="width: auto; padding-top: 0;">
           <table>

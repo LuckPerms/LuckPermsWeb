@@ -27,6 +27,11 @@
 	  background-color: $grey;
     height: 100%;
     flex-wrap: wrap;
+    
+    .header-anchor {
+      text-decoration: none;
+      display: none;
+    }
   }
 
   aside {
@@ -63,10 +68,6 @@
       ul {
         padding-left: 1rem;
       }
-    }
-    
-    .header-anchor {
-      display: none;
     }
   }
 
@@ -165,11 +166,6 @@
         &:not([src$="png"]) {
           box-shadow: 0 0 1rem rgba(0,0,0,.2);
         }
-      }
-      
-      .header-anchor {
-        text-decoration: none;
-        display: none;
       }
       
       h2:hover > .header-anchor,

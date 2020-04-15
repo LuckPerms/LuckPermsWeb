@@ -22,7 +22,10 @@ module.exports = {
         raw: true,
         linkify: true,
         use: [
-          require('markdown-it-anchor')
+          [require('markdown-it-anchor'), {
+            "permalink": true,
+            "permalinkSymbol": "🔗"
+          }]
         ]
       })
   },

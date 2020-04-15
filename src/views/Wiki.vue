@@ -64,6 +64,10 @@
         padding-left: 1rem;
       }
     }
+    
+    .header-anchor {
+      display: none;
+    }
   }
 
   #article {
@@ -156,15 +160,23 @@
       }
 
       img {
+        max-width: 100%;
+        
         &:not([src$="png"]) {
           box-shadow: 0 0 1rem rgba(0,0,0,.2);
         }
       }
+      
+      .header-anchor {
+        text-decoration: none;
+        display: none;
+      }
+      
+      h2:hover > .header-anchor,
+      h3:hover > .header-anchor {
+        display: initial;
+      }
     }
-  }
-
-  img {
-	max-width: 100%;
   }
 
   :target {

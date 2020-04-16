@@ -51,7 +51,7 @@ remove_files() {
     echo "Removing remaining files..."
     echo
 
-    rm -rf "$BASE_DIR"
+    sudo rm -rf "$BASE_DIR"
 }
 
 print_end_message() {

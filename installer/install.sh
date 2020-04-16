@@ -147,6 +147,8 @@ check_nodejs() {
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         nvm use node
     fi
+
+    echo
 }
 
 find_free_port() {
@@ -231,7 +233,10 @@ ask_questions() {
 
     ask_sudo_pw
 
-    # Configure global variables based on the input values
+    echo
+}
+
+calculate_variables() {
     PROTOCOL="$("$USE_HTTPS" && echo "https" || echo "http")"
     HTTP_PORT="$("$USE_HTTPS" && echo "443" || echo "80")"
     EDITOR_URL="$PROTOCOL://$EXTERNAL_ADDRESS/"
@@ -241,8 +246,6 @@ ask_questions() {
         HTTPS_CERT_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
         HTTPS_KEY_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/privkey.pem"
     fi
-
-    echo
 }
 
 install_prerequisites() {
@@ -253,7 +256,7 @@ install_prerequisites() {
     # Conditional packages
     "$USE_HTTPS" && packages+=([certbot]=letsencrypt)
 
-    #
+    # Check that packages exist
     for key in "${!packages[@]}"; do
         check_package "$key" "${packages[$key]}"
     done
@@ -402,6 +405,7 @@ print_config_instructions() {
 ################################################################################
 
 ask_questions
+calculate_variables
 install_prerequisites
 prepare_installation_location
 install_bytebin

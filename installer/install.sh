@@ -18,8 +18,10 @@ BYTEBIN_IP="127.8.2.7"
 BYTEBIN_PORT="8123"
 
 # User input variables (and their default values)
+EXPERT_MODE=false
 EXTERNAL_ADDRESS="$(hostname -f)"
 USE_HTTPS=true
+USE_LETSENCRYPT=true
 
 ################################################################################
 # Functions
@@ -54,6 +56,10 @@ check_sudo() {
     echo
 }
 
+sudo_active() {
+    sudo -nv 2>&1
+}
+
 ask_sudo_pw() {
     # Skipping because we are root
     [ "$EUID" -eq 0 ] && return 0
@@ -85,6 +91,7 @@ ask_yes_no() {
     while [ -n "$answer" ] && [ "$answer" != "Y" ] && [ "$answer" != "y" ] && [ "$answer" != "N" ] && [ "$answer" != "n" ]; do
         read -p "Please answer with \"y\" or \"n\" [$choice_indicator]: " answer
     done
+    echo
 
     if [ "$answer" == "Y" ] || [ "$answer" == "y" ]; then
          declare -g "$variable_name=true"
@@ -99,10 +106,46 @@ command_exists() {
     which "$program" > /dev/null
 }
 
+get_nginx_ip() {
+    command_exists netstat || (echo "autodetect"; return 0)
+
+    local ip_version="$1"
+
+    if [ $# -eq 1 ]; then
+        local ip
+
+        "$USE_HTTPS" && ip="$(get_nginx_ip "$ip_version" 443)"
+        [ -z "$ip" ] && ip="$(get_nginx_ip "$ip_version" 80)"
+        [ -z "$ip" ] && ip="autodetect"
+
+        echo "$ip"
+
+        return 0
+    elif [ $# -ne 2 ]; then
+        return 1
+    fi
+
+    local port="$2"
+
+    # Try detecting the IP nginx listens to (and filter out localhosts)
+    local socket="$(
+        exec $(sudo_active && echo sudo) netstat -tplnW -"$ip_version" 2> /dev/null |
+        grep nginx |
+        grep "$port" |
+        tr -s ' ' |
+        cut -d' ' -f4 |
+        grep -v " 127." |
+        grep -v " ::1:" |
+        head -n1
+    )"
+
+    echo "${socket%:*}"
+}
+
 check_package() {
     local program="$1"
     local package="$2"
-    
+
     if ! command_exists "$program"; then
         PACKAGES_TO_INSTALL+=("$package")
     fi
@@ -132,7 +175,7 @@ check_nodejs() {
     else
        echo "node.js not installed on the system"
     fi
-    
+
     if "$nvm_needed"; then
         echo
         echo "No supported node.js version found. Using NVM to install a temporary version..."
@@ -140,7 +183,7 @@ check_nodejs() {
 
         export NVM_DIR="$INSTALLER_DIR/.nvm"
         mkdir -p "$NVM_DIR"
-        
+
         # Install NVM in local dir
         # https://github.com/nvm-sh/nvm
         wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | PROFILE=/dev/null bash
@@ -162,41 +205,16 @@ find_free_port() {
     echo "$port"
 }
 
-get_nginx_ip() {
-    [ $# -ne 2 ] && return 1
-
-    local ip_version="$1"
-    local port="$2"
-
-    # Try detecting the IP nginx listens to (and filter out localhosts)
-    local socket="$(
-        netstat -tplnW -"$ip_version" |
-        grep nginx |
-        grep "$port" |
-        tr -s ' ' |
-        cut -d' ' -f4 |
-        grep -v " 127." |
-        grep -v " ::1:" |
-        head -n1
-    )"
-
-    echo "${socket%:*}"
-}
-
 get_nginx_sed_directive() {
-    [ $# -ne 2 ] && return 1
+    [ $# -ne 1 ] && return 1
 
     local ip_version="$1"
-    local port="$2"
+    local ip_variable_name="LISTEN_IPV$ip_version"
+    local ip="${!ip_variable_name}"
 
-    local ip="$(get_nginx_ip "$ip_version" "$port")"
-    
-    if [ -z "$ip" ] && [ "$port" == 443 ]; then
-        # If we can't find a HTTPS port, we look for a HTTP port
-        ip="$(get_nginx_ip "$ip_version" 80)"
-    fi
+    [ "$ip" == "autodetect" ] && ip="$(get_nginx_ip "$ip_version")"
 
-    if [ -z "$ip" ]; then
+    if [ -z "$ip" ] || [ "$ip" == "none" ]; then
         echo "/<IPv$ip_version>/d"
     else
         echo "s/<IPv$ip_version>/$ip/g"
@@ -205,8 +223,8 @@ get_nginx_sed_directive() {
 
 create_nginx_file() {
     sed \
-        -e "$(get_nginx_sed_directive 4 "$HTTP_PORT")" \
-        -e "$(get_nginx_sed_directive 6 "$HTTP_PORT")" \
+        -e "$NGINX_LISTEN_DIRECTIVE_IPV4" \
+        -e "$NGINX_LISTEN_DIRECTIVE_IPV6" \
         -e "s/<HOST_ADDRESS>/$EXTERNAL_ADDRESS/g" \
         -e "s@<CERT_PATH>@$HTTPS_CERT_PATH@g" \
         -e "s@<KEY_PATH>@$HTTPS_KEY_PATH@g" \
@@ -228,24 +246,41 @@ ask_questions() {
 
     check_sudo
 
+    ask_yes_no "Expert Mode" EXPERT_MODE
+
     ask_for_value "Host's public address" EXTERNAL_ADDRESS
     ask_yes_no "Use HTTPS" USE_HTTPS
+
+    LISTEN_IPV4="$(get_nginx_ip 4)"
+    LISTEN_IPV6="$(get_nginx_ip 6)"
+
+    if "$EXPERT_MODE"; then
+        if "$USE_HTTPS"; then
+            ask_yes_no "Automatically generate HTTPS certificates using Let's Encrypt" USE_LETSENCRYPT
+
+            if ! "$USE_LETSENCRYPT"; then
+                ask_for_value "Path to the certificate" HTTPS_CERT_PATH
+                ask_for_value "Path to the certificate key" HTTPS_CERT_KEY
+            fi
+        fi
+
+        while
+            ask_for_value "nginx IPv4 listen address (\"none\" to disable)" LISTEN_IPV4
+            ask_for_value "nginx IPv6 listen address (\"none\" to disable)" LISTEN_IPV6
+            [ "$LISTEN_IPV4" == none ] && [ "$LISTEN_IPV6" == none ]
+        do
+            echo "You need to listen to at least one IP address!"
+
+            # Reset them
+            LISTEN_IPV4="$(get_nginx_ip 4)"
+            LISTEN_IPV6="$(get_nginx_ip 6)"
+        done
+
+    fi
 
     ask_sudo_pw
 
     echo
-}
-
-calculate_variables() {
-    PROTOCOL="$("$USE_HTTPS" && echo "https" || echo "http")"
-    HTTP_PORT="$("$USE_HTTPS" && echo "443" || echo "80")"
-    EDITOR_URL="$PROTOCOL://$EXTERNAL_ADDRESS/"
-    BYTEBIN_URL="${EDITOR_URL}bytebin/"
-    
-    if "$USE_HTTPS"; then
-        HTTPS_CERT_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
-        HTTPS_KEY_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/privkey.pem"
-    fi
 }
 
 install_prerequisites() {
@@ -254,7 +289,7 @@ install_prerequisites() {
     local -A packages=([java]=default-jre-headless [jq]=jq [nc]=netcat [netstat]=net-tools [sed]=sed [wget]=wget)
 
     # Conditional packages
-    "$USE_HTTPS" && packages+=([certbot]=letsencrypt)
+    "$USE_HTTPS" && "$USE_LETSENCRYPT" && packages+=([certbot]=letsencrypt)
 
     # Check that packages exist
     for key in "${!packages[@]}"; do
@@ -277,12 +312,28 @@ install_prerequisites() {
     echo
 }
 
+calculate_variables() {
+    "$USE_HTTPS" || USE_LETSENCRYPT=false
+
+    PROTOCOL="$("$USE_HTTPS" && echo "https" || echo "http")"
+    EDITOR_URL="$PROTOCOL://$EXTERNAL_ADDRESS/"
+    BYTEBIN_URL="${EDITOR_URL}bytebin/"
+
+    if "$USE_HTTPS" && "$USE_LETSENCRYPT"; then
+        HTTPS_CERT_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
+        HTTPS_KEY_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/privkey.pem"
+    fi
+
+    NGINX_LISTEN_DIRECTIVE_IPV4="$(get_nginx_sed_directive 4)"
+    NGINX_LISTEN_DIRECTIVE_IPV6="$(get_nginx_sed_directive 6)"
+}
+
 prepare_installation_location() {
     echo "Now installing LuckPermsWeb..."
     echo
 
     if [ ! -d "$BASE_DIR" ]; then
-        sudo mkdir "$BASE_DIR" 
+        sudo mkdir "$BASE_DIR"
         sudo chown "$USER:$GROUP" "$BASE_DIR"
     fi
 
@@ -351,7 +402,7 @@ generate_https_cert() {
 
     local nginx_config_file="/etc/nginx/sites-enabled/certbot_helper_$RANDOM.conf"
     local certdir="$BASE_DIR/webfiles"
-    
+
     # Configure nginx for the cerbot
     create_nginx_file \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_header_http.conf" \
@@ -363,7 +414,7 @@ generate_https_cert() {
     # Get certificate
     sudo certbot certonly --webroot --rsa-key-size 4096 -w "$certdir" -d "$EXTERNAL_ADDRESS"
 
-    sudo rm -rf "$nginx_config_file" "$certdir/.well-known" 
+    sudo rm -rf "$nginx_config_file" "$certdir/.well-known"
 }
 
 configure_nginx() {
@@ -405,11 +456,11 @@ print_config_instructions() {
 ################################################################################
 
 ask_questions
-calculate_variables
 install_prerequisites
+calculate_variables
 prepare_installation_location
 install_bytebin
 install_webfiles
-"$USE_HTTPS" && generate_https_cert
+"$USE_LETSENCRYPT" && generate_https_cert
 configure_nginx
 print_config_instructions

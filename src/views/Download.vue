@@ -120,8 +120,8 @@
 				</div>
 				
 				<div>
-					<p>Allows for other ways for making <a href="/wiki/Default-Groups">Default Groups</a> if the workarounds are not possible.</p>
-          <p>Check out the <a href="/wiki/Extensions#extension-default-assignments">wiki section</a> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about default groups!</p>
+					<p>Allows for other ways to make <a href="/wiki/Default-Groups">Default Groups</a> if the workarounds are not possible.</p>
+          <p>Check out the <a href="/wiki/Extensions#extension-default-assignments">wiki section</a> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about configuring default assignments!</p>
 				</div>
 			</section>
     </div>

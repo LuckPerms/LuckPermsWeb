@@ -345,7 +345,6 @@ export default new Vuex.Store({
           let downloads = {};
           response.data.artifacts.forEach((artifact) => {
             const download = artifact.relativePath.split('/')[0];
-            
             downloads[download] = `${response.data.url}artifact/${artifact.relativePath}`;
           });
           commit('setDownloads', downloads);
@@ -359,7 +358,6 @@ export default new Vuex.Store({
           .then((response) => {
             response.data.artifacts.forEach((artifact) => {
               const extension = `${response.data.url.split('/')[4]}`;
-              
               extensions[extension] = `${response.data.url}artifact/${artifact.relativePath}`;
             });
           })

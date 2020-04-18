@@ -84,50 +84,46 @@
     <section class="hero">
       <h1>Extensions</h1>
     </section>
-    <div class="container" style="margin-bottom: -80px;">
+    <div class="container extensions-description" >
       <div class="resources">
-        <div style="width: 100%;">
-          <p style="text-align: center; font-size: 24px;">Extensions can modify the behaviour of LuckPerms, you can read more about them <a href="/wiki/Extensions">on the wiki</a></p>
-        </div>
+				<div>
+					<p>Extensions can modify the behaviour of LuckPerms, you can read more about them <a href="/wiki/Extensions">on the wiki</a></p>
+				</div>
       </div>
     </div>
-    <div class="container">
-      <div class="resources">
-        <div style="width: auto; padding-top: 0;">
-          <table>
-            <tr>
-              <td>
-                <a :href="extensions['extension-legacy-api']" class="resource">
-                  <span>
-                    <font-awesome icon="arrow-alt-circle-down" />
-                    Legacy API Extension
-                  </span>
-                  <small>LuckPerms 5.0 and above</small>
-                </a>
-              </td>
-              <td>
-                <p>Allows some common API methods to be used by plugins that haven't upgraded to v5 version of the api yet.</p>
-                <p>Check out the <a href="/wiki/Extensions#extension-legacy-api">wiki section</a> for more information!</p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a :href="extensions['extension-default-assignments']" class="resource">
-                  <span>
-                    <font-awesome icon="arrow-alt-circle-down" />
-                    Default Assignments Extension
-                  </span>
-                  <small>LuckPerms 5.0 and above</small>
-                </a>
-              </td>
-              <td>
-                <p>Allows for other ways for making <a href="/wiki/Default-Groups">Default Groups</a> if the workarounds are not possible.</p>
-                <p>Check out the <a href="/wiki/Extensions#extension-default-assignments">wiki section</a> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about default groups!</p>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
+    <div class="container extensions">
+      <section class="resources">
+				<div>
+          <a :href="extensions['extension-legacy-api']" class="resource">
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Legacy API Extension
+            </span>
+            <small>LuckPerms 5.0 and above</small>
+          </a>
+				</div>
+				
+				<div>
+          <p>Allows some common API methods to be used by plugins that haven't upgraded to v5 version of the api yet.</p>
+          <p>Check out the <a href="/wiki/Extensions#extension-legacy-api">wiki section</a> for more information!</p>
+				</div>
+			</section>
+			<section class="resources">
+				<div>
+					<a :href="extensions['extension-default-assignments']" class="resource">
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Default Assignments Extension
+            </span>
+            <small>LuckPerms 5.0 and above</small>
+          </a>
+				</div>
+				
+				<div>
+					<p>Allows for other ways for making <a href="/wiki/Default-Groups">Default Groups</a> if the workarounds are not possible.</p>
+          <p>Check out the <a href="/wiki/Extensions#extension-default-assignments">wiki section</a> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about default groups!</p>
+				</div>
+			</section>
     </div>
 
     <transition name="fade">
@@ -217,14 +213,22 @@ export default {
         white-space: nowrap;
       }
     }
-    
-    table {
-      border-spacing: 0 20px;
-    }
-    
-    td {
-      padding-left: 20px;
-    }
-    
+		
+		.extensions section {
+			margin-bottom: -8rem;
+		}
+		
+		.extensions-description {
+			margin-bottom: -8rem;
+		
+			.resources > div {
+				width: 100%;
+				
+				p {
+					text-align: center;
+					font-size: 1.5rem;
+				}
+			}
+		}
   }
 </style>

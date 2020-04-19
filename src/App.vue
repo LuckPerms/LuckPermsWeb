@@ -116,7 +116,8 @@
           'editor-home',
           'verbose',
           'verbose-home',
-          'tree'
+          'tree',
+          'tree-home'
         ].includes(this.$route.name);
       }
     },

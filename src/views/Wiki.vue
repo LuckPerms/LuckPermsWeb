@@ -31,7 +31,7 @@
 
   aside {
     width: 100%;
-    padding: 2em;
+    padding: 2em 2em 0 2em;
 	  background-color: rgba(0,0,0,.25);
     order: 2;
 
@@ -44,6 +44,10 @@
 
     @include breakpoint($lg) {
       flex: 0 0 24em;
+    }
+
+    section {
+      margin-bottom: 2rem;
     }
 
     h1 {
@@ -106,6 +110,10 @@
         border-color: rgba(0,0,0,.25);
       }
 
+      a {
+        text-decoration: none;
+      }
+
       p, ol, ul {
         color: rgba(255,255,255,.66);
 
@@ -113,8 +121,10 @@
           color: #FFF;
         }
 
-        a > code {
-          color: $brand-color;
+        a {
+          > code {
+            color: $brand-color;
+          }
         }
       }
 

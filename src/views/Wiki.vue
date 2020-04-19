@@ -27,6 +27,11 @@
 	  background-color: $grey;
     height: 100%;
     flex-wrap: wrap;
+    
+    .header-anchor {
+      text-decoration: none;
+      display: none;
+    }
   }
 
   aside {
@@ -166,15 +171,18 @@
       }
 
       img {
+        max-width: 100%;
+        
         &:not([src$="png"]) {
           box-shadow: 0 0 1rem rgba(0,0,0,.2);
         }
       }
+      
+      h2:hover > .header-anchor,
+      h3:hover > .header-anchor {
+        display: initial;
+      }
     }
-  }
-
-  img {
-	max-width: 100%;
   }
 
   :target {

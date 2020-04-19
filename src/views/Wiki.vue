@@ -120,7 +120,7 @@
 
       pre {
         padding: 0 2rem;
-        white-space: pre-line;
+        white-space: pre-wrap;
 
         code {
           padding: 1.5rem 2rem;

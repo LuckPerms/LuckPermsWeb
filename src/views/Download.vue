@@ -87,7 +87,7 @@
     <div class="container extensions-description" >
       <div class="resources">
 				<div>
-					<p>Extensions can modify the behaviour of LuckPerms, you can read more about them <a href="/wiki/Extensions">on the wiki</a></p>
+					<p>Extensions can modify the behaviour of LuckPerms, you can read more about them <router-link to="/wiki/Extensions">on the wiki</router-link></p>
 				</div>
       </div>
     </div>
@@ -105,7 +105,7 @@
 				
 				<div>
           <p>Allows some common API methods to be used by plugins that haven't upgraded to v5 version of the api yet.</p>
-          <p>Check out the <a href="/wiki/Extensions#extension-legacy-api">wiki section</a> for more information!</p>
+          <p>Check out the <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link> for more information!</p>
 				</div>
 			</section>
 			<section class="resources">
@@ -120,8 +120,8 @@
 				</div>
 				
 				<div>
-					<p>Allows for other ways to make <a href="/wiki/Default-Groups">Default Groups</a> if the workarounds are not possible.</p>
-          <p>Check out the <a href="/wiki/Extensions#extension-default-assignments">wiki section</a> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about configuring default assignments!</p>
+					<p>Allows for other ways to make <router-link to="/wiki/Default-Groups">Default Groups</router-link> if the workarounds are not possible.</p>
+          <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki section</router-link> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about configuring default assignments!</p>
 				</div>
 			</section>
     </div>

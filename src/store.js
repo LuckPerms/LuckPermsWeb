@@ -18,6 +18,10 @@ export default new Vuex.Store({
       sponge: null,
       velocity: null,
     },
+    extensions: {
+      'extension-legacy-api': null,
+      'extension-default-assignments': null,
+    },
     discordUserCount: null,
     patreonCount: null,
     editor: {
@@ -40,6 +44,8 @@ export default new Vuex.Store({
     version: (state) => state.version,
 
     downloads: (state) => state.downloads,
+    
+    extensions: (state) => state.extensions,
 
     discordUserCount: (state) => state.discordUserCount,
 
@@ -103,6 +109,10 @@ export default new Vuex.Store({
 
     setDownloads: (state, downloads) => {
       state.downloads = downloads;
+    },
+    
+    setExtensions: (state, extensions) => {
+      state.extensions = extensions;
     },
 
     setDiscordUserCount: (state, discordUserCount) => {
@@ -340,6 +350,20 @@ export default new Vuex.Store({
           commit('setDownloads', downloads);
         })
         .catch(console.error);
+        
+      const extensionIds = [ 'extension-legacy-api', 'extension-default-assignments' ];
+      let extensions = {};
+      extensionIds.forEach(( extensionId ) => {
+        axios.get(`https://ci.lucko.me/job/${extensionId}/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]`)
+          .then((response) => {
+            response.data.artifacts.forEach((artifact) => {
+              const extension = `${response.data.url.split('/')[4]}`;
+              extensions[extension] = `${response.data.url}artifact/${artifact.relativePath}`;
+            });
+          })
+          .catch(console.error);
+      });
+      commit('setExtensions', extensions);
 
       axios.get('https://discordapp.com/api/invites/luckperms?with_counts=true')
         .then((response) => {

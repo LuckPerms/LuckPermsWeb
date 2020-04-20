@@ -74,23 +74,56 @@
           <h2>Having trouble installing?</h2>
           <ul>
             <li>Make sure to check your console for any errors - especially during start up</li>
-            <li>Check the <a href="https://github.com/lucko/LuckPerms/wiki" target="_blank">wiki</a> to see if you missed any important steps during setup</li>
+            <li>Check the <router-link to="/wiki">wiki</router-link> to see if you missed any important steps during setup</li>
             <li>Delete the <code>libs</code> folder and restart the server to let it regenerate, sometimes this may fix the problem</li>
             <li>If all else fails, join our <a href="https://discord.gg/luckperms" target="_blank">Discord</a> to get some support</li>
           </ul>
         </div>
       </section>
-      <section class="hero">
-        <h1>Extensions</h1>
-      </section>
-      <div class="container">
-        <div class="resources">
-          <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor doloribus eos facilis fuga harum id illum iste, laboriosam molestiae nam necessitatibus non obcaecati quas repellat temporibus veritatis vitae, voluptates voluptatum.</p>
-          </div>
-          <div></div>
-        </div>
+    </div>
+    <section class="hero">
+      <h1>Extensions</h1>
+    </section>
+    <div class="container extensions-description" >
+      <div class="resources">
+				<div>
+					<p>Extensions can modify the behaviour of LuckPerms, you can read more about them <router-link to="/wiki/Extensions">on the wiki</router-link></p>
+				</div>
       </div>
+    </div>
+    <div class="container extensions">
+      <section class="resources">
+				<div>
+          <a :href="extensions['extension-legacy-api']" class="resource">
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Legacy API Extension
+            </span>
+            <small>LuckPerms 5.0 and above</small>
+          </a>
+				</div>
+				
+				<div>
+          <p>Allows some common API methods to be used by plugins that haven't upgraded to v5 version of the api yet.</p>
+          <p>Check out the <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link> for more information!</p>
+				</div>
+			</section>
+			<section class="resources">
+				<div>
+					<a :href="extensions['extension-default-assignments']" class="resource">
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Default Assignments Extension
+            </span>
+            <small>LuckPerms 5.0 and above</small>
+          </a>
+				</div>
+				
+				<div>
+					<p>Allows for other ways to make <router-link to="/wiki/Default-Groups">Default Groups</router-link> if the workarounds are not possible.</p>
+          <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki section</router-link> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about configuring default assignments!</p>
+				</div>
+			</section>
     </div>
 
     <transition name="fade">
@@ -113,6 +146,7 @@ export default {
     };
   },
   computed: {
+    extensions() { return this.$store.getters.extensions },
     downloads() { return this.$store.getters.downloads },
     version() { return this.$store.getters.version }
   },
@@ -179,5 +213,22 @@ export default {
         white-space: nowrap;
       }
     }
+		
+		.extensions section {
+			margin-bottom: -8rem;
+		}
+		
+		.extensions-description {
+			margin-bottom: -8rem;
+		
+			.resources > div {
+				width: 100%;
+				
+				p {
+					text-align: center;
+					font-size: 1.5rem;
+				}
+			}
+		}
   }
 </style>

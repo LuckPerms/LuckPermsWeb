@@ -18,13 +18,14 @@ LuckPermsWeb (this repository) contains the website for the project and a number
 The current master branch is a full re-write and not complete.
 
 **To do:**
-- [ ] Home page
-- [ ] Download page
-- [ ] Wiki
-- [x] Web editor (in beta)
-- [ ] Verbose report
-- [ ] Debug report
-- [ ] Tree report
+- [x] Home page (unrelesased)
+- [x] Download page (unreleased)
+- [x] Wiki (unreleased)
+- [x] Web editor (live beta)
+- [x] Verbose report (unreleased)
+- [x] Tree report (unreleased)
+
+Most of the above is in development on the `website` branch. A live version of this branch can be found at https://luckperms.turbotailz.com
 
 ## Setup
 

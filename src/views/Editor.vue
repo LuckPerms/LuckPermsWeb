@@ -6,7 +6,7 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Web Permissions Editor</p>
-					<button class="button demo-button" @click="openDemo()">View Demo</button>
+					<a href="/editor/demo"><button class="button demo-button">View Demo</button></a>
           <p>To start a new editor session, use one of the following commands:</p>
           <ul>
             <li><code>/lp editor</code></li>
@@ -190,9 +190,6 @@ export default {
     saveData() {
       this.$store.dispatch('saveData');
     },
-		openDemo() {
-			window.open("/editor/demo", "_self");
-		},
   },
 };
 </script>

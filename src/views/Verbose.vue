@@ -83,7 +83,7 @@
           <h1>LuckPerms</h1>
           <p>Verbose Viewer</p>
 					<div v-if="!errors.load">
-						<button class="button demo-button" @click="openDemo()">View Demo</button>
+						<a href="/verbose/demo"><button class="button demo-button">View Demo</button></a>
 						<p>To generate a verbose report, do the following in game or from the console:</p>
 						<ul>
 							<li><code>/lp verbose record [filter]</code></li>
@@ -146,12 +146,6 @@
         }
       }
     },
-		
-		methods: {
-			openDemo() {
-				window.open("/verbose/demo", "_self");
-			},
-		},
   }
 </script>
 

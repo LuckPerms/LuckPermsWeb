@@ -82,13 +82,20 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Verbose Viewer</p>
-          <p>To generate a verbose report, do the following in game or from the console:</p>
-          <ul>
-            <li><code>/lp verbose record [filter]</code></li>
-            <li>Perform a series of actions that require permissions</li>
-            <li><code>/lp verbose paste</code></li>
-            <li>Follow the URL that is generated</li>
-          </ul>
+					<div v-if="!errors.load">
+						<button class="button demo-button" @click="openDemo()">View Demo</button>
+						<p>To generate a verbose report, do the following in game or from the console:</p>
+						<ul>
+							<li><code>/lp verbose record [filter]</code></li>
+							<li>Perform a series of actions that require permissions</li>
+							<li><code>/lp verbose paste</code></li>
+							<li>Follow the URL that is generated</li>
+						</ul>
+					</div>
+					<div v-else class="error">
+            <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong or the session has expired.</p>
+            <p>Please generate another editor session with <code>/lp editor</code>.</p>
+					</div>
         </div>
       </div>
     </div>
@@ -120,7 +127,8 @@
             || node.key?.includes(this.filter)
             || node.who.identifier.includes(this.filter);
         });
-      }
+      },
+			errors() { return this.$store.state.verbose.errors },
     },
     created() {
       if (!this.verboseData.sessionId) {
@@ -137,7 +145,13 @@
           this.$store.dispatch('getVerboseData', sessionId);
         }
       }
-    }
+    },
+		
+		methods: {
+			openDemo() {
+				window.open("/verbose/demo", "_self");
+			},
+		},
   }
 </script>
 
@@ -145,6 +159,10 @@
   main.verbose {
     display: flex;
     overflow-y: hidden;
+		
+		.demo-button {
+			font-size: 1.5em;
+		}
   }
 
   .verbose-viewer {

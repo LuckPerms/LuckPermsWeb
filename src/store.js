@@ -31,6 +31,9 @@ export default new Vuex.Store({
       sessionId: null,
       metadata: null,
       data: null,
+			errors: {
+				load: false,
+			},
     },
     tree: {
       sessionId: null,
@@ -149,7 +152,7 @@ export default new Vuex.Store({
           key: null,
         },
       };
-    },
+		},
 
     setMetaData(state, object) {
       state.editor.metaData = object;
@@ -326,8 +329,18 @@ export default new Vuex.Store({
 
     // VERBOSE
     setVerboseData(state, data) {
-      state.verbose = data;
+			console.log('Data2');
+			console.log(data.data);
+			console.log(data.metadata);
+			console.log(data.sessionId);
+			state.verbose.data = data.data;
+			state.verbose.metadata = data.metadata;
+			state.verbose.sessionId = data.sessionId;
     },
+		
+		setVerboseLoadError(state) {
+			state.verbose.errors.load = true;
+		},
 
     // TREE
     setTreeData(state, data) {
@@ -568,19 +581,29 @@ export default new Vuex.Store({
     },
 
     getVerboseData({ state, commit }, sessionId) {
-      axios.get(`${config.bytebin_url}${sessionId}`)
-        .then((response) => {
-          const data = {
-            ...response.data,
-            sessionId
-          };
-          commit('setVerboseData', data);
-        })
-        .catch((error) => {
-          console.error(error);
-          console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-          commit('setVerboseLoadError');
+			if (sessionId === 'demo') {
+				import('./data/verbose-demo.json').then(json => {
+          commit('setVerboseData', json.default);
         });
+			} else {
+				axios.get(`${config.bytebin_url}${sessionId}`)
+					.then((response) => {
+						const data = {
+							...response.data,
+							sessionId
+						};
+						console.log('Data');
+						console.log(data.data);
+						console.log(data.metadata);
+						console.log(data.sessionId);
+						commit('setVerboseData', data);
+					})
+					.catch((error) => {
+						console.error(error);
+						console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+						commit('setVerboseLoadError');
+					});
+			}
     },
 
     getTreeData({ state, commit }, sessionId) {

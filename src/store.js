@@ -39,6 +39,9 @@ export default new Vuex.Store({
       sessionId: null,
       metadata: null,
       data: null,
+			errors: {
+				load: false,
+			},
     }
   },
 
@@ -329,10 +332,6 @@ export default new Vuex.Store({
 
     // VERBOSE
     setVerboseData(state, data) {
-			console.log('Data2');
-			console.log(data.data);
-			console.log(data.metadata);
-			console.log(data.sessionId);
 			state.verbose.data = data.data;
 			state.verbose.metadata = data.metadata;
 			state.verbose.sessionId = data.sessionId;
@@ -344,8 +343,14 @@ export default new Vuex.Store({
 
     // TREE
     setTreeData(state, data) {
-      state.tree = data;
-    }
+      state.tree.data = data.data;
+			state.tree.metadata = data.metadata;
+			state.tree.sessionId = data.sessionId;
+    },
+		
+		setTreeLoadError(state) {
+			state.tree.errors.load = true;
+		},
   },
 
 
@@ -592,10 +597,6 @@ export default new Vuex.Store({
 							...response.data,
 							sessionId
 						};
-						console.log('Data');
-						console.log(data.data);
-						console.log(data.metadata);
-						console.log(data.sessionId);
 						commit('setVerboseData', data);
 					})
 					.catch((error) => {
@@ -607,19 +608,25 @@ export default new Vuex.Store({
     },
 
     getTreeData({ state, commit }, sessionId) {
-      axios.get(`${config.bytebin_url}${sessionId}`)
-        .then((response) => {
-          const data = {
-            ...response.data,
-            sessionId
-          };
-          commit('setTreeData', data);
-        })
-        .catch((error) => {
-          console.error(error);
-          console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-          commit('setTreeLoadError');
-        });
+			if (sessionId === 'demo') {
+				import('./data/tree-demo.json').then(json => {
+					commit('setTreeData', json.default);
+				});
+			} else {
+				axios.get(`${config.bytebin_url}${sessionId}`)
+					.then((response) => {
+						const data = {
+							...response.data,
+							sessionId
+						};
+						commit('setTreeData', data);
+					})
+					.catch((error) => {
+						console.error(error);
+						console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+						commit('setTreeLoadError');
+					});
+			}
     }
   },
 });

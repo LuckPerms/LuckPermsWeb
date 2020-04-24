@@ -82,7 +82,7 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Verbose Viewer</p>
-					<div v-if="!errors.load">
+					<template v-if="!errors.load">
 						<a href="/verbose/demo"><button class="button demo-button">View Demo</button></a>
 						<p>To generate a verbose report, do the following in game or from the console:</p>
 						<ul>
@@ -91,8 +91,8 @@
 							<li><code>/lp verbose paste</code></li>
 							<li>Follow the URL that is generated</li>
 						</ul>
-					</div>
-					<div v-else class="error">
+					</template>
+					<div v-if="errors.load" class="error">
             <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong or the session has expired.</p>
             <p>Please generate another editor session with <code>/lp editor</code>.</p>
 					</div>

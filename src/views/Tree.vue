@@ -46,14 +46,14 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Permission Tree Viewer</p>
-					<div v-if="!errors.load">
+					<template v-if="!errors.load">
 						<a href="/tree/demo"><button class="button demo-button">View Demo</button></a>
 						<p>To generate a permission tree, do the following in game or from the console:</p>
 						<ul>
 							<li><code>/lp tree [scope] [player]</code></li>
 							<li>Follow the URL that is generated</li>
 						</ul>
-					</div>
+					</template>
 					<div v-else class="error">
             <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong or the session has expired.</p>
             <p>Please generate another editor session with <code>/lp editor</code>.</p>

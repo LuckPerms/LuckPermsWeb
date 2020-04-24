@@ -26,7 +26,6 @@ module.exports = {
             "permalink": true,
             "permalinkSymbol": "🔗"
           }],
-          require('markdown-it-anchor'),
           require('markdown-it-emoji')
         ]
       })

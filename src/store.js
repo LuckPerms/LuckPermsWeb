@@ -31,17 +31,17 @@ export default new Vuex.Store({
       sessionId: null,
       metadata: null,
       data: null,
-			errors: {
-				load: false,
-			},
+      errors: {
+        load: false,
+      },
     },
     tree: {
       sessionId: null,
       metadata: null,
       data: null,
-			errors: {
-				load: false,
-			},
+      errors: {
+        load: false,
+      },
     }
   },
 
@@ -155,7 +155,7 @@ export default new Vuex.Store({
           key: null,
         },
       };
-		},
+    },
 
     setMetaData(state, object) {
       state.editor.metaData = object;
@@ -330,27 +330,25 @@ export default new Vuex.Store({
       state.editor.save.key = key;
     },
 
-    // VERBOSE
     setVerboseData(state, data) {
-			state.verbose.data = data.data;
-			state.verbose.metadata = data.metadata;
-			state.verbose.sessionId = data.sessionId;
+      state.verbose.data = data.data;
+      state.verbose.metadata = data.metadata;
+      state.verbose.sessionId = data.sessionId;
     },
-		
-		setVerboseLoadError(state) {
-			state.verbose.errors.load = true;
-		},
+    
+    setVerboseLoadError(state) {
+      state.verbose.errors.load = true;
+    },
 
-    // TREE
     setTreeData(state, data) {
       state.tree.data = data.data;
-			state.tree.metadata = data.metadata;
-			state.tree.sessionId = data.sessionId;
+      state.tree.metadata = data.metadata;
+      state.tree.sessionId = data.sessionId;
     },
-		
-		setTreeLoadError(state) {
-			state.tree.errors.load = true;
-		},
+    
+    setTreeLoadError(state) {
+      state.tree.errors.load = true;
+    },
   },
 
 
@@ -586,47 +584,47 @@ export default new Vuex.Store({
     },
 
     getVerboseData({ state, commit }, sessionId) {
-			if (sessionId === 'demo') {
-				import('./data/verbose-demo.json').then(json => {
+      if (sessionId === 'demo') {
+        import('./data/verbose-demo.json').then(json => {
           commit('setVerboseData', json.default);
         });
-			} else {
-				axios.get(`${config.bytebin_url}${sessionId}`)
-					.then((response) => {
-						const data = {
-							...response.data,
-							sessionId
-						};
-						commit('setVerboseData', data);
-					})
-					.catch((error) => {
-						console.error(error);
-						console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-						commit('setVerboseLoadError');
-					});
-			}
+      } else {
+        axios.get(`${config.bytebin_url}${sessionId}`)
+          .then((response) => {
+            const data = {
+              ...response.data,
+              sessionId
+            };
+            commit('setVerboseData', data);
+          })
+          .catch((error) => {
+            console.error(error);
+            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+            commit('setVerboseLoadError');
+          });
+      }
     },
 
     getTreeData({ state, commit }, sessionId) {
-			if (sessionId === 'demo') {
-				import('./data/tree-demo.json').then(json => {
-					commit('setTreeData', json.default);
-				});
-			} else {
-				axios.get(`${config.bytebin_url}${sessionId}`)
-					.then((response) => {
-						const data = {
-							...response.data,
-							sessionId
-						};
-						commit('setTreeData', data);
-					})
-					.catch((error) => {
-						console.error(error);
-						console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-						commit('setTreeLoadError');
-					});
-			}
+      if (sessionId === 'demo') {
+        import('./data/tree-demo.json').then(json => {
+          commit('setTreeData', json.default);
+        });
+      } else {
+        axios.get(`${config.bytebin_url}${sessionId}`)
+          .then((response) => {
+            const data = {
+              ...response.data,
+              sessionId
+            };
+            commit('setTreeData', data);
+          })
+          .catch((error) => {
+            console.error(error);
+            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+            commit('setTreeLoadError');
+          });
+      }
     }
   },
 });

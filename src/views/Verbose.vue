@@ -82,20 +82,20 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Verbose Viewer</p>
-					<template v-if="!errors.load">
-						<a href="/verbose/demo"><button class="button demo-button">View Demo</button></a>
-						<p>To generate a verbose report, do the following in game or from the console:</p>
-						<ul>
-							<li><code>/lp verbose record [filter]</code></li>
-							<li>Perform a series of actions that require permissions</li>
-							<li><code>/lp verbose paste</code></li>
-							<li>Follow the URL that is generated</li>
-						</ul>
-					</template>
-					<div v-if="errors.load" class="error">
+          <template v-if="!errors.load">
+            <a href="/verbose/demo"><button class="button demo-button">View Demo</button></a>
+            <p>To generate a verbose report, do the following in game or from the console:</p>
+            <ul>
+              <li><code>/lp verbose record [filter]</code></li>
+              <li>Perform a series of actions that require permissions</li>
+              <li><code>/lp verbose paste</code></li>
+              <li>Follow the URL that is generated</li>
+            </ul>
+          </template>
+          <div v-if="errors.load" class="error">
             <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong or the session has expired.</p>
             <p>Please generate another editor session with <code>/lp editor</code>.</p>
-					</div>
+          </div>
         </div>
       </div>
     </div>
@@ -128,7 +128,7 @@
             || node.who.identifier.includes(this.filter);
         });
       },
-			errors() { return this.$store.state.verbose.errors },
+      errors() { return this.$store.state.verbose.errors },
     },
     created() {
       if (!this.verboseData.sessionId) {
@@ -153,10 +153,10 @@
   main.verbose {
     display: flex;
     overflow-y: hidden;
-		
-		.demo-button {
-			font-size: 1.5em;
-		}
+    
+    .demo-button {
+      font-size: 1.5em;
+    }
   }
 
   .verbose-viewer {

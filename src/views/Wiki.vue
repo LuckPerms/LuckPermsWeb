@@ -62,6 +62,7 @@
 
     a {
       text-decoration: none;
+      margin: .2rem;
     }
 
     ul {

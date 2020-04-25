@@ -1,10 +1,17 @@
 <template>
-  <transition name="fade">
     <div>
-      <h1>{{ title }}</h1>
-      <component :is="article" />
+      <h1>
+        <transition name="fade" mode="out-in">
+          <span :key="title">
+            {{ title }}
+          </span>
+        </transition>
+      </h1>
+      <transition name="fade" mode="out-in">
+        <component :is="article" />
+      </transition>
     </div>
-  </transition>
+
 </template>
 
 <script>

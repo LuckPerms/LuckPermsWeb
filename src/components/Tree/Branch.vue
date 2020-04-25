@@ -82,6 +82,7 @@
       border: 0;
       padding: 0 .8rem;
       cursor: pointer;
+      margin-left: .2rem;
     }
   }
 </style>

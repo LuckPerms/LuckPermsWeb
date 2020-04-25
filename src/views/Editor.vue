@@ -198,10 +198,6 @@ export default {
 main.editor {
   display: flex;
   flex-direction: column;
-  
-  .demo-button {
-    font-size: 1.5em;
-  }
 
   .editor-container {
     width: 100%;
@@ -224,6 +220,7 @@ main.editor {
         display: flex;
         flex-direction: column;
         position: relative;
+        border-right: 1px solid rgba(255, 255, 255, 0.2);
 
         > nav {
           display: flex;

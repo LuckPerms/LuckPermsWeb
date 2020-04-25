@@ -153,10 +153,6 @@
   main.verbose {
     display: flex;
     overflow-y: hidden;
-    
-    .demo-button {
-      font-size: 1.5em;
-    }
   }
 
   .verbose-viewer {

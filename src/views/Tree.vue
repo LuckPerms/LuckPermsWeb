@@ -108,10 +108,6 @@
   main.tree {
     display: flex;
     overflow-y: hidden;
-    
-    .demo-button {
-      font-size: 1.5em;
-    }
   }
 
   .tree-viewer {

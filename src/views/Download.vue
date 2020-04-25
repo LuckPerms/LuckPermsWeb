@@ -86,14 +86,14 @@
     </section>
     <div class="container extensions-description" >
       <div class="resources">
-				<div>
-					<p>Extensions can modify the behaviour of LuckPerms, you can read more about them <router-link to="/wiki/Extensions">on the wiki</router-link></p>
-				</div>
+        <div>
+          <p>Extensions can modify the behaviour of LuckPerms, you can read more about them <router-link to="/wiki/Extensions">on the wiki</router-link></p>
+        </div>
       </div>
     </div>
     <div class="container extensions">
       <section class="resources">
-				<div>
+        <div>
           <a :href="extensions['extension-legacy-api']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
@@ -101,29 +101,29 @@
             </span>
             <small>LuckPerms 5.0 and above</small>
           </a>
-				</div>
-				
-				<div>
+        </div>
+        
+        <div>
           <p>Allows some common API methods to be used by plugins that haven't upgraded to v5 version of the api yet.</p>
           <p>Check out the <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link> for more information!</p>
-				</div>
-			</section>
-			<section class="resources">
-				<div>
-					<a :href="extensions['extension-default-assignments']" class="resource">
+        </div>
+      </section>
+      <section class="resources">
+        <div>
+          <a :href="extensions['extension-default-assignments']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Default Assignments Extension
             </span>
             <small>LuckPerms 5.0 and above</small>
           </a>
-				</div>
-				
-				<div>
-					<p>Allows for other ways to make <router-link to="/wiki/Default-Groups">Default Groups</router-link> if the workarounds are not possible.</p>
+        </div>
+        
+        <div>
+          <p>Allows for other ways to make <router-link to="/wiki/Default-Groups">Default Groups</router-link> if the workarounds are not possible.</p>
           <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki section</router-link> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about configuring default assignments!</p>
-				</div>
-			</section>
+        </div>
+      </section>
     </div>
 
     <transition name="fade">
@@ -213,22 +213,22 @@ export default {
         white-space: nowrap;
       }
     }
-		
-		.extensions section {
-			margin-bottom: -8rem;
-		}
-		
-		.extensions-description {
-			margin-bottom: -8rem;
-		
-			.resources > div {
-				width: 100%;
-				
-				p {
-					text-align: center;
-					font-size: 1.5rem;
-				}
-			}
-		}
+    
+    .extensions section {
+      margin-bottom: -8rem;
+    }
+    
+    .extensions-description {
+      margin-bottom: -8rem;
+    
+      .resources > div {
+        width: 100%;
+        
+        p {
+          text-align: center;
+          font-size: 1.5rem;
+        }
+      }
+    }
   }
 </style>

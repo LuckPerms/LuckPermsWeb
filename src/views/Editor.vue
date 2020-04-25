@@ -220,7 +220,6 @@ main.editor {
         display: flex;
         flex-direction: column;
         position: relative;
-        border-right: 1px solid rgba(255, 255, 255, 0.2);
 
         > nav {
           display: flex;

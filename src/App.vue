@@ -7,7 +7,6 @@
             <img alt="LuckPerms logo" src="@/assets/logo.png">
             <span>LuckPerms</span>
           </router-link>
-          <span v-if="version">v{{ version }}</span>
         </div>
 
         <ul>

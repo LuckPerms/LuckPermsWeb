@@ -28,68 +28,66 @@
           </div>
         </div>
       </section>
-    </template>
-    <template v-if="!config.selfHosted">
 
-    <div class="container">
-      <section class="resources">
-        <div>
-          <h2>Why LuckPerms?</h2>
-          <p>LuckPerms is an advanced permissions implementation aiming to be a fast, reliable and flexible alternative to existing permission plugins. The project's main goals are centered around high performance and a wide feature set, filling the gaps of functionality and building upon existing features found in other plugins. LuckPerms also includes an extensive API for developers, and support for a variety of Minecraft server software & data storage options.</p>
+      <div class="container">
+        <section class="resources">
+          <div>
+            <h2>Why LuckPerms?</h2>
+            <p>LuckPerms is an advanced permissions implementation aiming to be a fast, reliable and flexible alternative to existing permission plugins. The project's main goals are centered around high performance and a wide feature set, filling the gaps of functionality and building upon existing features found in other plugins. LuckPerms also includes an extensive API for developers, and support for a variety of Minecraft server software & data storage options.</p>
 
-          <h2>Migration from other plugins</h2>
-          <p>LuckPerms has built in support to allow easy migration of permissions data from existing permissions plugins. It should be noted that this system is not perfect. It will do a pretty decent job at converting all of your existing data, and works perfectly in most cases. However, not all data is the same, and there are sometimes things that haven't been accounted for. See the <router-link to="/wiki/Migration">migration</router-link> wiki page for more details.</p>
+            <h2>Migration from other plugins</h2>
+            <p>LuckPerms has built in support to allow easy migration of permissions data from existing permissions plugins. It should be noted that this system is not perfect. It will do a pretty decent job at converting all of your existing data, and works perfectly in most cases. However, not all data is the same, and there are sometimes things that haven't been accounted for. See the <router-link to="/wiki/Migration">migration</router-link> wiki page for more details.</p>
 
-          <div class="tools">
-            <router-link to="/editor" alt="Web Editor">
-              <font-awesome icon="edit" />
-              Web Editor
-            </router-link>
-            <router-link to="/verbose" alt="Verbose Viewer">
-              <font-awesome icon="comment-alt" />
-              Verbose Viewer
-            </router-link>
-            <router-link to="/tree" alt="Tree Viewer">
-              <font-awesome icon="sitemap" />
-              Tree Viewer
-            </router-link>
+            <div class="tools">
+              <router-link to="/editor" alt="Web Editor">
+                <font-awesome icon="edit" />
+                Web Editor
+              </router-link>
+              <router-link to="/verbose" alt="Verbose Viewer">
+                <font-awesome icon="comment-alt" />
+                Verbose Viewer
+              </router-link>
+              <router-link to="/tree" alt="Tree Viewer">
+                <font-awesome icon="sitemap" />
+                Tree Viewer
+              </router-link>
+            </div>
           </div>
-        </div>
-        <div>
-          <a href="/wiki" class="resource">
-            <span>
-              <font-awesome icon="book" />
-              Wiki
-            </span>
-            <small>Learn how to install, setup, configure and effectively use LuckPerms</small>
-          </a>
-          <a href="https://github.com/lucko/LuckPerms" class="resource">
-            <span>
-              <font-awesome :icon="['fab', 'github']" />
-              GitHub
-            </span>
-            <small>Browse the source code, report issues and contribute to the project</small>
-          </a>
-          <a href="https://discord.gg/luckperms" class="resource">
-            <span>
-              <font-awesome :icon="['fab', 'discord']" />
-              Discord
-            </span>
-            <small>Join {{ discordUserCount }} others to discuss the project and ask/answer questions</small>
-          </a>
-          <a href="https://patreon.com/luckdev" class="resource">
-            <span>
-              <font-awesome :icon="['fab', 'patreon']" />
-              Patreon
-            </span>
-            <small>Join {{ patreonCount }} others supporting the project on Patreon</small>
-          </a>
-        </div>
-      </section>
-    </div>
+          <div>
+            <a href="/wiki" class="resource">
+              <span>
+                <font-awesome icon="book" />
+                Wiki
+              </span>
+              <small>Learn how to install, setup, configure and effectively use LuckPerms</small>
+            </a>
+            <a href="https://github.com/lucko/LuckPerms" class="resource">
+              <span>
+                <font-awesome :icon="['fab', 'github']" />
+                GitHub
+              </span>
+              <small>Browse the source code, report issues and contribute to the project</small>
+            </a>
+            <a href="https://discord.gg/luckperms" class="resource">
+              <span>
+                <font-awesome :icon="['fab', 'discord']" />
+                Discord
+              </span>
+              <small>Join {{ discordUserCount }} others to discuss the project and ask/answer questions</small>
+            </a>
+            <a href="https://patreon.com/luckdev" class="resource">
+              <span>
+                <font-awesome :icon="['fab', 'patreon']" />
+                Patreon
+              </span>
+              <small>Join {{ patreonCount }} others supporting the project on Patreon</small>
+            </a>
+          </div>
+        </section>
+      </div>
     </template>
     <template v-else>
-      <section class="hero" style="text-align: center;">
+      <section class="hero">
         <div class="container">
           <div class="logo selfhosted">
             <img alt="LuckPerms logo" src="../assets/logo.png">
@@ -140,7 +138,7 @@ export default {
     patreonCount() {
       return this.$store.getters.patreonCount;
     },
-    config() { return require('@/../config') },
+    config() { return this.$store.getters.config; },
   },
 };
 </script>

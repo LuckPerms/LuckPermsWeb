@@ -119,7 +119,7 @@
           'tree-home'
         ].includes(this.$route.name);
       },
-      config() { return require('@/../config') }
+      config() { return this.$store.getters.config; }
     },
     created() {
       this.$store.dispatch('getAppData');

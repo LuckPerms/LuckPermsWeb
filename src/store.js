@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     version: null,
+    config: null,
     downloads: {
       bukkit: null,
       'bukkit-legacy': null,
@@ -52,6 +53,8 @@ export default new Vuex.Store({
     downloads: (state) => state.downloads,
     
     extensions: (state) => state.extensions,
+
+    config: (state) => state.config,
 
     discordUserCount: (state) => state.discordUserCount,
 
@@ -330,6 +333,10 @@ export default new Vuex.Store({
       state.editor.save.key = key;
     },
 
+    setConfig(state, config) {
+      state.config = config;
+    },
+
     setVerboseData(state, data) {
       state.verbose.data = data.data;
       state.verbose.metadata = data.metadata;
@@ -392,6 +399,8 @@ export default new Vuex.Store({
           commit('setPatreonCount', response.data.data.attributes.patron_count);
         })
         .catch(console.error);
+      
+      commit('setConfig', config);
     },
 
     getEditorData({ commit, dispatch }, sessionId) {

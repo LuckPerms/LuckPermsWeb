@@ -2,6 +2,7 @@
   <main class="notfound">
     <section class="hero">
       <h1>
+        <font-awesome icon="exclamation-circle" />
         <span>Not found!</span>
       </h1>
       <div class="error">
@@ -34,7 +35,7 @@ export default {
 
         svg {
           position: absolute;
-          color: $brand-color;
+          color: $red;
           top: -1.5rem;
           left: -4rem;
           font-size: 6rem;

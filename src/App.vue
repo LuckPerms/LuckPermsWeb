@@ -22,8 +22,8 @@
               Download
             </router-link>
           </li>
-          <li>
-			      <router-link to="/wiki" v-if="!config.selfHosted">
+          <li v-if="!config.selfHosted">
+			      <router-link to="/wiki">
               <font-awesome icon="book" />
               Wiki
             </router-link>

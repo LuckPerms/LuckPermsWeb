@@ -1,32 +1,35 @@
 <template>
   <main class="home">
-    <section class="hero">
-      <div class="container">
-        <div class="logo">
-          <img alt="LuckPerms logo" src="../assets/logo.png">
-          <div>
-            <h1>LuckPerms</h1>
-            <p>An advanced permissions plugin for Minecraft servers</p>
+    <template v-if="!config.selfHosted">
+      <section class="hero">
+        <div class="container">
+          <div class="logo">
+            <img alt="LuckPerms logo" src="../assets/logo.png">
+            <div>
+              <h1>LuckPerms</h1>
+              <p>An advanced permissions plugin for Minecraft servers</p>
+            </div>
+          </div>
+
+          <div class="download">
+            <router-link to="/download">
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Download
+            </span>
+              <small>
+                Version: {{ version }}
+                <font-awesome icon="asterisk" :spin="true" v-if="!version" />
+              </small>
+            </router-link>
+            <small>
+              Supports CraftBukkit, Spigot, Paper, BungeeCord, Sponge, Nukkit and Velocity servers
+            </small>
           </div>
         </div>
-
-        <div class="download">
-          <router-link to="/download">
-          <span>
-            <font-awesome icon="arrow-alt-circle-down" />
-            Download
-          </span>
-            <small>
-              Version: {{ version }}
-              <font-awesome icon="asterisk" :spin="true" v-if="!version" />
-            </small>
-          </router-link>
-          <small>
-            Supports CraftBukkit, Spigot, Paper, BungeeCord, Sponge, Nukkit and Velocity servers
-          </small>
-        </div>
-      </div>
-    </section>
+      </section>
+    </template>
+    <template v-if="!config.selfHosted">
 
     <div class="container">
       <section class="resources">
@@ -84,7 +87,38 @@
         </div>
       </section>
     </div>
-
+    </template>
+    <template v-else>
+      <section class="hero" style="text-align: center;">
+        <div class="container">
+          <div class="logo selfhosted">
+            <img alt="LuckPerms logo" src="../assets/logo.png">
+            <div>
+              <h1>LuckPerms</h1>
+              <p>An advanced permissions plugin for Minecraft servers</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="container selfhosted">
+        <div>
+          <div class="tools">
+            <router-link to="/editor" alt="Web Editor">
+              <font-awesome icon="edit" />
+              Web Editor
+            </router-link>
+            <router-link to="/verbose" alt="Verbose Viewer">
+              <font-awesome icon="comment-alt" />
+              Verbose Viewer
+            </router-link>
+            <router-link to="/tree" alt="Tree Viewer">
+              <font-awesome icon="sitemap" />
+              Tree Viewer
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </template> 
   </main>
 </template>
 
@@ -105,7 +139,8 @@ export default {
     },
     patreonCount() {
       return this.$store.getters.patreonCount;
-    }
+    },
+    config() { return require('@/../config') },
   },
 };
 </script>
@@ -116,6 +151,10 @@ export default {
 
     .container {
       display: flex;
+
+      &.selfhosted {
+        justify-content: center;
+      }
     }
 
     .logo {
@@ -147,6 +186,11 @@ export default {
           margin-bottom: 0;
           margin-right: 2rem;
         }
+      }
+
+      &.selfhosted {
+        justify-content: center;
+        width: 100%;
       }
     }
 

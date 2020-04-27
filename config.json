@@ -1,3 +1,4 @@
 {
-  "bytebin_url": "https://bytebin.lucko.me/"
+  "bytebin_url": "https://bytebin.lucko.me/",
+  "selfHosted": false
 }

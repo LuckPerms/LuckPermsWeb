@@ -16,14 +16,14 @@
               Home
             </router-link>
           </li>
-          <li>
-			<router-link to="/download">
+          <li v-if="!config.selfHosted">
+			      <router-link to="/download">
               <font-awesome icon="arrow-alt-circle-down" />
               Download
             </router-link>
           </li>
           <li>
-			<router-link to="/wiki">
+			      <router-link to="/wiki" v-if="!config.selfHosted">
               <font-awesome icon="book" />
               Wiki
             </router-link>
@@ -54,17 +54,17 @@
               </li>
             </ul>
           </li>
-          <li class="external">
+          <li class="external" v-if="!config.selfHosted">
             <a href="https://github.com/lucko/LuckPerms" target="_blank" class="github">
               <font-awesome  :icon="['fab', 'github']" />
             </a>
           </li>
-          <li class="external">
+          <li class="external" v-if="!config.selfHosted">
             <a href="https://discord.gg/luckperms" target="_blank" class="discord">
               <font-awesome  :icon="['fab', 'discord']" />
             </a>
           </li>
-          <li class="external">
+          <li class="external" v-if="!config.selfHosted">
             <a href="https://patreon.com/luckdev" target="_blank" class="patreon">
               <font-awesome  :icon="['fab', 'patreon']" />
             </a>
@@ -118,7 +118,8 @@
           'tree',
           'tree-home'
         ].includes(this.$route.name);
-      }
+      },
+      config() { return require('@/../config') }
     },
     created() {
       this.$store.dispatch('getAppData');

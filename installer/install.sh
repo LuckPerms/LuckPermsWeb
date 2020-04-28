@@ -39,6 +39,10 @@ ask_questions() {
             fi
         fi
 
+        if [ ! -x /usr/sbin/nginx ]; then
+            ask_yes_no "You don't have nginx installed. Install it" INSTALL_NGINX
+        fi
+
         while
             ask_for_value "nginx IPv4 listen address (\"none\" to disable)" LISTEN_IPV4
             ask_for_value "nginx IPv6 listen address (\"none\" to disable)" LISTEN_IPV6
@@ -65,6 +69,7 @@ install_prerequisites() {
 
     # Conditional packages
     "$USE_HTTPS" && "$USE_LETSENCRYPT" && packages+=([certbot]=letsencrypt)
+    "$INSTALL_NGINX" && packages+=([nginx]=nginx-light)
 
     # Check that packages exist
     for key in "${!packages[@]}"; do

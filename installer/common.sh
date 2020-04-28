@@ -20,6 +20,7 @@ BYTEBIN_PORT="8123"
 # User input variables (and their default values)
 EXPERT_MODE=false
 EXTERNAL_ADDRESS="$(hostname -f)"
+INSTALL_NGINX=true
 USE_HTTPS=true
 USE_LETSENCRYPT=true
 
@@ -103,7 +104,7 @@ ask_yes_no() {
 command_exists() {
     local program="$1"
 
-    which "$program" > /dev/null
+    sudo which "$program" > /dev/null
 }
 
 get_nginx_ip() {

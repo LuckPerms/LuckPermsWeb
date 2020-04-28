@@ -60,63 +60,19 @@
               {{ getMessage('nav.languages') }}
             </span>
             <ul>
-              <template v-if="this.getCurrentLang() !== 'de'">
-                <li v-if="config.defaultLang !== 'de'">
-                  <router-link :to="{ path: this.$route.path, query: { lang: 'de' } }" class="not-active-lang">
-                    <country-flag country='de' />
-                    Deutsch
-                  </router-link>
-                </li>
-                <li v-else>
-                  <router-link :to="{ path: this.$route.path }" class="not-active-lang">
-                    <country-flag country='de' />
-                    Deutsch
-                  </router-link>
-                </li>
-              </template>
-              <template v-else>
-                <li v-if="config.defaultLang !== 'de'">
-                  <router-link :to="{ path: this.$route.path, query: { lang: 'de' } }">
-                    <country-flag country='de' />
-                    Deutsch
-                  </router-link>
-                </li>
-                <li v-else>
-                  <router-link :to="{ path: this.$route.path }">
-                    <country-flag country='de' />
-                    Deutsch
-                  </router-link>
-                </li>
-              </template>
+              <li>
+                <router-link :to="getLanguageSwitchLink('de')" :class="getLanguageSwitchClass('de')">
+                  <country-flag country='de' />
+                  Deutsch
+                </router-link>
+              </li>
 
-              <template v-if="this.getCurrentLang() !== 'en'">
-                <li v-if="config.defaultLang !== 'en'">
-                  <router-link :to="{ path: this.$route.path, query: { lang: 'en' } }" class="not-active-lang">
-                    <country-flag country='us' />
-                    English
-                  </router-link>
-                </li>
-                <li v-else>
-                  <router-link :to="{ path: this.$route.path }" class="not-active-lang">
-                    <country-flag country='us' />
-                    English
-                  </router-link>
-                </li>
-              </template>
-              <template v-else>
-                <li v-if="config.defaultLang !== 'en'">
-                  <router-link :to="{ path: this.$route.path, query: { lang: 'en' } }">
-                    <country-flag country='us' />
-                    English
-                  </router-link>
-                </li>
-                <li v-else>
-                  <router-link :to="{ path: this.$route.path }">
-                    <country-flag country='us' />
-                    English
-                  </router-link>
-                </li>
-              </template>
+              <li>
+                <router-link :to="getLanguageSwitchLink('en')" :class="getLanguageSwitchClass('en')">
+                  <country-flag country='us' />
+                  English
+                </router-link>
+              </li>
             </ul>
           </li>
           <li class="external" v-if="!config.selfHosted">
@@ -200,6 +156,14 @@
       getLangRouterLink(link) {
         if (this.getCurrentLang() === this.config.defaultLang) return link;
         else return link + '?lang=' + this.getCurrentLang();
+      },
+
+      getLanguageSwitchLink(lang) {
+        if (this.config.defaultLang !== lang) return { path: this.$route.path, query: { lang: lang } };
+        else return { path: this.$route.path };
+      },
+      getLanguageSwitchClass(lang) {
+        return { 'not-active-lang': this.getCurrentLang() !== lang };
       }
     }
   }

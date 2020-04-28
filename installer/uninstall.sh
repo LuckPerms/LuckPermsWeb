@@ -4,10 +4,8 @@
 # Global Variables
 ################################################################################
 
-UNINSTALL=true
-
-# Get variables from installer
-. "$(dirname "${BASH_SOURCE[0]}")/install.sh"
+# Get variables and helper functions from common script
+. "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 ################################################################################
 # Functions

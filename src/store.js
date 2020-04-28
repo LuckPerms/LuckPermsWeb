@@ -11,6 +11,10 @@ export default new Vuex.Store({
   state: {
     version: null,
     config: null,
+    messages: {
+      de: null,
+      en: null,
+    },
     downloads: {
       bukkit: null,
       'bukkit-legacy': null,
@@ -55,6 +59,8 @@ export default new Vuex.Store({
     extensions: (state) => state.extensions,
 
     config: (state) => state.config,
+
+    messages: (state) => state.messages,
 
     discordUserCount: (state) => state.discordUserCount,
 
@@ -337,6 +343,11 @@ export default new Vuex.Store({
       state.config = config;
     },
 
+    setMessages(state, { messagesDe, messagesEn }) {
+      state.messages.de = messagesDe;
+      state.messages.en = messagesEn;
+    },
+
     setVerboseData(state, data) {
       state.verbose.data = data.data;
       state.verbose.metadata = data.metadata;
@@ -401,6 +412,12 @@ export default new Vuex.Store({
         .catch(console.error);
       
       commit('setConfig', config);
+
+      var messagesDe = require('@/messages/de');
+      var messagesEn = require('@/messages/en');
+
+      messagesDe = {...messagesEn, ...messagesDe};
+      commit('setMessages', { messagesDe, messagesEn })
     },
 
     getEditorData({ commit, dispatch }, sessionId) {

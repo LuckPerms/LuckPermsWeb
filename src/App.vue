@@ -3,7 +3,7 @@
     <div id="nav">
       <div class="container">
         <div>
-          <router-link to="/" class="logo">
+          <router-link :to="getLangRouterLink('/')" class="logo">
             <img alt="LuckPerms logo" src="@/assets/logo.png">
             <span>LuckPerms</span>
           </router-link>
@@ -11,47 +11,112 @@
 
         <ul>
           <li>
-            <router-link to="/">
+            <router-link :to="getLangRouterLink('/')">
               <font-awesome icon="home" />
-              Home
+              {{ getMessage('nav.home') }}
             </router-link>
           </li>
           <li v-if="!config.selfHosted">
-			      <router-link to="/download">
+			      <router-link :to="getLangRouterLink('/download')">
               <font-awesome icon="arrow-alt-circle-down" />
-              Download
+              {{ getMessage('nav.download') }}
             </router-link>
           </li>
           <li v-if="!config.selfHosted">
-			      <router-link to="/wiki">
+			      <router-link :to="getLangRouterLink('/wiki/Home')">
               <font-awesome icon="book" />
-              Wiki
+              {{ getMessage('nav.wiki') }}
             </router-link>
           </li>
           <li>
-          <span :class="{ 'router-link-active': isToolsRoute }">
-            <font-awesome icon="tools"/>
-            Tools
-          </span>
+            <span :class="{ 'router-link-active': isToolsRoute }">
+              <font-awesome icon="tools"/>
+              {{ getMessage('nav.tools') }}
+            </span>
             <ul>
               <li>
-                <router-link to="/editor">
+                <router-link :to="getLangRouterLink('/editor')">
                   <font-awesome icon="edit" fixed-width />
-                  Editor
+                  {{ getMessage('nav.editor') }}
                 </router-link>
               </li>
               <li>
-                <router-link to="/verbose">
+                <router-link :to="getLangRouterLink('/verbose')">
                   <font-awesome icon="comment-alt" fixed-width />
-                  Verbose
+                  {{ getMessage('nav.verbose') }}
                 </router-link>
               </li>
               <li>
-                <router-link to="/tree">
+                <router-link :to="getLangRouterLink('/tree')">
                   <font-awesome icon="sitemap" fixed-width />
-                  Tree
+                  {{ getMessage('nav.tree') }}
                 </router-link>
               </li>
+            </ul>
+          </li>
+          <li>
+            <span>
+              <font-awesome icon="language" />
+              {{ getMessage('nav.languages') }}
+            </span>
+            <ul>
+              <template v-if="this.getCurrentLang() !== 'de'">
+                <li v-if="config.defaultLang !== 'de'">
+                  <router-link :to="{ path: this.$route.path, query: { lang: 'de' } }" class="not-active-lang">
+                    <country-flag country='de' />
+                    Deutsch
+                  </router-link>
+                </li>
+                <li v-else>
+                  <router-link :to="{ path: this.$route.path }" class="not-active-lang">
+                    <country-flag country='de' />
+                    Deutsch
+                  </router-link>
+                </li>
+              </template>
+              <template v-else>
+                <li v-if="config.defaultLang !== 'de'">
+                  <router-link :to="{ path: this.$route.path, query: { lang: 'de' } }">
+                    <country-flag country='de' />
+                    Deutsch
+                  </router-link>
+                </li>
+                <li v-else>
+                  <router-link :to="{ path: this.$route.path }">
+                    <country-flag country='de' />
+                    Deutsch
+                  </router-link>
+                </li>
+              </template>
+
+              <template v-if="this.getCurrentLang() !== 'en'">
+                <li v-if="config.defaultLang !== 'en'">
+                  <router-link :to="{ path: this.$route.path, query: { lang: 'en' } }" class="not-active-lang">
+                    <country-flag country='us' />
+                    English
+                  </router-link>
+                </li>
+                <li v-else>
+                  <router-link :to="{ path: this.$route.path }" class="not-active-lang">
+                    <country-flag country='us' />
+                    English
+                  </router-link>
+                </li>
+              </template>
+              <template v-else>
+                <li v-if="config.defaultLang !== 'en'">
+                  <router-link :to="{ path: this.$route.path, query: { lang: 'en' } }">
+                    <country-flag country='us' />
+                    English
+                  </router-link>
+                </li>
+                <li v-else>
+                  <router-link :to="{ path: this.$route.path }">
+                    <country-flag country='us' />
+                    English
+                  </router-link>
+                </li>
+              </template>
             </ul>
           </li>
           <li class="external" v-if="!config.selfHosted">
@@ -123,6 +188,19 @@
     },
     created() {
       this.$store.dispatch('getAppData');
+    },
+    methods: {
+      getCurrentLang() {
+        if (!this.$route.query.lang) return this.config.defaultLang;
+        else return this.$route.query.lang;
+      },
+      getMessage(id) {
+        return this.$store.getters.messages[this.getCurrentLang()][id];
+      },
+      getLangRouterLink(link) {
+        if (this.getCurrentLang() === this.config.defaultLang) return link;
+        else return link + '?lang=' + this.getCurrentLang();
+      }
     }
   }
 </script>
@@ -325,6 +403,10 @@ body {
         a, span {
           &.router-link-active {
             color: #FFF;
+          }
+
+          &.not-active-lang {
+            color: $brand-color;
           }
         }
       }

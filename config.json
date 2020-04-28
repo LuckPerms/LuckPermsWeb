@@ -1,4 +1,5 @@
 {
   "bytebin_url": "https://bytebin.lucko.me/",
-  "selfHosted": false
+  "selfHosted": false,
+  "defaultLang": "en"
 }

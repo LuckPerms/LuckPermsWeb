@@ -16,6 +16,7 @@ import {
   faPlus,
   faSyncAlt,
   faBook,
+  faLanguage,
   faArrowAltCircleDown,
   faArrowLeft,
   faCaretRight,
@@ -38,6 +39,7 @@ import {
 
 import autofocus from 'vue-autofocus-directive';
 import VueClipboard from 'vue-clipboard2';
+import CountryFlag from 'vue-country-flag';
 
 import store from './store';
 import App from './App.vue';
@@ -64,6 +66,7 @@ library.add(
   faPlus,
   faSyncAlt,
   faBook,
+  faLanguage,
   faArrowAltCircleDown,
   faArrowLeft,
   faCaretRight,
@@ -84,6 +87,7 @@ library.add(
 );
 
 Vue.component('font-awesome', FontAwesomeIcon);
+Vue.component('country-flag', CountryFlag);
 
 Vue.use(require('vue-moment'));
 Vue.use(VueClipboard);

@@ -108,7 +108,10 @@ command_exists() {
 }
 
 get_nginx_ip() {
-    command_exists netstat || (echo "autodetect"; return 0)
+    if ! command_exists netstat; then
+        echo "autodetect"
+        return 0
+    fi
 
     local ip_version="$1"
 

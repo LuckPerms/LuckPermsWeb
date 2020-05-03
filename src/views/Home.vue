@@ -54,13 +54,13 @@
             </div>
           </div>
           <div>
-            <a href="/wiki" class="resource">
+            <router-link to="/wiki" class="resource">
               <span>
                 <font-awesome icon="book" />
                 Wiki
               </span>
               <small>Learn how to install, setup, configure and effectively use LuckPerms</small>
-            </a>
+            </router-link>
             <a href="https://github.com/lucko/LuckPerms" class="resource">
               <span>
                 <font-awesome :icon="['fab', 'github']" />

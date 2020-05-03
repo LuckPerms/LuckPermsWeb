@@ -3,7 +3,7 @@
     <div id="nav">
       <div class="container">
         <div>
-          <router-link :to="getLangRouterLink('/')" class="logo">
+          <router-link to="/" class="logo">
             <img alt="LuckPerms logo" src="@/assets/logo.png">
             <span>LuckPerms</span>
           </router-link>
@@ -11,45 +11,45 @@
 
         <ul>
           <li>
-            <router-link :to="getLangRouterLink('/')">
+            <router-link to="/" :class="{ 'router-link-exact-active': this.$route.path === '/' }">
               <font-awesome icon="home" />
-              {{ getMessage('nav.home') }}
+              {{ $t('nav.home') }}
             </router-link>
           </li>
           <li v-if="!config.selfHosted">
-			      <router-link :to="getLangRouterLink('/download')">
+			      <router-link to="/download">
               <font-awesome icon="arrow-alt-circle-down" />
-              {{ getMessage('nav.download') }}
+              {{ $t('nav.download') }}
             </router-link>
           </li>
           <li v-if="!config.selfHosted">
-			      <router-link :to="getLangRouterLink('/wiki/Home')">
+			      <router-link to="/wiki">
               <font-awesome icon="book" />
-              {{ getMessage('nav.wiki') }}
+              {{ $t('nav.wiki') }}
             </router-link>
           </li>
           <li>
             <span :class="{ 'router-link-active': isToolsRoute }">
               <font-awesome icon="tools"/>
-              {{ getMessage('nav.tools') }}
+              {{ $t('nav.tools') }}
             </span>
             <ul>
               <li>
-                <router-link :to="getLangRouterLink('/editor')">
+                <router-link to="/editor">
                   <font-awesome icon="edit" fixed-width />
-                  {{ getMessage('nav.editor') }}
+                  {{ $t('nav.editor') }}
                 </router-link>
               </li>
               <li>
-                <router-link :to="getLangRouterLink('/verbose')">
+                <router-link to="/verbose">
                   <font-awesome icon="comment-alt" fixed-width />
-                  {{ getMessage('nav.verbose') }}
+                  {{ $t('nav.verbose') }}
                 </router-link>
               </li>
               <li>
-                <router-link :to="getLangRouterLink('/tree')">
+                <router-link to="/tree">
                   <font-awesome icon="sitemap" fixed-width />
-                  {{ getMessage('nav.tree') }}
+                  {{ $t('nav.tree') }}
                 </router-link>
               </li>
             </ul>
@@ -57,18 +57,18 @@
           <li>
             <span>
               <font-awesome icon="language" />
-              {{ getMessage('nav.languages') }}
+              {{ $t('nav.languages') }}
             </span>
             <ul>
               <li>
-                <router-link :to="getLanguageSwitchLink('de')" :class="getLanguageSwitchClass('de')">
+                <router-link :to="this.$route.path" :class="getLanguageSwitchClass('de')" @click.native="setLocale('de')">
                   <country-flag country='de' />
                   Deutsch
                 </router-link>
               </li>
 
               <li>
-                <router-link :to="getLanguageSwitchLink('en')" :class="getLanguageSwitchClass('en')">
+                <router-link :to="this.$route.path" :class="getLanguageSwitchClass('en')" @click.native="setLocale('en')">
                   <country-flag country='us' />
                   English
                 </router-link>
@@ -144,26 +144,24 @@
     },
     created() {
       this.$store.dispatch('getAppData');
+
+      if (this.$route.path === '/' && this.$route.query.lang) this.$i18n.locale = this.$route.query.lang;
+      else {
+        const unwatch = this.$watch(
+          () => this.$route,
+          (route, prevRoute) => {
+            if (route.query.lang) this.$i18n.locale = route.query.lang;
+            unwatch();
+          }
+        );
+      }
     },
     methods: {
-      getCurrentLang() {
-        if (!this.$route.query.lang) return this.config.defaultLang;
-        else return this.$route.query.lang;
-      },
-      getMessage(id) {
-        return this.$store.getters.messages[this.getCurrentLang()][id];
-      },
-      getLangRouterLink(link) {
-        if (this.getCurrentLang() === this.config.defaultLang) return link;
-        else return link + '?lang=' + this.getCurrentLang();
-      },
-
-      getLanguageSwitchLink(lang) {
-        if (this.config.defaultLang !== lang) return { path: this.$route.path, query: { lang: lang } };
-        else return { path: this.$route.path };
-      },
       getLanguageSwitchClass(lang) {
-        return { 'not-active-lang': this.getCurrentLang() !== lang };
+        return { 'not-active-lang': this.$i18n.locale !== lang };
+      },
+      setLocale(locale) {
+        this.$i18n.locale = locale;
       }
     }
   }

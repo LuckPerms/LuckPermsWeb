@@ -40,7 +40,7 @@ git clone https://github.com/lucko/LuckPermsWeb.git
 LuckPermsWeb/installer/install.sh
 ```
 
-Answer the question and it will install all missing prerequisites and and the editor itself.
+Answer the questions and it will install all missing prerequisites and the editor itself.
 
 #### Update
 Just update the repo and run the install script again:

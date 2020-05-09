@@ -95,30 +95,8 @@ Vue.use(VueI18n);
 Vue.use(VueClipboard);
 
 const messages = {
-  "de": {
-    "nav": {
-      "home": "Hauptseite",
-      "download": "Herunterladen",
-      "wiki": "Wiki",
-      "tools": "Werkzeuge",
-      "editor": "Bearbeiter",
-      "verbose": "Verbose",
-      "tree": "Baum",
-      "languages": "Sprachen"
-    }
-  },
-  "en": {
-    "nav": {
-      "home": "Home",
-      "download": "Download",
-      "wiki": "Wiki",
-      "tools": "Tools",
-      "editor": "Editor",
-      "verbose": "Verbose",
-      "tree": "Tree",
-      "languages": "Languages"
-    }
-  },
+  "de": require('@/messages/de'),
+  "en": require('@/messages/en'),
 }
 
 const i18n = new VueI18n({

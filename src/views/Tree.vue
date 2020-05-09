@@ -47,7 +47,7 @@
           <h1>LuckPerms</h1>
           <p>Permission Tree Viewer</p>
           <template v-if="!errors.load">
-            <a href="/tree/demo"><button class="button demo-button">View Demo</button></a>
+            <a :href="demoLink"><button class="button demo-button">View Demo</button></a>
             <p>To generate a permission tree, do the following in game or from the console:</p>
             <ul>
               <li><code>/lp tree [scope] [player]</code></li>
@@ -76,6 +76,10 @@
     computed: {
       treeData() { return this.$store.getters.tree },
       errors() { return this.$store.state.tree.errors },
+      config() { return this.$store.getters.config },
+      demoLink() {
+        return '/tree/demo' + ((this.$i18n.locale !== this.config.defaultLocale) ? ( '?lang=' + this.$i18n.locale) : '');
+      },
     },
     created() {
       if (!this.treeData.sessionId) {

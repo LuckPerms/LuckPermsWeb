@@ -83,7 +83,7 @@
           <h1>LuckPerms</h1>
           <p>Verbose Viewer</p>
           <template v-if="!errors.load">
-            <a href="/verbose/demo"><button class="button demo-button">View Demo</button></a>
+            <a :href="demoLink"><button class="button demo-button">View Demo</button></a>
             <p>To generate a verbose report, do the following in game or from the console:</p>
             <ul>
               <li><code>/lp verbose record [filter]</code></li>
@@ -129,6 +129,10 @@
         });
       },
       errors() { return this.$store.state.verbose.errors },
+      config() { return this.$store.getters.config },
+      demoLink() {
+        return '/verbose/demo' + ((this.$i18n.locale !== this.config.defaultLocale) ? ( '?lang=' + this.$i18n.locale) : '');
+      },
     },
     created() {
       if (!this.verboseData.sessionId) {

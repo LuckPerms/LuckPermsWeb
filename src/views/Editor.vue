@@ -6,7 +6,7 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Web Permissions Editor</p>
-          <a href="/editor/demo"><button class="button demo-button">View Demo</button></a>
+          <a :href="getDemoLink"><button class="button demo-button">View Demo</button></a>
           <p>To start a new editor session, use one of the following commands:</p>
           <ul>
             <li><code>/lp editor</code></li>
@@ -167,6 +167,12 @@ export default {
     saveStatus() {
       return this.$store.getters.saveStatus;
     },
+    config() {
+      return this.$store.getters.config;
+    },
+    demoLink() {
+      return '/editor/demo' + ((this.$i18n.locale !== this.config.defaultLocale) ? ( '?lang=' + this.$i18n.locale) : ''); 
+    }
   },
 
   created() {

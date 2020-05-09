@@ -375,7 +375,7 @@ export default {
   background: $grey;
   padding: 0;
   border-radius: 4px;
-  z-index: 10;
+  z-index: 11;
   top: 50%;
   right: 3rem;
   transform: translateY(-50%);

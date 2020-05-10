@@ -83,14 +83,8 @@
     </div>
     <section class="hero">
       <h1>Extensions</h1>
+      <p>Extensions can modify the behaviour of LuckPerms, you can read more about them <router-link to="/wiki/Extensions">on the wiki</router-link></p>
     </section>
-    <div class="container extensions-description" >
-      <div class="resources">
-        <div>
-          <p>Extensions can modify the behaviour of LuckPerms, you can read more about them <router-link to="/wiki/Extensions">on the wiki</router-link></p>
-        </div>
-      </div>
-    </div>
     <div class="container extensions">
       <section class="resources">
         <div>
@@ -216,19 +210,6 @@ export default {
     
     .extensions section {
       margin-bottom: -8rem;
-    }
-    
-    .extensions-description {
-      margin-bottom: -8rem;
-    
-      .resources > div {
-        width: 100%;
-        
-        p {
-          text-align: center;
-          font-size: 1.5rem;
-        }
-      }
     }
   }
 </style>

@@ -4,14 +4,9 @@ import Home from './views/Home.vue';
 
 Vue.use(Router);
 
-export default new Router({
-  mode: 'history',
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home,
-    },
+var projectRoutes = [];
+if (!(require('@/../config').selfHosted)) {
+  projectRoutes = [
     {
       path: '/download',
       name: 'download',
@@ -29,36 +24,49 @@ export default new Router({
           component: () => import(/* webpackChunkName: "wiki" */ './components/Wiki/Article'),
         }
       ]
-    },
-    {
-      path: '/editor',
-      name: 'editor-home',
-      component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),
-    },
-    {
-      path: '/editor/:id',
-      name: 'editor',
-      component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),
-    },
-    {
-      path: '/verbose',
-      name: 'verbose-home',
-      component: () => import(/* webpackChunkName: "verbose" */ './views/Verbose'),
-    },
-    {
-      path: '/verbose/:id',
-      name: 'verbose',
-      component: () => import(/* webpackChunkName: "verbose" */ './views/Verbose'),
-    },
-    {
-      path: '/tree',
-      name: 'tree-home',
-      component: () => import(/* webpackChunkName: "tree" */ './views/Tree'),
-    },
-    {
-      path: '/tree/:id',
-      name: 'tree',
-      component: () => import(/* webpackChunkName: "tree" */ './views/Tree'),
-    },
-  ],
+    }
+  ];
+}
+
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: Home,
+  },
+  {
+    path: '/editor',
+    name: 'editor-home',
+    component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),
+  },
+  {
+    path: '/editor/:id',
+    name: 'editor',
+    component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),
+  },
+  {
+    path: '/verbose',
+    name: 'verbose-home',
+    component: () => import(/* webpackChunkName: "verbose" */ './views/Verbose'),
+  },
+  {
+    path: '/verbose/:id',
+    name: 'verbose',
+    component: () => import(/* webpackChunkName: "verbose" */ './views/Verbose'),
+  },
+  {
+    path: '/tree',
+    name: 'tree-home',
+    component: () => import(/* webpackChunkName: "tree" */ './views/Tree'),
+  },
+  {
+    path: '/tree/:id',
+    name: 'tree',
+    component: () => import(/* webpackChunkName: "tree" */ './views/Tree'),
+  }
+];
+
+export default new Router({
+  mode: 'history',
+  routes: routes.concat(projectRoutes),
 });

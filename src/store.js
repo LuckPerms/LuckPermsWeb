@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     version: null,
+    config: null,
     downloads: {
       bukkit: null,
       'bukkit-legacy': null,
@@ -48,6 +49,8 @@ export default new Vuex.Store({
 
   getters: {
     version: (state) => state.version,
+
+    config: (state) => state.config,
 
     downloads: (state) => state.downloads,
     
@@ -111,6 +114,10 @@ export default new Vuex.Store({
   mutations: {
     setVersion: (state, version) => {
       state.version = version;
+    },
+
+    setConfig: (state, config) => {
+      state.config = config;
     },
 
     setDownloads: (state, downloads) => {
@@ -392,6 +399,8 @@ export default new Vuex.Store({
           commit('setPatreonCount', response.data.data.attributes.patron_count);
         })
         .catch(console.error);
+
+      commit('setConfig', config);
     },
 
     getEditorData({ commit, dispatch }, sessionId) {

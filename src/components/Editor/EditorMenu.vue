@@ -186,10 +186,29 @@ export default {
 
 <style lang="scss">
   #editor-menu {
-    flex: 0 0 20em;
+    width: 100%;
+    max-width: 20rem;
     overflow-y: auto;
     max-height: 100%;
     border-right: 1px solid rgba(255,255,255,.2);
+    position: absolute;
+    z-index: 50;
+    background: black;
+    top: 4rem;
+    bottom: 0;
+    left: -20rem;
+    transition: left .2s;
+
+    @include breakpoint($sm) {
+      position: relative;
+      flex: 0 0 20rem;
+      left: unset;
+      top: unset;
+    }
+
+    &.active {
+      left: 0;
+    }
 
     .filter {
       position: sticky;
@@ -205,6 +224,13 @@ export default {
         padding: .5rem 1rem;
         width: 100%;
         outline-offset: -1px;
+        height: 4rem;
+        margin-left: 4rem;
+
+        @include breakpoint($sm) {
+          height: unset;
+          margin: 0;
+        }
       }
 
       .delete {

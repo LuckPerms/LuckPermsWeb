@@ -1,18 +1,21 @@
 <template>
   <main class="download">
     <section class="hero">
-      <h1>
-        <font-awesome icon="arrow-alt-circle-down" />
-        <span>Download LuckPerms</span>
-      </h1>
-      <p>
-        Current version: {{ version }}
-        <font-awesome icon="asterisk" :spin="true" v-if="!version" />
-      </p>
-      <button class="button" @click="openQuiz">
-        <font-awesome icon="question-circle" />
-        Not sure which version?
-      </button>
+      <div class="container">
+        <div>
+          <h1>Download LuckPerms</h1>
+          <p>
+            Current version: {{ version }}
+            <font-awesome icon="asterisk" :spin="true" v-if="!version" />
+          </p>
+        </div>
+        <div>
+          <button class="button" @click="openQuiz">
+            <font-awesome icon="question-circle" />
+            Not sure which version?
+          </button>
+        </div>
+      </div>
     </section>
 
     <div class="container">
@@ -82,7 +85,9 @@
       </section>
     </div>
     <section class="hero">
-      <h1>Extensions</h1>
+      <div class="container">
+        <h1>Extensions</h1>
+      </div>
     </section>
     <div class="container extensions-description" >
       <div class="resources">
@@ -102,7 +107,7 @@
             <small>LuckPerms 5.0 and above</small>
           </a>
         </div>
-        
+
         <div>
           <p>Allows some common API methods to be used by plugins that haven't upgraded to v5 version of the api yet.</p>
           <p>Check out the <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link> for more information!</p>
@@ -118,7 +123,7 @@
             <small>LuckPerms 5.0 and above</small>
           </a>
         </div>
-        
+
         <div>
           <p>Allows for other ways to make <router-link to="/wiki/Default-Groups">Default Groups</router-link> if the workarounds are not possible.</p>
           <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki section</router-link> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about configuring default assignments!</p>
@@ -167,35 +172,34 @@ export default {
     overflow-y: auto;
 
     .hero {
-      flex-direction: column;
-      align-items: center;
-      padding: 4rem;
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 4rem;
 
-      h1 {
-        position: relative;
-
-        svg {
-          position: absolute;
-          color: $brand-color;
-          top: -1.5rem;
-          left: -4rem;
-          font-size: 6rem;
-          z-index: 1;
-          opacity: .5;
-        }
-
-        span {
-          position: relative;
-          z-index: 2;
+        @include breakpoint($sm) {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
         }
       }
 
       p {
+        text-align: center;
         font-size: 1.5rem;
+
+        @include breakpoint($sm) {
+          text-align: left;
+        }
       }
 
       button {
         margin-top: 2rem;
+
+        @include breakpoint($sm) {
+          margin: 0;
+        }
 
         svg {
           opacity: .5;
@@ -213,17 +217,17 @@ export default {
         white-space: nowrap;
       }
     }
-    
+
     .extensions section {
       margin-bottom: -8rem;
     }
-    
+
     .extensions-description {
       margin-bottom: -8rem;
-    
+
       .resources > div {
         width: 100%;
-        
+
         p {
           text-align: center;
           font-size: 1.5rem;

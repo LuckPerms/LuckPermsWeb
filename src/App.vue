@@ -140,7 +140,7 @@ input:focus {
 }
 
 ::-webkit-scrollbar {
-  width: .5em;
+  width: .5rem;
 
   &-track {
     background: rgb(10, 10, 24);
@@ -154,6 +154,15 @@ input:focus {
 
 html {
   height: 100%;
+  font-size: 12px;
+
+  @include breakpoint($md) {
+    font-size: 14px;
+  }
+
+  @include breakpoint($lg) {
+    font-size: 16px;
+  }
 }
 
 body {

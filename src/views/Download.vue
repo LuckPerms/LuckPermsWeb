@@ -87,15 +87,9 @@
     <section class="hero">
       <div class="container">
         <h1>Extensions</h1>
+        <p>Extensions can modify the behaviour of LuckPerms, you can read more about them <router-link to="/wiki/Extensions">on the wiki</router-link></p>
       </div>
     </section>
-    <div class="container extensions-description" >
-      <div class="resources">
-        <div>
-          <p>Extensions can modify the behaviour of LuckPerms, you can read more about them <router-link to="/wiki/Extensions">on the wiki</router-link></p>
-        </div>
-      </div>
-    </div>
     <div class="container extensions">
       <section class="resources">
         <div>

@@ -9,30 +9,30 @@
           </router-link>
         </div>
 
-        <ul>
+        <ul :class="{ active: menu }">
           <li>
             <router-link to="/">
-              <font-awesome icon="home" />
+              <font-awesome icon="home" fixed-width />
               Home
             </router-link>
           </li>
           <li>
-			<router-link to="/download">
-              <font-awesome icon="arrow-alt-circle-down" />
+			      <router-link to="/download">
+              <font-awesome icon="arrow-alt-circle-down" fixed-width />
               Download
             </router-link>
           </li>
           <li>
-			<router-link to="/wiki">
-              <font-awesome icon="book" />
+			      <router-link to="/wiki">
+              <font-awesome icon="book" fixed-width />
               Wiki
             </router-link>
           </li>
           <li>
-          <span :class="{ 'router-link-active': isToolsRoute }">
-            <font-awesome icon="tools"/>
-            Tools
-          </span>
+            <span :class="{ 'router-link-active': isToolsRoute, tools: true }">
+              <font-awesome icon="tools" fixed-width />
+              Tools
+            </span>
             <ul>
               <li>
                 <router-link to="/editor">
@@ -56,20 +56,30 @@
           </li>
           <li class="external">
             <a href="https://github.com/lucko/LuckPerms" target="_blank" class="github">
-              <font-awesome  :icon="['fab', 'github']" />
+              <font-awesome :icon="['fab', 'github']" fixed-width />
+              <span>Github</span>
             </a>
           </li>
           <li class="external">
             <a href="https://discord.gg/luckperms" target="_blank" class="discord">
-              <font-awesome  :icon="['fab', 'discord']" />
+              <font-awesome :icon="['fab', 'discord']" fixed-width />
+              <span>Discord</span>
             </a>
           </li>
           <li class="external">
             <a href="https://patreon.com/luckdev" target="_blank" class="patreon">
-              <font-awesome  :icon="['fab', 'patreon']" />
+              <font-awesome :icon="['fab', 'patreon']" fixed-width />
+              <span>Patreon</span>
             </a>
           </li>
         </ul>
+
+        <button
+          id="nav-menu-toggle"
+          @click="menu = !menu"
+        >
+          <font-awesome icon="bars" />
+        </button>
       </div>
     </div>
 
@@ -105,6 +115,12 @@
 
 <script>
   export default {
+    data() {
+      return {
+        menu: false
+      }
+    },
+
     computed: {
       version() {
         return this.$store.getters.version;
@@ -120,6 +136,7 @@
         ].includes(this.$route.name);
       }
     },
+
     created() {
       this.$store.dispatch('getAppData');
     }
@@ -140,7 +157,7 @@ input:focus {
 }
 
 ::-webkit-scrollbar {
-  width: .5em;
+  width: .5rem;
 
   &-track {
     background: rgb(10, 10, 24);
@@ -154,12 +171,22 @@ input:focus {
 
 html {
   height: 100%;
+  font-size: 12px;
+
+  @include breakpoint($md) {
+    font-size: 14px;
+  }
+
+  @include breakpoint($lg) {
+    font-size: 16px;
+  }
 }
 
 body {
   margin: 0;
   height: 100vh;
   display: flex;
+  overflow-x: hidden;
 }
 
 #app {
@@ -243,6 +270,19 @@ body {
   }
 }
 
+#nav-menu-toggle {
+  background: transparent;
+  color: $brand-color;
+  height: 3rem;
+  width: 3rem;
+  font-size: 2rem;
+  border: 0;
+
+  @include breakpoint($sm) {
+    display: none;
+  }
+}
+
 #nav {
   padding: .5rem;
   z-index: 50;
@@ -290,10 +330,38 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
+    position: absolute;
+    top: 4rem;
+    transition: right .2s;
+    flex-direction: column;
+    background: black;
+    right: -100%;
+    width: 100%;
+    max-width: 20rem;
+    bottom: 0;
+
+    @include breakpoint($sm) {
+      flex-direction: row;
+      position: relative;
+      max-width: unset;
+      width: auto;
+      top: unset;
+      right: unset;
+      background: transparent;
+    }
+
+    &.active {
+      right: 0;
+    }
 
     li {
       display: flex;
       position: relative;
+      flex-direction: column;
+
+      @include breakpoint($sm) {
+        flex-direction: row;
+      }
 
       &:hover {
         background: rgba(255,255,255,.1);
@@ -304,14 +372,28 @@ body {
         display: flex;
         align-items: center;
         font-weight: bold;
-        padding: .5em 1rem;
+        padding: .5rem 1rem;
         text-decoration: none;
         text-transform: uppercase;
         transition: all .2s;
         cursor: pointer;
+        width: 100%;
+        font-size: 1.25rem;
+
+        @include breakpoint($sm) {
+          font-size: 1rem;
+        }
 
         &.router-link-exact-active {
           color: #FFF;
+        }
+
+        &.tools {
+          display: none;
+
+          @include breakpoint($sm) {
+            display: flex;
+          }
         }
 
         svg {
@@ -329,43 +411,59 @@ body {
       }
 
       > ul {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        flex-direction: column;
-        min-width: 100%;
-        background: $grey;
-        z-index: 100;
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
+        position: relative;
+        top: unset;
+        bottom: unset;
+        right: unset;
 
-        li {
-          &:hover {
-            background: rgba(255,255,255,.1);
+        @include breakpoint($sm) {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          flex-direction: column;
+          min-width: 100%;
+          background: $grey;
+          z-index: 100;
+          box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
+
+          li {
+            &:hover {
+              background: rgba(255,255,255,.1);
+            }
           }
-        }
 
-        a {
-          width: 100%;
+          a {
+            width: 100%;
+          }
         }
       }
 
-      &:hover {
-        ul {
-          display: flex;
+      @include breakpoint($sm) {
+        &:hover {
+          ul {
+            display: flex;
+          }
         }
       }
 
       &.external {
         svg {
           margin-right: 0;
-          opacity: 1;
+
+          @include breakpoint($sm) {
+            opacity: 1;
+          }
         }
 
         a {
           padding: 0 1rem;
-          font-size: 1.5rem;
+
+          @include breakpoint($sm) {
+            padding: .5rem 1rem;
+            font-size: 1.5rem;
+          }
 
           &.github {
             color: #FFF;
@@ -377,6 +475,15 @@ body {
 
           &.patreon {
             color: #f96854;
+          }
+
+          span {
+            color: inherit;
+            padding-left: .5rem;
+
+            @include breakpoint($sm) {
+              display: none;
+            }
           }
         }
       }

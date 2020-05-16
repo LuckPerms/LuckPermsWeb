@@ -1,4 +1,7 @@
 module.exports = {
+  // change the publicPath if you plan to serve the web tools from a subdirectory
+  // e.g. domain.com/permissions/editor -> you would set publicPath: '/permissions'
+  publicPath: '/',
   css: {
     loaderOptions: {
       sass: {

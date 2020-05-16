@@ -41,7 +41,18 @@
         </div>
 
         <div v-else class="editor-wrap container" :key="sessionId">
-          <editor-menu :sessions="sessions" :current-session="currentSession" />
+          <editor-menu
+            :sessions="sessions"
+            :current-session="currentSession"
+            :class="{ active: menu }"
+          />
+
+          <button
+            id="editor-menu-toggle"
+            @click="menu = !menu"
+          >
+            <font-awesome icon="bars" />
+          </button>
 
           <div class="editor-main">
             <nav>
@@ -121,6 +132,12 @@ export default {
     Modal,
   },
 
+  data() {
+    return {
+      menu: false
+    }
+  },
+
   computed: {
     sessionId() {
       return this.$store.getters.editorSessionId;
@@ -195,6 +212,23 @@ export default {
 </script>
 
 <style lang="scss">
+#editor-menu-toggle {
+  position: absolute;
+  left: 0;
+  z-index: 55;
+  background: transparent;
+  font: inherit;
+  font-size: 2rem;
+  border: 0;
+  height: 4rem;
+  width: 4rem;
+  color: $brand-color;
+
+  @include breakpoint($sm) {
+    display: none;
+  }
+}
+
 main.editor {
   display: flex;
   flex-direction: column;
@@ -225,8 +259,8 @@ main.editor {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: .5em 1rem;
-          font-size: 1.5em;
+          padding: 1rem;
+          font-size: 1.5rem;
           position: relative;
           z-index: 2;
 
@@ -234,12 +268,7 @@ main.editor {
             display: flex;
             align-items: center;
             font-weight: bold;
-
-            img {
-              height: 1.5em;
-              width: auto;
-              margin-right: .5em;
-            }
+            margin-left: 4rem;
 
             span {
               background: tomato;
@@ -250,12 +279,17 @@ main.editor {
             }
 
             small {
+              display: none;
               font-weight: normal;
               opacity: .6;
               font-size: 1rem;
               max-width: 15em;
               line-height: 1;
               margin-left: 1rem;
+
+              @include breakpoint($sm) {
+                display: block;
+              }
             }
           }
 

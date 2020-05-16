@@ -6,6 +6,9 @@ Vue.use(Router);
 
 export default new Router({
   mode: 'history',
+  // Change 'base' if you are serving from a subdirectory
+  // e.g. domain.com/permissions/editor -> set base: '/permissions'
+  base: '/',
   routes: [
     {
       path: '/',

@@ -71,8 +71,8 @@
           <ol>
             <li>Place the downloaded <code>.jar</code> file into your server's <code>plugins</code> or <code>mods</code> folder</li>
             <li>Start or restart your server - <strong>do not reload!</strong></li>
-            <li>Check your <code>plugins</code> or <code>mods</code> folder for a <code>LuckPerms</code> folder - see the tips below if the folder doesn't generate</li>
-            <li>Open the <code>config</code> file in your favourite text editor and adjust any settings to your liking</li>
+            <li>Check your <code>plugins</code> or <code>config</code> folder for a <code>LuckPerms</code> or <code>luckperms</code> folder - see the tips below if the folder doesn't generate</li>
+            <li>Open the <code>config.yml</code> or <code>luckperms.conf</code> file in your favourite text editor and adjust any settings to your liking</li>
           </ol>
           <h2>Having trouble installing?</h2>
           <ul>

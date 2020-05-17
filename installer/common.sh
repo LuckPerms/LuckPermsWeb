@@ -104,7 +104,7 @@ ask_yes_no() {
 command_exists() {
     local program="$1"
 
-    (which "$program" || sudo which "$program") > /dev/null
+    (which "$program" || sudo -n which "$program") > /dev/null 2>&1
 }
 
 get_nginx_ip() {

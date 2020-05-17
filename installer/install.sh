@@ -108,6 +108,15 @@ calculate_variables() {
     NGINX_LISTEN_DIRECTIVE_IPV6="$(get_nginx_sed_directive 6)"
 }
 
+setup_submodules() {
+    echo "Downloading and updating submodules..."
+    echo
+
+    git submodule update --init --recursive
+
+    echo
+}
+
 prepare_installation_location() {
     echo "Now installing LuckPermsWeb..."
     echo
@@ -241,6 +250,7 @@ print_config_instructions() {
 ask_questions
 install_prerequisites
 calculate_variables
+setup_submodules
 prepare_installation_location
 install_bytebin
 install_webfiles

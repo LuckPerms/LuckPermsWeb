@@ -24,7 +24,7 @@
       </ul>
     </div>
     <ul>
-      <li v-for="parent in parents" :key="`groupParent_${parent.id}`">
+      <li v-for="parent in parents" :key="`groupParent_${parent}`">
         <code
           @click="handleParentSessionSwitch(parent)"
           :title="`Go to the ${parent} group`"

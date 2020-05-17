@@ -96,7 +96,7 @@ calculate_variables() {
     "$USE_HTTPS" || USE_LETSENCRYPT=false
 
     PROTOCOL="$("$USE_HTTPS" && echo "https" || echo "http")"
-    EDITOR_URL="$PROTOCOL://$EXTERNAL_ADDRESS/"
+    BASE_URL="$PROTOCOL://$EXTERNAL_ADDRESS/"
     BYTEBIN_URL="${BASE_URL}bytebin/"
 
     if "$USE_HTTPS" && "$USE_LETSENCRYPT"; then

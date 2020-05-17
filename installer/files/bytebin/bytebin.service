@@ -1,0 +1,13 @@
+[Unit]
+Description=Bytebin service for LuckPerms
+After=network-online.target NetworkManager-wait-online.service
+
+[Service]
+Type=simple
+WorkingDirectory=<PATH>
+ExecStart=/usr/bin/env java -jar bytebin.jar
+User=<USER>
+Group=<GROUP>
+
+[Install]
+WantedBy=multi-user.target

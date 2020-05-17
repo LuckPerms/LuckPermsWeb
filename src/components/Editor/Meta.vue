@@ -20,15 +20,15 @@
       </ul>
     </div>
     <ul>
-      <li v-for="parent in sessionData.parents">
+      <li v-for="parent in parents">
         <code
           @click="handleParentSessionSwitch(parent)"
-          :title="`Go to the ${formatParent(parent)} group`"
+          :title="`Go to the ${parent} group`"
         >
-          {{ formatParent(parent) }}
+          {{ parent }}
           <span
             @click.stop="deleteParent(parent)"
-            :title="`Remove ${formatParent(parent)} as a parent`"
+            :title="`Remove ${parent} as a parent`"
           >
             <font-awesome icon="times" />
           </span>
@@ -77,27 +77,17 @@ export default {
       });
     },
     parents() {
-      return this.sessionData.parents.map(parent => {
+      return this.sessionData.parents
+        .filter(parent => parent.value)
+        .map(parent => {
         return parent.key.split('.').pop();
       });
     }
   },
 
   methods: {
-    formatParent(parent) {
-      const group = parent.key.split('.').pop();
-      if (parent.contexts && (parent.contexts.server || parent.contexts.world || parent.contexts.expiry || parent.contexts.context)) {
-        return `${group} *`;
-      }
-      return group;
-    },
     handleParentSessionSwitch(parent) {
-      const sessionId = this.$store.state.editor.sessionList.find((session) => {
-        const sessionObject = this.$store.state.editor.sessions[session];
-        return parent.key.indexOf(sessionObject.id) > -1;
-      });
-
-      this.$store.commit('setCurrentSession', sessionId);
+      this.$store.commit('setCurrentSession', parent);
     },
     addParentToGroup(parentId) {
       const node = {

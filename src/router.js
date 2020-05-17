@@ -6,30 +6,6 @@ const config = require('../config.json');
 
 Vue.use(Router);
 
-const projectRoutes = [];
-if (!config.selfHosted) {
-  projectRoutes.push([
-    {
-      path: '/download',
-      name: 'download',
-      component: () => import(/* webpackChunkName: "download" */ './views/Download'),
-    },
-    {
-      path: '/wiki',
-      name: 'wiki',
-      component: () => import(/* webpackChunkName: "wiki" */ './views/Wiki'),
-      redirect: '/wiki/Home',
-      children: [
-        {
-          path: ':page',
-          name: 'wiki-article',
-          component: () => import(/* webpackChunkName: "wiki" */ './components/Wiki/Article'),
-        }
-      ]
-    }
-  ]);
-}
-
 const routes = [
   {
     path: '/',
@@ -68,8 +44,29 @@ const routes = [
   }
 ];
 
+if (!config.selfHosted) {
+  routes.push({
+    path: '/download',
+    name: 'download',
+    component: () => import(/* webpackChunkName: "download" */ './views/Download'),
+  });
+  routes.push({
+    path: '/wiki',
+    name: 'wiki',
+    component: () => import(/* webpackChunkName: "wiki" */ './views/Wiki'),
+    redirect: '/wiki/Home',
+    children: [
+      {
+        path: ':page',
+        name: 'wiki-article',
+        component: () => import(/* webpackChunkName: "wiki" */ './components/Wiki/Article'),
+      }
+    ]
+  });
+}
+
 export default new Router({
   mode: 'history',
   base: config.base,
-  routes: routes.concat(projectRoutes),
+  routes,
 });

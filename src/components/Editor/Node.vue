@@ -101,9 +101,9 @@
             >
             <ul class="context-list" v-if="context.keyFocus">
               <li
-                v-for="(value, key) in potentialContexts"
-                @click="context.key = key"
-              >{{ key }}</li>
+                v-for="pContext in potentialContexts"
+                @click="context.key = pContext.key"
+              >{{ pContext.key }}</li>
             </ul>
           </span>
           <span class="edit">
@@ -117,7 +117,7 @@
             >
             <ul class="context-list" v-if="context.valueFocus">
               <li
-                v-for="value in potentialContexts[context.key]"
+                v-for="value in potentialContextValues"
                 @click="context.value = value"
               >{{ value }}</li>
             </ul>
@@ -177,6 +177,14 @@ export default {
     },
     potentialContexts() {
       return this.$store.getters.potentialContexts;
+    },
+    potentialContextValues() {
+      if (!this.context.key) return null;
+      const context = this.potentialContexts.find(context => {
+        return context.key === this.context.key;
+      });
+
+      return context.values;
     }
   },
   methods: {
@@ -355,8 +363,9 @@ export default {
     border: 0;
     background: rgba(0,0,0,0.2);
     border-radius: 2px;
-    padding: .2em .5em;
+    padding: .2rem .5rem;
     color: #FFF;
+    font-size: .8rem;
     font-family: 'Source Code Pro', monospace;
     line-height: 1.5;
   }
@@ -367,7 +376,7 @@ export default {
   background: $grey;
   padding: 0;
   border-radius: 4px;
-  z-index: 10;
+  z-index: 11;
   top: 50%;
   right: 3rem;
   transform: translateY(-50%);

@@ -1,4 +1,9 @@
+const config = require('./config.json');
+
 module.exports = {
+  // change the publicPath if you plan to serve the web tools from a subdirectory
+  // e.g. domain.com/permissions/editor -> you would set publicPath: '/permissions'
+  publicPath: config.base,
   css: {
     loaderOptions: {
       sass: {

@@ -2,10 +2,12 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 
+const config = require('../config.json');
+
 Vue.use(Router);
 
-var projectRoutes = [];
-if (!(require('@/../config').selfHosted)) {
+const projectRoutes = [];
+if (!config).selfHosted)) {
   projectRoutes = [
     {
       path: '/download',
@@ -68,5 +70,6 @@ const routes = [
 
 export default new Router({
   mode: 'history',
+  base: config.base,
   routes: routes.concat(projectRoutes),
 });

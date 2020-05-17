@@ -213,8 +213,17 @@ export default new Vuex.Store({
       state.editor.nodes = state.editor.nodes.filter(node => node.sessionId !== groupId);
     },
 
-    setPotentialContexts(state, array) {
-      state.editor.potentialContexts = array;
+    setPotentialContexts(state, contexts) {
+      let potentialContexts = [];
+
+      for (let [key, value] of Object.entries(contexts)) {
+        potentialContexts.push({
+          key,
+          values: Array.isArray(value) ? value : [ value ]
+        });
+      }
+
+      state.editor.potentialContexts = potentialContexts;
     },
 
     addEditorSession(state, {

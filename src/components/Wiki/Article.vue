@@ -36,11 +36,12 @@ export default {
   },
   methods: {
     getArticle() {
+      // eslint-disable-next-line global-require,import/no-dynamic-require
       this.article = require(`@/wiki/${this.route}.md`).default;
 
       this.$nextTick().then(() => {
-        document.querySelectorAll('.wiki a').forEach(link => {
-          link.addEventListener('click', event => {
+        document.querySelectorAll('.wiki a').forEach((link) => {
+          link.addEventListener('click', (event) => {
             event.preventDefault();
 
             let target;
@@ -48,13 +49,13 @@ export default {
             if (['STRONG', 'CODE'].includes(event.target.tagName)) {
               target = event.target.parentNode;
             } else if (event.target.tagName === 'A') {
-              target = event.target;
+              ({ target } = event);
             }
 
             if (target.href.startsWith(window.origin)) {
               this.$router.push({
                 path: target.pathname,
-                hash: target.hash
+                hash: target.hash,
               }).then().catch(() => {});
             } else {
               window.open(target.href);
@@ -83,11 +84,11 @@ export default {
       } else {
         document.getElementById('article').scrollTo({
           top: 0,
-          behavior: 'smooth'
+          behavior: 'smooth',
         });
       }
       this.getArticle();
-    }
+    },
   },
 };
 </script>

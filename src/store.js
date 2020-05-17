@@ -2,8 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
-const config = require('../config');
 const uuid = require('uuid/v4');
+const config = require('../config');
 
 Vue.use(Vuex);
 
@@ -43,50 +43,40 @@ export default new Vuex.Store({
       errors: {
         load: false,
       },
-    }
+    },
   },
 
 
   getters: {
-    version: (state) => state.version,
+    version: state => state.version,
 
-    config: (state) => state.config,
+    config: state => state.config,
 
-    downloads: (state) => state.downloads,
-    
-    extensions: (state) => state.extensions,
+    downloads: state => state.downloads,
 
-    discordUserCount: (state) => state.discordUserCount,
+    extensions: state => state.extensions,
 
-    patreonCount: (state) => state.patreonCount,
+    discordUserCount: state => state.discordUserCount,
 
-    editorSessionId: (state) => state.editor.sessionId,
+    patreonCount: state => state.patreonCount,
 
-    verbose: (state) => state.verbose,
+    editorSessionId: state => state.editor.sessionId,
 
-    tree: (state) => state.tree,
+    verbose: state => state.verbose,
 
-    metaData: (state) => {
-      return state.editor.metaData;
-    },
+    tree: state => state.tree,
 
-    sessionSet: (state) => {
-      if (state.editor.sessionList) {
-        return state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]);
-      }
-    },
+    metaData: state => state.editor.metaData,
 
-    currentSession: (state) => {
-      if (state.editor.sessions) return state.editor.sessions[state.editor.currentSession];
-    },
+    // eslint-disable-next-line max-len
+    sessionSet: state => state.editor.sessionList?.map(sessionId => state.editor.sessions[sessionId]),
 
-    currentNodes: (state) => {
-      if (state.editor.nodes) return state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession);
-    },
+    currentSession: state => state.editor.sessions[state.editor.currentSession],
 
-    allNodes: (state) => {
-      if (state.editor.nodes) return state.editor.nodes;
-    },
+    // eslint-disable-next-line max-len
+    currentNodes: state => state.editor.nodes?.filter(node => node.sessionId === state.editor.currentSession),
+
+    allNodes: state => state.editor.nodes,
 
     tracks: state => state.editor.tracks,
 
@@ -94,20 +84,15 @@ export default new Vuex.Store({
 
     potentialContexts: state => state.editor.potentialContexts,
 
+    // eslint-disable-next-line max-len
     modifiedSessions: (state, getters) => getters.sessionSet.filter(session => (session.new || session.modified))
       .map(session => session.id),
 
-    weightNodes: (state) => {
-      if (state.editor.nodes) return state.editor.nodes.filter(node => node.key.startsWith('weight'));
-    },
+    weightNodes: state => state.editor.nodes?.filter(node => node.key.startsWith('weight')),
 
-    saveStatus: (state) => {
-      if (state.editor.save) return state.editor.save.status;
-    },
+    saveStatus: state => state.editor.save?.status,
 
-    saveKey: (state) => {
-      if (state.editor.save) return state.editor.save.key;
-    },
+    saveKey: state => state.editor.save?.key,
   },
 
 
@@ -116,14 +101,14 @@ export default new Vuex.Store({
       state.version = version;
     },
 
-    setConfig: (state, config) => {
-      state.config = config;
+    setConfig: (state, configData) => {
+      state.config = configData;
     },
 
     setDownloads: (state, downloads) => {
       state.downloads = downloads;
     },
-    
+
     setExtensions: (state, extensions) => {
       state.extensions = extensions;
     },
@@ -181,9 +166,9 @@ export default new Vuex.Store({
     },
 
     updateTrack(state, { id, newTrack }) {
-      const track = state.editor.tracks.find(track => track.id === id);
+      const updatedTrack = state.editor.tracks.find(track => track.id === id);
 
-      track.groups = newTrack.groups;
+      updatedTrack.groups = newTrack.groups;
     },
 
     deleteTrack(state, trackId) {
@@ -214,12 +199,13 @@ export default new Vuex.Store({
     },
 
     setPotentialContexts(state, contexts) {
-      let potentialContexts = [];
+      const potentialContexts = [];
 
-      for (let [key, value] of Object.entries(contexts)) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [key, value] of Object.entries(contexts)) {
         potentialContexts.push({
           key,
-          values: Array.isArray(value) ? value : [ value ]
+          values: Array.isArray(value) ? value : [value],
         });
       }
 
@@ -239,7 +225,7 @@ export default new Vuex.Store({
       // state.editor.sessions[id] = ;
       state.editor.sessionList.push(id);
 
-      const deletedGroups = state.editor.deletedGroups;
+      const { deletedGroups } = state.editor;
 
       if (deletedGroups.includes(id)) {
         deletedGroups.splice(deletedGroups.findIndex(groupId => groupId === id), 1);
@@ -247,19 +233,23 @@ export default new Vuex.Store({
     },
 
     addEditorNode(state, node) {
-      if (node.expiry instanceof Date) node.expiry = node.expiry.getTime() / 1000;
+      const addingNode = node;
 
-      state.editor.nodes.push(node);
+      if (node.expiry instanceof Date) addingNode.expiry = node.expiry.getTime() / 1000;
 
-      if (node.isNew && state.editor.sessions[node.sessionId]) state.editor.sessions[node.sessionId].modified = true;
+      state.editor.nodes.push(addingNode);
+
+      if (node.isNew && state.editor.sessions[node.sessionId]) {
+        state.editor.sessions[node.sessionId].modified = true;
+      }
     },
 
     deleteNode(state, nodeId) {
-      const node = state.editor.nodes.find(node => node.id === nodeId);
+      const deletingNode = state.editor.nodes.find(node => node.id === nodeId);
 
       state.editor.nodes = state.editor.nodes.filter(node => node.id !== nodeId);
 
-      state.editor.sessions[node.sessionId].modified = true;
+      state.editor.sessions[deletingNode.sessionId].modified = true;
     },
 
     setCurrentSession(state, sessionId) {
@@ -286,19 +276,23 @@ export default new Vuex.Store({
     },
 
     updateNode(state, payload) {
+      const updatedNode = payload;
+
       if (payload.type !== 'expiry') {
-        payload.node[payload.type] = payload.data.value;
+        updatedNode.node[payload.type] = payload.data.value;
       } else {
-        payload.node[payload.type] = payload.data.value.getTime() / 1000;
+        updatedNode.node[payload.type] = payload.data.value.getTime() / 1000;
       }
 
-      payload.node.modified = true;
+      updatedNode.node.modified = true;
       state.editor.sessions[payload.node.sessionId].modified = true;
     },
 
     updateNodeContext(state, payload) {
-      payload.node.context = payload.data;
-      payload.node.modified = true;
+      const updatedNode = payload;
+
+      updatedNode.node.context = payload.data;
+      updatedNode.node.modified = true;
       state.editor.sessions[payload.node.sessionId].modified = true;
     },
 
@@ -351,7 +345,7 @@ export default new Vuex.Store({
       state.verbose.metadata = data.metadata;
       state.verbose.sessionId = data.sessionId;
     },
-    
+
     setVerboseLoadError(state) {
       state.verbose.errors.load = true;
     },
@@ -361,7 +355,7 @@ export default new Vuex.Store({
       state.tree.metadata = data.metadata;
       state.tree.sessionId = data.sessionId;
     },
-    
+
     setTreeLoadError(state) {
       state.tree.errors.load = true;
     },
@@ -374,7 +368,7 @@ export default new Vuex.Store({
         .then((response) => {
           const filename = response.data.artifacts[0].fileName;
           commit('setVersion', filename.split('-').pop().slice(0, -4));
-          let downloads = {};
+          const downloads = {};
           response.data.artifacts.forEach((artifact) => {
             const download = artifact.relativePath.split('/')[0];
             downloads[download] = `${response.data.url}artifact/${artifact.relativePath}`;
@@ -382,10 +376,10 @@ export default new Vuex.Store({
           commit('setDownloads', downloads);
         })
         .catch(console.error);
-        
-      const extensionIds = [ 'extension-legacy-api', 'extension-default-assignments' ];
-      let extensions = {};
-      extensionIds.forEach(( extensionId ) => {
+
+      const extensionIds = ['extension-legacy-api', 'extension-default-assignments'];
+      const extensions = {};
+      extensionIds.forEach((extensionId) => {
         axios.get(`https://ci.lucko.me/job/${extensionId}/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]`)
           .then((response) => {
             response.data.artifacts.forEach((artifact) => {
@@ -416,13 +410,13 @@ export default new Vuex.Store({
       commit('initEditorData', sessionId);
 
       if (sessionId === 'demo') {
-        import('./data/editor-demo.json').then(json => {
+        import('./data/editor-demo.json').then((json) => {
           dispatch('setEditorData', json.default);
         });
       } else {
         axios.get(`${config.bytebin_url}${sessionId}`)
           .then((response) => {
-            const data = response.data;
+            const { data } = response;
             dispatch('setEditorData', data, sessionId);
           })
           .catch((error) => {
@@ -436,7 +430,7 @@ export default new Vuex.Store({
     setEditorData({ commit, dispatch }, data) {
       commit('setMetaData', data.metadata);
 
-      data.permissionHolders.forEach((session, index) => {
+      data.permissionHolders.forEach((session) => {
         session.nodes.forEach((node) => {
           dispatch('addNodes', [{
             sessionId: session.id,
@@ -459,12 +453,13 @@ export default new Vuex.Store({
       commit('addKnownPermission', permission);
     },
 
-    addNodes({ commit, getters }, nodes) {
-      nodes.forEach(node => {
-        node.id = uuid();
-        node.expiry = node.expiry || null;
-        node.context = node.context || {};
-        commit('addEditorNode', node);
+    addNodes({ commit }, nodes) {
+      nodes.forEach((node) => {
+        const addingNode = node;
+        addingNode.id = uuid();
+        addingNode.expiry = node.expiry || null;
+        addingNode.context = node.context || {};
+        commit('addEditorNode', addingNode);
       });
     },
 
@@ -584,7 +579,7 @@ export default new Vuex.Store({
         });
       });
 
-      getters.tracks.forEach(track => {
+      getters.tracks.forEach((track) => {
         payload.changes.push({
           type: 'track',
           id: track.id,
@@ -601,9 +596,9 @@ export default new Vuex.Store({
         .catch(console.error);
     },
 
-    getVerboseData({ state, commit }, sessionId) {
+    getVerboseData({ commit }, sessionId) {
       if (sessionId === 'demo') {
-        import('./data/verbose-demo.json').then(json => {
+        import('./data/verbose-demo.json').then((json) => {
           commit('setVerboseData', json.default);
         });
       } else {
@@ -611,7 +606,7 @@ export default new Vuex.Store({
           .then((response) => {
             const data = {
               ...response.data,
-              sessionId
+              sessionId,
             };
             commit('setVerboseData', data);
           })
@@ -623,9 +618,9 @@ export default new Vuex.Store({
       }
     },
 
-    getTreeData({ state, commit }, sessionId) {
+    getTreeData({ commit }, sessionId) {
       if (sessionId === 'demo') {
-        import('./data/tree-demo.json').then(json => {
+        import('./data/tree-demo.json').then((json) => {
           commit('setTreeData', json.default);
         });
       } else {
@@ -633,7 +628,7 @@ export default new Vuex.Store({
           .then((response) => {
             const data = {
               ...response.data,
-              sessionId
+              sessionId,
             };
             commit('setTreeData', data);
           })
@@ -643,6 +638,6 @@ export default new Vuex.Store({
             commit('setTreeLoadError');
           });
       }
-    }
+    },
   },
 });

@@ -11,23 +11,23 @@
 </template>
 
 <script>
-  import Sidebar from '../wiki/_Sidebar.md';
+import Sidebar from '../wiki/_Sidebar.md';
 
-  export default {
-    components: {
-      Sidebar
-    },
-  }
+export default {
+  components: {
+    Sidebar,
+  },
+};
 </script>
 
 <style lang="scss">
   .wiki {
     display: flex;
     align-items: flex-start;
-	  background-color: $grey;
+    background-color: $grey;
     height: 100%;
     flex-wrap: wrap;
-    
+
     .header-anchor {
       text-decoration: none;
       display: none;
@@ -37,7 +37,7 @@
   aside {
     width: 100%;
     padding: 2em 2em 0 2em;
-	  background-color: rgba(0,0,0,.25);
+    background-color: rgba(0,0,0,.25);
     order: 2;
 
     @include breakpoint($md) {
@@ -173,12 +173,12 @@
 
       img {
         max-width: 100%;
-        
+
         &:not([src$="png"]) {
           box-shadow: 0 0 1rem rgba(0,0,0,.2);
         }
       }
-      
+
       h2:hover > .header-anchor,
       h3:hover > .header-anchor {
         display: initial;

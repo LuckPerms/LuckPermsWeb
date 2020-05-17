@@ -1,8 +1,6 @@
 const config = require('./config.json');
 
 module.exports = {
-  // change the publicPath if you plan to serve the web tools from a subdirectory
-  // e.g. domain.com/permissions/editor -> you would set publicPath: '/permissions'
   publicPath: config.base,
   css: {
     loaderOptions: {
@@ -14,8 +12,8 @@ module.exports = {
       },
     },
   },
-  chainWebpack: config => {
-    config.module
+  chainWebpack: (webpackConfig) => {
+    webpackConfig.module
       .rule('md')
       .test(/\.md$/)
       .use('vue-loader')
@@ -27,12 +25,14 @@ module.exports = {
         raw: true,
         linkify: true,
         use: [
+          // eslint-disable-next-line global-require
           [require('markdown-it-anchor'), {
-            "permalink": true,
-            "permalinkSymbol": "🔗"
+            permalink: true,
+            permalinkSymbol: '🔗',
           }],
-          require('markdown-it-emoji')
-        ]
-      })
+          // eslint-disable-next-line global-require
+          require('markdown-it-emoji'),
+        ],
+      });
   },
 };

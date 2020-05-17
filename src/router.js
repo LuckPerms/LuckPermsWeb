@@ -41,7 +41,7 @@ const routes = [
     path: '/tree/:id',
     name: 'tree',
     component: () => import(/* webpackChunkName: "tree" */ './views/Tree'),
-  }
+  },
 ];
 
 if (!config.selfHosted) {
@@ -60,8 +60,8 @@ if (!config.selfHosted) {
         path: ':page',
         name: 'wiki-article',
         component: () => import(/* webpackChunkName: "wiki" */ './components/Wiki/Article'),
-      }
-    ]
+      },
+    ],
   });
 }
 

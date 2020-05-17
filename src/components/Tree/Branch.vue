@@ -2,51 +2,54 @@
   <div class="branch" :class="!node ? 'no-node' : ''">
     <div class="node" @click="open = !open" v-if="node">
       <button v-if="hasChildren && node">
-        <font-awesome icon="caret-right" :rotation="open ? 90 : 0" />
+        <font-awesome icon="caret-right" :rotation="open ? 90 : null" />
       </button>
       <code>{{ node }}</code>
     </div>
-    <branch
-      v-for="(branch, node) in branchData"
-      :node="node"
-      :branch-data="branch"
-      v-if="open && hasChildren"
-    />
+    <template v-if="open && hasChildren">
+      <branch
+        v-for="(branch, node) in branchData"
+        :node="node"
+        :branch-data="branch"
+        :key="node"
+      />
+    </template>
   </div>
 </template>
 
 <script>
-  import Branch from './Branch';
+// eslint-disable-next-line import/no-self-import
+import Branch from './Branch.vue';
 
-  export default {
-    name: 'branch',
-    components: {
-      Branch
+export default {
+  name: 'branch',
+  components: {
+    Branch,
+  },
+  props: {
+    node: String,
+    branchData: Object,
+  },
+  data() {
+    return {
+      open: true,
+    };
+  },
+  computed: {
+    hasChildren() {
+      return Object.keys(this.branchData).length;
     },
-    props: {
-      node: String,
-      branchData: Object
-    },
-    data() {
-      return {
-        open: true,
-      }
-    },
-    computed: {
-      hasChildren() {
-        return Object.keys(this.branchData).length;
-      }
-    },
-    created() {
-      this.$root.$on('collapseTree', () => {
-        if (this.node) this.open = false;
-      });
+  },
+  created() {
+    this.$root.$on('collapseTree', () => {
+      if (this.node) this.open = false;
+    });
 
-      this.$root.$on('expandTree', () => {
-        this.open = true;
-      });
-    }
-  }
+    this.$root.$on('expandTree', () => {
+      this.open = true;
+    });
+  },
+};
 </script>
 
 <style lang="scss">

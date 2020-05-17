@@ -36,7 +36,7 @@ The automatic setup is fairly straight forward.
 Just run those commands as a user that has `sudo` permissions:
 
 ```sh
-git clone https://github.com/lucko/LuckPermsWeb.git
+git clone --branch website https://github.com/lucko/LuckPermsWeb.git
 LuckPermsWeb/installer/install.sh
 ```
 

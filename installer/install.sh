@@ -97,7 +97,7 @@ calculate_variables() {
 
     PROTOCOL="$("$USE_HTTPS" && echo "https" || echo "http")"
     EDITOR_URL="$PROTOCOL://$EXTERNAL_ADDRESS/"
-    BYTEBIN_URL="${EDITOR_URL}bytebin/"
+    BYTEBIN_URL="${BASE_URL}bytebin/"
 
     if "$USE_HTTPS" && "$USE_LETSENCRYPT"; then
         HTTPS_CERT_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
@@ -226,8 +226,11 @@ print_config_instructions() {
     echo
     echo "Now all that's left to do is add these lines to the end of your LuckPerms config:"
     echo
-    echo "# Using a selfhosted web editor instance"
-    echo "web-editor-url: '$EDITOR_URL'"
+    echo "# Using a selfhosted LuckPermsWeb instance"
+    echo "web-editor-url: '${BASE_URL}editor/'"
+    echo "verbose-viewer-url: '${BASE_URL}verbose/'"
+    echo "tree-viewer-url: '${BASE_URL}tree/'"
+    echo
     echo "bytebin-url: '$BYTEBIN_URL'"
 }
 

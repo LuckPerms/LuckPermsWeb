@@ -70,7 +70,7 @@
       </div>
       <div class="col-2">
         <ul class="data">
-          <li v-for="node in filteredNodes">
+          <li v-for="(node, index) in filteredNodes" :key="`verboseNode_${node}_${index}`">
             <Node :node="node" />
           </li>
         </ul>
@@ -93,7 +93,8 @@
             </ul>
           </template>
           <div v-if="errors.load" class="error">
-            <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong or the session has expired.</p>
+            <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong
+              or the session has expired.</p>
             <p>Please generate another editor session with <code>/lp editor</code>.</p>
           </div>
         </div>
@@ -103,50 +104,48 @@
 </template>
 
 <script>
-  import Node from '../components/Verbose/Node';
-  import Avatar from '../components/Avatar';
+import Node from '../components/Verbose/Node.vue';
+import Avatar from '../components/Avatar.vue';
 
-  export default {
-    components: {
-      Node,
-      Avatar
-    },
-    data() {
-      return {
-        filter: ''
-      }
-    },
-    computed: {
-      verboseData() { return this.$store.getters.verbose },
-      filteredNodes() {
-        const data = this.verboseData.data;
-        if (!this.filter) return data;
-        return data.filter(node => {
-
-          return node.permission?.includes(this.filter)
+export default {
+  components: {
+    Node,
+    Avatar,
+  },
+  data() {
+    return {
+      filter: '',
+    };
+  },
+  computed: {
+    verboseData() { return this.$store.getters.verbose; },
+    filteredNodes() {
+      const { data } = this.verboseData;
+      if (!this.filter) return data;
+      return data.filter(node => node.permission?.includes(this.filter)
             || node.key?.includes(this.filter)
-            || node.who.identifier.includes(this.filter);
-        });
-      },
-      errors() { return this.$store.state.verbose.errors },
+            || node.who.identifier.includes(this.filter));
     },
-    created() {
-      if (!this.verboseData.sessionId) {
-        let sessionId;
+    errors() { return this.$store.state.verbose.errors; },
+  },
+  created() {
+    if (!this.verboseData.sessionId) {
+      let sessionId;
 
-        if (this.$route.params.id) {
-          sessionId = this.$route.params.id;
-        } else if (this.$route.query.id) {
-          sessionId = this.$route.query.id;
-        } else if (this.$route.hash) {
-          sessionId = this.$route.hash.split('#')[1];
-        }
-        if (sessionId) {
-          this.$store.dispatch('getVerboseData', sessionId);
-        }
+      if (this.$route.params.id) {
+        sessionId = this.$route.params.id;
+      } else if (this.$route.query.id) {
+        sessionId = this.$route.query.id;
+      } else if (this.$route.hash) {
+        // eslint-disable-next-line prefer-destructuring
+        sessionId = this.$route.hash.split('#')[1];
       }
-    },
-  }
+      if (sessionId) {
+        this.$store.dispatch('getVerboseData', sessionId);
+      }
+    }
+  },
+};
 </script>
 
 <style lang="scss">

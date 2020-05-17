@@ -69,17 +69,25 @@
         <div>
           <h2>How to install:</h2>
           <ol>
-            <li>Place the downloaded <code>.jar</code> file into your server's <code>plugins</code> or <code>mods</code> folder</li>
+            <li>Place the downloaded <code>.jar</code> file into your server's <code>plugins</code>
+              or <code>mods</code> folder</li>
             <li>Start or restart your server - <strong>do not reload!</strong></li>
-            <li>Check your <code>plugins</code> or <code>config</code> folder for a <code>LuckPerms</code> or <code>luckperms</code> folder - see the tips below if the folder doesn't generate</li>
-            <li>Open the <code>config.yml</code> or <code>luckperms.conf</code> file in your favourite text editor and adjust any settings to your liking</li>
+            <li>Check your <code>plugins</code> or <code>config</code> folder for a
+              <code>LuckPerms</code> or <code>luckperms</code> folder - see the tips below if the
+              folder doesn't generate</li>
+            <li>Open the <code>config.yml</code> or <code>luckperms.conf</code> file in your
+              favourite text editor and adjust any settings to your liking</li>
           </ol>
           <h2>Having trouble installing?</h2>
           <ul>
             <li>Make sure to check your console for any errors - especially during start up</li>
-            <li>Check the <router-link to="/wiki">wiki</router-link> to see if you missed any important steps during setup</li>
-            <li>Delete the <code>libs</code> folder and restart the server to let it regenerate, sometimes this may fix the problem</li>
-            <li>If all else fails, join our <a href="https://discord.gg/luckperms" target="_blank">Discord</a> to get some support</li>
+            <li>Check the <router-link to="/wiki">wiki</router-link> to see if you missed any
+              important steps during setup</li>
+            <li>Delete the <code>libs</code> folder and restart the server to let it regenerate,
+              sometimes this may fix the problem</li>
+            <li>If all else fails, join our
+              <a href="https://discord.gg/luckperms" target="_blank">Discord</a>
+              to get some support</li>
           </ul>
         </div>
       </section>
@@ -87,7 +95,8 @@
     <section class="hero">
       <div class="container">
         <h1>Extensions</h1>
-        <p>Extensions can modify the behaviour of LuckPerms, you can read more about them <router-link to="/wiki/Extensions">on the wiki</router-link></p>
+        <p>Extensions can modify the behaviour of LuckPerms, you can read more about them
+          <router-link to="/wiki/Extensions">on the wiki</router-link></p>
       </div>
     </section>
     <div class="container extensions">
@@ -103,8 +112,11 @@
         </div>
 
         <div>
-          <p>Allows some common API methods to be used by plugins that haven't upgraded to v5 version of the api yet.</p>
-          <p>Check out the <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link> for more information!</p>
+          <p>Allows some common API methods to be used by plugins that haven't upgraded to v5
+            version of the api yet.</p>
+          <p>Check out the
+            <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link>
+            for more information!</p>
         </div>
       </section>
       <section class="resources">
@@ -119,8 +131,13 @@
         </div>
 
         <div>
-          <p>Allows for other ways to make <router-link to="/wiki/Default-Groups">Default Groups</router-link> if the workarounds are not possible.</p>
-          <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki section</router-link> for more information! See also <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about configuring default assignments!</p>
+          <p>Allows for other ways to make
+            <router-link to="/wiki/Default-Groups">Default Groups</router-link>
+            if the workarounds are not possible.</p>
+          <p>Check out the<router-link to="/wiki/Extensions#extension-default-assignments">wiki
+            section</router-link> for more information! See also
+            <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about
+            configuring default assignments!</p>
         </div>
       </section>
     </div>
@@ -145,9 +162,9 @@ export default {
     };
   },
   computed: {
-    extensions() { return this.$store.getters.extensions },
-    downloads() { return this.$store.getters.downloads },
-    version() { return this.$store.getters.version }
+    extensions() { return this.$store.getters.extensions; },
+    downloads() { return this.$store.getters.downloads; },
+    version() { return this.$store.getters.version; },
   },
   methods: {
     openQuiz() {

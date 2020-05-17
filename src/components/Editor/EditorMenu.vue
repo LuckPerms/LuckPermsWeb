@@ -1,7 +1,12 @@
 <template>
   <nav id="editor-menu">
     <div class="filter">
-      <input type="text" placeholder="Search" v-model="filter" title="Filter tracks, groups and users">
+      <input
+        type="text"
+        placeholder="Search"
+        v-model="filter"
+        title="Filter tracks, groups and users"
+      >
       <button class="delete" @click="filter = ''" v-if="filter !== ''" title="Clear filter">
         <font-awesome icon="times" fixed-width />
       </button>
@@ -57,7 +62,11 @@
             <li
               v-for="group in filteredGroups"
               @click="changeCurrentSession(group.id)"
-              :class="{ 'active': currentSession && currentSession === group, 'modified': modifiedSessions.includes(group.id), 'new': group.new }"
+              :class="{
+                'active': currentSession && currentSession === group,
+                'modified': modifiedSessions.includes(group.id),
+                'new': group.new
+              }"
               :key="`group_${group.id}`"
               title="Edit group"
             >
@@ -101,8 +110,8 @@
 </template>
 
 <script>
-import EditorMenuTrack from './EditorMenuTrack';
-import EditorMenuGroup from './EditorMenuGroup';
+import EditorMenuTrack from './EditorMenuTrack.vue';
+import EditorMenuGroup from './EditorMenuGroup.vue';
 
 export default {
   name: 'editor-menu',
@@ -146,7 +155,8 @@ export default {
       }).sort((a, b) => a.id.localeCompare(b.id));
     },
     filteredGroups() {
-      return this.groups.filter(group => group.id.includes(this.filter) || group.displayName.includes(this.filter));
+      return this.groups.filter(group => group.id.includes(this.filter)
+        || group.displayName.includes(this.filter));
     },
     filteredUsers() {
       return this.users.filter(user => user.displayName.includes(this.filter));

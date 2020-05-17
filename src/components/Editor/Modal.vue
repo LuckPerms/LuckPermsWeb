@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import CreateGroup from './Modals/CreateGroup';
-import DeleteGroup from './Modals/DeleteGroup';
-import CreateTrack from './Modals/CreateTrack';
-import SavedChanges from './Modals/SavedChanges';
+import CreateGroup from './Modals/CreateGroup.vue';
+import DeleteGroup from './Modals/DeleteGroup.vue';
+import CreateTrack from './Modals/CreateTrack.vue';
+import SavedChanges from './Modals/SavedChanges.vue';
 
 export default {
   name: 'Modal',

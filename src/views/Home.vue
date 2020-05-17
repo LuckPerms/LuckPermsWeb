@@ -32,10 +32,22 @@
       <section class="resources">
         <div>
           <h2>Why LuckPerms?</h2>
-          <p>LuckPerms is an advanced permissions implementation aiming to be a fast, reliable and flexible alternative to existing permission plugins. The project's main goals are centered around high performance and a wide feature set, filling the gaps of functionality and building upon existing features found in other plugins. LuckPerms also includes an extensive API for developers, and support for a variety of Minecraft server software & data storage options.</p>
+          <p>LuckPerms is an advanced permissions implementation aiming to be a fast, reliable and
+            flexible alternative to existing permission plugins. The project's main goals are
+            centered around high performance and a wide feature set, filling the gaps of
+            functionality and building upon existing features found in other plugins. LuckPerms also
+            includes an extensive API for developers, and support for a variety of Minecraft server
+            software & data storage options.</p>
 
           <h2>Migration from other plugins</h2>
-          <p>LuckPerms has built in support to allow easy migration of permissions data from existing permissions plugins. It should be noted that this system is not perfect. It will do a pretty decent job at converting all of your existing data, and works perfectly in most cases. However, not all data is the same, and there are sometimes things that haven't been accounted for. See the <router-link to="/wiki/Migration">migration</router-link> wiki page for more details.</p>
+          <p>
+            LuckPerms has built in support to allow easy migration of permissions data from
+            existing permissions plugins. It should be noted that this system is not perfect.
+            It will do a pretty decent job at converting all of your existing data, and works
+            perfectly in most cases. However, not all data is the same, and there are sometimes
+            things that haven't been accounted for. See the
+            <router-link to="/wiki/Migration">migration</router-link> wiki page for more details.
+          </p>
 
           <div class="tools">
             <router-link to="/editor" alt="Web Editor">
@@ -72,7 +84,8 @@
               <font-awesome :icon="['fab', 'discord']" />
               Discord
             </span>
-            <small>Join {{ discordUserCount }} others to discuss the project and ask/answer questions</small>
+            <small>Join {{ discordUserCount }} others to discuss the project and ask/answer
+              questions</small>
           </a>
           <a href="https://patreon.com/luckdev" class="resource">
             <span>
@@ -124,12 +137,12 @@ export default {
     config() {
       return this.$store.getters.config;
     },
-    discordUserCount () {
+    discordUserCount() {
       return this.$store.getters.discordUserCount;
     },
     patreonCount() {
       return this.$store.getters.patreonCount;
-    }
+    },
   },
 };
 </script>

@@ -3,7 +3,9 @@
   <h1>
     <small>{{sessionData.type}}:</small>
     <code>{{session.displayName}}</code>
-    <span v-if="sessionData.type == 'group' && session.displayName !== session.id">{{ session.id }}</span>
+    <span v-if="sessionData.type == 'group' && session.displayName !== session.id">
+      {{ session.id }}
+    </span>
     <avatar
       v-if="sessionData.type == 'user'"
       :id="session.id"
@@ -14,22 +16,22 @@
 </template>
 
 <script>
-  import Avatar from '../Avatar';
+import Avatar from '../Avatar.vue';
 
-  export default {
-    components: {
-      Avatar
-    },
-    name: 'Header',
-    props: {
-      session: Object,
-      sessionData: Object,
-    },
+export default {
+  components: {
+    Avatar,
+  },
+  name: 'Header',
+  props: {
+    session: Object,
+    sessionData: Object,
+  },
 
-    methods: {
+  methods: {
 
-    },
-  }
+  },
+};
 </script>
 
 <style lang="scss">

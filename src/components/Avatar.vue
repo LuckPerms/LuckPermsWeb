@@ -6,18 +6,18 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      id: {
-        required: true
-      },
-      name: {
-        required: true
-      },
-      size: {
-        type: Number,
-        default: 100
-      }
-    }
-  }
+export default {
+  props: {
+    id: {
+      required: true,
+    },
+    name: {
+      required: true,
+    },
+    size: {
+      type: Number,
+      default: 100,
+    },
+  },
+};
 </script>

@@ -33,7 +33,10 @@
               </div>
 
               <div v-else class="error">
-                <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong or the session has expired.</p>
+                <p>
+                  <strong>There was an error loading the data.</strong>
+                  Either the URL was copied wrong or the session has expired.
+                </p>
                 <p>Please generate another editor session with <code>/lp editor</code>.</p>
               </div>
             </div>
@@ -89,7 +92,11 @@
             </transition>
 
             <transition name="fade" mode="out-in">
-              <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.id}`">
+              <div
+                class="editor-session"
+                v-if="currentSession"
+                :key="`session_${currentSession.id}`"
+              >
                 <div class="session-container">
                   <Header :session="currentSession" :sessionData="currentSessionData" />
                   <Meta :session="currentSession" :sessionData="currentSessionData" />
@@ -113,12 +120,12 @@
 </template>
 
 <script>
-import EditorMenu from '@/components/Editor/EditorMenu';
-import Header from '@/components/Editor/Header';
-import Meta from '@/components/Editor/Meta';
-import NodeList from '@/components/Editor/NodeList';
-import AddNode from '@/components/Editor/AddNode';
-import Modal from '@/components/Editor/Modal';
+import EditorMenu from '@/components/Editor/EditorMenu.vue';
+import Header from '@/components/Editor/Header.vue';
+import Meta from '@/components/Editor/Meta.vue';
+import NodeList from '@/components/Editor/NodeList.vue';
+import AddNode from '@/components/Editor/AddNode.vue';
+import Modal from '@/components/Editor/Modal.vue';
 
 export default {
   name: 'Editor',
@@ -134,8 +141,8 @@ export default {
 
   data() {
     return {
-      menu: false
-    }
+      menu: false,
+    };
   },
 
   computed: {
@@ -196,6 +203,7 @@ export default {
     } else if (this.$route.query.id) {
       sessionId = this.$route.query.id;
     } else if (this.$route.hash) {
+      // eslint-disable-next-line prefer-destructuring
       sessionId = this.$route.hash.split('#')[1];
     }
     if (sessionId) {

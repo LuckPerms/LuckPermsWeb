@@ -1,0 +1,8 @@
+<VirtualHost <IPv4>:80>
+    DocumentRoot <PATH>
+
+    ServerName <HOST_ADDRESS>
+    ServerAdmin <WEBMASTER_EMAIL>
+
+    RewriteCond %{REQUEST_URI} ^/bytebin$
+    RewriteRule ^/bytebin$ http://%{HTTP_HOST}%{REQUEST_URI}/ [R=301,L,NE]

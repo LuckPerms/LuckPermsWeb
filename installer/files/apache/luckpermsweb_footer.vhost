@@ -1,0 +1,8 @@
+    <IfModule mod_proxy.c>
+        ProxyPass /.well-known !
+        ProxyPass /bytebin/ http://</BYTEBIN_HOST>/ nocanon
+        ProxyPassReverse /bytebin/ http://<BYTEBIN_HOST>/
+        ProxyPreserveHost On
+    </IfModule>
+
+</VirtualHost>

@@ -13,6 +13,11 @@ const routes = [
     component: Home,
   },
   {
+    path: '*',
+    name: 'not-found',
+    component: () => import(/* webpackChunkName: "notfound" */ './views/NotFound'),
+  },
+  {
     path: '/editor',
     name: 'editor-home',
     component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),

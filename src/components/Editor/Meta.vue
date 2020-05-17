@@ -105,7 +105,8 @@ export default {
       this.addingGroup = false;
     },
     deleteParent(parent) {
-      this.$store.commit('deleteNode', parent.id);
+      const node = this.sessionData.parents.find(node => node.key === `group.${parent}`);
+      this.$store.commit('deleteNode', node.id);
     }
   },
 };

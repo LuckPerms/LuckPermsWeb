@@ -44,9 +44,9 @@
           <button type="button" class="code" @click="context.ui = true">Add Contexts</button>
         </label>
         <div>
-          <code v-for="(value, key) in context.contexts">
-            <span>{{ key }}:</span>
-            {{ value }}
+          <code v-for="entry in flattenedContexts">
+            <span>{{ entry.key }}:</span>
+            {{ entry.value }}
           </code>
         </div>
       </div>
@@ -63,14 +63,14 @@
 
     <transition name="fade">
       <div v-if="context.ui" class="context-ui" v-click-outside="closeContextUi">
-        <h4>Contexts <span>({{ Object.keys(context.contexts).length }})</span></h4>
+        <h4>Contexts <span>({{ flattenedContexts.length }})</span></h4>
         <div class="close" @click="closeContextUi">
           <font-awesome icon="times" />
         </div>
         <ul>
-          <li v-for="(value, key) in context.contexts">
-            <span v-html="key"></span>
-            <span v-html="value"></span>
+          <li v-for="entry in flattenedContexts">
+            <span v-html="entry.key"></span>
+            <span v-html="entry.value"></span>
           </li>
           <li>
             <h5>
@@ -159,6 +159,15 @@ export default {
     knownPermissions() {
       return this.$store.state.editor.knownPermissions;
     },
+    flattenedContexts() {
+      const entries = [];
+      for (const [key, values] of Object.entries(this.context.contexts)) {
+        for (const value of values) {
+          entries.push({key: key, value: value});
+        }
+      }
+      return entries;
+    },
     potentialContexts() {
       return this.$store.getters.potentialContexts;
     },
@@ -167,6 +176,9 @@ export default {
       const context = this.potentialContexts.find(context => {
         return context.key === this.context.key;
       });
+      if (!context) {
+        return null;
+      }
 
       return context.values;
     }
@@ -220,7 +232,11 @@ export default {
     addContext() {
       if (this.context.key === '' || this.context.value === '') return;
 
-      this.context.contexts[this.context.key] = this.context.value;
+      const values = this.context.contexts[this.context.key] || [];
+      if (!values.find(value => value === this.context.value)) {
+        values.push(this.context.value);
+        this.$set(this.context.contexts, this.context.key, values);
+      }
 
       this.context.key = '';
       this.context.value = '';

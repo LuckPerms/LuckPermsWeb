@@ -2,7 +2,7 @@
   <main class="home">
     <section class="hero">
       <div class="container">
-        <div class="logo">
+        <div :class="{'logo': true, 'selfhosted': config.selfHosted }">
           <img alt="LuckPerms logo" src="../assets/logo.png">
           <div>
             <h1>LuckPerms</h1>
@@ -10,7 +10,7 @@
           </div>
         </div>
 
-        <div class="download">
+        <div class="download" v-if="!config.selfHosted">
           <router-link to="/download">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
@@ -28,7 +28,7 @@
       </div>
     </section>
 
-    <div class="container">
+    <div class="container" v-if="!config.selfHosted">
       <section class="resources">
         <div>
           <h2>Why LuckPerms?</h2>
@@ -85,6 +85,27 @@
       </section>
     </div>
 
+    <div class="container selfhosted" v-else>
+      <section class="resources">
+        <div>
+          <div class="tools">
+            <router-link to="/editor" alt="Web Editor">
+              <font-awesome icon="edit" />
+              Web Editor
+            </router-link>
+            <router-link to="/verbose" alt="Verbose Viewer">
+              <font-awesome icon="comment-alt" />
+              Verbose Viewer
+            </router-link>
+            <router-link to="/tree" alt="Tree Viewer">
+              <font-awesome icon="sitemap" />
+              Tree Viewer
+            </router-link>
+          </div>
+        </div>
+      </section>
+    </div>
+
   </main>
 </template>
 
@@ -99,6 +120,9 @@ export default {
   computed: {
     version() {
       return this.$store.getters.version;
+    },
+    config() {
+      return this.$store.getters.config;
     },
     discordUserCount () {
       return this.$store.getters.discordUserCount;
@@ -116,6 +140,10 @@ export default {
 
     .container {
       display: flex;
+
+      &.selfhosted {
+        justify-content: center;
+      }
     }
 
     .logo {
@@ -147,6 +175,11 @@ export default {
           margin-bottom: 0;
           margin-right: 2rem;
         }
+      }
+
+      &.selfhosted {
+        justify-content: center;
+        width: 100%;
       }
     }
 

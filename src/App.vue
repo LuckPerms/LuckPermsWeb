@@ -16,18 +16,20 @@
               Home
             </router-link>
           </li>
-          <li>
-			      <router-link to="/download">
-              <font-awesome icon="arrow-alt-circle-down" fixed-width />
-              Download
-            </router-link>
-          </li>
-          <li>
-			      <router-link to="/wiki">
-              <font-awesome icon="book" fixed-width />
-              Wiki
-            </router-link>
-          </li>
+          <template v-if="!config.selfHosted">
+            <li>
+              <router-link to="/download">
+                <font-awesome icon="arrow-alt-circle-down" fixed-width />
+                Download
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/wiki">
+                <font-awesome icon="book" fixed-width />
+                Wiki
+              </router-link>
+            </li>
+          </template>
           <li>
             <span :class="{ 'router-link-active': isToolsRoute, tools: true }">
               <font-awesome icon="tools" fixed-width />
@@ -54,24 +56,26 @@
               </li>
             </ul>
           </li>
-          <li class="external">
-            <a href="https://github.com/lucko/LuckPerms" target="_blank" class="github">
-              <font-awesome :icon="['fab', 'github']" fixed-width />
-              <span>Github</span>
-            </a>
-          </li>
-          <li class="external">
-            <a href="https://discord.gg/luckperms" target="_blank" class="discord">
-              <font-awesome :icon="['fab', 'discord']" fixed-width />
-              <span>Discord</span>
-            </a>
-          </li>
-          <li class="external">
-            <a href="https://patreon.com/luckdev" target="_blank" class="patreon">
-              <font-awesome :icon="['fab', 'patreon']" fixed-width />
-              <span>Patreon</span>
-            </a>
-          </li>
+          <template v-if="!config.selfHosted">
+            <li class="external">
+              <a href="https://github.com/lucko/LuckPerms" target="_blank" class="github">
+                <font-awesome :icon="['fab', 'github']" fixed-width />
+                <span>Github</span>
+              </a>
+            </li>
+            <li class="external">
+              <a href="https://discord.gg/luckperms" target="_blank" class="discord">
+                <font-awesome :icon="['fab', 'discord']" fixed-width />
+                <span>Discord</span>
+              </a>
+            </li>
+            <li class="external">
+              <a href="https://patreon.com/luckdev" target="_blank" class="patreon">
+                <font-awesome :icon="['fab', 'patreon']" fixed-width />
+                <span>Patreon</span>
+              </a>
+            </li>
+          </template>
         </ul>
 
         <button
@@ -124,6 +128,9 @@
     computed: {
       version() {
         return this.$store.getters.version;
+      },
+      config() {
+        return this.$store.getters.config;
       },
       isToolsRoute() {
         return [

@@ -253,7 +253,7 @@ print_config_instructions() {
 ################################################################################
 
 ask_questions
-! "$SELFHOSTED" && setup_submodules
+setup_submodules
 install_prerequisites
 calculate_variables
 prepare_installation_location

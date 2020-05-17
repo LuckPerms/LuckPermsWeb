@@ -7,6 +7,14 @@
             <img alt="LuckPerms logo" src="@/assets/logo.png">
             <span>LuckPerms</span>
           </router-link>
+          <div v-if="config.navMessage" class="nav-message">
+            <a :href="config.navUrl" v-if="config.navUrl" target="_blank">
+              {{ config.navMessage }}
+            </a>
+            <span v-else>
+               {{ config.navMessage }}
+            </span>
+          </div>
         </div>
 
         <ul :class="{ active: menu }">
@@ -341,6 +349,21 @@ body {
       height: 100%;
       width: auto;
       margin-right: .5rem;
+    }
+  }
+
+  .nav-message {
+    margin-left: 1rem;
+    opacity: .5;
+    max-width: 25rem;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    &:hover {
+      opacity: .75;
     }
   }
 

@@ -7,8 +7,8 @@ const config = require('../config.json');
 Vue.use(Router);
 
 const projectRoutes = [];
-if (!config).selfHosted)) {
-  projectRoutes = [
+if (!config.selfHosted) {
+  projectRoutes.push([
     {
       path: '/download',
       name: 'download',
@@ -27,7 +27,7 @@ if (!config).selfHosted)) {
         }
       ]
     }
-  ];
+  ]);
 }
 
 const routes = [

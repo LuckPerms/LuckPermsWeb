@@ -62,6 +62,15 @@ ask_questions() {
     echo
 }
 
+setup_submodules() {
+    echo "Downloading and updating submodules..."
+    echo
+
+    git -C "$INSTALLER_DIR" submodule update --init --recursive
+
+    echo
+}
+
 install_prerequisites() {
     echo "Checking if all prerequisites are installed..."
 
@@ -106,15 +115,6 @@ calculate_variables() {
 
     NGINX_LISTEN_DIRECTIVE_IPV4="$(get_nginx_sed_directive 4)"
     NGINX_LISTEN_DIRECTIVE_IPV6="$(get_nginx_sed_directive 6)"
-}
-
-setup_submodules() {
-    echo "Downloading and updating submodules..."
-    echo
-
-    git submodule update --init --recursive
-
-    echo
 }
 
 prepare_installation_location() {
@@ -248,9 +248,9 @@ print_config_instructions() {
 ################################################################################
 
 ask_questions
+setup_submodules
 install_prerequisites
 calculate_variables
-setup_submodules
 prepare_installation_location
 install_bytebin
 install_webfiles

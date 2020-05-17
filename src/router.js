@@ -2,13 +2,15 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 
+const config = require('../config.json');
+
 Vue.use(Router);
 
 export default new Router({
   mode: 'history',
   // Change 'base' if you are serving from a subdirectory
   // e.g. domain.com/permissions/editor -> set base: '/permissions'
-  base: '/',
+  base: config.base,
   routes: [
     {
       path: '/',

@@ -23,6 +23,7 @@ EXTERNAL_ADDRESS="$(hostname -f)"
 INSTALL_NGINX=true
 USE_HTTPS=true
 USE_LETSENCRYPT=true
+SELFHOSTED=true
 
 ################################################################################
 # Functions

@@ -55,6 +55,7 @@ ask_questions() {
             LISTEN_IPV6="$(get_nginx_ip 6)"
         done
 
+        ask_yes_no "Setup tools only (web editor, verbose & tree viewers)" SELFHOSTED
     fi
 
     ask_sudo_pw
@@ -169,7 +170,11 @@ install_webfiles() {
     pushd "$REPO_DIR" > /dev/null
 
     # Configure web application
-    jq --arg url "$BYTEBIN_URL" '.bytebin_url = $url' config.json > config.json.tmp
+    jq \
+        --arg url "$BYTEBIN_URL" \
+        --argjson selfHosted "$SELFHOSTED" \
+        '.bytebin_url = $url | .selfHosted = $selfHosted' \
+        config.json > config.json.tmp
     mv -f config.json.tmp config.json
 
     # Render webfiles
@@ -248,7 +253,7 @@ print_config_instructions() {
 ################################################################################
 
 ask_questions
-setup_submodules
+! "$SELFHOSTED" && setup_submodules
 install_prerequisites
 calculate_variables
 prepare_installation_location

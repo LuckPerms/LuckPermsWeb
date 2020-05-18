@@ -34,15 +34,19 @@ ask_questions() {
 
         [ "$SEVER_TO_INSTALL" == nginx ]  && USE_NGINX=true
         [ "$SEVER_TO_INSTALL" == apache ] && USE_APACHE=true
-    fi 
+    fi
+
+    WEBSERVER=
+    "$USE_NGINX" &&  WEBSERVER=nginx
+    "$USE_APACHE" && WEBSERVER=apache 
 
     ask_yes_no "Expert Mode" EXPERT_MODE
 
     ask_for_value "Host's public address" EXTERNAL_ADDRESS
     ask_yes_no "Use HTTPS" USE_HTTPS
 
-    LISTEN_IPV4="$(get_nginx_ip 4)"
-    LISTEN_IPV6="$(get_nginx_ip 6)"
+    LISTEN_IPV4="$(get_webserver_ip "$WEBSERVER" 4)"
+    LISTEN_IPV6="$(get_webserver_ip "$WEBSERVER" 6)"
 
     if "$EXPERT_MODE"; then
         if "$USE_HTTPS"; then
@@ -61,15 +65,15 @@ ask_questions() {
         fi
 
         while
-            ask_for_value "nginx IPv4 listen address (\"none\" to disable)" LISTEN_IPV4
-            ask_for_value "nginx IPv6 listen address (\"none\" to disable)" LISTEN_IPV6
+            ask_for_value "$webserver IPv4 listen address (\"none\" to disable)" LISTEN_IPV4
+            ask_for_value "$webserver IPv6 listen address (\"none\" to disable)" LISTEN_IPV6
             [ "$LISTEN_IPV4" == none ] && [ "$LISTEN_IPV6" == none ]
         do
             echo "You need to listen to at least one IP address!"
 
             # Reset them
-            LISTEN_IPV4="$(get_nginx_ip 4)"
-            LISTEN_IPV6="$(get_nginx_ip 6)"
+            LISTEN_IPV4="$(get_webserver_ip "$WEBSERVER" 4)"
+            LISTEN_IPV6="$(get_webserver_ip "$WEBSERVER" 6)"
         done
 
     fi
@@ -122,8 +126,8 @@ calculate_variables() {
         HTTPS_KEY_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/privkey.pem"
     fi
 
-    NGINX_LISTEN_DIRECTIVE_IPV4="$(get_nginx_sed_directive 4)"
-    NGINX_LISTEN_DIRECTIVE_IPV6="$(get_nginx_sed_directive 6)"
+    NGINX_LISTEN_DIRECTIVE_IPV4="$(get_ip_sed_directive "$WEBSERVER" 4)"
+    NGINX_LISTEN_DIRECTIVE_IPV6="$(get_ip_sed_directive "$WEBSERVER" 6)"
 }
 
 prepare_installation_location() {
@@ -248,7 +252,7 @@ configure_apache() {
     echo "Setting up apache..."
     echo
 
-    pushd /etc/apache > /dev/null
+    pushd /etc/apache2 > /dev/null
     
     # Install modules
     sudo a2enmod rewrite proxy ssl headers
@@ -259,10 +263,10 @@ configure_apache() {
     create_webserver_file \
         "$INSTALLER_DIR/files/apache/luckpermsweb_header_$PROTOCOL.conf" \
         "$INSTALLER_DIR/files/apache/luckpermsweb_footer.conf" | sudo dd of="$apache_config_file" 2> /dev/null
-    sudo a2ensite apache_config_name
+    sudo a2ensite "$apache_config_name"
 
     # Reload apache
-    apache2ctl graceful
+    sudo apache2ctl graceful
 
     popd > /dev/null
 

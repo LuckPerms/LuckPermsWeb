@@ -110,25 +110,26 @@ command_exists() {
     sudo which "$program" > /dev/null
 }
 
-get_nginx_ip() {
+get_webserver_ip() {
     if ! command_exists netstat; then
         echo "autodetect"
         return 0
     fi
 
-    local ip_version="$1"
+    local webserver="$1"
+    local ip_version="$2"
 
-    if [ $# -eq 1 ]; then
+    if [ $# -eq 2 ]; then
         local ip
 
-        "$USE_HTTPS" && ip="$(get_nginx_ip "$ip_version" 443)"
-        [ -z "$ip" ] && ip="$(get_nginx_ip "$ip_version" 80)"
+        "$USE_HTTPS" && ip="$(get_webserver_ip "$webserver" "$ip_version" 443)"
+        [ -z "$ip" ] && ip="$(get_webserver_ip "$webserver" "$ip_version" 80)"
         [ -z "$ip" ] && ip="autodetect"
 
         echo "$ip"
 
         return 0
-    elif [ $# -ne 2 ]; then
+    elif [ $# -ne 3 ]; then
         return 1
     fi
 
@@ -137,7 +138,7 @@ get_nginx_ip() {
     # Try detecting the IP nginx listens to (and filter out localhosts)
     local socket="$(
         exec $(sudo_active && echo sudo) netstat -tplnW -"$ip_version" 2> /dev/null |
-        grep nginx |
+        grep "$webserver" |
         grep "$port" |
         tr -s ' ' |
         cut -d' ' -f4 |
@@ -212,16 +213,17 @@ find_free_port() {
     echo "$port"
 }
 
-get_nginx_sed_directive() {
-    [ $# -ne 1 ] && return 1
+get_ip_sed_directive() {
+    [ $# -ne 2 ] && return 1
 
-    local ip_version="$1"
+    local webserver="$1"
+    local ip_version="$2"
     local ip_variable_name="LISTEN_IPV$ip_version"
     local ip="${!ip_variable_name}"
 
-    [ "$ip" == "autodetect" ] && ip="$(get_nginx_ip "$ip_version")"
+    [ "$ip" == "autodetect" ] && ip="$(get_webserver_ip "$webserver" "$ip_version")"
 
-    if [ -z "$ip" ] || [ "$ip" == "none" ]; then
+    if [ -z "$ip" ] || [ "$ip" == "none" ] || [ "$ip" == "autodetect" ]; then
         echo "/<IPv$ip_version>/d"
     else
         echo "s/<IPv$ip_version>/$ip/g"

@@ -62,8 +62,7 @@ LuckPermsWeb/installer/uninstall.sh
 #### Caveats
 There are a few things to watch out for:
 
-- This is designed to use [nginx](https://www.nginx.com/) as the webserver. Support for Apache is planned (if you know Apache well enough, consider reaching out
-  to us so we can add it!)
+- This is designed to use [nginx](https://www.nginx.com/) or [Apache](https://www.apache.org/) as the webserver.
 - Automatic package installation only works on Debian-based distros, as `apt-get` is used to install the missing prerequisites. If you're not on Debian-based
   distro, be sure to have these commands available, then it'll work too:
   - `java` (needed for bytebin)

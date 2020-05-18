@@ -36,7 +36,7 @@ The automatic setup is fairly straight forward.
 Just run those commands as a user that has `sudo` permissions:
 
 ```sh
-git clone https://github.com/lucko/LuckPermsWeb.git
+git clone --recusrive --branch website https://github.com/lucko/LuckPermsWeb.git
 LuckPermsWeb/installer/install.sh
 ```
 
@@ -64,6 +64,8 @@ There are a few things to watch out for:
 
 - This is designed to use [nginx](https://www.nginx.com/) as the webserver. Support for Apache is planned (if you know Apache well enough, consider reaching out
   to us so we can add it!)
+- The script will need a dedicated (sub)domain to install LuckPermsWeb to. If you want to install it in a subdir, the script will not work and you have to set
+  it up yourself.
 - Automatic package installation only works on Debian-based distros, as `apt-get` is used to install the missing prerequisites. If you're not on Debian-based
   distro, be sure to have these commands available, then it'll work too:
   - `java` (needed for bytebin)

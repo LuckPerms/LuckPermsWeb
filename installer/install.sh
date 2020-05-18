@@ -55,9 +55,19 @@ ask_questions() {
             LISTEN_IPV6="$(get_nginx_ip 6)"
         done
 
+        ask_yes_no "Setup tools only (web editor, verbose & tree viewers)" SELFHOSTED
     fi
 
     ask_sudo_pw
+
+    echo
+}
+
+setup_submodules() {
+    echo "Downloading and updating submodules..."
+    echo
+
+    git -C "$INSTALLER_DIR" submodule update --init --recursive
 
     echo
 }
@@ -96,8 +106,8 @@ calculate_variables() {
     "$USE_HTTPS" || USE_LETSENCRYPT=false
 
     PROTOCOL="$("$USE_HTTPS" && echo "https" || echo "http")"
-    EDITOR_URL="$PROTOCOL://$EXTERNAL_ADDRESS/"
-    BYTEBIN_URL="${EDITOR_URL}bytebin/"
+    BASE_URL="$PROTOCOL://$EXTERNAL_ADDRESS/"
+    BYTEBIN_URL="${BASE_URL}bytebin/"
 
     if "$USE_HTTPS" && "$USE_LETSENCRYPT"; then
         HTTPS_CERT_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
@@ -160,7 +170,11 @@ install_webfiles() {
     pushd "$REPO_DIR" > /dev/null
 
     # Configure web application
-    jq --arg url "$BYTEBIN_URL" '.bytebin_url = $url' config.json > config.json.tmp
+    jq \
+        --arg url "$BYTEBIN_URL" \
+        --argjson selfHosted "$SELFHOSTED" \
+        '.bytebin_url = $url | .selfHosted = $selfHosted' \
+        config.json > config.json.tmp
     mv -f config.json.tmp config.json
 
     # Render webfiles
@@ -226,8 +240,11 @@ print_config_instructions() {
     echo
     echo "Now all that's left to do is add these lines to the end of your LuckPerms config:"
     echo
-    echo "# Using a selfhosted web editor instance"
-    echo "web-editor-url: '$EDITOR_URL'"
+    echo "# Using a selfhosted LuckPermsWeb instance"
+    echo "web-editor-url: '${BASE_URL}editor/'"
+    echo "verbose-viewer-url: '${BASE_URL}verbose/'"
+    echo "tree-viewer-url: '${BASE_URL}tree/'"
+    echo
     echo "bytebin-url: '$BYTEBIN_URL'"
 }
 
@@ -236,6 +253,7 @@ print_config_instructions() {
 ################################################################################
 
 ask_questions
+setup_submodules
 install_prerequisites
 calculate_variables
 prepare_installation_location

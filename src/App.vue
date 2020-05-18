@@ -124,6 +124,7 @@
         -->
         <ul>
           <li>
+            <font-awesome icon="code-branch" fixed-width />
             <a href="https://github.com/lucko" target="_blank">lucko</a>
             /
             <a href="https://github.com/lucko/LuckPermsWeb" target="_blank">LuckPermsWeb</a>
@@ -233,24 +234,23 @@ body {
   > main {
     height: 100%;
     max-height: calc(100% - 6rem);
-
-    @include breakpoint($md) {
-      max-height: calc(100% - 6.5rem);
-    }
   }
 
   > footer {
     background: $grey;
-    padding: .75em 1em;
+    padding: .4em 1em;
     position: relative;
-    font-size: .66em;
+    font-size: .9em;
     flex: 0 0 auto;
     height: 2rem;
     box-shadow: 0 0 1rem rgba(0,0,0,0.2);
 
-    @include breakpoint($md) {
-      height: 2.5rem;
-      font-size: .8rem;
+    svg {
+      color: #95b556;
+    }
+
+    a {
+      text-decoration: none;
     }
 
     /*

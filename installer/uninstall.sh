@@ -41,10 +41,10 @@ deconfigure_apache() {
     echo
 
     # Delete config files
-    sudo rm -rf /etc/apache/sites-{available,enabled}/luckpermsweb_*.conf
+    sudo rm -rf /etc/apache2/sites-{available,enabled}/luckpermsweb_*.conf
 
-    # Reload nginx
-    [ -x /usr/sbin/apache ] && sudo apache2ctl graceful
+    # Reload apache
+    [ -x /usr/sbin/apache2 ] && sudo apache2ctl configtest && sudo apache2ctl graceful
 
     echo
 }

@@ -156,6 +156,14 @@ export default {
 
       &.selfhosted {
         justify-content: center;
+
+        .resources {
+          width: 50%;
+
+          div {
+            width: 100%;
+          }
+        }
       }
     }
 

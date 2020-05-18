@@ -196,10 +196,7 @@ export default {
       const context = this.potentialContexts.find(context => {
         return context.key === this.context.key;
       });
-      if (!context) {
-        return null;
-      }
-
+      if (!context) return null;
       return context.values;
     }
   },

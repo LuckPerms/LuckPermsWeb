@@ -37,7 +37,7 @@ ask_questions() {
     fi
 
     WEBSERVER=
-    "$USE_NGINX" &&  WEBSERVER=nginx
+    "$USE_NGINX"  && WEBSERVER=nginx
     "$USE_APACHE" && WEBSERVER=apache 
 
     ask_yes_no "Expert Mode" EXPERT_MODE
@@ -207,18 +207,19 @@ generate_https_cert() {
     local certdir="$BASE_DIR/webfiles"
 
     # Configure nginx or apache for the certbot
-    "$USE_NGINX" &&
+    "$USE_NGINX"  &&
     create_webserver_file \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_header_http.conf" \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_footer_certbot.conf"  | sudo dd of="$nginx_config_file"  2> /dev/null
     "$USE_APACHE" &&
     create_webserver_file \
         "$INSTALLER_DIR/files/apache/luckpermsweb_header_http.conf" \
-        "$INSTALLER_DIR/files/apache/luckpermsweb_footer_certbot.conf" | sudo dd of="$apache_config_file" 2> /dev/null
+        "$INSTALLER_DIR/files/apache/luckpermsweb_footer_certbot.conf" \
+        "$INSTALLER_DIR/files/apache/luckpermsweb_footer_directory.conf" | sudo dd of="$apache_config_file" 2> /dev/null
 
     ## Reload webserver
-    "$USE_NGINX" &&  sudo nginx -t && sudo nginx -s reload
-    "$USE_APACHE" && sudo apache2ctl graceful
+    "$USE_NGINX"  && sudo nginx -t              && sudo nginx -s reload
+    "$USE_APACHE" && sudo apache2ctl configtest && sudo apache2ctl graceful
 
     # Get certificate
     sudo certbot certonly --webroot --rsa-key-size 4096 -w "$certdir" -d "$EXTERNAL_ADDRESS"
@@ -262,11 +263,12 @@ configure_apache() {
     local apache_config_file="sites-available/$apache_config_name.conf"
     create_webserver_file \
         "$INSTALLER_DIR/files/apache/luckpermsweb_header_$PROTOCOL.conf" \
-        "$INSTALLER_DIR/files/apache/luckpermsweb_footer.conf" | sudo dd of="$apache_config_file" 2> /dev/null
+        "$INSTALLER_DIR/files/apache/luckpermsweb_footer.conf" \
+        "$INSTALLER_DIR/files/apache/luckpermsweb_footer_directory.conf" | sudo dd of="$apache_config_file" 2> /dev/null
     sudo a2ensite "$apache_config_name"
 
     # Reload apache
-    sudo apache2ctl graceful
+    sudo apache2ctl configtest && sudo apache2ctl graceful
 
     popd > /dev/null
 
@@ -297,6 +299,6 @@ prepare_installation_location
 install_bytebin
 install_webfiles
 "$USE_LETSENCRYPT" && generate_https_cert
-"$USE_NGINX" &&  configure_nginx
-"$USE_APACHE" && configure_apache
+"$USE_NGINX"       && configure_nginx
+"$USE_APACHE"      && configure_apache
 print_config_instructions

@@ -31,7 +31,20 @@ deconfigure_nginx() {
     sudo rm -rf /etc/nginx/sites-{available,enabled}/luckpermsweb_*.conf
 
     # Reload nginx
-    sudo nginx -t && sudo nginx -s reload
+    [ -x /usr/sbin/nginx ] && sudo nginx -t && sudo nginx -s reload
+
+    echo
+}
+
+deconfigure_apache() {
+    echo "Cleaning up nginx..."
+    echo
+
+    # Delete config files
+    sudo rm -rf /etc/apache/sites-{available,enabled}/luckpermsweb_*.conf
+
+    # Reload nginx
+    [ -x /usr/sbin/apache ] && sudo apache2ctl graceful
 
     echo
 }
@@ -63,6 +76,7 @@ print_end_message() {
 
 ask_questions
 deconfigure_nginx
+deconfigure_apache
 uninstall_bytebin
 remove_files
 print_end_message

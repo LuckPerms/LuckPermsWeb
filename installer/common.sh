@@ -18,9 +18,12 @@ BYTEBIN_IP="127.8.2.7"
 BYTEBIN_PORT="8123"
 
 # User input variables (and their default values)
+USE_NGINX=false
+USE_APACHE=false
 EXPERT_MODE=false
 EXTERNAL_ADDRESS="$(hostname -f)"
 INSTALL_NGINX=true
+INSTALL_APACHE=true
 USE_HTTPS=true
 USE_LETSENCRYPT=true
 
@@ -225,7 +228,7 @@ get_nginx_sed_directive() {
     fi
 }
 
-create_nginx_file() {
+create_webserver_file() {
     sed \
         -e "$NGINX_LISTEN_DIRECTIVE_IPV4" \
         -e "$NGINX_LISTEN_DIRECTIVE_IPV6" \

@@ -21,6 +21,21 @@ ask_questions() {
 
     check_sudo
 
+    if [ -x /usr/sbin/nginx ]; then
+        USE_NGINX=true
+    elif [ -x /usr/sbin/apache2 ]; then
+        USE_APACHE=true
+    else
+        while [ "$SEVER_TO_INSTALL" != nginx ] && [ "$SEVER_TO_INSTALL" != apache ]; do
+            SEVER_TO_INSTALL=
+
+            ask_for_value "Which webserver do you want to install (nginx or apache)" SEVER_TO_INSTALL
+        done
+
+        [ "$SEVER_TO_INSTALL" == nginx ]  && USE_NGINX=true
+        [ "$SEVER_TO_INSTALL" == apache ] && USE_APACHE=true
+    fi 
+
     ask_yes_no "Expert Mode" EXPERT_MODE
 
     ask_for_value "Host's public address" EXTERNAL_ADDRESS
@@ -39,8 +54,10 @@ ask_questions() {
             fi
         fi
 
-        if [ ! -x /usr/sbin/nginx ]; then
-            ask_yes_no "You don't have nginx installed. Install it" INSTALL_NGINX
+        if   "$USE_NGINX" &&  [ ! -x /usr/sbin/nginx ];   then
+            ask_yes_no "You don't have nginx installed. Install it"  INSTALL_NGINX
+        elif "$USE_APACHE" && [ ! -x /usr/sbin/apache2 ]; then
+            ask_yes_no "You don't have apache installed. Install it" INSTALL_APACHE
         fi
 
         while
@@ -68,8 +85,9 @@ install_prerequisites() {
     local -A packages=([java]=default-jre-headless [jq]=jq [nc]=netcat [netstat]=net-tools [sed]=sed [wget]=wget)
 
     # Conditional packages
-    "$USE_HTTPS" && "$USE_LETSENCRYPT" && packages+=([certbot]=letsencrypt)
-    "$INSTALL_NGINX" && packages+=([nginx]=nginx-light)
+    "$USE_HTTPS"  && "$USE_LETSENCRYPT" && packages+=([certbot]=letsencrypt)
+    "$USE_NGINX"  && "$INSTALL_NGINX"   && packages+=([nginx]=nginx-light)
+    "$USE_APACHE" && "$INSTALL_APACHE"  && packages+=([apache2]=apache2)
 
     # Check that packages exist
     for key in "${!packages[@]}"; do
@@ -181,20 +199,27 @@ generate_https_cert() {
     echo
 
     local nginx_config_file="/etc/nginx/sites-enabled/certbot_helper_$RANDOM.conf"
+    local apache_config_file="/etc/apache2/sites-enabled/certbot_helper_$RANDOM.conf"
     local certdir="$BASE_DIR/webfiles"
 
-    # Configure nginx for the cerbot
-    create_nginx_file \
+    # Configure nginx or apache for the certbot
+    "$USE_NGINX" &&
+    create_webserver_file \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_header_http.conf" \
-        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer_certbot.conf" | sudo dd of="$nginx_config_file" 2> /dev/null
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer_certbot.conf"  | sudo dd of="$nginx_config_file"  2> /dev/null
+    "$USE_APACHE" &&
+    create_webserver_file \
+        "$INSTALLER_DIR/files/apache/luckpermsweb_header_http.conf" \
+        "$INSTALLER_DIR/files/apache/luckpermsweb_footer_certbot.conf" | sudo dd of="$apache_config_file" 2> /dev/null
 
-    ## Reload nginx
-    sudo nginx -t && sudo nginx -s reload
+    ## Reload webserver
+    "$USE_NGINX" &&  sudo nginx -t && sudo nginx -s reload
+    "$USE_APACHE" && sudo apache2ctl graceful
 
     # Get certificate
     sudo certbot certonly --webroot --rsa-key-size 4096 -w "$certdir" -d "$EXTERNAL_ADDRESS"
 
-    sudo rm -rf "$nginx_config_file" "$certdir/.well-known"
+    sudo rm -rf "$nginx_config_file" "$apache_config_file" "$certdir/.well-known"
 }
 
 configure_nginx() {
@@ -205,13 +230,39 @@ configure_nginx() {
 
     # Create config file
     local nginx_config_file="sites-available/luckpermsweb_$EXTERNAL_ADDRESS.conf"
-    create_nginx_file \
+    create_webserver_file \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_header_$PROTOCOL.conf" \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_footer.conf" | sudo dd of="$nginx_config_file" 2> /dev/null
     sudo ln -fs "../$nginx_config_file" sites-enabled/
 
     # Reload nginx
     sudo nginx -t && sudo nginx -s reload
+
+    popd > /dev/null
+
+    # Ensure correct file ownership
+    sudo chgrp -R www-data webfiles
+}
+
+configure_apache() {
+    echo "Setting up apache..."
+    echo
+
+    pushd /etc/apache > /dev/null
+    
+    # Install modules
+    sudo a2enmod rewrite proxy ssl headers
+
+    # Create config file
+    local apache_config_name="luckpermsweb_$EXTERNAL_ADDRESS"
+    local apache_config_file="sites-available/$apache_config_name.conf"
+    create_webserver_file \
+        "$INSTALLER_DIR/files/apache/luckpermsweb_header_$PROTOCOL.conf" \
+        "$INSTALLER_DIR/files/apache/luckpermsweb_footer.conf" | sudo dd of="$apache_config_file" 2> /dev/null
+    sudo a2ensite apache_config_name
+
+    # Reload apache
+    apache2ctl graceful
 
     popd > /dev/null
 
@@ -242,5 +293,6 @@ prepare_installation_location
 install_bytebin
 install_webfiles
 "$USE_LETSENCRYPT" && generate_https_cert
-configure_nginx
+"$USE_NGINX" &&  configure_nginx
+"$USE_APACHE" && configure_apache
 print_config_instructions

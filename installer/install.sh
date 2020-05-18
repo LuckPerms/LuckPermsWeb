@@ -65,8 +65,8 @@ ask_questions() {
         fi
 
         while
-            ask_for_value "$webserver IPv4 listen address (\"none\" to disable)" LISTEN_IPV4
-            ask_for_value "$webserver IPv6 listen address (\"none\" to disable)" LISTEN_IPV6
+            ask_for_value "$WEBSERVER IPv4 listen address (\"none\" to disable)" LISTEN_IPV4
+            ask_for_value "$WEBSERVER IPv6 listen address (\"none\" to disable)" LISTEN_IPV6
             [ "$LISTEN_IPV4" == none ] && [ "$LISTEN_IPV6" == none ]
         do
             echo "You need to listen to at least one IP address!"
@@ -256,7 +256,7 @@ configure_apache() {
     pushd /etc/apache2 > /dev/null
     
     # Install modules
-    sudo a2enmod rewrite proxy ssl headers
+    sudo a2enmod headers proxy proxy_http rewrite ssl
 
     # Create config file
     local apache_config_name="luckpermsweb_$EXTERNAL_ADDRESS"

@@ -45,6 +45,7 @@ export default {
       order: 1;
       overflow: auto;
       height: 100%;
+      max-width: 20rem;
     }
 
     @include breakpoint($lg) {

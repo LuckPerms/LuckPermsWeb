@@ -4,10 +4,10 @@
       <h1>
         <font-awesome icon="exclamation-circle" />
         <span>Not found!</span>
+        <div class="error">
+          <p>The page <code>{{ this.$route.path }}</code> couldn't be found</p>
+        </div>
       </h1>
-      <div class="error">
-        <p>The page <code>{{ this.$route.path }}</code> couldn't be found</p>
-      </div>
     </section>
   </main>
 </template>
@@ -33,8 +33,8 @@ export default {
         svg {
           position: absolute;
           color: $red;
-          top: -1.5rem;
-          left: -4rem;
+          top: -.5rem;
+          left: -7rem;
           font-size: 6rem;
           z-index: 1;
           opacity: .5;
@@ -47,11 +47,10 @@ export default {
       }
 
       p {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
       }
 
       .error {
-        margin-top: 1em;
         color: $red;
       }
     }

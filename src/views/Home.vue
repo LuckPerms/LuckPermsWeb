@@ -188,6 +188,8 @@ export default {
       }
 
       img {
+        height: 13rem;
+        width: auto;
         margin-bottom: 2rem;
 
         @include breakpoint($md) {

@@ -101,6 +101,7 @@
 
     <footer>
       <div class="footer">
+        <!--
         <a href="https://github.com/lucko/LuckPermsWeb" target="_blank" class="github-corner">
           <svg width="60" height="60" viewBox="0 0 250 250">
             <path d="M0 0l115 115h15l12 27 108 108v-250z"></path>
@@ -120,6 +121,7 @@
             ></path>
           </svg>
         </a>
+        -->
         <ul>
           <li>
             <a href="https://github.com/lucko" target="_blank">lucko</a>
@@ -251,6 +253,7 @@ body {
       font-size: .8rem;
     }
 
+    /*
     .github-corner {
       position: absolute;
       border: 0;
@@ -286,6 +289,7 @@ body {
         }
       }
     }
+    */
 
     ul {
       margin: 0;
@@ -533,6 +537,7 @@ body {
   }
 }
 
+/*
 @keyframes octocat-wave {
   0%, 100%{
     transform: rotate(0);
@@ -546,6 +551,7 @@ body {
     transform: rotate(10deg);
   }
 }
+*/
 
 .vdp-datepicker {
   .vdp-datepicker__calendar {

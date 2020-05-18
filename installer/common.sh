@@ -224,7 +224,8 @@ get_ip_sed_directive() {
     [ "$ip" == "autodetect" ] && ip="$(get_webserver_ip "$webserver" "$ip_version")"
 
     if [ -z "$ip" ] || [ "$ip" == "none" ] || [ "$ip" == "autodetect" ]; then
-        echo "/<IPv$ip_version>/d"
+        "$USE_NGINX"  && echo "/<IPv$ip_version>/d"
+        "$USE_APACHE" && echo "s/ <IPv$ip_version>:\(80\|443\)//g"
     else
         echo "s/<IPv$ip_version>/$ip/g"
     fi

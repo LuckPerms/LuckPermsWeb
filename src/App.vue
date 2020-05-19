@@ -398,8 +398,6 @@ body {
     }
 
     &.top-level:not(.active) {
-      color: gold;
-      
       @include breakpoint($xs) {
         display: none;
       }

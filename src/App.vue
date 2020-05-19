@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <ul :class="{ active: menu }">
+      <ul :class="{ active: menu, 'top-level': true }">
         <li>
           <router-link to="/">
             <font-awesome icon="home" fixed-width />
@@ -334,6 +334,13 @@ body {
 
     &.active {
       right: 0;
+      display: initial;
+    }
+
+    &.top-level:not(.active) {
+      @include breakpoint($xs) {
+        display: none;
+      }
     }
 
     li {

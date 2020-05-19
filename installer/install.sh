@@ -26,10 +26,16 @@ ask_questions() {
     elif [ -x /usr/sbin/apache2 ]; then
         USE_APACHE=true
     else
-        while [ "$SEVER_TO_INSTALL" != nginx ] && [ "$SEVER_TO_INSTALL" != apache ]; do
-            SEVER_TO_INSTALL=
+        SERVER_TO_INSTALL=
 
+        while
             ask_for_value "Which webserver do you want to install (nginx or apache)" SEVER_TO_INSTALL
+            [ "$SEVER_TO_INSTALL" != nginx ] && [ "$SEVER_TO_INSTALL" != apache ]
+        do
+            echo "You need to specify if you want to use nginx or apache!"
+
+            # Reset
+            SERVER_TO_INSTALL=
         done
 
         [ "$SEVER_TO_INSTALL" == nginx ]  && USE_NGINX=true

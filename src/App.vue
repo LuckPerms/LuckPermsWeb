@@ -121,6 +121,32 @@
 export default {
   metaInfo: {
     titleTemplate: '%s | LuckPerms',
+    meta: [
+      {
+        property: 'og:title',
+        content: 'LuckPerms',
+      },
+      {
+        property: 'og:description',
+        content: 'Resources, useful links and the latest downloads for LuckPerms',
+      },
+      {
+        property: 'og:type',
+        content: 'product',
+      },
+      {
+        property: 'og:image',
+        content: 'https://luckperms.github.io/assets/logo/720px.png',
+      },
+      {
+        property: 'og:url',
+        content: 'https://luckperms.net',
+      },
+      {
+        property: 'og:site_name',
+        content: 'LuckPerms',
+      },
+    ],
   },
 
   data() {

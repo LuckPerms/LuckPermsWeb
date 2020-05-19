@@ -208,19 +208,19 @@ export default {
       }
 
       p {
-        text-align: center;
+        text-align: left;
         font-size: 1.5rem;
 
-        @include breakpoint($xs) {
-          text-align: left;
+        @include breakpoint($md) {
+          text-align: center;
         }
       }
 
       h1 {
-        text-align: center;
+        text-align: left;
 
-        @include breakpoint($xs) {
-          text-align: left;
+        @include breakpoint($md) {
+          text-align: center;
         }
       }
 

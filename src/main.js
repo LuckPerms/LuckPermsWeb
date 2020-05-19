@@ -40,6 +40,8 @@ import {
 
 import autofocus from 'vue-autofocus-directive';
 import VueClipboard from 'vue-clipboard2';
+import VueMoment from 'vue-moment';
+import VueMeta from 'vue-meta';
 
 import store from './store';
 import App from './App.vue';
@@ -89,8 +91,9 @@ library.add(
 
 Vue.component('font-awesome', FontAwesomeIcon);
 
-Vue.use(require('vue-moment'));
+Vue.use(VueMoment);
 Vue.use(VueClipboard);
+Vue.use(VueMeta);
 
 new Vue({
   router,

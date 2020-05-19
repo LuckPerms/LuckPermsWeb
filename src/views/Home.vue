@@ -131,6 +131,12 @@
 <script>
 export default {
   name: 'Home',
+
+  metaInfo: {
+    title: 'LuckPerms',
+    titleTemplate: null,
+  },
+
   data() {
     return {
 

@@ -108,6 +108,9 @@ import Node from '../components/Verbose/Node.vue';
 import Avatar from '../components/Avatar.vue';
 
 export default {
+  metaInfo: {
+    title: 'Verbose',
+  },
   components: {
     Node,
     Avatar,

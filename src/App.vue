@@ -119,6 +119,10 @@
 
 <script>
 export default {
+  metaInfo: {
+    titleTemplate: '%s | LuckPerms',
+  },
+
   data() {
     return {
       menu: false,

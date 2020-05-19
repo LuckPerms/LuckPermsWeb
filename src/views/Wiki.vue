@@ -14,6 +14,9 @@
 import Sidebar from '../wiki/_Sidebar.md';
 
 export default {
+  metaInfo: {
+    titleTemplate: '%s | Wiki | LuckPerms',
+  },
   components: {
     Sidebar,
   },

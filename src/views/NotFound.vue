@@ -15,6 +15,9 @@
 <script>
 export default {
   name: 'NotFound',
+  metaInfo: {
+    title: '404',
+  },
 };
 </script>
 

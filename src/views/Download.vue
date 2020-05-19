@@ -151,6 +151,9 @@
 <script>
 export default {
   name: 'Download',
+  metaInfo: {
+    title: 'Download',
+  },
   components: {
     Quiz: () => import('../components/Download/Quiz'),
   },

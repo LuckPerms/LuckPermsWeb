@@ -16,6 +16,12 @@
 
 <script>
 export default {
+  metaInfo() {
+    const { title } = this;
+    return {
+      title,
+    };
+  },
   data() {
     return {
       article: null,

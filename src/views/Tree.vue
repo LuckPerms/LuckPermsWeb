@@ -55,7 +55,10 @@
             </ul>
           </template>
           <div v-else class="error">
-            <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong or the session has expired.</p>
+            <p>
+              <strong>There was an error loading the data.</strong>
+              Either the URL was copied wrong or the session has expired.
+            </p>
             <p>Please generate another editor session with <code>/lp editor</code>.</p>
           </div>
         </div>
@@ -65,43 +68,46 @@
 </template>
 
 <script>
-  import Avatar from '../components/Avatar';
-  import Branch from '../components/Tree/Branch';
+import Avatar from '../components/Avatar.vue';
+import Branch from '../components/Tree/Branch.vue';
 
-  export default {
-    components: {
-      Avatar,
-      Branch
-    },
-    computed: {
-      treeData() { return this.$store.getters.tree },
-      errors() { return this.$store.state.tree.errors },
-    },
-    created() {
-      if (!this.treeData.sessionId) {
-        let sessionId;
+export default {
+  metaInfo: {
+    title: 'Tree',
+  },
+  components: {
+    Avatar,
+    Branch,
+  },
+  computed: {
+    treeData() { return this.$store.getters.tree; },
+    errors() { return this.$store.state.tree.errors; },
+  },
+  created() {
+    if (!this.treeData.sessionId) {
+      let sessionId;
 
-        if (this.$route.params.id) {
-          sessionId = this.$route.params.id;
-        } else if (this.$route.query.id) {
-          sessionId = this.$route.query.id;
-        } else if (this.$route.hash) {
-          sessionId = this.$route.hash.split('#')[1];
-        }
-        if (sessionId) {
-          this.$store.dispatch('getTreeData', sessionId);
-        }
+      if (this.$route.params.id) {
+        sessionId = this.$route.params.id;
+      } else if (this.$route.query.id) {
+        sessionId = this.$route.query.id;
+      } else if (this.$route.hash) {
+        sessionId = this.$route.hash.split('#')[1];
       }
-    },
-    methods: {
-      expandTree() {
-        this.$root.$emit('expandTree');
-      },
-      collapseTree() {
-        this.$root.$emit('collapseTree');
+      if (sessionId) {
+        this.$store.dispatch('getTreeData', sessionId);
       }
     }
-  }
+  },
+  methods: {
+    expandTree() {
+      this.$root.$emit('expandTree');
+    },
+    collapseTree() {
+      this.$root.$emit('collapseTree');
+    },
+  },
+};
 </script>
 
 <style lang="scss">

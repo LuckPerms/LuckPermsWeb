@@ -130,6 +130,10 @@ import Modal from '@/components/Editor/Modal.vue';
 export default {
   name: 'Editor',
 
+  metaInfo: {
+    title: 'Editor',
+  },
+
   components: {
     EditorMenu,
     Header,

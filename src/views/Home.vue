@@ -6,7 +6,7 @@
           <img alt="LuckPerms logo" src="../assets/logo.png">
           <div>
             <h1>LuckPerms</h1>
-            <p>An advanced permissions plugin for Minecraft servers</p>
+            <p>A permissions plugin for Minecraft servers.</p>
           </div>
         </div>
 
@@ -22,7 +22,7 @@
             </small>
           </router-link>
           <small>
-            Supports CraftBukkit, Spigot, Paper, BungeeCord, Sponge, Nukkit and Velocity servers
+            Supports Bukkit/Spigot/Paper, BungeeCord, Sponge, Nukkit and Velocity servers
           </small>
         </div>
       </div>
@@ -32,23 +32,29 @@
       <section class="resources">
         <div>
           <h2>Why LuckPerms?</h2>
-          <p>LuckPerms is an advanced permissions implementation aiming to be a fast, reliable and
-            flexible alternative to existing permission plugins. The project's main goals are
-            centered around high performance and a wide feature set, filling the gaps of
-            functionality and building upon existing features found in other plugins. LuckPerms also
-            includes an extensive API for developers, and support for a variety of Minecraft server
-            software & data storage options.</p>
+          <p>LuckPerms is a permissions plugin for Minecraft servers. It allows server admins to
+            control what features players can use by creating groups and assigning permissions.</p>
+          <p>It is:</p>
+          <ul>
+            <li><b>fast</b> - written with performance and scalability in mind.</li>
+            <li><b>reliable</b> - trusted by thousands of server admins, and the largest of server
+              networks.</li>
+            <li><b>easy to use</b> - setup permissions using commands, directly in config files, or
+              using the web editor.</li>
+            <li><b>flexible</b> - supports a variety of data storage options, and works on lots of
+              different server types.</li>
+            <li><b>extensive</b> - a plethora of customization options and settings which can be
+              changed to suit your server.</li>
+            <li><b>free</b> - available for download and usage at no cost, and permissively licensed
+              so it can remain free forever.</li>
+          </ul>
+          <p>For more information, see the wiki article on
+            <router-link to="/wiki/Why-LuckPerms">Why LuckPerms?</router-link></p>
 
-          <h2>Migration from other plugins</h2>
-          <p>
-            LuckPerms has built in support to allow easy migration of permissions data from
-            existing permissions plugins. It should be noted that this system is not perfect.
-            It will do a pretty decent job at converting all of your existing data, and works
-            perfectly in most cases. However, not all data is the same, and there are sometimes
-            things that haven't been accounted for. See the
-            <router-link to="/wiki/Migration">migration</router-link> wiki page for more details.
-          </p>
-
+          <h2>Web Apps</h2>
+          <p>This site hosts a number of extra web applications which work with the plugin.</p>
+          <p>These applications are designed to work for all users, even those without the ability
+            to install/host an application on their own web server.</p>
           <div class="tools">
             <router-link to="/editor" alt="Web Editor">
               <font-awesome icon="edit" />
@@ -190,6 +196,8 @@ export default {
       }
 
       img {
+        height: 13rem;
+        width: auto;
         margin-bottom: 2rem;
 
         @include breakpoint($md) {

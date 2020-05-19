@@ -18,9 +18,12 @@ BYTEBIN_IP="127.8.2.7"
 BYTEBIN_PORT="8123"
 
 # User input variables (and their default values)
+USE_NGINX=false
+USE_APACHE=false
 EXPERT_MODE=false
 EXTERNAL_ADDRESS="$(hostname -f)"
 INSTALL_NGINX=true
+INSTALL_APACHE=true
 USE_HTTPS=true
 USE_LETSENCRYPT=true
 SELFHOSTED=true
@@ -108,25 +111,26 @@ command_exists() {
     (which "$program" || sudo -n which "$program") > /dev/null 2>&1
 }
 
-get_nginx_ip() {
+get_webserver_ip() {
     if ! command_exists netstat; then
         echo "autodetect"
         return 0
     fi
 
-    local ip_version="$1"
+    local webserver="$1"
+    local ip_version="$2"
 
-    if [ $# -eq 1 ]; then
+    if [ $# -eq 2 ]; then
         local ip
 
-        "$USE_HTTPS" && ip="$(get_nginx_ip "$ip_version" 443)"
-        [ -z "$ip" ] && ip="$(get_nginx_ip "$ip_version" 80)"
+        "$USE_HTTPS" && ip="$(get_webserver_ip "$webserver" "$ip_version" 443)"
+        [ -z "$ip" ] && ip="$(get_webserver_ip "$webserver" "$ip_version" 80)"
         [ -z "$ip" ] && ip="autodetect"
 
         echo "$ip"
 
         return 0
-    elif [ $# -ne 2 ]; then
+    elif [ $# -ne 3 ]; then
         return 1
     fi
 
@@ -135,7 +139,7 @@ get_nginx_ip() {
     # Try detecting the IP nginx listens to (and filter out localhosts)
     local socket="$(
         exec $(sudo_active && echo sudo) netstat -tplnW -"$ip_version" 2> /dev/null |
-        grep nginx |
+        grep "$webserver" |
         grep "$port" |
         tr -s ' ' |
         cut -d' ' -f4 |
@@ -210,23 +214,25 @@ find_free_port() {
     echo "$port"
 }
 
-get_nginx_sed_directive() {
-    [ $# -ne 1 ] && return 1
+get_ip_sed_directive() {
+    [ $# -ne 2 ] && return 1
 
-    local ip_version="$1"
+    local webserver="$1"
+    local ip_version="$2"
     local ip_variable_name="LISTEN_IPV$ip_version"
     local ip="${!ip_variable_name}"
 
-    [ "$ip" == "autodetect" ] && ip="$(get_nginx_ip "$ip_version")"
+    [ "$ip" == "autodetect" ] && ip="$(get_webserver_ip "$webserver" "$ip_version")"
 
-    if [ -z "$ip" ] || [ "$ip" == "none" ]; then
-        echo "/<IPv$ip_version>/d"
+    if [ -z "$ip" ] || [ "$ip" == "none" ] || [ "$ip" == "autodetect" ]; then
+        "$USE_NGINX"  && echo "/<IPv$ip_version>/d"
+        "$USE_APACHE" && echo "s/ <IPv$ip_version>:\(80\|443\)//g"
     else
         echo "s/<IPv$ip_version>/$ip/g"
     fi
 }
 
-create_nginx_file() {
+create_webserver_file() {
     sed \
         -e "$NGINX_LISTEN_DIRECTIVE_IPV4" \
         -e "$NGINX_LISTEN_DIRECTIVE_IPV6" \

@@ -43,7 +43,7 @@
           </div>
         </div>
 
-        <div v-else class="editor-wrap container" :key="sessionId">
+        <div v-else class="editor-wrap" :key="sessionId">
           <editor-menu
             :sessions="sessions"
             :current-session="currentSession"

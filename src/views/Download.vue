@@ -94,9 +94,12 @@
     </div>
     <section class="hero">
       <div class="container">
-        <h1>Extensions</h1>
-        <p>Extensions can modify the behaviour of LuckPerms, you can read more about them
-          <router-link to="/wiki/Extensions">on the wiki</router-link></p>
+        <div>
+          <h1>Extensions</h1>
+          <p>Extensions can modify the behaviour of LuckPerms, you can read more about them
+            <router-link to="/wiki/Extensions">on the wiki</router-link>
+          </p>
+        </div>
       </div>
     </section>
     <div class="container extensions">
@@ -113,10 +116,12 @@
 
         <div>
           <p>Allows some common API methods to be used by plugins that haven't upgraded to v5
-            version of the api yet.</p>
+            version of the api yet.
+          </p>
           <p>Check out the
             <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link>
-            for more information!</p>
+            for more information!
+          </p>
         </div>
       </section>
       <section class="resources">
@@ -133,11 +138,13 @@
         <div>
           <p>Allows for other ways to make
             <router-link to="/wiki/Default-Groups">Default Groups</router-link>
-            if the workarounds are not possible.</p>
-          <p>Check out the<router-link to="/wiki/Extensions#extension-default-assignments">wiki
+            if the workarounds are not possible.
+          </p>
+          <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
             section</router-link> for more information! See also
             <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about
-            configuring default assignments!</p>
+            configuring default assignments!
+          </p>
         </div>
       </section>
     </div>
@@ -189,6 +196,10 @@ export default {
         align-items: center;
         padding: 4rem;
 
+        div {
+          width: 100%;
+        }
+
         @include breakpoint($sm) {
           flex-direction: row;
           align-items: center;
@@ -200,7 +211,15 @@ export default {
         text-align: center;
         font-size: 1.5rem;
 
-        @include breakpoint($sm) {
+        @include breakpoint($xs) {
+          text-align: left;
+        }
+      }
+
+      h1 {
+        text-align: center;
+
+        @include breakpoint($xs) {
           text-align: left;
         }
       }
@@ -231,17 +250,14 @@ export default {
 
     .extensions section {
       margin-bottom: -8rem;
-    }
 
-    .extensions-description {
-      margin-bottom: -8rem;
-
-      .resources > div {
-        width: 100%;
-
-        p {
-          text-align: center;
-          font-size: 1.5rem;
+      @include breakpoint($xs) {
+        &:first-child > div:not(:first-child) {
+          margin-bottom: 4rem;
+        }
+  
+        > div:not(:first-child) {
+          padding-top: 0;
         }
       }
     }

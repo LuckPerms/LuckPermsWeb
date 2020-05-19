@@ -1,98 +1,96 @@
 <template>
   <div id="app">
     <div id="nav">
-      <div class="container">
-        <div>
-          <router-link to="/" class="logo">
-            <img alt="LuckPerms logo" src="@/assets/logo.png">
-            <span>LuckPerms</span>
-          </router-link>
-          <div v-if="config.navMessage" class="nav-message">
-            <a :href="config.navUrl" v-if="config.navUrl" target="_blank">
-              {{ config.navMessage }}
-            </a>
-            <span v-else>
-               {{ config.navMessage }}
-            </span>
-          </div>
+      <div>
+        <router-link to="/" class="logo">
+          <img alt="LuckPerms logo" src="@/assets/logo.png">
+          <span>LuckPerms</span>
+        </router-link>
+        <div v-if="config.navMessage" class="nav-message">
+          <a :href="config.navUrl" v-if="config.navUrl" target="_blank">
+            {{ config.navMessage }}
+          </a>
+          <span v-else>
+             {{ config.navMessage }}
+          </span>
         </div>
+      </div>
 
-        <ul :class="{ active: menu }">
+      <ul :class="{ active: menu }">
+        <li>
+          <router-link to="/">
+            <font-awesome icon="home" fixed-width />
+            Home
+          </router-link>
+        </li>
+        <template v-if="!config.selfHosted">
           <li>
-            <router-link to="/">
-              <font-awesome icon="home" fixed-width />
-              Home
+            <router-link to="/download">
+              <font-awesome icon="arrow-alt-circle-down" fixed-width />
+              Download
             </router-link>
           </li>
-          <template v-if="!config.selfHosted">
-            <li>
-              <router-link to="/download">
-                <font-awesome icon="arrow-alt-circle-down" fixed-width />
-                Download
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/wiki">
-                <font-awesome icon="book" fixed-width />
-                Wiki
-              </router-link>
-            </li>
-          </template>
           <li>
-            <span :class="{ 'router-link-active': isToolsRoute, tools: true }">
-              <font-awesome icon="tools" fixed-width />
-              Tools
-            </span>
-            <ul>
-              <li>
-                <router-link to="/editor">
-                  <font-awesome icon="edit" fixed-width />
-                  Editor
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/verbose">
-                  <font-awesome icon="comment-alt" fixed-width />
-                  Verbose
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/tree">
-                  <font-awesome icon="sitemap" fixed-width />
-                  Tree
-                </router-link>
-              </li>
-            </ul>
+            <router-link to="/wiki">
+              <font-awesome icon="book" fixed-width />
+              Wiki
+            </router-link>
           </li>
-          <template v-if="!config.selfHosted">
-            <li class="external">
-              <a href="https://github.com/lucko/LuckPerms" target="_blank" class="github">
-                <font-awesome :icon="['fab', 'github']" fixed-width />
-                <span>Github</span>
-              </a>
+        </template>
+        <li>
+          <span :class="{ 'router-link-active': isToolsRoute, tools: true }">
+            <font-awesome icon="tools" fixed-width />
+            Tools
+          </span>
+          <ul>
+            <li>
+              <router-link to="/editor">
+                <font-awesome icon="edit" fixed-width />
+                Editor
+              </router-link>
             </li>
-            <li class="external">
-              <a href="https://discord.gg/luckperms" target="_blank" class="discord">
-                <font-awesome :icon="['fab', 'discord']" fixed-width />
-                <span>Discord</span>
-              </a>
+            <li>
+              <router-link to="/verbose">
+                <font-awesome icon="comment-alt" fixed-width />
+                Verbose
+              </router-link>
             </li>
-            <li class="external">
-              <a href="https://patreon.com/luckdev" target="_blank" class="patreon">
-                <font-awesome :icon="['fab', 'patreon']" fixed-width />
-                <span>Patreon</span>
-              </a>
+            <li>
+              <router-link to="/tree">
+                <font-awesome icon="sitemap" fixed-width />
+                Tree
+              </router-link>
             </li>
-          </template>
-        </ul>
+          </ul>
+        </li>
+        <template v-if="!config.selfHosted">
+          <li class="external">
+            <a href="https://github.com/lucko/LuckPerms" target="_blank" class="github">
+              <font-awesome :icon="['fab', 'github']" fixed-width />
+              <span>Github</span>
+            </a>
+          </li>
+          <li class="external">
+            <a href="https://discord.gg/luckperms" target="_blank" class="discord">
+              <font-awesome :icon="['fab', 'discord']" fixed-width />
+              <span>Discord</span>
+            </a>
+          </li>
+          <li class="external">
+            <a href="https://patreon.com/luckdev" target="_blank" class="patreon">
+              <font-awesome :icon="['fab', 'patreon']" fixed-width />
+              <span>Patreon</span>
+            </a>
+          </li>
+        </template>
+      </ul>
 
-        <button
-          id="nav-menu-toggle"
-          @click="menu = !menu"
-        >
-          <font-awesome icon="bars" />
-        </button>
-      </div>
+      <button
+        id="nav-menu-toggle"
+        @click="menu = !menu"
+      >
+        <font-awesome icon="bars" />
+      </button>
     </div>
 
     <transition name="fade" mode="out-in">
@@ -259,19 +257,16 @@ body {
   padding: .5rem;
   z-index: 50;
   box-shadow: 0 0 0.5rem rgba(0,0,0,.25);
+  display: flex;
+  justify-content: space-between;
 
-  .container {
+  > div {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
 
-    > div {
-      display: flex;
-      align-items: center;
-
-      > span {
-        opacity: .5;
-        margin-left: .5rem;
-      }
+    > span {
+      opacity: .5;
+      margin-left: .5rem;
     }
   }
 

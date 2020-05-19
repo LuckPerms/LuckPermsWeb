@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  /*max-width: 100rem;*/
+  max-width: 120rem;
   margin: 0 auto;
 }
 
@@ -115,6 +115,7 @@ code, .code {
 .resources {
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   @include breakpoint($md) {
     flex-direction: row;

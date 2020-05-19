@@ -68,7 +68,7 @@ There are a few things to watch out for:
   - `java` (needed for bytebin)
   - `jq`
   - `nc`
-  - `nginx`
+  - `nginx` or `apache2`
   - `netstat`
   - `sed`
   - `wget`

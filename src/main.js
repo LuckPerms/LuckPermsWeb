@@ -30,7 +30,7 @@ import {
   faMinusSquare,
   faQuestionCircle,
   faBars,
-  faCodeBranch
+  faCodeBranch,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,

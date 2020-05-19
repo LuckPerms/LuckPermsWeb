@@ -15,13 +15,13 @@
 <script>
 export default {
   name: 'NotFound',
-}
+};
 </script>
 
 <style lang="scss">
   main.notfound {
     overflow-y: auto;
-    
+
     .hero {
       flex-direction: column;
       align-items: center;

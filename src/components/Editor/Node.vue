@@ -180,10 +180,10 @@ export default {
       for (const [key, values] of Object.entries(this.node.context)) {
         if (Array.isArray(values)) {
           for (const value of values) {
-            entries.push({key: key, value: value});
+            entries.push({ key, value });
           }
         } else {
-          entries.push({key: key, value: values});
+          entries.push({ key, value: values });
         }
       }
       return entries;
@@ -193,12 +193,10 @@ export default {
     },
     potentialContextValues() {
       if (!this.context.key) return null;
-      const context = this.potentialContexts.find(context => {
-        return context.key === this.context.key;
-      });
+      const context = this.potentialContexts.find(pContext => pContext.key === this.context.key);
       if (!context) return null;
       return context.values;
-    }
+    },
   },
   methods: {
     toggleNodeSelect(nodeId) {
@@ -256,7 +254,7 @@ export default {
       }
 
       if (values.find(v => v === value)) {
-        context[key] = values.filter(v => v !== value)
+        context[key] = values.filter(v => v !== value);
         this.updateNode('context', context);
       }
     },
@@ -264,7 +262,7 @@ export default {
       setTimeout(() => {
         this.context[type] = false;
       }, 100);
-    }
+    },
   },
 };
 </script>

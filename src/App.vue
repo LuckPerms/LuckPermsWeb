@@ -7,7 +7,7 @@
           <span>LuckPerms</span>
         </router-link>
         <div v-if="!config.selfHosted" class="nav-message">
-          <a href="https://www.bisecthosting.com/" target="_blank">
+          <a href="https://bisecthosting.com/luck" target="_blank">
             <img src="@/assets/bisect.svg" alt="Bisect Hosting">
             <span>
               Proudly sponsored by

@@ -58,7 +58,7 @@
               </router-link>
             </li>
             <li>
-              <router-link to="/tree">
+              <router-link to="/treeview">
                 <font-awesome icon="sitemap" fixed-width />
                 Tree
               </router-link>

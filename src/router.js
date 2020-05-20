@@ -39,12 +39,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "verbose" */ './views/Verbose'),
   },
   {
-    path: '/tree',
+    path: '/treeview',
     name: 'tree-home',
     component: () => import(/* webpackChunkName: "tree" */ './views/Tree'),
   },
   {
-    path: '/tree/:id',
+    path: '/treeview/:id',
     name: 'tree',
     component: () => import(/* webpackChunkName: "tree" */ './views/Tree'),
   },

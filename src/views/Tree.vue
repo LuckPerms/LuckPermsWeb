@@ -47,7 +47,7 @@
           <h1>LuckPerms</h1>
           <p>Permission Tree Viewer</p>
           <template v-if="!errors.load">
-            <a href="/tree/demo"><button class="button demo-button">View Demo</button></a>
+            <a href="/treeview/demo"><button class="button demo-button">View Demo</button></a>
             <p>To generate a permission tree, do the following in game or from the console:</p>
             <ul>
               <li><code>/lp tree [scope] [player]</code></li>

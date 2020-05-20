@@ -41,41 +41,45 @@ export default {
     }
   },
   methods: {
-    getArticle() {
+    async getArticle() {
       // eslint-disable-next-line global-require,import/no-dynamic-require
       this.article = require(`@/wiki/${this.route}.md`).default;
 
-      this.$nextTick().then(() => {
-        document.querySelectorAll('.wiki a').forEach((link) => {
-          link.addEventListener('click', (event) => {
-            event.preventDefault();
+      await this.$nextTick();
 
-            let target;
+      document.querySelectorAll('.wiki a').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
 
-            if (['STRONG', 'CODE'].includes(event.target.tagName)) {
-              target = event.target.parentNode;
-            } else if (event.target.tagName === 'A') {
-              ({ target } = event);
-            }
+          let target;
 
-            if (target.href.startsWith(window.origin)) {
-              this.$router.push({
-                path: target.pathname,
-                hash: target.hash,
-              }).then().catch(() => {});
-            } else {
-              window.open(target.href);
-            }
-          });
+          if (['STRONG', 'CODE'].includes(event.target.tagName)) {
+            target = event.target.parentNode;
+          } else if (event.target.tagName === 'A') {
+            ({ target } = event);
+          }
+
+          if (target.href.startsWith(window.origin)) {
+            this.$router.push({
+              path: target.pathname,
+              hash: target.hash,
+            }).then().catch(() => {});
+          } else {
+            window.open(target.href);
+          }
         });
-
-        if (this.$route.hash) {
-          this.scrollTo(this.$route.hash);
-        }
       });
+
+      if (this.$route.hash) {
+        console.log(this.$route.hash);
+        await this.scrollTo(this.$route.hash);
+      }
     },
-    scrollTo(hash) {
+    async scrollTo(hash) {
+      await this.$nextTick();
       const element = document.getElementById(hash.split('#')[1]);
+      console.log(element);
+      if (!element) return;
       element.scrollIntoView({
         behavior: 'smooth',
       });

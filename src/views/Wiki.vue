@@ -1,5 +1,5 @@
 <template>
-  <main class="wiki container">
+  <main id="wiki" class="wiki container">
     <article id="article">
       <router-view />
     </article>
@@ -20,6 +20,18 @@ export default {
   components: {
     Sidebar,
   },
+  mounted() {
+    if (window.innerWidth >= 922) return;
+    const wiki = document.getElementById('wiki');
+    document.querySelectorAll('.wiki aside a').forEach((link) => {
+      link.addEventListener('click', () => {
+        wiki.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      });
+    });
+  },
 };
 </script>
 
@@ -30,6 +42,11 @@ export default {
     background-color: $grey;
     height: 100%;
     flex-wrap: wrap;
+    overflow-y: scroll;
+
+    @include breakpoint($md) {
+      overflow-y: auto;
+    }
 
     .header-anchor {
       text-decoration: none;
@@ -83,13 +100,13 @@ export default {
   #article {
     flex: 3;
     max-width: 100%;
-    height: 100%;
-    overflow: auto;
     position: relative;
     width: 100%;
     order: 1;
 
     @include breakpoint($md) {
+      height: 100%;
+      overflow: auto;
       order: 2;
     }
 
@@ -101,9 +118,12 @@ export default {
     }
 
     section {
-      position: absolute;
       width: 100%;
       padding: 0;
+
+      @include breakpoint($md) {
+        position: absolute;
+      }
 
       h1, h2 {
         background: rgba(0,0,0,.25);

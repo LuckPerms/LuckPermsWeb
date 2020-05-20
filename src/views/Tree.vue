@@ -84,10 +84,6 @@ export default {
     errors() { return this.$store.state.tree.errors; },
   },
   created() {
-    if (this.$route.hash && this.$route.hash.length === 11) {
-      window.location = `https://legacy.luckperms.net/tree/${this.$route.hash}`;
-    }
-
     if (this.treeData?.sessionId) return;
 
     let sessionId;

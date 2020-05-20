@@ -132,10 +132,6 @@ export default {
     errors() { return this.$store.state.verbose.errors; },
   },
   created() {
-    if (this.$route.hash && this.$route.hash.length === 11) {
-      window.location = `https://legacy.luckperms.net/verbose/${this.$route.hash}`;
-    }
-
     if (this.verboseData?.sessionId) return;
 
     let sessionId;

@@ -13,20 +13,6 @@ LuckPermsWeb (this repository) contains the website for the project and a number
 * The production site at [luckperms.net](https://luckperms.net/) is automatically built from the `production` branch.
 * An older (pre Vue rewrite) version of the site is on the `v1` branch.
 
-### Status
-
-The current master branch is a full re-write and not complete.
-
-**To do:**
-- [x] Home page (unrelesased)
-- [x] Download page (unreleased)
-- [x] Wiki (unreleased)
-- [x] Web editor (live beta)
-- [x] Verbose report (unreleased)
-- [x] Tree report (unreleased)
-
-Most of the above is in development on the `website` branch. A live version of this branch can be found at https://luckperms.turbotailz.com
-
 ## Setup
 
 ### Automatic setup
@@ -79,19 +65,36 @@ There are a few things to watch out for:
   yourself.
 
 ### Manual setup
-Setting up the project manually locally is simple, all you need is Node installed on your computer, then you can clone the repo and run:
+Setting up the project manually is simple, you will need some basic knowledge in running a webserver, however. Nginx and Apache are both supported. You also need NodeJS and NPM installed on your system.
+
+#### Clone and install the app
+Because this repository contains a submodule repository (the LuckPerms wiki) you will want to clone it using the following command:
+```sh
+git clone --recursive https://github.com/lucko/LuckPermsWeb.git
 ```
+
+Once it is cloned, move into the new directory and install the dependencies:
+```sh
+cd LuckPermsWeb
 npm install
 ```
 
 #### Compile and setup hot-reloads for development
-Once you've installed the dependencies, you can run the project locally easily by running:
-```
+If you are wanting to make changes to the app, you can run a local copy with the following command.
+```sh
 npm run serve
 ```
+This will automatically open a new tab in your default browser with the app running on a local server. When you make changes to the files, the app will "hot-reload" with the new updates.
 
 #### Compile and minify for production
-If you want to build the project to a folder that can be access via a webserver, running this command will build the project in the `dist` folder:
-```
+If you want to build the project to a folder that can be access via a webserver, running this command will build the project in the `/dist` folder:
+```sh
 npm run build
 ```
+
+#### Important things to know if you are self-hosting
+Due to the nature of Vue and how it handles all of the page routing, there are a few things you may need to be aware of:
+- The easiest way to host the app is directly under a domain or sub-domain, this requires no extra configuration steps.
+- If you do require the app to be hosted under a directory (e.g. `domain.com/luckperms/<here>`) then you will need to edit the `base` property in [config.json](https://github.com/lucko/LuckPermsWeb/edit/master/config.json) to match the directory (e.g. change `'/'` to `'luckperms'`), then run the build command.
+- You will also need to setup your webserver correctly to redirect any of the pages to the single `index.html` file that is generated under the `/dist` folder - [some example configrations can be found here](https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations).
+- You can simplify the app and remove certain pages like the downloads and wiki pages by setting `selfHosted` to `true` in config.json. This will also hide the sponsor message in the navigation bar.

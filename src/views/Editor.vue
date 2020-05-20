@@ -61,8 +61,6 @@
             <nav>
               <div class="logo">
                 Web Permissions Editor
-                <span>BETA</span>
-                <small>Please send any bugs, suggestions or feedback to <a href="https://github.com/lucko/LuckPermsWeb/issues" target="_blank">GitHub</a>.</small>
               </div>
               <div class="buttons">
 <!--                <button>-->
@@ -286,26 +284,8 @@ main.editor {
             font-weight: bold;
             margin-left: 4rem;
 
-            span {
-              background: tomato;
-              display: inline-block;
-              padding: .1rem .5rem;
-              margin-left: 1rem;
-              border-radius: 2px;
-            }
-
-            small {
-              display: none;
-              font-weight: normal;
-              opacity: .6;
-              font-size: 1rem;
-              max-width: 15em;
-              line-height: 1;
-              margin-left: 1rem;
-
-              @include breakpoint($sm) {
-                display: block;
-              }
+            @include breakpoint($sm) {
+              margin-left: 0;
             }
           }
 

@@ -2,6 +2,9 @@
 node_modules
 dist
 
+# temporary NodeJS installation
+installer/.nvm
+
 # local env files
 .env.local
 .env.*.local

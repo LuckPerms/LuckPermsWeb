@@ -29,6 +29,7 @@ module.exports = {
           [require('markdown-it-anchor'), {
             permalink: true,
             permalinkSymbol: '🔗',
+            slugify: (s) => String(s).trim().toLowerCase().replace(/\s+/g, '-').replace(/([^\w\-]+)/g, ''),
           }],
           // eslint-disable-next-line global-require
           require('markdown-it-emoji'),

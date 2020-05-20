@@ -20,6 +20,11 @@
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "uuid": "^3.3.3",
+    "core-js": "^2.6.5",
+    "html-loader": "^0.5.5",
+    "markdown-it": "^9.1.0",
+    "markdown-loader": "^5.1.0",
+    "showdown": "^1.9.0",
     "v-click-outside": "^2.1.5",
     "vue": "^2.6.11",
     "vue-autofocus-directive": "^1.0.4",
@@ -32,6 +37,7 @@
     "vuex": "^3.1.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@vue/cli-plugin-babel": "^3.12.1",
     "@vue/cli-plugin-eslint": "^3.12.1",
     "@vue/cli-service": "^3.12.1",
@@ -39,8 +45,13 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.3",
-    "node-sass": "^4.13.0",
+    "markdown-it-anchor": "^5.2.7",
+    "markdown-it-emoji": "^1.4.0",
+    "node-sass": "^4.13.1",
     "sass-loader": "^7.3.1",
+    "vue-markdown-loader": "^2.4.1",
+    "vue-md-loader": "^1.1.0",
+    "vue-meta": "^2.3.3",
     "vue-template-compiler": "^2.6.11"
   }
 }

@@ -3,14 +3,25 @@
   <h1>
     <small>{{sessionData.type}}:</small>
     <code>{{session.displayName}}</code>
-    <span v-if="sessionData.type == 'group' && session.displayName !== session.id">{{ session.id }}</span>
-    <img v-if="sessionData.type == 'user'" :src="`https://minotar.net/helm/${session.id}/100.png`">
+    <span v-if="sessionData.type == 'group' && session.displayName !== session.id">
+      {{ session.id }}
+    </span>
+    <avatar
+      v-if="sessionData.type == 'user'"
+      :id="session.id"
+      :name="session.displayName"
+    />
   </h1>
 </div>
 </template>
 
 <script>
+import Avatar from '../Avatar.vue';
+
 export default {
+  components: {
+    Avatar,
+  },
   name: 'Header',
   props: {
     session: Object,

@@ -26,6 +26,7 @@ INSTALL_NGINX=true
 INSTALL_APACHE=true
 USE_HTTPS=true
 USE_LETSENCRYPT=true
+SELFHOSTED=true
 
 ################################################################################
 # Functions
@@ -107,7 +108,7 @@ ask_yes_no() {
 command_exists() {
     local program="$1"
 
-    sudo which "$program" > /dev/null
+    (which "$program" || sudo -n which "$program") > /dev/null 2>&1
 }
 
 get_webserver_ip() {

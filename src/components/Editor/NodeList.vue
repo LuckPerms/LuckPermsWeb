@@ -19,7 +19,11 @@
         title="Sort nodes by permission"
       >
         Permissions
-        <font-awesome v-if="sort.method === 'key'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+        <font-awesome
+          v-if="sort.method === 'key'"
+          :class="{'reverse': !sort.desc}"
+          icon="chevron-circle-down"
+        />
       </div>
 
       <div
@@ -29,7 +33,11 @@
         title="Sort nodes by true/false"
       >
         Value
-        <font-awesome v-if="sort.method === 'value'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+        <font-awesome
+          v-if="sort.method === 'value'"
+          :class="{'reverse': !sort.desc}"
+          icon="chevron-circle-down"
+        />
       </div>
 
       <div
@@ -39,27 +47,24 @@
         title="Sort nodes by expiry"
       >
         Expiry
-        <font-awesome v-if="sort.method === 'expiry'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+        <font-awesome
+          v-if="sort.method === 'expiry'"
+          :class="{'reverse': !sort.desc}"
+          icon="chevron-circle-down" />
       </div>
-
-<!--      <div :class="{'active': sort.method == 'server'}" @click="changeSort('server')">-->
-<!--        Server-->
-<!--        <font-awesome v-if="sort.method == 'server'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />-->
-<!--      </div>-->
-
-<!--      <div :class="{'active': sort.method == 'world'}" @click="changeSort('world')">-->
-<!--        World-->
-<!--        <font-awesome v-if="sort.method == 'world'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />-->
-<!--      </div>-->
 
       <div
         class="context"
-        :class="{'active': sort.method == 'contexts'}"
+        :class="{'active': sort.method === 'contexts'}"
         @click="changeSort('contexts')"
         title="Sort nodes by contexts"
       >
         Contexts
-        <font-awesome v-if="sort.method == 'contexts'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+        <font-awesome
+          v-if="sort.method === 'contexts'"
+          :class="{'reverse': !sort.desc}"
+          icon="chevron-circle-down"
+        />
       </div>
 
       <div class="delete-column"></div>
@@ -69,30 +74,26 @@
 
   <transition-group name="node-list" tag="ul">
     <Node
-      v-for="(node, i) in sortedNodes"
+      v-for="node in sortedNodes"
       :node="node"
       :key="`node_${node.id}`"
       :selected-nodes="selectedNodes"
     />
   </transition-group>
-
-  <AddNode :session="session" />
-
 </div>
 </template>
 
 <script>
-const sortBy = require('lodash.sortby');
+import sortBy from 'lodash.sortby';
+import Node from './Node.vue';
 
 export default {
   name: 'NodeList',
   components: {
-    Node: () => import('./Node'),
-    AddNode: () => import('./AddNode'),
+    Node,
   },
   props: {
     nodes: Array,
-    session: Object,
   },
   data() {
     return {

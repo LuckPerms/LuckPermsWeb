@@ -60,8 +60,8 @@
     @click="context.ui = true"
     title="Click to edit the contexts for this node"
   >
-    <span v-if="Object.keys(node.context).length">
-      <code v-for="(value, key) in node.context"><small>{{ key }}:</small> {{ value }}</code>
+    <span v-if="flattenedContexts.length">
+      <code v-for="entry in flattenedContexts"><small>{{ entry.key }}:</small> {{ entry.value }}</code>
     </span>
     <code v-else disabled>none</code>
   </div>
@@ -72,15 +72,15 @@
 
   <transition name="fade">
     <div v-if="context.ui" class="context-ui" v-click-outside="closeContextUi">
-      <h4>Contexts <span>({{ Object.keys(node.context).length }})</span></h4>
+      <h4>Contexts <span>({{ flattenedContexts.length }})</span></h4>
       <div class="close" @click="closeContextUi">
         <font-awesome icon="times" />
       </div>
       <ul>
-        <li v-for="(value, key) in node.context">
-          <span>{{ key }}</span>
-          <span>{{ value }}</span>
-          <button @click="removeContext(key)">
+        <li v-for="entry in flattenedContexts">
+          <span>{{ entry.key }}</span>
+          <span>{{ entry.value }}</span>
+          <button @click="removeContext(entry.key, entry.value)">
             <font-awesome icon="times" fixed-width />
           </button>
         </li>
@@ -175,17 +175,28 @@ export default {
     isSelected() {
       return this.selectedNodes.indexOf(this.node.id) >= 0;
     },
+    flattenedContexts() {
+      const entries = [];
+      for (const [key, values] of Object.entries(this.node.context)) {
+        if (Array.isArray(values)) {
+          for (const value of values) {
+            entries.push({ key, value });
+          }
+        } else {
+          entries.push({ key, value: values });
+        }
+      }
+      return entries;
+    },
     potentialContexts() {
       return this.$store.getters.potentialContexts;
     },
     potentialContextValues() {
       if (!this.context.key) return null;
-      const context = this.potentialContexts.find(context => {
-        return context.key === this.context.key;
-      });
-
+      const context = this.potentialContexts.find(pContext => pContext.key === this.context.key);
+      if (!context) return null;
       return context.values;
-    }
+    },
   },
   methods: {
     toggleNodeSelect(nodeId) {
@@ -220,24 +231,38 @@ export default {
 
       const context = JSON.parse(JSON.stringify(this.node.context));
 
-      context[this.context.key] = this.context.value;
+      let values = context[this.context.key] || [];
+      if (!Array.isArray(values)) {
+        values = [values];
+      }
 
-      this.updateNode('context', context);
+      if (!values.find(value => value === this.context.value)) {
+        values.push(this.context.value);
+        context[this.context.key] = values;
+        this.updateNode('context', context);
+      }
+
       this.context.key = '';
       this.context.value = '';
     },
-    removeContext(key) {
+    removeContext(key, value) {
       const context = JSON.parse(JSON.stringify(this.node.context));
 
-      delete context[key];
+      let values = context[key] || [];
+      if (!Array.isArray(values)) {
+        values = [values];
+      }
 
-      this.updateNode('context', context);
+      if (values.find(v => v === value)) {
+        context[key] = values.filter(v => v !== value);
+        this.updateNode('context', context);
+      }
     },
     blurField(type) {
       setTimeout(() => {
         this.context[type] = false;
       }, 100);
-    }
+    },
   },
 };
 </script>
@@ -363,8 +388,9 @@ export default {
     border: 0;
     background: rgba(0,0,0,0.2);
     border-radius: 2px;
-    padding: .2em .5em;
+    padding: .2rem .5rem;
     color: #FFF;
+    font-size: .8rem;
     font-family: 'Source Code Pro', monospace;
     line-height: 1.5;
   }

@@ -1,7 +1,5 @@
 {
   "bytebin_url": "https://bytebin.lucko.me/",
   "base": "/",
-  "selfHosted": false,
-  "navMessage": null,
-  "navUrl": null
+  "selfHosted": false
 }

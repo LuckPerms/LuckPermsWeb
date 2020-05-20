@@ -306,7 +306,7 @@ print_config_instructions() {
     echo "# Using a selfhosted LuckPermsWeb instance"
     echo "web-editor-url: '${BASE_URL}editor/'"
     echo "verbose-viewer-url: '${BASE_URL}verbose/'"
-    echo "tree-viewer-url: '${BASE_URL}tree/'"
+    echo "tree-viewer-url: '${BASE_URL}treeview/'"
     echo
     echo "bytebin-url: '$BYTEBIN_URL'"
 }

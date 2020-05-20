@@ -6,13 +6,15 @@
           <img alt="LuckPerms logo" src="@/assets/logo.png">
           <span>LuckPerms</span>
         </router-link>
-        <div v-if="config.navMessage" class="nav-message">
-          <a :href="config.navUrl" v-if="config.navUrl" target="_blank">
-            {{ config.navMessage }}
+        <div v-if="!config.selfHosted" class="nav-message">
+          <a href="https://www.bisecthosting.com/" target="_blank">
+            <img src="@/assets/bisect.svg" alt="Bisect Hosting">
+            <span>
+              Proudly sponsored by
+              <strong>BisectHosting</strong><br/>
+              Use code <code>luck</code> for 25% off!
+            </span>
           </a>
-          <span v-else>
-             {{ config.navMessage }}
-          </span>
         </div>
       </div>
 
@@ -326,10 +328,26 @@ body {
     margin-left: 1rem;
     opacity: .5;
     max-width: 25rem;
+    font-size: .9rem;
+    line-height: 1.2;
+    transition: opacity .2s;
+
+    img {
+      height: 2rem;
+      margin-right: .5rem;
+    }
 
     a {
+      padding: .25rem;
       color: inherit;
       text-decoration: none;
+      display: flex;
+      align-items: center;
+
+      code {
+        border: 1px solid rgba(255,255,255,.2);
+        padding: 0 .25em;
+      }
     }
 
     &:hover {

@@ -1,6 +1,6 @@
 <template>
   <main class="verbose container">
-    <div class="verbose-viewer" v-if="verboseData.metadata">
+    <div class="verbose-viewer" v-if="verboseData.status === 2">
       <div class="col-1">
         <h1>Verbose viewer</h1>
         <div class="meta-info">
@@ -13,6 +13,7 @@
                   :id="verboseData.metadata.uploader.uuid"
                   :name="verboseData.metadata.uploader.name"
                   :size="16"
+                  :title="false"
                 />
                 {{ verboseData.metadata.uploader.name }}
               </td>
@@ -71,7 +72,7 @@
       <div class="col-2">
         <ul class="data">
           <li v-for="(node, index) in filteredNodes" :key="`verboseNode_${node}_${index}`">
-            <Node :node="node" />
+            <Node :node="node" :node-count="filteredNodeCount" />
           </li>
         </ul>
       </div>
@@ -82,7 +83,18 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Verbose Viewer</p>
-          <template v-if="!errors.load">
+          <div v-if="verboseData.status === 3" class="error">
+            <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong
+              or the session has expired.</p>
+            <p>Please generate another editor session with <code>/lp editor</code>.</p>
+          </div>
+          <template v-if="verboseData.status === 1">
+            <p>
+              <font-awesome icon="asterisk" :spin="true" />
+              Loading data...
+            </p>
+          </template>
+          <template v-if="verboseData.status === 0">
             <a href="/verbose/demo"><button class="button demo-button">View Demo</button></a>
             <p>To generate a verbose report, do the following in game or from the console:</p>
             <ul>
@@ -92,11 +104,6 @@
               <li>Follow the URL that is generated</li>
             </ul>
           </template>
-          <div v-if="errors.load" class="error">
-            <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong
-              or the session has expired.</p>
-            <p>Please generate another editor session with <code>/lp editor</code>.</p>
-          </div>
         </div>
       </div>
     </div>
@@ -125,11 +132,12 @@ export default {
     filteredNodes() {
       const { data } = this.verboseData;
       if (!this.filter) return data;
-      return data.filter(node => node.permission?.includes(this.filter)
-            || node.key?.includes(this.filter)
-            || node.who.identifier.includes(this.filter));
+      return data.filter(node => (node.permission?.includes(this.filter)
+        || node.key?.includes(this.filter)
+        || node.who?.identifier.includes(this.filter)));
     },
     errors() { return this.$store.state.verbose.errors; },
+    filteredNodeCount() { return this.filteredNodes.length; },
   },
   created() {
     if (this.verboseData?.sessionId) return;

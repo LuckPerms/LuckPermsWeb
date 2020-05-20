@@ -1,7 +1,7 @@
 <template>
   <img
     :src="`https://minotar.net/helm/${id}/${size}.png`"
-    :title="`${name}'s avatar`"
+    :title="title ? `${name}'s avatar` : ''"
   />
 </template>
 
@@ -17,6 +17,10 @@ export default {
     size: {
       type: Number,
       default: 100,
+    },
+    title: {
+      type: Boolean,
+      default: true,
     },
   },
 };

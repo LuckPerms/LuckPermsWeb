@@ -3,10 +3,11 @@
     <div class="main" @click="open = !open">
       <span class="name">
         <avatar
-          v-if="node.who.identifier !== 'internal/console'"
+          v-if="node.who.identifier !== 'internal/console' && nodeCount < 1000"
           :id="node.who.identifier"
           :name="node.who.identifier"
           :size="16"
+          :title="false"
         />
         {{ node.who.identifier }}
       </span>
@@ -25,7 +26,9 @@
             <tr v-if="node.context.length">
               <td>Context</td>
               <td>
-                <code v-for="context in node.context">{{ context.key }}: {{ context.value }}</code>
+                <code v-for="context in node.context">
+                  {{ context.key }}: {{ context.value }}
+                </code>
               </td>
             </tr>
             <tr>
@@ -68,33 +71,34 @@
 </template>
 
 <script>
-  import Avatar from '../Avatar';
+import Avatar from '../Avatar.vue';
 
-  export default {
-    components: {
-      Avatar
-    },
-    props: {
-      node: Object,
-    },
-    data() {
-      return {
-        open: false
+export default {
+  components: {
+    Avatar,
+  },
+  props: {
+    node: Object,
+    nodeCount: Number,
+  },
+  data() {
+    return {
+      open: false,
+    };
+  },
+  computed: {
+    valueIcon() {
+      switch (this.node.result) {
+        case 'true':
+          return 'check';
+        case 'false':
+          return 'times';
+        default:
+          return 'minus';
       }
     },
-    computed: {
-      valueIcon() {
-        switch (this.node.result) {
-          case 'true':
-            return 'check';
-          case 'false':
-            return 'times';
-          default:
-            return 'minus';
-        }
-      }
-    }
-  }
+  },
+};
 </script>
 
 <style lang="scss">

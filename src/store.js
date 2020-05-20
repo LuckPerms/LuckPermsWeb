@@ -29,6 +29,7 @@ export default new Vuex.Store({
       sessionId: null,
     },
     verbose: {
+      status: 0,
       sessionId: null,
       metadata: null,
       data: null,
@@ -340,7 +341,9 @@ export default new Vuex.Store({
       state.editor.save.key = key;
     },
 
-    setVerboseData(state, data) {
+    setVerboseData(state, { data, status }) {
+      state.verbose.status = status;
+      if (!data) return;
       state.verbose.data = data.data;
       state.verbose.metadata = data.metadata;
       state.verbose.sessionId = data.sessionId;
@@ -597,23 +600,26 @@ export default new Vuex.Store({
     },
 
     getVerboseData({ commit }, sessionId) {
+      commit('setVerboseData', { data: null, status: 0 });
       if (sessionId === 'demo') {
+        commit('setVerboseData', { data: null, status: 1 });
         import('./data/verbose-demo.json').then((json) => {
-          commit('setVerboseData', json.default);
+          commit('setVerboseData', { data: json.default, status: 2 });
         });
       } else {
+        commit('setVerboseData', { data: null, status: 1 });
         axios.get(`${config.bytebin_url}${sessionId}`)
           .then((response) => {
             const data = {
               ...response.data,
               sessionId,
             };
-            commit('setVerboseData', data);
+            commit('setVerboseData', { data, status: 2 });
           })
-          .catch((error) => {
-            console.error(error);
+          .catch(() => {
             console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
             commit('setVerboseLoadError');
+            commit('setVerboseData', { data: null, status: 3 });
           });
       }
     },

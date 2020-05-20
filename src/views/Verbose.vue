@@ -132,20 +132,24 @@ export default {
     errors() { return this.$store.state.verbose.errors; },
   },
   created() {
-    if (!this.verboseData.sessionId) {
-      let sessionId;
+    if (this.$route.hash && this.$route.hash.length === 11) {
+      window.location = `https://legacy.luckperms.net/verbose/${this.$route.hash}`;
+    }
 
-      if (this.$route.params.id) {
-        sessionId = this.$route.params.id;
-      } else if (this.$route.query.id) {
-        sessionId = this.$route.query.id;
-      } else if (this.$route.hash) {
-        // eslint-disable-next-line prefer-destructuring
-        sessionId = this.$route.hash.split('#')[1];
-      }
-      if (sessionId) {
-        this.$store.dispatch('getVerboseData', sessionId);
-      }
+    if (this.verboseData?.sessionId) return;
+
+    let sessionId;
+
+    if (this.$route.params.id) {
+      sessionId = this.$route.params.id;
+    } else if (this.$route.query.id) {
+      sessionId = this.$route.query.id;
+    } else if (this.$route.hash) {
+      // eslint-disable-next-line prefer-destructuring
+      sessionId = this.$route.hash.split('#')[1];
+    }
+    if (sessionId) {
+      this.$store.dispatch('getVerboseData', sessionId);
     }
   },
 };

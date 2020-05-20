@@ -84,19 +84,24 @@ export default {
     errors() { return this.$store.state.tree.errors; },
   },
   created() {
-    if (!this.treeData.sessionId) {
-      let sessionId;
+    if (this.$route.hash && this.$route.hash.length === 11) {
+      window.location = `https://legacy.luckperms.net/tree/${this.$route.hash}`;
+    }
 
-      if (this.$route.params.id) {
-        sessionId = this.$route.params.id;
-      } else if (this.$route.query.id) {
-        sessionId = this.$route.query.id;
-      } else if (this.$route.hash) {
-        sessionId = this.$route.hash.split('#')[1];
-      }
-      if (sessionId) {
-        this.$store.dispatch('getTreeData', sessionId);
-      }
+    if (this.treeData?.sessionId) return;
+
+    let sessionId;
+
+    if (this.$route.params.id) {
+      sessionId = this.$route.params.id;
+    } else if (this.$route.query.id) {
+      sessionId = this.$route.query.id;
+    } else if (this.$route.hash) {
+      // eslint-disable-next-line prefer-destructuring
+      sessionId = this.$route.hash.split('#')[1];
+    }
+    if (sessionId) {
+      this.$store.dispatch('getTreeData', sessionId);
     }
   },
   methods: {

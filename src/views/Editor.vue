@@ -198,6 +198,10 @@ export default {
   },
 
   created() {
+    if (this.$route.hash && this.$route.hash.length === 11) {
+      window.location = `https://legacy.luckperms.net/editor/${this.$route.hash}`;
+    }
+
     if (this.sessions?.length) return;
 
     let sessionId;

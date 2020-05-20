@@ -6,7 +6,7 @@
           <img alt="LuckPerms logo" src="@/assets/logo.png">
           <span>LuckPerms</span>
         </router-link>
-        <div v-if="!config.selfHosted" class="nav-message">
+        <div v-if="!(config.selfHosted || (config.hideSponsor || false))" class="nav-message">
           <a href="https://bisecthosting.com/luck" target="_blank">
             <img src="@/assets/bisect.svg" alt="Bisect Hosting">
             <span>

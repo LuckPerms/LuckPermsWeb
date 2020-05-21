@@ -260,6 +260,8 @@ configure_nginx() {
     local nginx_config_file="sites-available/luckpermsweb_$EXTERNAL_ADDRESS.conf"
     create_webserver_file \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_header_$PROTOCOL.conf" \
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_base.conf" \
+        "$("$INSTALL_BYTEBIN" && echo "$INSTALLER_DIR/files/nginx/luckpermsweb_proxy.conf")" \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_footer.conf" | sudo dd of="$nginx_config_file" 2> /dev/null
     sudo ln -fs "../$nginx_config_file" sites-enabled/
 
@@ -286,6 +288,8 @@ configure_apache() {
     local apache_config_file="sites-available/$apache_config_name.conf"
     create_webserver_file \
         "$INSTALLER_DIR/files/apache/luckpermsweb_header_$PROTOCOL.conf" \
+        "$INSTALLER_DIR/files/apache/luckpermsweb_base.conf" \
+        "$("$INSTALL_BYTEBIN" && echo "$INSTALLER_DIR/files/apache/luckpermsweb_proxy.conf")" \
         "$INSTALLER_DIR/files/apache/luckpermsweb_footer.conf" \
         "$INSTALLER_DIR/files/apache/luckpermsweb_footer_directory.conf" | sudo dd of="$apache_config_file" 2> /dev/null
     sudo a2ensite "$apache_config_name"

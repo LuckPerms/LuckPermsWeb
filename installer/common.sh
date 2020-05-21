@@ -26,6 +26,7 @@ INSTALL_NGINX=true
 INSTALL_APACHE=true
 USE_HTTPS=true
 USE_LETSENCRYPT=true
+INSTALL_BYTEBIN=true
 SELFHOSTED=true
 
 ################################################################################
@@ -240,6 +241,6 @@ create_webserver_file() {
         -e "s@<CERT_PATH>@$HTTPS_CERT_PATH@g" \
         -e "s@<KEY_PATH>@$HTTPS_KEY_PATH@g" \
         -e "s@<PATH>@$BASE_DIR/webfiles@g" \
-        -e "s/<BYTEBIN_HOST>/$BYTEBIN_IP:$BYTEBIN_PORT/g" \
+        -e "s@<BYTEBIN_HOST>@$("$INSTALL_BYTEBIN" && echo "http://$BYTEBIN_IP:$BYTEBIN_PORT/" || echo "https://bytebin.lucko.me/")@g" \
         "$@"
 }

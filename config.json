@@ -2,5 +2,5 @@
   "bytebin_url": "https://bytebin.lucko.me/",
   "base": "/",
   "selfHosted": false,
-  "api_url": "https://api.luckperms.net"
+  "api_url": "https://metadata.luckperms.net"
 }

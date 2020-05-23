@@ -366,47 +366,21 @@ export default new Vuex.Store({
 
 
   actions: {
-    getAppData({ commit }) {
-      axios.get('https://ci.lucko.me/job/LuckPerms/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]')
-        .then((response) => {
-          const filename = response.data.artifacts[0].fileName;
-          commit('setVersion', filename.split('-').pop().slice(0, -4));
-          const downloads = {};
-          response.data.artifacts.forEach((artifact) => {
-            const download = artifact.relativePath.split('/')[0];
-            downloads[download] = `${response.data.url}artifact/${artifact.relativePath}`;
-          });
-          commit('setDownloads', downloads);
-        })
-        .catch(console.error);
-
-      const extensionIds = ['extension-legacy-api', 'extension-default-assignments'];
-      const extensions = {};
-      extensionIds.forEach((extensionId) => {
-        axios.get(`https://ci.lucko.me/job/${extensionId}/lastSuccessfulBuild/api/json?tree=url,artifacts[fileName,relativePath]`)
-          .then((response) => {
-            response.data.artifacts.forEach((artifact) => {
-              const extension = `${response.data.url.split('/')[4]}`;
-              extensions[extension] = `${response.data.url}artifact/${artifact.relativePath}`;
-            });
-          })
-          .catch(console.error);
-      });
-      commit('setExtensions', extensions);
-
-      axios.get('https://discordapp.com/api/invites/luckperms?with_counts=true')
-        .then((response) => {
-          commit('setDiscordUserCount', response.data.approximate_member_count);
-        })
-        .catch(console.error);
-
-      axios.get('https://cors-anywhere.herokuapp.com/https://www.patreon.com/api/campaigns/2298876?include=patron_count&fields[campaign]=patron_count')
-        .then((response) => {
-          commit('setPatreonCount', response.data.data.attributes.patron_count);
-        })
-        .catch(console.error);
-
+    getAppData: async ({ commit, dispatch }) => {
       commit('setConfig', config);
+      try {
+        const appData = await axios.get(`${config.api_url}/data/all`);
+        commit('setVersion', appData.data.version);
+        commit('setDownloads', appData.data.downloads);
+        commit('setExtensions', appData.data.extensions);
+        commit('setDiscordUserCount', appData.data.discordUserCount);
+        commit('setPatreonCount', appData.data.patreonCount);
+      } catch (error) {
+        console.error('Error getting data, trying again in 10 seconds...');
+        setTimeout(async () => {
+          await dispatch('getAppData');
+        }, 10000);
+      }
     },
 
     getEditorData({ commit, dispatch }, sessionId) {

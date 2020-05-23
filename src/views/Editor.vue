@@ -196,6 +196,11 @@ export default {
   },
 
   created() {
+    if (window.location.search && window.location.search.length === 11) {
+      const code = window.location.search.split('?')[1];
+      window.location = `https://legacy.luckperms.net/editor/?${code}`;
+    }
+
     if (this.$route.hash && this.$route.hash.length === 11) {
       window.location = `https://legacy.luckperms.net/editor/${this.$route.hash}`;
     }

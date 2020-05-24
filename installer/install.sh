@@ -210,7 +210,7 @@ install_webfiles() {
 
     # Render webfiles
     npm install
-    npm run build
+    npm run build -- --skip-plugins eslint
 
     popd > /dev/null
 

@@ -92,7 +92,7 @@
         </div>
       </section>
     </div>
-    <section class="hero">
+    <section class="hero extensions">
       <div class="container">
         <div>
           <h1>Extensions</h1>
@@ -112,19 +112,16 @@
             </span>
             <small>LuckPerms 5.0 and above</small>
           </a>
+          <div>
+            <p>Allows some common API methods to be used by plugins that haven't upgraded to v5
+              version of the api yet.
+            </p>
+            <p>Check out the
+              <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link>
+              for more information!
+            </p>
+          </div>
         </div>
-
-        <div>
-          <p>Allows some common API methods to be used by plugins that haven't upgraded to v5
-            version of the api yet.
-          </p>
-          <p>Check out the
-            <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link>
-            for more information!
-          </p>
-        </div>
-      </section>
-      <section class="resources">
         <div>
           <a :href="extensions['extension-default-assignments']" class="resource">
             <span>
@@ -133,18 +130,17 @@
             </span>
             <small>LuckPerms 5.0 and above</small>
           </a>
-        </div>
-
-        <div>
-          <p>Allows for other ways to make
-            <router-link to="/wiki/Default-Groups">Default Groups</router-link>
-            if the workarounds are not possible.
-          </p>
-          <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
-            section</router-link> for more information! See also
-            <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about
-            configuring default assignments!
-          </p>
+          <div>
+            <p>Allows for other ways to make
+              <router-link to="/wiki/Default-Groups">Default Groups</router-link>
+              if the workarounds are not possible.
+            </p>
+            <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
+              section</router-link> for more information! See also
+              <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about
+              configuring default assignments!
+            </p>
+          </div>
         </div>
       </section>
     </div>
@@ -199,11 +195,7 @@ export default {
         align-items: center;
         padding: 4rem;
 
-        div {
-          width: 100%;
-        }
-
-        @include breakpoint($sm) {
+        @include breakpoint($md) {
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
@@ -211,26 +203,26 @@ export default {
       }
 
       p {
-        text-align: left;
+        text-align: center;
         font-size: 1.5rem;
 
         @include breakpoint($md) {
-          text-align: center;
+          text-align: left;
         }
       }
 
       h1 {
-        text-align: left;
+        text-align: center;
 
         @include breakpoint($md) {
-          text-align: center;
+          text-align: left;
         }
       }
 
       button {
         margin-top: 2rem;
 
-        @include breakpoint($sm) {
+        @include breakpoint($md) {
           margin: 0;
         }
 
@@ -243,24 +235,48 @@ export default {
 
     .resource {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
+
+      @include breakpoint($md) {
+        flex-direction: row;
+        align-items: center;
+      }
 
       span {
         margin: 0 1rem 0 0;
         white-space: nowrap;
       }
+
+      small {
+        margin-top: 1rem;
+
+        @include breakpoint($md) {
+          margin: 0;
+        }
+      }
     }
 
-    .extensions section {
-      margin-bottom: -8rem;
-
-      @include breakpoint($xs) {
-        &:first-child > div:not(:first-child) {
-          margin-bottom: 4rem;
+    .extensions {
+      &.hero {
+        .container {
+          justify-content: center;
         }
-  
-        > div:not(:first-child) {
-          padding-top: 0;
+
+        h1, p {
+          text-align: center;
+        }
+      }
+
+      .resources {
+        > div {
+          + div {
+            padding-top: 0;
+
+            @include breakpoint($md) {
+              padding-top: 4rem;
+            }
+          }
         }
       }
     }

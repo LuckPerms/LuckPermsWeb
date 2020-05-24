@@ -17,7 +17,7 @@
             Download
           </span>
             <small>
-              Version: {{ version }}
+              v{{ version }}
               <font-awesome icon="asterisk" :spin="true" v-if="!version" />
             </small>
           </router-link>

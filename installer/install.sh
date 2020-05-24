@@ -70,6 +70,8 @@ ask_questions() {
             ask_yes_no "You don't have apache installed. Install it" INSTALL_APACHE
         fi
 
+        ask_yes_no "Install local bytebin" INSTALL_BYTEBIN
+
         while
             ask_for_value "$WEBSERVER IPv4 listen address (\"none\" to disable)" LISTEN_IPV4
             ask_for_value "$WEBSERVER IPv6 listen address (\"none\" to disable)" LISTEN_IPV6
@@ -102,12 +104,13 @@ setup_submodules() {
 install_prerequisites() {
     echo "Checking if all prerequisites are installed..."
 
-    local -A packages=([java]=default-jre-headless [jq]=jq [nc]=netcat [netstat]=net-tools [sed]=sed [wget]=wget)
+    local -A packages=([jq]=jq [nc]=netcat [netstat]=net-tools [sed]=sed [wget]=wget)
 
     # Conditional packages
     "$USE_HTTPS"  && "$USE_LETSENCRYPT" && packages+=([certbot]=letsencrypt)
     "$USE_NGINX"  && "$INSTALL_NGINX"   && packages+=([nginx]=nginx-light)
     "$USE_APACHE" && "$INSTALL_APACHE"  && packages+=([apache2]=apache2)
+    "$INSTALL_BYTEBIN"                  && packages+=([java]=default-jre-headless)
 
     # Check that packages exist
     for key in "${!packages[@]}"; do
@@ -133,9 +136,9 @@ install_prerequisites() {
 calculate_variables() {
     "$USE_HTTPS" || USE_LETSENCRYPT=false
 
-    PROTOCOL="$("$USE_HTTPS" && echo "https" || echo "http")"
+    PROTOCOL="http$("$USE_HTTPS" && echo "s")"
     BASE_URL="$PROTOCOL://$EXTERNAL_ADDRESS/"
-    BYTEBIN_URL="${BASE_URL}bytebin/"
+    BYTEBIN_URL="$("$INSTALL_BYTEBIN" && echo "${BASE_URL}bytebin/" || echo "https://bytebin.lucko.me/")"
 
     if "$USE_HTTPS" && "$USE_LETSENCRYPT"; then
         HTTPS_CERT_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/fullchain.pem"
@@ -207,7 +210,7 @@ install_webfiles() {
 
     # Render webfiles
     npm install
-    npm run build
+    npm run build -- --skip-plugins eslint
 
     popd > /dev/null
 
@@ -257,6 +260,8 @@ configure_nginx() {
     local nginx_config_file="sites-available/luckpermsweb_$EXTERNAL_ADDRESS.conf"
     create_webserver_file \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_header_$PROTOCOL.conf" \
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_base.conf" \
+        "$("$INSTALL_BYTEBIN" && echo "$INSTALLER_DIR/files/nginx/luckpermsweb_proxy.conf")" \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_footer.conf" | sudo dd of="$nginx_config_file" 2> /dev/null
     sudo ln -fs "../$nginx_config_file" sites-enabled/
 
@@ -283,6 +288,8 @@ configure_apache() {
     local apache_config_file="sites-available/$apache_config_name.conf"
     create_webserver_file \
         "$INSTALLER_DIR/files/apache/luckpermsweb_header_$PROTOCOL.conf" \
+        "$INSTALLER_DIR/files/apache/luckpermsweb_base.conf" \
+        "$("$INSTALL_BYTEBIN" && echo "$INSTALLER_DIR/files/apache/luckpermsweb_proxy.conf")" \
         "$INSTALLER_DIR/files/apache/luckpermsweb_footer.conf" \
         "$INSTALLER_DIR/files/apache/luckpermsweb_footer_directory.conf" | sudo dd of="$apache_config_file" 2> /dev/null
     sudo a2ensite "$apache_config_name"
@@ -320,7 +327,7 @@ setup_submodules
 install_prerequisites
 calculate_variables
 prepare_installation_location
-install_bytebin
+"$INSTALL_BYTEBIN" && install_bytebin
 install_webfiles
 "$USE_LETSENCRYPT" && generate_https_cert
 "$USE_NGINX"       && configure_nginx

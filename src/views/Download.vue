@@ -12,7 +12,7 @@
         <div>
           <button class="button" @click="openQuiz">
             <font-awesome icon="question-circle" />
-            Not sure which version?
+            Not sure which type?
           </button>
         </div>
       </div>
@@ -21,73 +21,72 @@
     <div class="container">
       <section class="resources">
         <div>
-          <h2>Choose your version</h2>
+          <h2>Choose your server type</h2>
           <a :href="downloads.bukkit" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Bukkit
             </span>
-            <small>Versions 1.8.8 and above</small>
+            <small>For CraftBukkit/Spigot/Paper etc, 1.8.8 or newer</small>
           </a>
           <a :href="downloads.bungee" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               BungeeCord
             </span>
-            <small>Versions 1.8.8 and above (or 1.7.10 if using Travertine)</small>
+            <small>For BungeeCord/Waterfall etc, use latest</small>
           </a>
           <a :href="downloads.sponge" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Sponge
             </span>
-            <small>SpongeAPI versions 5-8</small>
+            <small>For SpongeForge/SpongeVanilla, releases 5-8</small>
           </a>
           <a :href="downloads.nukkit" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Nukkit
             </span>
-            <small>Version NukkitX b93 and above</small>
+            <small>For NukkitX, b93 or newer</small>
           </a>
           <a :href="downloads.velocity" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Velocity
             </span>
-            <small>Version 1.0</small>
+            <small>For Velocity, 1.0 or newer</small>
           </a>
           <a :href="downloads['bukkit-legacy']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Bukkit Legacy
             </span>
-            <small>Version 1.7.10</small>
+            <small>For CraftBukkit/Spigot/Paper etc, 1.7.10</small>
           </a>
         </div>
 
         <div>
-          <h2>How to install:</h2>
+          <h2>How to install</h2>
           <ol>
-            <li>Place the downloaded <code>.jar</code> file into your server's <code>plugins</code>
-              or <code>mods</code> folder</li>
+            <li>Add the downloaded plugin <code>.jar</code> file into your server's
+              <code>plugins</code> or <code>mods</code> folder.</li>
             <li>Start or restart your server - <strong>do not reload!</strong></li>
-            <li>Check your <code>plugins</code> or <code>config</code> folder for a
-              <code>LuckPerms</code> or <code>luckperms</code> folder - see the tips below if the
-              folder doesn't generate</li>
-            <li>Open the <code>config.yml</code> or <code>luckperms.conf</code> file in your
-              favourite text editor and adjust any settings to your liking</li>
+            <li>Locate the plugin's configuration file (usually found within
+              <code>/plugins/LuckPerms/</code>) and adjust any settings to your liking.</li>
+            <li>Start setting up your permissions! Check out the
+              <router-link to="wiki/Usage">Getting Started</router-link> guide for more info.</li>
           </ol>
           <h2>Having trouble installing?</h2>
           <ul>
-            <li>Make sure to check your console for any errors - especially during start up</li>
-            <li>Check the <router-link to="/wiki">wiki</router-link> to see if you missed any
-              important steps during setup</li>
-            <li>Delete the <code>libs</code> folder and restart the server to let it regenerate,
-              sometimes this may fix the problem</li>
-            <li>If all else fails, join our
+            <li>Make sure to check your console for any error messages - especially during start
+              up</li>
+            <li>Check the more detailed
+              <router-link to="wiki/Installation">Installation</router-link> wiki page to see if you
+              need to perform any additional steps.</li>
+            <li>If all else fails, get in touch with us on
               <a href="https://discord.gg/luckperms" target="_blank">Discord</a>
-              to get some support</li>
+              and we'll be happy to help.</li>
           </ul>
         </div>
       </section>

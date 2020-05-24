@@ -26,6 +26,7 @@ INSTALL_NGINX=true
 INSTALL_APACHE=true
 USE_HTTPS=true
 USE_LETSENCRYPT=true
+INSTALL_BYTEBIN=true
 SELFHOSTED=true
 
 ################################################################################

@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     version: null,
+    userVersion: localStorage.userVersion || null,
     config: null,
     downloads: {
       bukkit: null,
@@ -50,6 +51,8 @@ export default new Vuex.Store({
 
   getters: {
     version: state => state.version,
+
+    userVersion: state => state.userVersion,
 
     config: state => state.config,
 
@@ -100,6 +103,11 @@ export default new Vuex.Store({
   mutations: {
     setVersion: (state, version) => {
       state.version = version;
+    },
+
+    setUserVersion: (state, version) => {
+      localStorage.userVersion = version;
+      state.userVersion = version;
     },
 
     setConfig: (state, configData) => {
@@ -406,6 +414,7 @@ export default new Vuex.Store({
 
     setEditorData({ commit, dispatch }, data) {
       commit('setMetaData', data.metadata);
+      commit('setUserVersion', data.metadata.pluginVersion);
 
       data.permissionHolders.forEach((session) => {
         session.nodes.forEach((node) => {

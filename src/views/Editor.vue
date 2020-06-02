@@ -59,8 +59,18 @@
 
           <div class="editor-main">
             <nav>
-              <div class="logo">
-                Web Permissions Editor
+              <div>
+                <div class="logo">
+                  Web Permissions Editor
+                </div>
+                <router-link
+                  to="/download"
+                  v-if="versionUpdateAvailable"
+                  class="version-notification"
+                >
+                  <font-awesome icon="exclamation-triangle" />
+                  <span>Your version is outdated!</span>
+                </router-link>
               </div>
               <div class="buttons">
 <!--                <button>-->
@@ -193,6 +203,16 @@ export default {
     saveStatus() {
       return this.$store.getters.saveStatus;
     },
+    version() {
+      return this.$store.getters.version;
+    },
+    userVersion() {
+      return this.$store.getters.userVersion;
+    },
+    versionUpdateAvailable() {
+      if (!this.userVersion || !this.version) return false;
+      return this.userVersion !== this.version;
+    },
   },
 
   created() {
@@ -283,14 +303,44 @@ main.editor {
           position: relative;
           z-index: 2;
 
+          > div {
+            display: flex;
+            align-items: center;
+          }
+
           .logo {
             display: flex;
             align-items: center;
             font-weight: bold;
             margin-left: 4rem;
+            margin-right: 1rem;
 
             @include breakpoint($sm) {
               margin-left: 0;
+            }
+          }
+
+          .version-notification {
+            font-size: .9rem;
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            padding: .5rem;
+
+            svg {
+              margin-right: .5rem;
+              color: $red;
+            }
+
+            span {
+              opacity: 0;
+              transition: opacity .2s;
+            }
+
+            &:hover {
+              span {
+                opacity: .8;
+              }
             }
           }
 

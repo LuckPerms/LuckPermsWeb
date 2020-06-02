@@ -31,6 +31,7 @@ import {
   faQuestionCircle,
   faBars,
   faCodeBranch,
+  faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -83,6 +84,7 @@ library.add(
   faQuestionCircle,
   faBars,
   faCodeBranch,
+  faExclamationTriangle,
 
   faGithub,
   faDiscord,

@@ -426,7 +426,7 @@ body {
         display: flex;
         align-items: center;
         font-weight: bold;
-        padding: .5rem 1rem;
+        padding: .5em 1em;
         text-decoration: none;
         text-transform: uppercase;
         transition: all .2s;

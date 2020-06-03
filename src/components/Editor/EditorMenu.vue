@@ -202,7 +202,7 @@ export default {
     max-height: 100%;
     border-right: 1px solid rgba(255,255,255,.2);
     position: absolute;
-    z-index: 50;
+    z-index: 55;
     background: black;
     top: 4rem;
     bottom: 0;
@@ -232,13 +232,14 @@ export default {
         background: rgba(255,255,255,.1);
         border: none;
         padding: .5rem 1rem;
-        width: 100%;
+        width: calc(100% - 4rem);
         outline-offset: -1px;
         height: 4rem;
         margin-left: 4rem;
 
         @include breakpoint($sm) {
           height: unset;
+          width: 100%;
           margin: 0;
         }
       }

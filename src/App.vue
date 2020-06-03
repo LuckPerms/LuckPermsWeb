@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <nav id="nav">
       <div>
         <router-link to="/" class="logo">
           <img alt="LuckPerms logo" src="@/assets/logo.png">
@@ -93,7 +93,16 @@
       >
         <font-awesome icon="bars" />
       </button>
-    </div>
+
+      <transition name="fade">
+        <div
+          id="nav-focus"
+          class="overlay-focus"
+          v-if="menu"
+          @click="menu = !menu"
+        ></div>
+      </transition>
+    </nav>
 
     <transition name="fade" mode="out-in">
       <router-view/>
@@ -178,6 +187,12 @@ export default {
 
   created() {
     this.$store.dispatch('getAppData');
+  },
+
+  watch: {
+    $route() {
+      this.menu = false;
+    },
   },
 };
 </script>
@@ -287,7 +302,7 @@ body {
 
 #nav {
   padding: .5rem;
-  z-index: 50;
+  z-index: 100;
   box-shadow: 0 0 0.5rem rgba(0,0,0,.25);
   display: flex;
   justify-content: space-between;
@@ -343,6 +358,7 @@ body {
       text-decoration: none;
       display: flex;
       align-items: center;
+      font-size: .8rem;
 
       code {
         border: 1px solid rgba(255,255,255,.2);
@@ -369,6 +385,7 @@ body {
     width: 100%;
     max-width: 20rem;
     bottom: 0;
+    z-index: 100;
 
     @include breakpoint($sm) {
       flex-direction: row;
@@ -409,13 +426,13 @@ body {
         display: flex;
         align-items: center;
         font-weight: bold;
-        padding: .5rem 1rem;
+        padding: .5em 1em;
         text-decoration: none;
         text-transform: uppercase;
         transition: all .2s;
         cursor: pointer;
         width: 100%;
-        font-size: 1.25rem;
+        font-size: 1.5rem;
 
         @include breakpoint($sm) {
           font-size: 1rem;

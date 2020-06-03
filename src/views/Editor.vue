@@ -50,6 +50,15 @@
             :class="{ active: menu }"
           />
 
+          <transition name="fade">
+            <div
+              id="editor-menu-focus"
+              class="overlay-focus"
+              v-if="menu"
+              @click="menu = !menu"
+            ></div>
+          </transition>
+
           <button
             id="editor-menu-toggle"
             @click="menu = !menu"
@@ -281,7 +290,7 @@ main.editor {
           padding: 1rem;
           font-size: 1.5rem;
           position: relative;
-          z-index: 2;
+          z-index: 52;
 
           .logo {
             display: flex;

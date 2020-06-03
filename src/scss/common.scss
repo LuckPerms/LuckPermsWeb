@@ -263,3 +263,12 @@ code, .code {
     color: $red;
   }
 }
+
+.overlay-focus {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 50;
+  background: rgba(0,0,0,.5);
+}

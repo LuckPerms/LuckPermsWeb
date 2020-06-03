@@ -292,7 +292,6 @@ export default {
       background: $grey;
       color: $brand-color;
       font: inherit;
-      font-size: 1.25rem;
       font-weight: bold;
       flex: 1;
       margin: 1rem;
@@ -302,13 +301,22 @@ export default {
       align-items: center;
       border-radius: 2px;
       text-decoration: none;
+      text-align: center;
+
+      @include breakpoint($sm) {
+        font-size: 1.25rem;
+      }
 
       svg {
-        font-size: 4rem;
+        font-size: 3rem;
         display: block;
         opacity: .5;
         color: #FFF;
         margin-bottom: 1rem;
+
+        @include breakpoint($sm) {
+          font-size: 4rem;
+        }
       }
 
       &:first-child {

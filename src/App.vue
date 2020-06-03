@@ -432,7 +432,7 @@ body {
         transition: all .2s;
         cursor: pointer;
         width: 100%;
-        font-size: 1.25rem;
+        font-size: 1.5rem;
 
         @include breakpoint($sm) {
           font-size: 1rem;

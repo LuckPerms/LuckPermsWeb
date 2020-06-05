@@ -1,0 +1,3 @@
+[submodule "assets/data/wiki"]
+	path = assets/data/wiki
+	url = https://github.com/LuckPerms/wiki

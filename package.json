@@ -11,6 +11,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@nuxtjs/markdownit": "^1.2.9",
     "nuxt": "^2.0.0",
     "uuid": "^8.1.0"
   },

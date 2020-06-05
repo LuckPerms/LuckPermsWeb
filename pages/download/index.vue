@@ -75,14 +75,14 @@
             <li>Locate the plugin's configuration file (usually found within
               <code>/plugins/LuckPerms/</code>) and adjust any settings to your liking.</li>
             <li>Start setting up your permissions! Check out the
-              <router-link to="wiki/Usage">Getting Started</router-link> guide for more info.</li>
+              <nuxt-link to="/wiki/Usage">Getting Started</nuxt-link> guide for more info.</li>
           </ol>
           <h2>Having trouble installing?</h2>
           <ul>
             <li>Make sure to check your console for any error messages - especially during start
               up</li>
             <li>Check the more detailed
-              <router-link to="wiki/Installation">Installation</router-link> wiki page to see if you
+              <nuxt-link to="/wiki/Installation">Installation</nuxt-link> wiki page to see if you
               need to perform any additional steps.</li>
             <li>If all else fails, get in touch with us on
               <a href="https://discord.gg/luckperms" target="_blank">Discord</a>
@@ -96,7 +96,7 @@
         <div>
           <h1>Extensions</h1>
           <p>Extensions can modify the behaviour of LuckPerms, you can read more about them
-            <router-link to="/wiki/Extensions">on the wiki</router-link>
+            <nuxt-link to="/wiki/Extensions">on the wiki</nuxt-link>
           </p>
         </div>
       </div>
@@ -116,7 +116,7 @@
               version of the api yet.
             </p>
             <p>Check out the
-              <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link>
+              <nuxt-link to="/wiki/Extensions#extension-legacy-api">wiki section</nuxt-link>
               for more information!
             </p>
           </div>
@@ -131,12 +131,12 @@
           </a>
           <div>
             <p>Allows for other ways to make
-              <router-link to="/wiki/Default-Groups">Default Groups</router-link>
+              <nuxt-link to="/wiki/Default-Groups">Default Groups</nuxt-link>
               if the workarounds are not possible.
             </p>
-            <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
-              section</router-link> for more information! See also
-              <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about
+            <p>Check out the <nuxt-link to="/wiki/Extensions#extension-default-assignments">wiki
+              section</nuxt-link> for more information! See also
+              <nuxt-link to="/wiki/Default-Groups#configure-default-assignments">this section</nuxt-link> about
               configuring default assignments!
             </p>
           </div>

@@ -11,7 +11,16 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "uuid": "^8.1.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@fortawesome/free-brands-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@nuxtjs/axios": "^5.11.0",
+    "@nuxtjs/fontawesome": "^1.1.2",
+    "@nuxtjs/style-resources": "^1.0.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2"
+  }
 }

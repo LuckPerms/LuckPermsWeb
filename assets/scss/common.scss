@@ -1,0 +1,669 @@
+.container {
+  width: 100%;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+.hero {
+  background: linear-gradient(-2deg, #0a0a10, #131319);
+  display: flex;
+
+  .container {
+    flex-wrap: wrap;
+
+    @include breakpoint($md) {
+      flex-wrap: nowrap;
+    }
+  }
+
+  h1 {
+    margin: 0 0 1rem;
+    line-height: 1;
+    font-size: 2em;
+
+    @include breakpoint($md) {
+      font-size: 3em;
+    }
+  }
+
+  p {
+    margin: 0;
+    opacity: .5;
+  }
+}
+
+a {
+  color: $brand-color;
+
+  &:hover {
+    color: lighten($brand-color, 10%);
+  }
+}
+
+code, .code {
+  border: 0;
+  display: inline-block;
+  font-family: 'Source Code Pro', monospace;
+  padding: .2em .5em;
+  background: rgba(0,0,0,.2);
+  font-size: .8em;
+  border-radius: 2px;
+  line-height: 1.5;
+
+  &.true {
+    color: $brand-color;
+  }
+
+  &.false {
+    color: tomato;
+  }
+
+  &.undefined {
+    color: grey;
+  }
+}
+
+.button {
+  border: 0;
+  font: inherit;
+  font-weight: bold;
+  background: $brand-color;
+  color: $navy;
+  font-size: 1.5em;
+  padding: 1rem 2rem;
+  text-align: center;
+  line-height: 1;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: background .2s;
+  cursor: pointer;
+
+  @include breakpoint($md) {
+    font-size: 2em;
+  }
+
+  &:hover {
+    background: lighten($brand-color, 10%);
+  }
+
+  span {
+    display: block;
+    font-weight: bold;
+
+    svg {
+      margin-right: .5rem;
+      opacity: .5;
+    }
+  }
+
+  small {
+    font-size: 1rem;
+    font-weight: normal;
+    opacity: .75;
+
+    @include breakpoint($md) {
+      font-size: 1.25rem;
+    }
+  }
+
+  &.demo-button {
+    font-size: 1rem;
+    padding: .5rem 1rem;
+  }
+}
+
+.resources {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @include breakpoint($md) {
+    flex-direction: row;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2rem;
+
+    h2 {
+      margin-top: 0;
+    }
+
+    p, ol, ul {
+      margin-top: 0;
+      opacity: .75;
+    }
+
+    @include breakpoint($md) {
+      width: 50%;
+      padding: 4rem;
+
+      &:first-child {
+        padding-right: 2rem;
+      }
+
+      &:last-child {
+        padding-left: 2rem;
+      }
+    }
+  }
+
+  a.resource {
+    display: block;
+    background: $grey;
+    color: $brand-color;
+    padding: 1.5rem;
+    line-height: 1;
+    text-decoration: none;
+    border-radius: 2px;
+    font-size: 1.5em;
+    transition: background .2s;
+    box-shadow: 0 0 1rem rgba(0,0,0,.1);
+
+    &:not(:last-child) {
+      margin-bottom: 2rem;
+    }
+
+    &:hover {
+      background: lighten($grey, 10%);
+    }
+
+    span {
+      display: block;
+      font-weight: bold;
+      margin-bottom: .5rem;
+    }
+
+    svg {
+      margin-right: .5rem;
+      opacity: .5;
+    }
+
+    small {
+      color: white;
+      opacity: .4;
+      font-size: 1rem;
+    }
+  }
+}
+
+.lighter {
+  opacity: .66;
+}
+
+.tool-intro {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > div {
+    display: flex;
+    align-items: flex-start;
+    background: $bg-gradient;
+    padding: 2em;
+    max-width: 40rem;
+    border-radius: 2px;
+  }
+
+  img {
+    height: 13rem;
+    width: auto;
+    margin-right: 2em;
+    box-shadow: 0rem 0rem 2rem rgba(0,0,0,0.1);
+    border-radius: 100%;
+  }
+
+  h1 {
+    font-size: 3em;
+    line-height: 1;
+    margin: 0;
+
+    + p {
+      font-size: 1.5em;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+  }
+
+  p {
+    &:first-of-type {
+      margin-top: 0;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  ul {
+    margin: 0;
+    margin-top: 1em;
+    padding-left: 1.5em;
+
+    li {
+      margin-bottom: .25em;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+
+  svg {
+    margin-right: .5em;
+    opacity: .5;
+  }
+
+  .error {
+    margin-top: 1em;
+    color: $red;
+  }
+}
+
+.overlay-focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 50;
+  background: rgba(0,0,0,.5);
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+:focus {
+  outline: $brand-color 1px solid;
+}
+
+input:focus {
+  outline-offset: unset;
+}
+
+::-webkit-scrollbar {
+  width: .5rem;
+
+  &-track {
+    background: rgb(10, 10, 24);
+    border-left: 1px solid rgba(255,255,255,.1);
+  }
+
+  &-thumb {
+    background: rgba(255, 255, 255, .4);
+  }
+}
+
+html {
+  height: 100%;
+  font-size: 12px;
+
+  @include breakpoint($md) {
+    font-size: 14px;
+  }
+
+  @include breakpoint($lg) {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+}
+
+#app {
+  font-family: 'Source Sans Pro', 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFF;
+  line-height: 1.5;
+  background-color: #141422;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+
+  > main {
+    height: 100%;
+    max-height: calc(100% - 6rem);
+  }
+
+  > footer {
+    background: $grey;
+    padding: .4em 1em;
+    position: relative;
+    font-size: .9em;
+    flex: 0 0 auto;
+    height: 2rem;
+    box-shadow: 0 0 1rem rgba(0,0,0,0.2);
+
+    svg {
+      color: #95b556;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+#nav-menu-toggle {
+  background: transparent;
+  color: $brand-color;
+  height: 3rem;
+  width: 3rem;
+  font-size: 2rem;
+  border: 0;
+
+  @include breakpoint($sm) {
+    display: none;
+  }
+}
+
+#nav {
+  padding: .5rem;
+  z-index: 100;
+  box-shadow: 0 0 0.5rem rgba(0,0,0,.25);
+  display: flex;
+  justify-content: space-between;
+
+  > div {
+    display: flex;
+    align-items: center;
+
+    > span {
+      opacity: .5;
+      margin-left: .5rem;
+    }
+  }
+
+  .logo {
+    height: 3rem;
+    padding: .5rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    color: #FFF;
+    text-decoration: none;
+    transition: all .2s;
+    font-weight: bold;
+
+    &:hover {
+      background: rgba(255,255,255,.1);
+    }
+
+    img {
+      height: 100%;
+      width: auto;
+      margin-right: .5rem;
+    }
+  }
+
+  .nav-message {
+    margin-left: 1rem;
+    opacity: .5;
+    max-width: 25rem;
+    font-size: .9rem;
+    line-height: 1.2;
+    transition: opacity .2s;
+
+    img {
+      height: 2rem;
+      margin-right: .5rem;
+    }
+
+    a {
+      padding: .25rem;
+      color: inherit;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      font-size: .8rem;
+
+      code {
+        border: 1px solid rgba(255,255,255,.2);
+        padding: 0 .25em;
+      }
+    }
+
+    &:hover {
+      opacity: .75;
+    }
+  }
+
+  ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 4rem;
+    transition: right .2s;
+    flex-direction: column;
+    background: black;
+    right: -100%;
+    width: 100%;
+    max-width: 20rem;
+    bottom: 0;
+    z-index: 100;
+
+    @include breakpoint($sm) {
+      flex-direction: row;
+      position: relative;
+      max-width: unset;
+      width: auto;
+      top: unset;
+      right: unset;
+      background: transparent;
+    }
+
+    &.active {
+      right: 0;
+      display: initial;
+    }
+
+    &.top-level:not(.active) {
+      @include breakpoint($xs) {
+        display: none;
+      }
+    }
+
+    li {
+      display: flex;
+      position: relative;
+      flex-direction: column;
+
+      @include breakpoint($sm) {
+        flex-direction: row;
+      }
+
+      &:hover {
+        background: rgba(255,255,255,.1);
+      }
+
+      a, span {
+        color: $brand-color;
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        padding: .5em 1em;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: all .2s;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1.5rem;
+
+        @include breakpoint($sm) {
+          font-size: 1rem;
+        }
+
+        &.nuxt-link-exact-active {
+          color: #FFF;
+        }
+
+        &.tools {
+          display: none;
+
+          @include breakpoint($sm) {
+            display: flex;
+          }
+        }
+
+        svg {
+          margin-right: .5rem;
+          opacity: .5;
+        }
+      }
+
+      &:not(:first-child) {
+        a, span {
+          &.nuxt-link-active {
+            color: #FFF;
+          }
+        }
+      }
+
+      > ul {
+        position: relative;
+        top: unset;
+        bottom: unset;
+        right: unset;
+
+        @include breakpoint($sm) {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          flex-direction: column;
+          min-width: 100%;
+          background: $grey;
+          z-index: 100;
+          box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
+
+          li {
+            &:hover {
+              background: rgba(255,255,255,.1);
+            }
+          }
+
+          a {
+            width: 100%;
+          }
+        }
+      }
+
+      @include breakpoint($sm) {
+        &:hover {
+          ul {
+            display: flex;
+          }
+        }
+      }
+
+      &.external {
+        svg {
+          margin-right: 0;
+
+          @include breakpoint($sm) {
+            opacity: 1;
+          }
+        }
+
+        a {
+          padding: 0 1rem;
+
+          @include breakpoint($sm) {
+            padding: .5rem 1rem;
+            font-size: 1.5rem;
+          }
+
+          &.github {
+            color: #FFF;
+          }
+
+          &.discord {
+            color: #7289DA;
+          }
+
+          &.patreon {
+            color: #f96854;
+          }
+
+          span {
+            color: inherit;
+            padding-left: .5rem;
+
+            @include breakpoint($sm) {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.vdp-datepicker {
+  .vdp-datepicker__calendar {
+    background: $grey;
+    border: 0;
+    box-shadow: 0 0 1em rgba(0,0,0,.2);
+
+    header {
+      span {
+        &.prev {
+          &:after {
+            border-right-color: white;
+          }
+        }
+
+        &.next {
+          &:after {
+            border-left-color: white;
+          }
+        }
+
+        &:not(.disabled):hover {
+          background: rgba(255,255,255,.2);
+        }
+      }
+    }
+
+    .cell {
+      &:not(.blank):not(.day-header) {
+        &:not(.disabled) {
+          &:hover {
+            border-color: $brand-color;
+          }
+        }
+      }
+
+      &.selected {
+        background: $brand-color;
+      }
+    }
+
+    .disabled {
+      opacity: .3;
+    }
+  }
+}

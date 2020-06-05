@@ -320,7 +320,7 @@ body {
   overflow-x: hidden;
 }
 
-#app {
+#__nuxt {
   font-family: 'Source Sans Pro', 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -330,6 +330,17 @@ body {
   width: 100%;
   height: 100%;
   display: flex;
+}
+
+#__nuxt,
+#__layout,
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+#app {
   flex-flow: column;
 
   > main {

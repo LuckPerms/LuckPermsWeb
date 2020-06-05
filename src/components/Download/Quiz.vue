@@ -24,6 +24,7 @@
             <li @click="proceed(3, 'nukkit')">NukkitX</li>
           </ul>
           <ul class="options" v-if="options.network">
+            <h3 stlye="text-align: center">LuckPerms is still required on all backend servers.</h3>
             <li @click="proceed(5, 'bungee')">BungeeCord / Waterfall / Travertine</li>
             <li @click="proceed(5, 'velocity')">Velocity</li>
           </ul>

@@ -36,7 +36,7 @@
       </div>
     </div>
   </div>
-  <button type="button" @click="addGroup">
+  <button type="button" @click="addGroup" class="save-button">
     <font-awesome icon="plus-circle" />
     Add group
   </button>

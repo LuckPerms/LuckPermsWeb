@@ -130,10 +130,6 @@ export default {
       &.red {
         background-color: $red;
       }
-
-      &:not(:first-child) {
-        margin-left: 1em;
-      }
     }
   }
 }

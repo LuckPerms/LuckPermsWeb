@@ -130,6 +130,10 @@ export default {
       &.red {
         background-color: $red;
       }
+      
+      &:not(:first-child):not(.save-button) {
+        margin-left: 1em;
+      }
     }
   }
 }

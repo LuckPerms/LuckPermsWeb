@@ -253,6 +253,14 @@ create_webserver_file() {
 # Running after variable and function initialization because if any of that
 # stuff fails we are in much deeper troubles...
 
+# Compress the old log
+if [ -f "$INSTALLER_LOG" ]; then
+    old_log="${INSTALLER_LOG/.log/"_$(date "+%Y-%m-%d_%H-%M-%S").log"}"
+
+    mv "$INSTALLER_LOG" "$old_log"
+    command_exists gzip && gzip -q9 -- "$old_log"
+fi
+
 # Shamelessly copied from https://stackoverflow.com/a/11886837/1996022
 exec >  >(tee -ia "$INSTALLER_LOG")
 exec 2> >(tee -ia "$INSTALLER_LOG" >&2) 

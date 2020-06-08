@@ -62,7 +62,7 @@ ask_questions() {
 
         if   "$USE_NGINX" &&  [ ! -x /usr/sbin/nginx ];   then
             ask_yes_no "You don't have nginx installed. Install it"  INSTALL_NGINX
-        elif "$USE_APACHE" && [ ! -x /usr/sbin/apache2 ]; then
+        elif "$USE_APACHE" && [ ! -x /usr/sbin/a2enmod ]; then
             ask_yes_no "You don't have apache installed. Install it" INSTALL_APACHE
         fi
 
@@ -105,7 +105,7 @@ install_prerequisites() {
     # Conditional packages
     "$USE_HTTPS"  && "$USE_LETSENCRYPT" && packages+=([certbot]=letsencrypt)
     "$USE_NGINX"  && "$INSTALL_NGINX"   && packages+=([nginx]=nginx-light)
-    "$USE_APACHE" && "$INSTALL_APACHE"  && packages+=([apache2]=apache2)
+    "$USE_APACHE" && "$INSTALL_APACHE"  && packages+=([apache2]=a2enmod)
     "$INSTALL_BYTEBIN"                  && packages+=([java]=default-jre-headless)
 
     # Check that packages exist

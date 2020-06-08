@@ -31,16 +31,6 @@ INSTALL_BYTEBIN=true
 SELFHOSTED=true
 
 ################################################################################
-# Self logging
-################################################################################
-
-# Shamelessly copied from https://stackoverflow.com/a/11886837/1996022
-# Running after variable initialization because if any of that stuff up fails we
-# are in much deeper troubles...
-exec >  >(tee -ia "$INSTALLER_LOG")
-exec 2> >(tee -ia "$INSTALLER_LOG" >&2) 
-
-################################################################################
 # Functions
 ################################################################################
 
@@ -255,3 +245,14 @@ create_webserver_file() {
         -e "s/<BYTEBIN_HOST>/$BYTEBIN_IP:$BYTEBIN_PORT/g" \
         "$@"
 }
+
+################################################################################
+# Self logging
+################################################################################
+
+# Running after variable and function initialization because if any of that
+# stuff fails we are in much deeper troubles...
+
+# Shamelessly copied from https://stackoverflow.com/a/11886837/1996022
+exec >  >(tee -ia "$INSTALLER_LOG")
+exec 2> >(tee -ia "$INSTALLER_LOG" >&2) 

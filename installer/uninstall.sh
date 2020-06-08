@@ -1,9 +1,5 @@
 #! /bin/bash
 
-################################################################################
-# Global Variables
-################################################################################
-
 # Get variables and helper functions from common script
 . "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 

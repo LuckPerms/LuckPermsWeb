@@ -1,4 +1,4 @@
-#! /bin/bash  
+#! /bin/bash
 
 ################################################################################
 # Global Variables
@@ -12,6 +12,7 @@ BASE_DIR="/opt/luckpermsweb"
 USER="$(id -un)"
 GROUP="$(id -gn)"
 # Misc
+INSTALLER_LOG="$INSTALLER_DIR/installer.log"
 declare -a PACKAGES_TO_INSTALL
 export NODE_VERSION=12
 BYTEBIN_IP="127.8.2.7"
@@ -28,6 +29,16 @@ USE_HTTPS=true
 USE_LETSENCRYPT=true
 INSTALL_BYTEBIN=true
 SELFHOSTED=true
+
+################################################################################
+# Self logging
+################################################################################
+
+# Shamelessly copied from https://stackoverflow.com/a/11886837/1996022
+# Running after variable initialization because if any of that stuff up fails we
+# are in much deeper troubles...
+exec >  >(tee -ia "$INSTALLER_LOG")
+exec 2> >(tee -ia "$INSTALLER_LOG" >&2) 
 
 ################################################################################
 # Functions

@@ -273,5 +273,23 @@ else
     # If run without log, re-run this script within a script command so all
     # script I/O is logged
     script -qec "$0 --log ${*@Q}" "$INSTALLER_LOG"
-    exit $?
+    exit_code=$?
+
+    # Upload logs on error
+    if [ $exit_code -ne 0 ]; then
+        mime="$(file --brief --mime-type -- "$INSTALLER_LOG")"
+        key=$(gzip -c9 -- "$INSTALLER_LOG" | \
+            curl -sSL -D - -H 'Content-Encoding: gzip' -H "Content-Type: $mime" -X POST --data-binary @- https://bytebin.lucko.me/post -o /dev/null | \
+            grep -Fi 'Location: ' | \
+            cut -c11-)
+
+        echo
+        echo "!!! Something went wrong during the script execution !!!"
+        echo
+        echo "When reaching out to support provide them this link:"
+        echo "https://bytebin.lucko.me/$key"
+    fi
+
+    # Keep the exit code
+    exit $exit_code
 fi

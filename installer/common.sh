@@ -253,14 +253,21 @@ create_webserver_file() {
 # Running after variable and function initialization because if any of that
 # stuff fails we are in much deeper troubles...
 
-# Compress the old log
-if [ -f "$INSTALLER_LOG" ]; then
-    old_log="${INSTALLER_LOG/.log/"_$(date "+%Y-%m-%d_%H-%M-%S").log"}"
+# Source https://stackoverflow.com/a/62292109/1996022
+if [ "$1" = "--log" ]; then
+    # If the first argument is "--log", shift the arg out and continue
+    shift
+else
+    # Compress the old log
+    if [ -f "$INSTALLER_LOG" ]; then
+        old_log="${INSTALLER_LOG/.log/"_$(date "+%Y-%m-%d_%H-%M-%S").log"}"
 
-    mv "$INSTALLER_LOG" "$old_log"
-    command_exists gzip && gzip -q9 -- "$old_log"
+        mv "$INSTALLER_LOG" "$old_log"
+        command_exists gzip && gzip -q9 -- "$old_log"
+    fi
+
+    # If run without log, re-run this script within a script command so all
+    # script I/O is logged
+    script -qec "$0 --log ${@@Q}" "$INSTALLER_LOG"
+    exit $?
 fi
-
-# Shamelessly copied from https://stackoverflow.com/a/11886837/1996022
-exec >  >(tee -ia "$INSTALLER_LOG")
-exec 2> >(tee -ia "$INSTALLER_LOG" >&2) 

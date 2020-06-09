@@ -7,12 +7,13 @@
 # Get base dirs
 INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 REPO_DIR="$(cd "$INSTALLER_DIR/.." >/dev/null 2>&1 && pwd)"
+INSTALLER_LOGS_DIR="$INSTALLER_DIR/logs"
 BASE_DIR="/opt/luckpermsweb"
 # User info
 USER="$(id -un)"
 GROUP="$(id -gn)"
 # Misc
-INSTALLER_LOG="$INSTALLER_DIR/installer.log"
+INSTALLER_LOG="$INSTALLER_LOGS_DIR/installer.log"
 declare -a PACKAGES_TO_INSTALL
 export NODE_VERSION=12
 BYTEBIN_IP="127.8.2.7"
@@ -258,6 +259,9 @@ if [ "$1" = "--log" ]; then
     # If the first argument is "--log", shift the arg out and continue
     shift
 else
+    # Make sure the folder exists
+    mkdir -p "$INSTALLER_LOGS_DIR"
+
     # Compress the old log
     if [ -f "$INSTALLER_LOG" ]; then
         old_log="${INSTALLER_LOG/.log/"_$(date "+%Y-%m-%d_%H-%M-%S").log"}"

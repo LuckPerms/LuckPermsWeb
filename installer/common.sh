@@ -272,6 +272,6 @@ else
 
     # If run without log, re-run this script within a script command so all
     # script I/O is logged
-    script -qec "$0 --log ${@@Q}" "$INSTALLER_LOG"
+    script -qec "$0 --log ${*@Q}" "$INSTALLER_LOG"
     exit $?
 fi

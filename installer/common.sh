@@ -277,17 +277,23 @@ else
 
     # Upload logs on error
     if [ $exit_code -ne 0 ]; then
-        mime="$(file --brief --mime-type -- "$INSTALLER_LOG")"
-        key=$(gzip -c9 -- "$INSTALLER_LOG" | \
-            curl -sSL -D - -H 'Content-Encoding: gzip' -H "Content-Type: $mime" -X POST --data-binary @- https://bytebin.lucko.me/post -o /dev/null | \
-            grep -Fi 'Location: ' | \
-            cut -c11-)
-
         echo
         echo "!!! Something went wrong during the script execution !!!"
         echo
-        echo "When reaching out to support provide them this link:"
-        echo "https://bytebin.lucko.me/$key"
+
+        upload_log=true
+        ask_yes_no "Do you want your log to be uploaded automatically?" upload_log
+
+        if "$upload_log"; then
+            mime="$(file --brief --mime-type -- "$INSTALLER_LOG")"
+            key=$(gzip -c9 -- "$INSTALLER_LOG" | \
+                curl -sSL -D - -H 'Content-Encoding: gzip' -H "Content-Type: $mime" -X POST --data-binary @- https://bytebin.lucko.me/post -o /dev/null | \
+                grep -Fi 'Location: ' | \
+                cut -c11-)
+
+            echo "When reaching out to support provide them this link:"
+            echo "https://bytebin.lucko.me/$key"
+        fi
     fi
 
     # Keep the exit code

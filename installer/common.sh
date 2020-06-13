@@ -15,6 +15,8 @@ GROUP="$(id -gn)"
 # Misc
 INSTALLER_LOG="$INSTALLER_LOGS_DIR/installer.log"
 INSTALLER_SETTINGS="$INSTALLER_DIR/installer.conf"
+USE_NGINX=false
+USE_APACHE=false
 declare -a PACKAGES_TO_INSTALL
 export NODE_VERSION=12
 BYTEBIN_IP="127.8.2.7"
@@ -29,8 +31,6 @@ else
 fi
 
 # User input variables (and their default values)
-USE_NGINX="${USE_NGINX:-false}"
-USE_APACHE="${USE_APACHE:-false}"
 EXPERT_MODE="${EXPERT_MODE:-false}"
 EXTERNAL_ADDRESS="${EXTERNAL_ADDRESS:-"$(hostname -f)"}"
 INSTALL_NGINX="${INSTALL_NGINX:-true}"
@@ -51,8 +51,6 @@ SELFHOSTED="${SELFHOSTED:-true}"
 #
 save_settings() {
     (
-        echo "${USE_NGINX@A}"
-        echo "${USE_APACHE@A}"
         echo "${EXPERT_MODE@A}"
         echo "${EXTERNAL_ADDRESS@A}"
         echo "${INSTALL_NGINX@A}"

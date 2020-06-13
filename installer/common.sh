@@ -194,13 +194,13 @@ check_nodejs() {
         echo
 
         export NVM_DIR="$INSTALLER_DIR/.nvm"
-        mkdir -p "$NVM_DIR"
+        mkdir -p "$NVM_DIR" || exit $?
 
         # Install NVM in local dir
         # https://github.com/nvm-sh/nvm
-        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | PROFILE=/dev/null bash
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        nvm use node
+        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | PROFILE=/dev/null bash || exit $?
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" || exit $?
+        nvm use node || exit $?
     fi
 
     echo

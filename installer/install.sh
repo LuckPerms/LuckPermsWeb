@@ -47,8 +47,8 @@ ask_questions() {
     ask_for_value "Host's public address" EXTERNAL_ADDRESS
     ask_yes_no "Use HTTPS" USE_HTTPS
 
-    LISTEN_IPV4="$(get_webserver_ip "$WEBSERVER" 4)"
-    LISTEN_IPV6="$(get_webserver_ip "$WEBSERVER" 6)"
+    [ "$LISTEN_IPV4" == autodetect ] && LISTEN_IPV4="$(get_webserver_ip "$WEBSERVER" 4)"
+    [ "$LISTEN_IPV6" == autodetect ] && LISTEN_IPV6="$(get_webserver_ip "$WEBSERVER" 6)"
 
     if "$EXPERT_MODE"; then
         if "$USE_HTTPS"; then
@@ -141,6 +141,8 @@ calculate_variables() {
         HTTPS_KEY_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/privkey.pem"
     fi
 
+    [ "$LISTEN_IPV4" == autodetect ] && LISTEN_IPV4="$(get_webserver_ip "$WEBSERVER" 4)"
+    [ "$LISTEN_IPV6" == autodetect ] && LISTEN_IPV6="$(get_webserver_ip "$WEBSERVER" 6)"
     NGINX_LISTEN_DIRECTIVE_IPV4="$(get_ip_sed_directive "$WEBSERVER" 4)"
     NGINX_LISTEN_DIRECTIVE_IPV6="$(get_ip_sed_directive "$WEBSERVER" 6)"
 }
@@ -319,9 +321,11 @@ print_config_instructions() {
 ################################################################################
 
 ask_questions
+save_settings # Save so nothing gets lost
 setup_submodules
 install_prerequisites
 calculate_variables
+save_settings # Save again because the variables may have been updated
 prepare_installation_location
 "$INSTALL_BYTEBIN" && install_bytebin
 install_webfiles

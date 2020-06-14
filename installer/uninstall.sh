@@ -1,9 +1,5 @@
 #! /bin/bash
 
-################################################################################
-# Global Variables
-################################################################################
-
 # Get variables and helper functions from common script
 . "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
@@ -28,10 +24,10 @@ deconfigure_nginx() {
     echo
 
     # Delete config files
-    sudo rm -rf /etc/nginx/sites-{available,enabled}/luckpermsweb_*.conf
+    sudo rm -rf /etc/nginx/sites-{available,enabled}/luckpermsweb_*.conf || exit $?
 
     # Reload nginx
-    [ -x /usr/sbin/nginx ] && sudo nginx -t && sudo nginx -s reload
+    [ -x /usr/sbin/nginx ] && (sudo nginx -t && sudo nginx -s reload || exit $?)
 
     echo
 }
@@ -41,10 +37,10 @@ deconfigure_apache() {
     echo
 
     # Delete config files
-    sudo rm -rf /etc/apache2/sites-{available,enabled}/luckpermsweb_*.conf
+    sudo rm -rf /etc/apache2/sites-{available,enabled}/luckpermsweb_*.conf || exit $?
 
     # Reload apache
-    [ -x /usr/sbin/apache2 ] && sudo apache2ctl configtest && sudo apache2ctl graceful
+    [ -x /usr/sbin/apache2 ] && (sudo apache2ctl configtest && sudo apache2ctl graceful || exit $?)
 
     echo
 }
@@ -62,7 +58,7 @@ remove_files() {
     echo "Removing remaining files..."
     echo
 
-    sudo rm -rf "$BASE_DIR"
+    sudo rm -rf "$BASE_DIR" || exit $?
 }
 
 print_end_message() {

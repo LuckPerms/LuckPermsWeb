@@ -1,4 +1,4 @@
-#! /bin/bash  
+#! /bin/bash
 
 ################################################################################
 # Global Variables
@@ -7,11 +7,13 @@
 # Get base dirs
 INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 REPO_DIR="$(cd "$INSTALLER_DIR/.." >/dev/null 2>&1 && pwd)"
+INSTALLER_LOGS_DIR="$INSTALLER_DIR/logs"
 BASE_DIR="/opt/luckpermsweb"
 # User info
 USER="$(id -un)"
 GROUP="$(id -gn)"
 # Misc
+INSTALLER_LOG="$INSTALLER_LOGS_DIR/installer.log"
 declare -a PACKAGES_TO_INSTALL
 export NODE_VERSION=12
 BYTEBIN_IP="127.8.2.7"
@@ -192,13 +194,13 @@ check_nodejs() {
         echo
 
         export NVM_DIR="$INSTALLER_DIR/.nvm"
-        mkdir -p "$NVM_DIR"
+        mkdir -p "$NVM_DIR" || exit $?
 
         # Install NVM in local dir
         # https://github.com/nvm-sh/nvm
-        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | PROFILE=/dev/null bash
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        nvm use node
+        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | PROFILE=/dev/null bash || exit $?
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" || exit $?
+        nvm use node || exit $?
     fi
 
     echo
@@ -244,3 +246,56 @@ create_webserver_file() {
         -e "s/<BYTEBIN_HOST>/$BYTEBIN_IP:$BYTEBIN_PORT/g" \
         "$@"
 }
+
+################################################################################
+# Self logging
+################################################################################
+
+# Running after variable and function initialization because if any of that
+# stuff fails we are in much deeper troubles...
+
+# Source https://stackoverflow.com/a/62292109/1996022
+if [ "$1" = "--log" ]; then
+    # If the first argument is "--log", shift the arg out and continue
+    shift
+else
+    # Make sure the folder exists
+    mkdir -p "$INSTALLER_LOGS_DIR"
+
+    # Compress the old log
+    if [ -f "$INSTALLER_LOG" ]; then
+        old_log="${INSTALLER_LOG/.log/"_$(date "+%Y-%m-%d_%H-%M-%S").log"}"
+
+        mv "$INSTALLER_LOG" "$old_log"
+        command_exists gzip && gzip -q9 -- "$old_log"
+    fi
+
+    # If run without log, re-run this script within a script command so all
+    # script I/O is logged
+    script -qec "$0 --log ${*@Q}" "$INSTALLER_LOG"
+    exit_code=$?
+
+    # Upload logs on error
+    if [ $exit_code -ne 0 ]; then
+        echo
+        echo "!!! Something went wrong during the script execution !!!"
+        echo
+
+        upload_log=true
+        ask_yes_no "Do you want your log to be uploaded automatically?" upload_log
+
+        if "$upload_log"; then
+            mime="$(file --brief --mime-type -- "$INSTALLER_LOG")"
+            key=$(gzip -c9 -- "$INSTALLER_LOG" | \
+                curl -sSL -D - -H 'Content-Encoding: gzip' -H "Content-Type: $mime" -X POST --data-binary @- https://bytebin.lucko.me/post -o /dev/null | \
+                grep -Fi 'Location: ' | \
+                cut -c11-)
+
+            echo "When reaching out to support provide them this link:"
+            echo "https://bytebin.lucko.me/$key"
+        fi
+    fi
+
+    # Keep the exit code
+    exit $exit_code
+fi

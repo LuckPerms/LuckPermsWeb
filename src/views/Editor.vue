@@ -331,7 +331,8 @@ main.editor {
           flex-direction: column;
 
           .session-container {
-            overflow: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
           }
         }
 

@@ -23,8 +23,10 @@
             <li @click="proceed(3, 'sponge')">SpongeForge / SpongeVanilla</li>
             <li @click="proceed(3, 'nukkit')">NukkitX</li>
           </ul>
+          <p class="lighter" v-if="options.network">
+            Note: LuckPerms is still required on all backend servers.
+          </p>
           <ul class="options" v-if="options.network">
-            <h3 stlye="text-align: center">LuckPerms is still required on all backend servers.</h3>
             <li @click="proceed(5, 'bungee')">BungeeCord / Waterfall / Travertine</li>
             <li @click="proceed(5, 'velocity')">Velocity</li>
           </ul>
@@ -223,7 +225,7 @@ export default {
         }
 
         h1 {
-          margin: 0 0 1em;
+          margin: 0 0 1rem;
           text-align: center;
         }
 

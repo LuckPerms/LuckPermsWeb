@@ -1,9 +1,5 @@
 #! /bin/bash           
 
-################################################################################
-# Global Variables
-################################################################################
-
 # Get variables and helper functions from common script
 . "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
@@ -66,7 +62,7 @@ ask_questions() {
 
         if   "$USE_NGINX" &&  [ ! -x /usr/sbin/nginx ];   then
             ask_yes_no "You don't have nginx installed. Install it"  INSTALL_NGINX
-        elif "$USE_APACHE" && [ ! -x /usr/sbin/apache2 ]; then
+        elif "$USE_APACHE" && [ ! -x /usr/sbin/a2enmod ]; then
             ask_yes_no "You don't have apache installed. Install it" INSTALL_APACHE
         fi
 
@@ -96,7 +92,7 @@ setup_submodules() {
     echo "Downloading and updating submodules..."
     echo
 
-    git -C "$INSTALLER_DIR" submodule update --init --recursive
+    git -C "$INSTALLER_DIR" submodule update --init --recursive || exit $?
 
     echo
 }
@@ -109,7 +105,7 @@ install_prerequisites() {
     # Conditional packages
     "$USE_HTTPS"  && "$USE_LETSENCRYPT" && packages+=([certbot]=letsencrypt)
     "$USE_NGINX"  && "$INSTALL_NGINX"   && packages+=([nginx]=nginx-light)
-    "$USE_APACHE" && "$INSTALL_APACHE"  && packages+=([apache2]=apache2)
+    "$USE_APACHE" && "$INSTALL_APACHE"  && packages+=([apache2]=a2enmod)
     "$INSTALL_BYTEBIN"                  && packages+=([java]=default-jre-headless)
 
     # Check that packages exist
@@ -122,8 +118,8 @@ install_prerequisites() {
         echo "Installing them now..."
         echo
 
-        sudo apt-get update
-        sudo apt-get install -y "${PACKAGES_TO_INSTALL[@]}"
+        sudo apt-get update || exit $?
+        sudo apt-get install -y "${PACKAGES_TO_INSTALL[@]}" || exit $?
     else
         echo "All packages installed!"
     fi
@@ -154,8 +150,8 @@ prepare_installation_location() {
     echo
 
     if [ ! -d "$BASE_DIR" ]; then
-        sudo mkdir "$BASE_DIR"
-        sudo chown "$USER:$GROUP" "$BASE_DIR"
+        sudo mkdir "$BASE_DIR" || exit $?
+        sudo chown "$USER:$GROUP" "$BASE_DIR" || exit $?
     fi
 
     cd "$BASE_DIR"
@@ -164,7 +160,7 @@ prepare_installation_location() {
 install_bytebin() {
     echo "Installing bytebin..."
 
-    mkdir -p bytebin
+    mkdir -p bytebin || exit $?
     pushd bytebin > /dev/null
 
     # Find free port (stop the service if running)
@@ -172,22 +168,22 @@ install_bytebin() {
     BYTEBIN_PORT="$(find_free_port "$BYTEBIN_IP" "$BYTEBIN_PORT")"
 
     # Download and Copy the Files
-    wget -q --show-progress --progress=dot:mega https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar
+    wget -q --show-progress --progress=dot:mega https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar || exit $?
     echo
     jq \
         --arg ip "$BYTEBIN_IP" \
         --argjson port "$BYTEBIN_PORT" \
         '.host = $ip | .port = $port' \
-        "$INSTALLER_DIR/files/bytebin/config.json" > config.json
+        "$INSTALLER_DIR/files/bytebin/config.json" > config.json || exit $?
     sed \
         -e "s@<PATH>@$BASE_DIR/bytebin@g" \
         -e "s/<USER>/$USER/g" \
         -e "s/<GROUP>/$GROUP/g" \
-        "$INSTALLER_DIR/files/bytebin/bytebin.service" | sudo dd of=/etc/systemd/system/bytebin.service 2> /dev/null
+        "$INSTALLER_DIR/files/bytebin/bytebin.service" | sudo dd of=/etc/systemd/system/bytebin.service 2> /dev/null || exit $?
 
     # Enable and (Re)Start the Service
-    sudo systemctl daemon-reload
-    sudo systemctl enable --now bytebin.service
+    sudo systemctl daemon-reload || exit $?
+    sudo systemctl enable --now bytebin.service || exit $?
 
     popd > /dev/null
 
@@ -205,17 +201,17 @@ install_webfiles() {
         --arg url "$BYTEBIN_URL" \
         --argjson selfHosted "$SELFHOSTED" \
         '.bytebin_url = $url | .selfHosted = $selfHosted' \
-        config.json > config.json.tmp
-    mv -f config.json.tmp config.json
+        config.json > config.json.tmp || exit $?
+    mv -f config.json.tmp config.json || exit $?
 
     # Render webfiles
-    npm install
-    npm run build -- --skip-plugins eslint
+    npm install || exit $?
+    npm run build -- --skip-plugins eslint || exit $?
 
     popd > /dev/null
 
-    rm -rf webfiles
-    mv "$REPO_DIR/dist/" webfiles
+    rm -rf webfiles || exit $?
+    mv "$REPO_DIR/dist/" webfiles || exit $?
 }
 
 generate_https_cert() {
@@ -231,23 +227,23 @@ generate_https_cert() {
 
     # Configure nginx or apache for the certbot
     "$USE_NGINX"  &&
-    create_webserver_file \
+    (create_webserver_file \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_header_http.conf" \
-        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer_certbot.conf"  | sudo dd of="$nginx_config_file"  2> /dev/null
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer_certbot.conf"    | sudo dd of="$nginx_config_file"  2> /dev/null || exit $?)
     "$USE_APACHE" &&
-    create_webserver_file \
+    (create_webserver_file \
         "$INSTALLER_DIR/files/apache/luckpermsweb_header_http.conf" \
         "$INSTALLER_DIR/files/apache/luckpermsweb_footer_certbot.conf" \
-        "$INSTALLER_DIR/files/apache/luckpermsweb_footer_directory.conf" | sudo dd of="$apache_config_file" 2> /dev/null
+        "$INSTALLER_DIR/files/apache/luckpermsweb_footer_directory.conf" | sudo dd of="$apache_config_file" 2> /dev/null || exit $?)
 
     ## Reload webserver
-    "$USE_NGINX"  && sudo nginx -t              && sudo nginx -s reload
-    "$USE_APACHE" && sudo apache2ctl configtest && sudo apache2ctl graceful
+    "$USE_NGINX"  && (sudo nginx -t              && sudo nginx -s reload     || exit $?)
+    "$USE_APACHE" && (sudo apache2ctl configtest && sudo apache2ctl graceful || exit $?)
 
     # Get certificate
-    sudo certbot certonly --webroot --rsa-key-size 4096 -w "$certdir" -d "$EXTERNAL_ADDRESS"
+    sudo certbot certonly --webroot --rsa-key-size 4096 -w "$certdir" -d "$EXTERNAL_ADDRESS" || exit $?
 
-    sudo rm -rf "$nginx_config_file" "$apache_config_file" "$certdir/.well-known"
+    sudo rm -rf "$nginx_config_file" "$apache_config_file" "$certdir/.well-known" || exit $?
 }
 
 configure_nginx() {
@@ -262,16 +258,16 @@ configure_nginx() {
         "$INSTALLER_DIR/files/nginx/luckpermsweb_header_$PROTOCOL.conf" \
         "$INSTALLER_DIR/files/nginx/luckpermsweb_base.conf" \
         "$("$INSTALL_BYTEBIN" && echo "$INSTALLER_DIR/files/nginx/luckpermsweb_proxy.conf")" \
-        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer.conf" | sudo dd of="$nginx_config_file" 2> /dev/null
-    sudo ln -fs "../$nginx_config_file" sites-enabled/
+        "$INSTALLER_DIR/files/nginx/luckpermsweb_footer.conf" | sudo dd of="$nginx_config_file" 2> /dev/null || exit $?
+    sudo ln -fs "../$nginx_config_file" sites-enabled/ || exit $?
 
     # Reload nginx
-    sudo nginx -t && sudo nginx -s reload
+    sudo nginx -t && sudo nginx -s reload || exit $?
 
     popd > /dev/null
 
     # Ensure correct file ownership
-    sudo chgrp -R www-data webfiles
+    sudo chgrp -R www-data webfiles || exit $?
 }
 
 configure_apache() {
@@ -281,7 +277,7 @@ configure_apache() {
     pushd /etc/apache2 > /dev/null
     
     # Install modules
-    sudo a2enmod headers proxy proxy_http rewrite ssl
+    sudo a2enmod headers proxy proxy_http rewrite ssl || exit $?
 
     # Create config file
     local apache_config_name="luckpermsweb_$EXTERNAL_ADDRESS"
@@ -291,16 +287,16 @@ configure_apache() {
         "$INSTALLER_DIR/files/apache/luckpermsweb_base.conf" \
         "$("$INSTALL_BYTEBIN" && echo "$INSTALLER_DIR/files/apache/luckpermsweb_proxy.conf")" \
         "$INSTALLER_DIR/files/apache/luckpermsweb_footer.conf" \
-        "$INSTALLER_DIR/files/apache/luckpermsweb_footer_directory.conf" | sudo dd of="$apache_config_file" 2> /dev/null
-    sudo a2ensite "$apache_config_name"
+        "$INSTALLER_DIR/files/apache/luckpermsweb_footer_directory.conf" | sudo dd of="$apache_config_file" 2> /dev/null || exit $?
+    sudo a2ensite "$apache_config_name" || exit $?
 
     # Reload apache
-    sudo apache2ctl configtest && sudo apache2ctl graceful
+    sudo apache2ctl configtest && sudo apache2ctl graceful || exit $?
 
     popd > /dev/null
 
     # Ensure correct file ownership
-    sudo chgrp -R www-data webfiles
+    sudo chgrp -R www-data webfiles || exit $?
 }
 
 print_config_instructions() {

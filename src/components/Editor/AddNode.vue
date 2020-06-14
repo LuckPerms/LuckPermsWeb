@@ -412,6 +412,8 @@ export default {
       border: 0;
       border-radius: 2px;
       font: inherit;
+      max-height: 30vh;
+      overflow-y: auto;
     }
 
     .multiselect__tag {

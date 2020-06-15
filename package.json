@@ -14,16 +14,17 @@
     "@nuxtjs/markdownit": "^1.2.9",
     "markdown-it-anchor": "^5.3.0",
     "markdown-it-emoji": "^1.4.0",
-    "nuxt": "^2.0.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2",
     "uuid": "^8.1.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.10.1",
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/fontawesome": "^1.1.2",
     "@nuxtjs/style-resources": "^1.0.0",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^8.0.2"
+    "nuxt": "^2.12.2"
   }
 }

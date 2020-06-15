@@ -99,7 +99,14 @@ export default {
     ** You can extend webpack config here
     */
     extend (config, ctx) {
-    }
+    },
+
+    /*
+    ** Babel configuration
+    */
+    babel: {
+      plugins: ['@babel/plugin-proposal-optional-chaining'],
+    },
   },
 
   markdownit: {

@@ -14,22 +14,33 @@ USER="$(id -un)"
 GROUP="$(id -gn)"
 # Misc
 INSTALLER_LOG="$INSTALLER_LOGS_DIR/installer.log"
+INSTALLER_SETTINGS="$INSTALLER_DIR/installer.conf"
+USE_NGINX=false
+USE_APACHE=false
 declare -a PACKAGES_TO_INSTALL
 export NODE_VERSION=12
 BYTEBIN_IP="127.8.2.7"
 BYTEBIN_PORT="8123"
 
+# Load settings
+if [ -f "$INSTALLER_SETTINGS" ]; then
+    . "$INSTALLER_SETTINGS"
+    SETTINGS_LOADED=true
+else
+    SETTINGS_LOADED=false
+fi
+
 # User input variables (and their default values)
-USE_NGINX=false
-USE_APACHE=false
-EXPERT_MODE=false
-EXTERNAL_ADDRESS="$(hostname -f)"
-INSTALL_NGINX=true
-INSTALL_APACHE=true
-USE_HTTPS=true
-USE_LETSENCRYPT=true
-INSTALL_BYTEBIN=true
-SELFHOSTED=true
+EXPERT_MODE="${EXPERT_MODE:-false}"
+EXTERNAL_ADDRESS="${EXTERNAL_ADDRESS:-"$(hostname -f)"}"
+INSTALL_NGINX="${INSTALL_NGINX:-true}"
+INSTALL_APACHE="${INSTALL_APACHE:-true}"
+USE_HTTPS="${USE_HTTPS:-true}"
+LISTEN_IPV4="${LISTEN_IPV4:-autodetect}"
+LISTEN_IPV6="${LISTEN_IPV6:-autodetect}"
+USE_LETSENCRYPT="${USE_LETSENCRYPT:-true}"
+INSTALL_BYTEBIN="${INSTALL_BYTEBIN:-true}"
+SELFHOSTED="${SELFHOSTED:-true}"
 
 ################################################################################
 # Functions
@@ -38,6 +49,21 @@ SELFHOSTED=true
 #
 # Utils
 #
+save_settings() {
+    (
+        echo "${EXPERT_MODE@A}"
+        echo "${EXTERNAL_ADDRESS@A}"
+        echo "${INSTALL_NGINX@A}"
+        echo "${INSTALL_APACHE@A}"
+        echo "${USE_HTTPS@A}"
+        echo "${LISTEN_IPV4@A}"
+        echo "${LISTEN_IPV6@A}"
+        echo "${USE_LETSENCRYPT@A}"
+        echo "${INSTALL_BYTEBIN@A}"
+        echo "${SELFHOSTED@A}"
+    ) > "$INSTALLER_SETTINGS"
+}
+
 check_sudo() {
     # We are root, no need to check.
     [ "$EUID" -eq 0 ] && return 0

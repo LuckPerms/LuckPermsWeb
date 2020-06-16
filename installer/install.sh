@@ -1,4 +1,4 @@
-#! /bin/bash           
+#! /bin/bash
 
 # Get variables and helper functions from common script
 . "$(dirname "${BASH_SOURCE[0]}")/common.sh"
@@ -40,15 +40,27 @@ ask_questions() {
 
     WEBSERVER=
     "$USE_NGINX"  && WEBSERVER=nginx
-    "$USE_APACHE" && WEBSERVER=apache 
+    "$USE_APACHE" && WEBSERVER=apache
+
+    if "$SETTINGS_LOADED"; then
+        update_settings=false
+        ask_yes_no "We found previous settings. Do you want to edit them?" update_settings
+
+        ! "$update_settings" && return
+
+        echo "Note:"
+        echo "If you want to reset all settings to default run this command:"
+        echo "rm ${INSTALLER_SETTINGS@Q}"
+        echo
+    fi
 
     ask_yes_no "Expert Mode" EXPERT_MODE
 
     ask_for_value "Host's public address" EXTERNAL_ADDRESS
     ask_yes_no "Use HTTPS" USE_HTTPS
 
-    LISTEN_IPV4="$(get_webserver_ip "$WEBSERVER" 4)"
-    LISTEN_IPV6="$(get_webserver_ip "$WEBSERVER" 6)"
+    [ "$LISTEN_IPV4" == autodetect ] && LISTEN_IPV4="$(get_webserver_ip "$WEBSERVER" 4)"
+    [ "$LISTEN_IPV6" == autodetect ] && LISTEN_IPV6="$(get_webserver_ip "$WEBSERVER" 6)"
 
     if "$EXPERT_MODE"; then
         if "$USE_HTTPS"; then
@@ -82,13 +94,10 @@ ask_questions() {
 
         ask_yes_no "Setup tools only (web editor, verbose & tree viewers)" SELFHOSTED
     fi
-
-    ask_sudo_pw
-
-    echo
 }
 
 setup_submodules() {
+    echo
     echo "Downloading and updating submodules..."
     echo
 
@@ -141,6 +150,8 @@ calculate_variables() {
         HTTPS_KEY_PATH="/etc/letsencrypt/live/$EXTERNAL_ADDRESS/privkey.pem"
     fi
 
+    [ "$LISTEN_IPV4" == autodetect ] && LISTEN_IPV4="$(get_webserver_ip "$WEBSERVER" 4)"
+    [ "$LISTEN_IPV6" == autodetect ] && LISTEN_IPV6="$(get_webserver_ip "$WEBSERVER" 6)"
     NGINX_LISTEN_DIRECTIVE_IPV4="$(get_ip_sed_directive "$WEBSERVER" 4)"
     NGINX_LISTEN_DIRECTIVE_IPV6="$(get_ip_sed_directive "$WEBSERVER" 6)"
 }
@@ -275,7 +286,7 @@ configure_apache() {
     echo
 
     pushd /etc/apache2 > /dev/null
-    
+
     # Install modules
     sudo a2enmod headers proxy proxy_http rewrite ssl || exit $?
 
@@ -319,9 +330,12 @@ print_config_instructions() {
 ################################################################################
 
 ask_questions
+save_settings # Save so nothing gets lost
+ask_sudo_pw
 setup_submodules
 install_prerequisites
 calculate_variables
+save_settings # Save again because the variables may have been updated
 prepare_installation_location
 "$INSTALL_BYTEBIN" && install_bytebin
 install_webfiles

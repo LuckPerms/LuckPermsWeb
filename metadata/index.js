@@ -64,8 +64,6 @@ async function getData() {
 
 async function getWikiData() {
   try {
-    //var tempPages = (await axios.get('https://api.github.com/repos/LuckPerms/wiki/contents')).data;
-    //wikiPages = tempPages.map(file => file.name);
     wikiPages.forEach(async (page) => {
       data.wiki[page] = (await axios.get(`https://raw.githubusercontent.com/LuckPerms/wiki/master/${page}.md`)).data;
     });

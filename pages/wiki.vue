@@ -20,6 +20,18 @@ export default {
   async fetch() {
     this.sidebar = (await this.$axios.get('/metadata/wiki/_Sidebar')).data.page;
   },
+  mounted() {
+    if (window.innerWidth >= 922) return;
+    const wiki = document.getElementById('wiki');
+    document.querySelectorAll('.wiki aside a').forEach((link) => {
+      link.addEventListener('click', () => {
+        wiki.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      });
+    });
+  },
 }
 </script>
 

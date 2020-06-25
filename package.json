@@ -11,13 +11,13 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "nuxt": "^2.0.0",
-    "uuid": "^8.1.0"
+    "nuxt": "^2.13.1",
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.10.3",
-    "@fortawesome/free-brands-svg-icons": "^5.13.0",
-    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/free-brands-svg-icons": "^5.13.1",
+    "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/fontawesome": "^1.1.2",
     "@nuxtjs/style-resources": "^1.0.0",

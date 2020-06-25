@@ -100,4 +100,10 @@ export default {
     extend (config, ctx) {
     }
   },
+  /*
+  ** Babel configuration
+  */
+  babel: {
+    plugins: ['@babel/plugin-proposal-optional-chaining'],
+  },
 }

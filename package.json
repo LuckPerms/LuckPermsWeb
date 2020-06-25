@@ -15,6 +15,7 @@
     "uuid": "^8.1.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.10.3",
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@nuxtjs/axios": "^5.11.0",

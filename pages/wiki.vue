@@ -12,9 +12,6 @@
 
 <script>
 export default {
-  middleware ({route, redirect}) {
-    if (route.path === '/wiki') redirect('/wiki/Home');
-  },
   data() {
     return {
       sidebar: '',

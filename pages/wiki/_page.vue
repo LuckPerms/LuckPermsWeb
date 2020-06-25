@@ -8,7 +8,7 @@
       </transition>
     </h1>
     <transition name="fade" mode="out-in">
-      <div v-html="$md.render(article)" />
+      <section v-html="$md.render(article)" />
     </transition>
   </div>
 </template>

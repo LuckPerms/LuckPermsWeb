@@ -6,8 +6,49 @@ const app = express();
 const data = {
   wiki: {},
 };
-const wikiPages = [
+var wikiPages = [
+  'Advanced-Setup',
+  'Argument-based-command-permissions',
+  'Bulk-Editing',
+  'Command-Usage',
+  'Configuration',
+  'Context',
+  'Credits',
+  'Default-Groups',
+  'Developer-API-Usage',
+  'Developer-API',
+  'Extensions',
+  'External-connections',
+  'FAQ',
+  'GM-&-PEX-Command-Equivalents',
+  'General-Commands',
+  'Group-Commands',
   'Home',
+  'Installation',
+  'Locale-and-Translations',
+  'Log-Commands',
+  'Meta-Commands',
+  'Migration',
+  'Network-Installation',
+  'Parent-Commands',
+  'Permission-Commands',
+  'Permissions',
+  'Placeholders',
+  'Prefix-&-Suffix-Stacking',
+  'Prefixes,-Suffixes-&-Meta',
+  'Self-hosting-the-web-interfaces',
+  'Storage-system-errors',
+  'Storage-types',
+  'Switching-storage-types',
+  'Track-Commands',
+  'Tracks',
+  'Upgrading-from-v4-to-v5',
+  'Usage',
+  'User-Commands',
+  'Verbose',
+  'Web-Editor',
+  'Weight',
+  'Why-LuckPerms',
   '_Sidebar',
 ];
 
@@ -23,9 +64,10 @@ async function getData() {
 
 async function getWikiData() {
   try {
+    //var tempPages = (await axios.get('https://api.github.com/repos/LuckPerms/wiki/contents')).data;
+    //wikiPages = tempPages.map(file => file.name);
     wikiPages.forEach(async (page) => {
-      const result = await axios.get(`https://raw.githubusercontent.com/LuckPerms/wiki/master/${page}.md`);
-      data.wiki[page] = result.data;
+      data.wiki[page] = (await axios.get(`https://raw.githubusercontent.com/LuckPerms/wiki/master/${page}.md`)).data;
     });
   } catch (error) {
     console.error(error);

@@ -98,18 +98,18 @@ export default {
     ** You can extend webpack config here
     */
     extend (config, ctx) {
-    }
-  },
-  /*
-  ** Babel configuration
-  */
-  babel: {
-    plugins: ['@babel/plugin-proposal-optional-chaining'],
+    },
+    /*
+    ** Babel configuration
+    */
+    babel: {
+      plugins: ['@babel/plugin-proposal-optional-chaining'],
+    },
   },
   /*
   ** Server middleware
   */
   serverMiddleware: [
     { path: '/metadata', handler: '~/metadata/index.js' },
-  ]
+  ],
 }

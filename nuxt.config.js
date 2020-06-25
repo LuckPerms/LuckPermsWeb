@@ -79,6 +79,7 @@ export default {
   */
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/markdownit',
     '@nuxtjs/style-resources'
   ],
   /*
@@ -112,4 +113,22 @@ export default {
   serverMiddleware: [
     { path: '/metadata', handler: '~/metadata/index.js' },
   ],
+  /*
+  ** MarkdownIt configuration
+  */
+  markdownit: {
+    injected: true,
+    raw: true,
+    linkify: true,
+    use: [
+      // eslint-disable-next-line global-require
+      ['markdown-it-anchor', {
+        permalink: true,
+        permalinkSymbol: '🔗',
+        slugify: (s) => String(s).trim().toLowerCase().replace(/\s+/g, '-').replace(/([^\w\-]+)/g, ''),
+      }],
+      // eslint-disable-next-line global-require
+      'markdown-it-emoji',
+    ],
+  },
 }

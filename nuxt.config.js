@@ -106,4 +106,10 @@ export default {
   babel: {
     plugins: ['@babel/plugin-proposal-optional-chaining'],
   },
+  /*
+  ** Server middleware
+  */
+  serverMiddleware: [
+    { path: '/metadata', handler: '~/metadata/index.js' },
+  ]
 }

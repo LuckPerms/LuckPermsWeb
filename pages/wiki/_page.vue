@@ -29,7 +29,7 @@ export default {
     },
   },
   async fetch() {
-    this.article = (await this.$axios.get(`/metadata/wiki/${this.title}`)).data.page;
+    this.article = (await this.$axios.get(`/metadata/wiki/${this.route}`)).data.page;
   },
 }
 </script>

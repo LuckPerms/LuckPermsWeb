@@ -179,7 +179,7 @@ install_bytebin() {
     BYTEBIN_PORT="$(find_free_port "$BYTEBIN_IP" "$BYTEBIN_PORT")"
 
     # Download and Copy the Files
-    wget -q --show-progress --progress=dot:mega https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar || exit $?
+    wget -q --show-progress --progress=dot:mega -O bytebin.jar https://ci.lucko.me/job/bytebin/lastSuccessfulBuild/artifact/target/bytebin.jar || exit $?
     echo
     jq \
         --arg ip "$BYTEBIN_IP" \

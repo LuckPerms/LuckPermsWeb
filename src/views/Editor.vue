@@ -109,10 +109,12 @@
                   <Meta :session="currentSession" :sessionData="currentSessionData" />
                   <NodeList :nodes="currentNodes" />
                 </div>
-                <AddNode />
               </div>
             </transition>
 
+            <transition name="fade">
+              <AddNode v-if="currentSession" />
+            </transition>
           </div>
         </div>
       </transition>

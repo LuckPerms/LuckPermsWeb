@@ -4,13 +4,13 @@
 
   <div class="node-list-header">
     <div class="sorting-tabs">
-<!--      <div-->
-<!--        :class="{ 'node-select-all': true, 'selected': allSelected }"-->
-<!--        @click="selectAll"-->
-<!--        title="Select all nodes for mass operations"-->
-<!--      >-->
-<!--        <span></span>-->
-<!--      </div>-->
+      <div
+        :class="{ 'node-select-all': true, 'selected': allSelected }"
+        @click="selectAll"
+        title="Select all nodes for mass operations"
+      >
+        <span></span>
+      </div>
 
       <div
         class="permission"
@@ -126,7 +126,7 @@ export default {
       return this.selectedNodes.filter(nodeId => map.indexOf(nodeId) !== -1);
     },
     allSelected() {
-      return this.nodes.length === this.currentSelectedNodes.length;
+      return this.nodes.length && this.nodes.length === this.currentSelectedNodes.length;
     },
   },
   methods: {

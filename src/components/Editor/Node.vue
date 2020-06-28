@@ -1,13 +1,13 @@
 <template>
 <li :class="{ 'permission-node': true, modified: node.modified, new: node.isNew }">
 <!--  WIP: Mass-select toggle -->
-<!--  <div-->
-<!--    :class="{ 'node-select': true, 'selected': isSelected }"-->
-<!--    @click="toggleNodeSelect(node.id)"-->
-<!--    title="Select node for mass operations"-->
-<!--  >-->
-<!--    <span></span>-->
-<!--  </div>-->
+  <div
+    :class="{ 'node-select': true, 'selected': isSelected }"
+    @click="toggleNodeSelect(node.id)"
+    title="Select node for mass operations"
+  >
+    <span></span>
+  </div>
 
 <!-- Permission node -->
   <div

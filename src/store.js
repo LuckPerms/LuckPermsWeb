@@ -280,6 +280,7 @@ export default new Vuex.Store({
       const updatedNode = payload;
 
       if (payload.type !== 'expiry') {
+        console.log(payload);
         updatedNode.node[payload.type] = payload.data.value;
       } else {
         updatedNode.node[payload.type] = payload.data.value ? payload.data.value.getTime() / 1000 : null;
@@ -323,6 +324,10 @@ export default new Vuex.Store({
           state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(node.id), 1);
         }
       });
+    },
+
+    deselectAllSelectedNodes(state) {
+      state.editor.selectedNodes.splice(0, state.editor.selectedNodes.length);
     },
 
     addKnownPermission(state, permission) {
@@ -525,6 +530,67 @@ export default new Vuex.Store({
 
     deleteTrack({ commit }, trackId) {
       commit('deleteTrack', trackId);
+    },
+
+    copyNodes({ getters, dispatch, commit }, sessions) {
+      const selectedNodeIDs = getters.selectedNodes;
+      const selectedNodes = [];
+
+      selectedNodeIDs.forEach(nodeId => {
+        const node = getters.allNodes.find(n => n.id === nodeId);
+        selectedNodes.push(node);
+      });
+
+      selectedNodes.forEach(node => {
+        const nodeCopies = [];
+
+        sessions.forEach(sessionId => {
+          nodeCopies.push({
+            ...node,
+            sessionId,
+            isNew: true,
+          });
+        });
+
+        dispatch('addNodes', nodeCopies);
+      });
+
+      commit('closeModal');
+      commit('deselectAllSelectedNodes');
+    },
+
+    moveNodes({ getters, commit }, session) {
+      const selectedNodeIDs = getters.selectedNodes;
+      const selectedNodes = [];
+
+      selectedNodeIDs.forEach(nodeId => {
+        const node = getters.allNodes.find(n => n.id === nodeId);
+        selectedNodes.push(node);
+      });
+
+      selectedNodes.forEach(node => {
+        commit('updateNode', {
+          type: 'sessionId',
+          data: {
+            value: session,
+          },
+          node
+        });
+      });
+
+      commit('deselectAllSelectedNodes');
+      commit('closeModal');
+    },
+
+    deleteNodes({ getters, commit }) {
+      const selectedNodeIDs = getters.selectedNodes;
+
+      selectedNodeIDs.forEach(nodeId => {
+        commit('deleteNode', nodeId);
+      });
+
+      commit('deselectAllSelectedNodes');
+      commit('closeModal');
     },
 
     saveData({ state, getters, commit }) {

@@ -1,7 +1,7 @@
 <template>
   <div class="add-node">
     <form class="row" autocomplete="off" @submit.prevent>
-      <div class="form-group">
+      <div class="form-group" v-if="!selectedNodes.length">
         <label for="permissions">Add permissions</label>
         <multiselect
           id="permissions"
@@ -14,6 +14,30 @@
           placeholder="Enter permissions or paste many"
           :close-on-select="false"
         />
+      </div>
+
+      <div v-else class="form-group bulk-edit">
+        <p>
+          <span>{{ selectedNodes.length }}</span>
+          selected node{{ selectedNodes.length === 1 ? '' : 's' }}
+          <button @click="deselectNodes" title="Deselect all nodes">
+            <font-awesome icon="times" />
+          </button>
+        </p>
+        <div class="buttons">
+          <button @click="copyNodes">
+            <font-awesome icon="clone" />
+            Copy
+          </button>
+          <button @click="moveNodes">
+            <font-awesome icon="sign-in-alt" />
+            Move
+          </button>
+          <button @click="deleteNodes">
+            <font-awesome icon="times" />
+            Delete
+          </button>
+        </div>
       </div>
 
       <div>
@@ -57,7 +81,14 @@
         @click="addNodesToSession"
         title="Add node"
       >
-        <font-awesome icon="plus" />
+        <span v-if="!selectedNodes.length">
+          <font-awesome icon="plus" />
+          Add
+        </span>
+        <span v-else>
+          <font-awesome icon="edit" />
+          Update
+        </span>
       </button>
     </form>
 
@@ -182,6 +213,9 @@ export default {
       });
       if (!context) return null;
       return context.values;
+    },
+    selectedNodes() {
+      return this.$store.getters.selectedNodes;
     }
   },
   methods: {
@@ -246,6 +280,24 @@ export default {
       setTimeout(() => {
         this.context[type] = false;
       }, 250);
+    },
+    deselectNodes() {
+      this.$store.commit('deselectAllSelectedNodes');
+    },
+    copyNodes() {
+      this.$store.commit('setModal', {
+        type: 'copyNodes',
+      });
+    },
+    moveNodes() {
+      this.$store.commit('setModal', {
+        type: 'moveNodes',
+      });
+    },
+    deleteNodes() {
+      this.$store.commit('setModal', {
+        type: 'deleteNodes',
+      });
     }
   },
 };
@@ -270,13 +322,24 @@ export default {
 
       > button {
         margin: .5rem;
-        background: $grey;
         color: $brand-color;
+        background: $grey;
         border: 0;
         border-radius: 2px;
-        width: 4em;
+        width: 5em;
         cursor: not-allowed;
         opacity: .5;
+        font-family: "Source Code Pro", monospace;
+
+        span {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          svg {
+            margin-bottom: .5rem;
+          }
+        }
 
         &:not([disabled]) {
           opacity: 1;
@@ -304,6 +367,76 @@ export default {
         + .form-group {
           padding-top: .5rem;
           border-top: 1px solid rgba(0,0,0,.2);
+        }
+
+        &.bulk-edit {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: row;
+          padding: 0 2rem;
+
+          p {
+            margin: 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+
+            span {
+              font-size: 3rem;
+              color: $brand-color;
+              margin-right: 1rem;
+              font-weight: 600;
+            }
+
+            button {
+              background: transparent;
+              margin-left: 1rem;
+              border: 0;
+              font-size: 1.5rem;
+              opacity: .5;
+              cursor: pointer;
+              height: 1em;
+
+              &:hover {
+                opacity: .75;
+              }
+            }
+          }
+
+          .buttons {
+            button {
+              background: rgba(0,0,0,.25);
+              font-family: "Source Code Pro", monospace;
+              font-size: 1rem;
+              border: 0;
+              color: rgba(0,0,0,.8);
+              margin-left: 1rem;
+              padding: .5rem 1rem;
+              cursor: pointer;
+
+              svg {
+                opacity: .5;
+                margin-right: .5rem;
+              }
+
+              &:hover {
+                background: rgba(0,0,0,.2);
+              }
+
+              &:nth-child(1) {
+                color: $brand-color;
+              }
+
+              &:nth-child(2) {
+                color: #FFF;
+              }
+
+              &:nth-child(3) {
+                color: $red;
+              }
+            }
+          }
         }
 
         label {

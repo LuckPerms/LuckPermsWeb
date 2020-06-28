@@ -40,6 +40,7 @@ var wikiPages = [
   'Storage-system-errors',
   'Storage-types',
   'Switching-storage-types',
+  'Syncing-data-between-servers',
   'Track-Commands',
   'Tracks',
   'Upgrading-from-v4-to-v5',
@@ -55,13 +56,13 @@ var wikiPages = [
 getData().then(() => {
   setInterval(async () => {
     await getWikiData();
-  }, 30000);
+  }, 7200000);
 });
 
 async function getData() {
   await getWikiData();
 };
-
+ 
 async function getWikiData() {
   try {
     wikiPages.forEach(async (page) => {

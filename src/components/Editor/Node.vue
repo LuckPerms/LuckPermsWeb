@@ -1,5 +1,6 @@
 <template>
 <li :class="{ 'permission-node': true, modified: node.modified, new: node.isNew }">
+<!--  WIP: Mass-select toggle -->
 <!--  <div-->
 <!--    :class="{ 'node-select': true, 'selected': isSelected }"-->
 <!--    @click="toggleNodeSelect(node.id)"-->
@@ -45,6 +46,10 @@
   >
     <code v-if="node.expiry">{{ node.expiry | moment('from') }}</code>
     <code v-else disabled>never</code>
+
+    <button v-if="node.expiry" class="delete" @click.stop="deleteExpiry()" title="Delete expiry">
+      <font-awesome icon="times" />
+    </button>
   </div>
   <div v-else class="expiry">
     <datepicker
@@ -224,6 +229,13 @@ export default {
           break;
       }
     },
+    deleteExpiry() {
+      this.updateNode('expiry', {
+        node: this.node,
+        type: 'expiry',
+        data: { value: null }
+      });
+    },
     deleteNode(nodeId) {
       this.$store.commit('deleteNode', nodeId);
     },
@@ -347,6 +359,18 @@ export default {
 
   .expiry {
     flex: 1 1 15%;
+
+    .delete {
+      background: transparent;
+      border: 0;
+      margin-left: .5rem;
+      opacity: .75;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 
   .contexts {

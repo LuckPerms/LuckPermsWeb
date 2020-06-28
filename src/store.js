@@ -280,7 +280,6 @@ export default new Vuex.Store({
       const updatedNode = payload;
 
       if (payload.type !== 'expiry') {
-        console.log(payload);
         updatedNode.node[payload.type] = payload.data.value;
       } else {
         updatedNode.node[payload.type] = payload.data.value ? payload.data.value.getTime() / 1000 : null;

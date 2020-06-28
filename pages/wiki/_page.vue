@@ -14,14 +14,15 @@
 </template>
 
 <script>
+const axios = require('axios');
+
 export default {
   middleware ({route, redirect}) {
     if (route.path === '/wiki') redirect('/wiki/Home');
   },
-  data() {
-    return {
-      article: '',
-    }
+  async asyncData({ params }) {
+    const response = await axios.get(`http://localhost:3000/metadata/wiki/${params.page}`);
+    return { article: response.data.page };
   },
   computed: {
     route() {
@@ -31,29 +32,28 @@ export default {
       return this.route.split('-').join(' ');
     },
   },
-  async fetch() {
-    this.article = (await this.$axios.get(`/metadata/wiki/${this.route}`)).data.page;
+  mounted() {
+    document.querySelectorAll('.wiki a').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        let target;
+        if (['STRONG', 'CODE'].includes(event.target.tagName)) {
+          target = event.target.parentNode;
+        } else if (event.target.tagName === 'A') {
+          ({ target } = event);
+        }
+        $nuxt.$router.push({
+          path: target.pathname,
+          hash: target.hash,
+        });
+      });
+    });
   },
   created() {
     if (process.browser) {
-      document.querySelectorAll('.wiki a').forEach((link) => {
-        link.addEventListener('click', (event) => {
-          event.preventDefault();
-          let target;
-          if (['STRONG', 'CODE'].includes(event.target.tagName)) {
-            target = event.target.parentNode;
-          } else if (event.target.tagName === 'A') {
-            ({ target } = event);
-          }
-          this.$router.push({
-            path: target.pathname,
-            hash: target.hash,
-          }).then().catch(() => {});
-        });
-      });
       if (this.$route.hash) {
         console.log(this.$route.hash);
-        async () => await this.scrollTo(this.$route.hash);
+        this.scrollTo(this.$route.hash);
       }
     }
   },

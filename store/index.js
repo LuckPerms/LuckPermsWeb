@@ -578,7 +578,7 @@ export const actions = {
       this.$axios.$get(`${config.bytebin_url}${sessionId}`)
         .then((response) => {
           const data = {
-            ...response.data,
+            ...response,
             sessionId,
           };
           commit('setVerboseData', { data, status: 2 });

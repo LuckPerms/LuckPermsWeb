@@ -14,14 +14,12 @@
 </template>
 
 <script>
-const axios = require('axios');
-
 export default {
   middleware ({route, redirect}) {
     if (route.path === '/wiki') redirect('/wiki/Home');
   },
-  async asyncData({ params }) {
-    const response = await axios.get(`http://localhost:3000/metadata/wiki/${params.page}`);
+  async asyncData({ $axios, params }) {
+    const response = await $axios.get(`/metadata/wiki/${params.page}`);
     return { article: response.data.page };
   },
   computed: {

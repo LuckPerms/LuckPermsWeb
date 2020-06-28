@@ -4067,7 +4067,12 @@
     "world": [
       "world",
       "world_nether",
-      "world_the_end"
+      "world_the_end",
+      "world_test",
+      "world_test_2",
+      "world_test_3",
+      "world_test_4",
+      "world_test_5"
     ]
   }
 }

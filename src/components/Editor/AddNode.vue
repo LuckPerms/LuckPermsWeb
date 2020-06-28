@@ -79,7 +79,7 @@
             </h5>
           </li>
           <li>
-            <span class="edit">
+            <div class="edit">
               <input
                 type="text"
                 v-model="context.key"
@@ -87,14 +87,16 @@
                 @focus="context.keyFocus = true"
                 @blur="blurField('keyFocus')"
               >
-              <ul class="context-list" v-if="context.keyFocus">
-                <li
-                  v-for="pContext in potentialContexts"
-                  @click="context.key = pContext.key"
-                >{{ pContext.key }}</li>
-              </ul>
-            </span>
-            <span class="edit">
+              <transition name="fade">
+                <ul class="context-list" v-if="context.keyFocus">
+                  <li
+                    v-for="pContext in potentialContexts"
+                    @click="context.key = pContext.key"
+                  >{{ pContext.key }}</li>
+                </ul>
+              </transition>
+            </div>
+            <div class="edit">
               <input
                 type="text"
                 v-model="context.value"
@@ -103,13 +105,15 @@
                 @blur="blurField('valueFocus')"
                 @keydown.enter="addContext"
               >
-              <ul class="context-list" v-if="context.valueFocus">
-              <li
-                v-for="value in potentialContextValues"
-                @click="context.value = value"
-              >{{ value }}</li>
-            </ul>
-            </span>
+              <transition name="fade">
+                <ul class="context-list" v-if="context.valueFocus">
+                  <li
+                    v-for="value in potentialContextValues"
+                    @click="context.value = value"
+                  >{{ value }}</li>
+                </ul>
+              </transition>
+            </div>
           </li>
         </ul>
         <button @click="addContext">
@@ -241,7 +245,7 @@ export default {
     blurField(type) {
       setTimeout(() => {
         this.context[type] = false;
-      }, 100);
+      }, 250);
     }
   },
 };

@@ -230,11 +230,7 @@ export default {
       }
     },
     deleteExpiry() {
-      this.updateNode('expiry', {
-        node: this.node,
-        type: 'expiry',
-        data: { value: null }
-      });
+      this.updateNode('expiry', { value: null });
     },
     deleteNode(nodeId) {
       this.$store.commit('deleteNode', nodeId);

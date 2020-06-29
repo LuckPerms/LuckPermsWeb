@@ -108,12 +108,6 @@ export default {
     },
   },
   /*
-  ** Server middleware
-  */
-  serverMiddleware: [
-    { path: '/metadata', handler: '~/metadata/index.js' },
-  ],
-  /*
   ** MarkdownIt configuration
   */
   markdownit: {

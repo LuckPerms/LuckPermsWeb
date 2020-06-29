@@ -362,7 +362,7 @@ export const actions = {
   async getAppData({ commit, dispatch }) {
     commit('setConfig', config);
     try {
-      const appData = await this.$axios.$get('/metadata/all');
+      const appData = await this.$axios.$get(`${config.api_url}/data/all`);
       commit('setVersion', appData.version);
       commit('setDownloads', appData.downloads);
       commit('setExtensions', appData.extensions);

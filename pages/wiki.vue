@@ -18,7 +18,7 @@ export default {
     }
   },
   async fetch() {
-    this.sidebar = (await this.$axios.get('/metadata/wiki/_Sidebar')).data.page;
+    this.sidebar = (await this.$axios.get('https://raw.githubusercontent.com/LuckPerms/wiki/master/_Sidebar.md')).data;
   },
   mounted() {
     if (window.innerWidth >= 922) return;

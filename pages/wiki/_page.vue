@@ -19,8 +19,15 @@ export default {
     if (route.path === '/wiki') redirect('/wiki/Home');
   },
   async asyncData({ $axios, params }) {
-    const response = await $axios.get(`/metadata/wiki/${params.page}`);
-    return { article: response.data.page };
+    var response;
+    try {
+      response = await $axios.get(`https://raw.githubusercontent.com/LuckPerms/wiki/master/${params.page}.md`);
+    } catch (error) {
+      response = {
+        data: `# An Error occured\nCouldn't load page "${params.page}"`,
+      };
+    }
+    return { article: response.data };
   },
   computed: {
     route() {

@@ -1,8 +1,19 @@
+import axios from 'axios';
 
 export default {
   mode: 'universal',
   generate: {
     fallback: true,
+    routes: function () {
+      return axios.get('https://api.github.com/repos/LuckPerms/wiki/contents')
+      .then((response) => {
+        return response.data.map((file) => {
+          return file.name.replace(/(.+)\.md/g, '$1');
+        })
+        .filter(pageName => !(['README', '_Sidebar', 'LICENSE'].includes(pageName)))
+        .map(pageName => `/wiki/${pageName}`);
+      });
+    },
   },
   /*
   ** Headers of the page

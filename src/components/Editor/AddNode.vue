@@ -42,12 +42,48 @@
 
       <div>
         <div class="form-group">
-          <label>
+          <label v-if="!selectedNodes.length">
             Value
-            <button type="button" @click="value = !value" :class="{ code: true, 'true': value}">
+            <button
+              type="button"
+              @click="value = !value"
+              :class="{ code: true, 'true': value}"
+            >
               {{ value }}
             </button>
           </label>
+          <div v-else class="bulk-value">
+            <label>Value</label>
+            <div>
+              <button
+                type="button"
+                class="code true"
+                :class="{ selected: bulk.value === true }"
+                @click="bulk.value = true"
+                title="Change all values to TRUE"
+              >
+                true
+              </button>
+              <button
+                type="button"
+                class="code null"
+                :class="{ selected: bulk.value === null }"
+                @click="bulk.value = null"
+                title="Keep values unchanged"
+              >
+                -
+              </button>
+              <button
+                type="button"
+                class="code false"
+                :class="{ selected: bulk.value === false }"
+                @click="bulk.value = false"
+                title="Change all values to FALSE"
+              >
+                false
+              </button>
+            </div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -63,10 +99,31 @@
       </div>
 
       <div class="form-group contexts">
-        <label>
+        <label v-if="!selectedNodes.length">
           Contexts
           <button type="button" class="code" @click="context.ui = true">Add Contexts</button>
         </label>
+        <div class="bulk-contexts" v-else>
+          <label for="bulk_contexts">Contexts</label>
+          <div>
+            <button
+              id="bulk_contexts_replace"
+              :class="{ selected: bulk.replaceContexts }"
+              @click="bulk.replaceContexts = !bulk.replaceContexts"
+              title="Replace contexts instead of adding?"
+            >
+              <font-awesome icon="check" />
+            </button>
+            <button
+              id="bulk_contexts"
+              type="button"
+              class="code"
+              @click="context.ui = true"
+            >
+              Add Contexts
+            </button>
+          </div>
+        </div>
         <div>
           <code v-for="entry in flattenedContexts">
             <span>{{ entry.key }}:</span>
@@ -185,6 +242,10 @@ export default {
         keyFocus: false,
         valueFocus: false,
       },
+      bulk: {
+        value: null,
+        replaceContexts: false,
+      }
     };
   },
   computed: {
@@ -453,6 +514,36 @@ export default {
           }
         }
 
+        .bulk-value {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: .5rem;
+
+          label {
+            margin: 0;
+            cursor: unset;
+          }
+
+          > div {
+            display: flex;
+          }
+
+          button {
+            opacity: 0.5;
+            margin-left: .2rem;
+          }
+
+          .null {
+            color: white;
+          }
+
+          .selected {
+            opacity: 1;
+          }
+        }
+
         .multiselect__input {
           background: transparent;
           font: inherit;
@@ -492,6 +583,23 @@ export default {
       }
 
       .contexts {
+        .bulk-contexts {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: .5rem;
+
+          label {
+            width: auto;
+            margin: 0;
+          }
+
+          > div {
+            display: flex;
+          }
+        }
+
         button.code {
           color: $brand-color;
         }
@@ -636,6 +744,25 @@ export default {
         color: #FFF;
         font-family: "Source Code Pro", monospace;
       }
+    }
+  }
+
+  #bulk_contexts_replace {
+    background: rgba(0,0,0,.2);
+    color: $grey;
+    font-family: "Source Code Pro", monospace;
+    border: 0;
+    opacity: .5;
+    margin-right: .2rem;
+    cursor: pointer;
+
+    &:hover {
+      opacity: .75;
+    }
+
+    &.selected {
+      color: $brand-color;
+      opacity: 1;
     }
   }
 </style>

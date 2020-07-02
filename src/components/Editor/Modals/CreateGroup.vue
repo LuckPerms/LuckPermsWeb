@@ -10,6 +10,7 @@
       <div class="form-group">
         <label for="displayName">Display name</label>
         <input type="text" id="displayName" v-model="group.displayName">
+        <ColorParser v-if="group.displayName" :text="group.displayName" :showRaw="false" />
       </div>
       <div class="form-group">
         <label for="parent">Parent</label>
@@ -29,10 +30,12 @@
       <div class="form-group">
         <label for="prefix">Prefix</label>
         <input type="text" id="prefix" v-model="group.prefix">
+        <ColorParser v-if="group.prefix" :text="group.prefix" :showRaw="false" />
       </div>
       <div class="form-group">
         <label for="suffix">Suffix</label>
         <input type="text" id="suffix" v-model="group.suffix">
+        <ColorParser v-if="group.suffix" :text="group.suffix" :showRaw="false" />
       </div>
     </div>
   </div>
@@ -44,9 +47,13 @@
 </template>
 
 <script>
+import ColorParser from './../Utilities/ColorParser';
 
 export default {
   name: 'CreateGroup',
+  components: {
+    ColorParser,
+  },
   data() {
     return {
       group: {

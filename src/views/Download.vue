@@ -143,6 +143,30 @@
         </div>
       </section>
     </div>
+    <section class="hero additional-plugins">
+      <div class="container">
+        <div>
+          <h1>Additional Plugins</h1>
+          <p>Additional plugins can provide more complex features, but may not be available on all platforms</p>
+        </div>
+      </div>
+    </section>
+    <div class="container additional-plugins">
+      <section class="resources">
+        <div>
+          <a :href="additionalPlugins['extracontexts']" class="resource">
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              ExtraContexts Plugin
+            </span>
+            <small>LuckPerms 5.0 and above</small>
+          </a>
+          <div>
+            <p>Add more context, including some for other plugins</p>
+          </div>
+        </div>
+      </section>
+    </div>
 
     <transition name="fade">
       <Quiz v-if="quiz.open" :downloads="downloads" @close="quiz.open = false" />
@@ -168,6 +192,7 @@ export default {
   },
   computed: {
     extensions() { return this.$store.getters.extensions; },
+    additionalPlugins() { return this.$store.getters.additionalPlugins; },
     downloads() { return this.$store.getters.downloads; },
     version() { return this.$store.getters.version; },
   },
@@ -256,7 +281,8 @@ export default {
       }
     }
 
-    .extensions {
+    .extensions,
+    .additional-plugins {
       &.hero {
         .container {
           justify-content: center;
@@ -277,6 +303,12 @@ export default {
             }
           }
         }
+      }
+    }
+
+    .additional-plugins {
+      section {
+        justify-content: center;
       }
     }
   }

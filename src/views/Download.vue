@@ -159,10 +159,46 @@
               <font-awesome icon="arrow-alt-circle-down" />
               ExtraContexts Plugin
             </span>
-            <small>LuckPerms 5.0 and above</small>
+            <small>LuckPerms 5.0 and above, Bukkit only</small>
           </a>
           <div>
             <p>Add more context, including some for other plugins</p>
+          </div>
+        </div>
+      </section>
+    </div>
+    <section class="hero placeholder-expansions">
+      <div class="container">
+        <div>
+          <h1>Placeholder Expansions</h1>
+          <p>LuckPerms adds <router-link to="/wiki/Placeholders#placeholders">placeholders</router-link> to PlaceholderAPI and MVdWPlaceholderAPI</p>
+        </div>
+      </div>
+    </section>
+    <div class="container placeholder-expansions">
+      <section class="resources">
+        <div>
+          <a :href="placeholderExpansions['luckperms-papi-expansion']" class="resource">
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              PlaceholderAPI
+            </span>
+            <small>LuckPerms 5.0 and above, Bukkit only</small>
+          </a>
+          <div>
+            <p>Install using either <code>/papi ecloud download LuckPerms</code> or by <router-link to="/wiki/Placeholders#manual-install">installing manually</router-link>.</p>
+          </div>
+        </div>
+        <div>
+          <a :href="placeholderExpansions['luckperms-mvdw-hook']" class="resource">
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              MVdWPlaceholderAPI
+            </span>
+            <small>LuckPerms 5.0 and above, Bukkit only</small>
+          </a>
+          <div>
+            <p>Place the JAR file in your <code>/plugins/</code> folder.</p>
           </div>
         </div>
       </section>
@@ -193,6 +229,7 @@ export default {
   computed: {
     extensions() { return this.$store.getters.extensions; },
     additionalPlugins() { return this.$store.getters.additionalPlugins; },
+    placeholderExpansions() { return this.$store.getters.placeholderExpansions; },
     downloads() { return this.$store.getters.downloads; },
     version() { return this.$store.getters.version; },
   },
@@ -282,7 +319,8 @@ export default {
     }
 
     .extensions,
-    .additional-plugins {
+    .additional-plugins,
+    .placeholder-expansions {
       &.hero {
         .container {
           justify-content: center;

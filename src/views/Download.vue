@@ -162,7 +162,7 @@
             <small>LuckPerms 5.0 and above, Bukkit only</small>
           </a>
           <div>
-            <p>Add more context, including some for other plugins</p>
+            <p>Add more contexts, including some for other plugins</p>
           </div>
         </div>
       </section>

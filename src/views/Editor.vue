@@ -135,6 +135,7 @@ import Meta from '@/components/Editor/Meta.vue';
 import NodeList from '@/components/Editor/NodeList.vue';
 import AddNode from '@/components/Editor/AddNode.vue';
 import Modal from '@/components/Editor/Modal.vue';
+import { checkVersion } from '../util/version';
 
 export default {
   name: 'Editor',
@@ -204,6 +205,14 @@ export default {
     saveStatus() {
       return this.$store.getters.saveStatus;
     },
+
+    version() {
+      return this.$store.getters.version;
+    },
+
+    userVersion() {
+      return this.$store.getters.metaData.pluginVersion;
+    },
   },
 
   created() {
@@ -236,6 +245,10 @@ export default {
   methods: {
     saveData() {
       this.$store.dispatch('saveData');
+    },
+
+    checkVersion(version) {
+      return checkVersion(version, this.userVersion);
     },
   },
 };

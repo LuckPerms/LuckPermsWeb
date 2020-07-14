@@ -76,6 +76,7 @@
           :data-component="Node"
           :keeps="50"
           class="data"
+          :estimate-size="38"
         />
       </div>
     </div>

@@ -123,8 +123,10 @@ export default {
         margin-right: 1rem;
         display: flex;
         align-items: center;
+        min-width: 10rem;
 
         img {
+          width: 1rem;
           margin-right: .5rem;
         }
       }

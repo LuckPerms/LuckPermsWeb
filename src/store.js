@@ -359,7 +359,12 @@ export default new Vuex.Store({
     setVerboseData(state, { data, status }) {
       state.verbose.status = status;
       if (!data) return;
-      state.verbose.data = data.data;
+      state.verbose.data = data.data.map((node) => {
+        return {
+          ...node,
+          id: uuid(),
+        }
+      });
       state.verbose.metadata = data.metadata;
       state.verbose.sessionId = data.sessionId;
     },

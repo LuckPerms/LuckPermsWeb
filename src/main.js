@@ -56,6 +56,7 @@ Vue.use(Vuex);
 Vue.directive('autofocus', autofocus);
 
 Vue.config.productionTip = false;
+Vue.config.performance = true;
 
 library.add(
   faSave,

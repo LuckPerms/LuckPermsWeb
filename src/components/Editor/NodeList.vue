@@ -71,26 +71,27 @@
     </div>
   </div>
 
-
-  <transition-group name="node-list" tag="ul">
-    <Node
-      v-for="node in sortedNodes"
-      :node="node"
-      :key="`node_${node.id}`"
-      :selected-nodes="selectedNodes"
-    />
-  </transition-group>
+  <virtual-list
+    :data-sources="sortedNodes"
+    data-key="id"
+    :data-component="Node"
+    :keeps="50"
+    class="node-list-scroll"
+    :estimate-size="42"
+  />
 </div>
 </template>
 
 <script>
 import sortBy from 'lodash.sortby';
 import Node from './Node.vue';
+import VirtualList from 'vue-virtual-scroll-list';
 
 export default {
   name: 'NodeList',
   components: {
     Node,
+    VirtualList,
   },
   props: {
     nodes: Array,
@@ -104,6 +105,7 @@ export default {
     };
   },
   computed: {
+    Node() { return Node },
     sortedNodes() {
       let sorted;
       if (['key', 'value', 'expiry'].indexOf(this.sort.method) >= 0) {
@@ -155,6 +157,9 @@ export default {
   background-color: rgba(255,255,255,.2);
   flex: 1;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
   h2 {
     margin: 0;
@@ -168,11 +173,8 @@ export default {
   }
 
   .node-list-header {
-    position: sticky;
-    top: 4em;
     background-color: rgb(67,67,78);
     border-bottom: 1px solid rgba(0,0,0,0.2);
-    z-index: 4;
 
     .sorting-tabs {
       display: flex;
@@ -261,20 +263,20 @@ export default {
     list-style: none;
   }
 
-  &-move {
+  // TODO: figure out if it's possible to use transitions with virtual scroller
+  //&-enter, &-leave-to {
+  //  opacity: 0;
+  //  transform: translateX(10%);
+  //}
 
-  }
-
-  &-enter, &-leave-to {
-    opacity: 0;
-    transform: translateX(10%);
-  }
-
-  &-leave-active {
-    position: absolute;
-    background: $red;
-    width: 100%;
-    pointer-events: none;
-  }
+  //&-leave-active {
+  //  position: absolute;
+  //  background: $red;
+  //  width: 100%;
+  //  pointer-events: none;
+  //}
+}
+.node-list-scroll {
+  overflow-y: auto;
 }
 </style>

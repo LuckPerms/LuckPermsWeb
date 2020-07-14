@@ -100,7 +100,7 @@ export default new Vuex.Store({
       if (!state.version || !state.editor.metaData?.pluginVersion) return null;
 
       return compareVersions(state.version, state.editor.metaData.pluginVersion);
-    }
+    },
   },
 
 
@@ -255,6 +255,10 @@ export default new Vuex.Store({
     deleteNode(state, nodeId) {
       const deletingNode = state.editor.nodes.find(node => node.id === nodeId);
 
+      if (state.editor.selectedNodes.includes(nodeId)) {
+        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(nodeId), 1);
+      }
+
       state.editor.nodes = state.editor.nodes.filter(node => node.id !== nodeId);
 
       state.editor.sessions[deletingNode.sessionId].modified = true;
@@ -308,11 +312,11 @@ export default new Vuex.Store({
       state.editor.nodes.push(node);
     },
 
-    toggleNodeSelect(state, nodeId) {
-      if (state.editor.selectedNodes.indexOf(nodeId) >= 0) {
-        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(nodeId), 1);
+    toggleNodeSelect(state, node) {
+      if (state.editor.selectedNodes.includes(node.id)) {
+        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(node.id), 1);
       } else {
-        state.editor.selectedNodes.push(nodeId);
+        state.editor.selectedNodes.push(node.id);
       }
     },
 
@@ -447,6 +451,7 @@ export default new Vuex.Store({
         addingNode.id = uuid();
         addingNode.expiry = node.expiry || null;
         addingNode.context = node.context || {};
+        addingNode.selected = false;
         commit('addEditorNode', addingNode);
       });
     },
@@ -589,13 +594,12 @@ export default new Vuex.Store({
     },
 
     deleteNodes({ getters, commit }) {
-      const selectedNodeIDs = getters.selectedNodes;
+      const selectedNodes = getters.selectedNodes.map(node => node);
 
-      selectedNodeIDs.forEach(nodeId => {
+      selectedNodes.forEach(nodeId => {
         commit('deleteNode', nodeId);
       });
 
-      commit('deselectAllSelectedNodes');
       commit('closeModal');
     },
 

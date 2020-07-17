@@ -5,7 +5,7 @@
 <script>
 export default {
   props: ['text', 'showRaw'],
-  created() {
+  mounted() {
     const randomize = this.randomize;
     setInterval(() => {
       Array.from(document.getElementsByClassName('mc-obfuscated')).forEach((element) => {

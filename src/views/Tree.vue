@@ -47,7 +47,9 @@
           <h1>LuckPerms</h1>
           <p>Permission Tree Viewer</p>
           <template v-if="!errors.load">
-            <a href="/treeview/demo"><button class="button demo-button">View Demo</button></a>
+            <router-link to="/treeview/demo">
+              <button class="button demo-button">View Demo</button>
+            </router-link>
             <p>To generate a permission tree, do the following in game or from the console:</p>
             <ul>
               <li><code>/lp tree [scope] [player]</code></li>
@@ -70,6 +72,7 @@
 <script>
 import Avatar from '../components/Avatar.vue';
 import Branch from '../components/Tree/Branch.vue';
+import updateSession from '@/util/session';
 
 export default {
   metaInfo: {
@@ -86,19 +89,7 @@ export default {
   created() {
     if (this.treeData?.sessionId) return;
 
-    let sessionId;
-
-    if (this.$route.params.id) {
-      sessionId = this.$route.params.id;
-    } else if (this.$route.query.id) {
-      sessionId = this.$route.query.id;
-    } else if (this.$route.hash) {
-      // eslint-disable-next-line prefer-destructuring
-      sessionId = this.$route.hash.split('#')[1];
-    }
-    if (sessionId) {
-      this.$store.dispatch('getTreeData', sessionId);
-    }
+    updateSession(this.$route, 'getTreeData');
   },
   methods: {
     expandTree() {
@@ -106,6 +97,11 @@ export default {
     },
     collapseTree() {
       this.$root.$emit('collapseTree');
+    },
+  },
+  watch: {
+    $route(route) {
+      updateSession(route, 'getTreeData');
     },
   },
 };

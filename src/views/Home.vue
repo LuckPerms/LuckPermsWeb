@@ -116,7 +116,7 @@
               <font-awesome icon="comment-alt" />
               Verbose Viewer
             </router-link>
-            <router-link to="/tree" alt="Tree Viewer">
+            <router-link to="/treeview" alt="Tree Viewer">
               <font-awesome icon="sitemap" />
               Tree Viewer
             </router-link>

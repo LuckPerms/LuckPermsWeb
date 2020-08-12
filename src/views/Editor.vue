@@ -6,7 +6,9 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Web Permissions Editor</p>
-          <a href="/editor/demo"><button class="button demo-button">View Demo</button></a>
+          <router-link to="/editor/demo">
+            <button class="button demo-button">View Demo</button>
+          </router-link>
           <p>To start a new editor session, use one of the following commands:</p>
           <ul>
             <li><code>/lp editor</code></li>
@@ -227,24 +229,34 @@ export default {
 
     if (this.sessions?.length) return;
 
-    let sessionId;
+    this.updateSession();
+  },
 
-    if (this.$route.params.id) {
-      sessionId = this.$route.params.id;
-    } else if (this.$route.query.id) {
-      sessionId = this.$route.query.id;
-    } else if (this.$route.hash) {
-      // eslint-disable-next-line prefer-destructuring
-      sessionId = this.$route.hash.split('#')[1];
-    }
-    if (sessionId) {
-      this.$store.dispatch('getEditorData', sessionId);
-    }
+  watch: {
+    $route() {
+      this.updateSession();
+    },
   },
 
   methods: {
     saveData() {
       this.$store.dispatch('saveData');
+    },
+
+    updateSession() {
+      let sessionId;
+
+      if (this.$route.params.id) {
+        sessionId = this.$route.params.id;
+      } else if (this.$route.query.id) {
+        sessionId = this.$route.query.id;
+      } else if (this.$route.hash) {
+        // eslint-disable-next-line prefer-destructuring
+        sessionId = this.$route.hash.split('#')[1];
+      }
+      if (sessionId) {
+        this.$store.dispatch('getEditorData', sessionId);
+      }
     },
 
     checkVersion(version) {

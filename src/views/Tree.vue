@@ -1,27 +1,48 @@
 <template>
   <main class="tree container">
-    <div class="tree-viewer" v-if="treeData.metadata">
+    <div class="tree-viewer" v-if="metaData">
       <div class="col-1">
-        <h1>Permission Tree viewer</h1>
+        <h1>Permission Tree Viewer</h1>
         <div class="meta-info">
           <table>
             <tr>
               <td>Uploaded by</td>
               <td>
                 <avatar
-                  v-if="treeData.metadata.uploader.name !== 'Console'"
-                  :id="treeData.metadata.uploader.uuid"
-                  :name="treeData.metadata.uploader.name"
+                  v-if="metaData.uploader.name !== 'Console'"
+                  :id="metaData.uploader.uuid"
+                  :name="metaData.uploader.name"
                   :size="16"
                 />
-                {{ treeData.metadata.uploader.name }}
+                {{ metaData.uploader.name }}
               </td>
             </tr>
             <tr>
               <td title="When the recording started">
                 Time
               </td>
-              <td>{{ treeData.metadata.time }}</td>
+              <td>{{ metaData.time }}</td>
+            </tr>
+            <tr v-if="metaData.root">
+              <td title="Root">
+                Root
+              </td>
+              <td>
+                <code>{{ metaData.root }}</code>
+              </td>
+            </tr>
+            <tr v-if="metaData.referenceUser">
+              <td title="Reference user">
+                Reference user
+              </td>
+              <td>
+                <avatar
+                  :id="metaData.referenceUser.uuid"
+                  :name="metaData.referenceUser.name"
+                  :size="16"
+                />
+                {{ metaData.referenceUser.name }}
+              </td>
             </tr>
           </table>
         </div>
@@ -36,7 +57,12 @@
       </div>
       <div class="col-2">
         <div>
-          <branch v-for="branch in treeData.data" :branch-data="branch" />
+          <branch
+            v-for="(branch, node) in treeData"
+            :branch-data="branch"
+            :node="node"
+            :key="node"
+          />
         </div>
       </div>
     </div>
@@ -83,7 +109,18 @@ export default {
     Branch,
   },
   computed: {
-    treeData() { return this.$store.getters.tree; },
+    treeData() {
+      const { tree } = this.$store.getters;
+
+      if (tree.data?.tree) {
+        return tree.data.tree;
+      } else if (tree.data) {
+        return tree.data;
+      }
+    },
+    metaData() {
+      return this.$store.state.tree?.metadata;
+    },
     errors() { return this.$store.state.tree.errors; },
   },
   created() {
@@ -171,6 +208,10 @@ export default {
         width: 100%;
         overflow: auto;
         padding-right: 1rem;
+
+        > .branch {
+          padding-left: 0;
+        }
       }
     }
   }

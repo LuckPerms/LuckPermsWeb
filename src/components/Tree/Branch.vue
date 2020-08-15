@@ -7,7 +7,7 @@
         </button>
         <code>{{ node }}</code>
       </div>
-      <code v-if="result" class="result" :class="result">
+      <code v-if="result" :class="result">
         {{ result }}
       </code>
     </div>
@@ -95,10 +95,6 @@ export default {
 
       code {
         background: transparent;
-
-        &.result {
-          opacity: .5;
-        }
       }
     }
 

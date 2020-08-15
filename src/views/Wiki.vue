@@ -213,6 +213,5 @@ export default {
   :target {
     background: $brand-color;
     color: #FFF;
-    border: 1px red solid;
   }
 </style>

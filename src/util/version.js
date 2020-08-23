@@ -1,4 +1,20 @@
 /**
+ * Parses version numbers into an array of numbers [major, minor, patch]
+ *
+ * @param {string} version
+ * @returns {Array}
+ */
+function parseVersion(version) {
+  const array = version.split('.');
+
+  array.forEach((int, index) => {
+    array[index] = parseInt(int, 0);
+  });
+
+  return array;
+}
+
+/**
  * Compare's the user's version to the latest version
  * Returns an object showing which semver is up to date (major, minor, patch)
  *
@@ -33,20 +49,4 @@ export function checkVersion(version, current) {
     && currentVersion[1] >= checkingVersion[1]
     && currentVersion[2] >= checkingVersion[2]
   );
-}
-
-/**
- * Parses version numbers into an array of numbers [major, minor, patch]
- *
- * @param {string} version
- * @returns {Array}
- */
-function parseVersion(version) {
-  const array = version.split('.');
-
-  array.forEach((int, index) => {
-    array[index] = parseInt(int);
-  });
-
-  return array;
 }

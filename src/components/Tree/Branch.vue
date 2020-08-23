@@ -1,10 +1,15 @@
 <template>
-  <div class="branch" :class="!node ? 'no-node' : ''">
+  <div class="branch" :class="node ? '' : 'no-node'">
     <div class="node" @click="open = !open" v-if="node">
-      <button v-if="hasChildren && node">
-        <font-awesome icon="caret-right" :rotation="open ? 90 : null" />
-      </button>
-      <code>{{ node }}</code>
+      <div>
+        <button v-if="hasChildren && node">
+          <font-awesome icon="caret-right" :rotation="open ? 90 : null" />
+        </button>
+        <code>{{ node }}</code>
+      </div>
+      <code v-if="result" :class="result">
+        {{ result }}
+      </code>
     </div>
     <template v-if="open && hasChildren">
       <branch
@@ -39,6 +44,18 @@ export default {
     hasChildren() {
       return Object.keys(this.branchData).length;
     },
+    checkResults() {
+      return this.$store.getters.tree.data?.checkResults;
+    },
+    result() {
+      if (!this.checkResults) return null;
+
+      if (Object.keys(this.checkResults).includes(this.node)) {
+        return this.checkResults[this.node];
+      } else {
+        return null;
+      }
+    }
   },
   created() {
     this.$root.$on('collapseTree', () => {
@@ -69,6 +86,8 @@ export default {
       border-radius: 2px;
       margin-bottom: .2rem;
       cursor: pointer;
+      display: flex;
+      justify-content: space-between;
 
       &:hover {
         background: lighten($grey, 10%);

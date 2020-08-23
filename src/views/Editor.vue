@@ -6,7 +6,9 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Web Permissions Editor</p>
-          <a href="/editor/demo"><button class="button demo-button">View Demo</button></a>
+          <router-link to="/editor/demo">
+            <button class="button demo-button">View Demo</button>
+          </router-link>
           <p>To start a new editor session, use one of the following commands:</p>
           <ul>
             <li><code>/lp editor</code></li>
@@ -135,7 +137,8 @@ import Meta from '@/components/Editor/Meta.vue';
 import NodeList from '@/components/Editor/NodeList.vue';
 import AddNode from '@/components/Editor/AddNode.vue';
 import Modal from '@/components/Editor/Modal.vue';
-import { checkVersion } from '../util/version';
+import { checkVersion } from '@/util/version';
+import updateSession from '@/util/session';
 
 export default {
   name: 'Editor',
@@ -205,48 +208,41 @@ export default {
     saveStatus() {
       return this.$store.getters.saveStatus;
     },
-
     version() {
       return this.$store.getters.version;
     },
-
     userVersion() {
       return this.$store.getters.metaData.pluginVersion;
     },
   },
 
   created() {
+    const { $route } = this;
+
     if (window.location.search && window.location.search.length === 11) {
       const code = window.location.search.split('?')[1];
       window.location = `https://legacy.luckperms.net/editor/?${code}`;
     }
 
-    if (this.$route.hash && this.$route.hash.length === 11) {
-      window.location = `https://legacy.luckperms.net/editor/${this.$route.hash}`;
+    if ($route.hash && $route.hash.length === 11) {
+      window.location = `https://legacy.luckperms.net/editor/${$route.hash}`;
     }
 
     if (this.sessions?.length) return;
 
-    let sessionId;
+    updateSession($route, 'getEditorData');
+  },
 
-    if (this.$route.params.id) {
-      sessionId = this.$route.params.id;
-    } else if (this.$route.query.id) {
-      sessionId = this.$route.query.id;
-    } else if (this.$route.hash) {
-      // eslint-disable-next-line prefer-destructuring
-      sessionId = this.$route.hash.split('#')[1];
-    }
-    if (sessionId) {
-      this.$store.dispatch('getEditorData', sessionId);
-    }
+  watch: {
+    $route(route) {
+      updateSession(route, 'getEditorData');
+    },
   },
 
   methods: {
     saveData() {
       this.$store.dispatch('saveData');
     },
-
     checkVersion(version) {
       return checkVersion(version, this.userVersion);
     },

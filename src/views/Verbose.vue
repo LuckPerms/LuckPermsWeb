@@ -98,7 +98,9 @@
             </p>
           </template>
           <template v-if="verboseData.status === 0">
-            <a href="/verbose/demo"><button class="button demo-button">View Demo</button></a>
+            <router-link to="/verbose/demo">
+              <button class="button demo-button">View Demo</button>
+            </router-link>
             <p>To generate a verbose report, do the following in game or from the console:</p>
             <ul>
               <li><code>/lp verbose record [filter]</code></li>
@@ -116,6 +118,7 @@
 <script>
 import Node from '../components/Verbose/Node.vue';
 import Avatar from '../components/Avatar.vue';
+import updateSession from '@/util/session';
 import VirtualList from 'vue-virtual-scroll-list';
 
 export default {
@@ -148,19 +151,12 @@ export default {
   created() {
     if (this.verboseData?.sessionId) return;
 
-    let sessionId;
-
-    if (this.$route.params.id) {
-      sessionId = this.$route.params.id;
-    } else if (this.$route.query.id) {
-      sessionId = this.$route.query.id;
-    } else if (this.$route.hash) {
-      // eslint-disable-next-line prefer-destructuring
-      sessionId = this.$route.hash.split('#')[1];
-    }
-    if (sessionId) {
-      this.$store.dispatch('getVerboseData', sessionId);
-    }
+    updateSession(this.$route, 'getVerboseData');
+  },
+  watch: {
+    $route(route) {
+      updateSession(route, 'getVerboseData');
+    },
   },
 };
 </script>

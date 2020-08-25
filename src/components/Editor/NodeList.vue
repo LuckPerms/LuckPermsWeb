@@ -84,13 +84,12 @@
 
 <script>
 import sortBy from 'lodash.sortby';
-import Node from './Node.vue';
 import VirtualList from 'vue-virtual-scroll-list';
+import Node from './Node.vue';
 
 export default {
   name: 'NodeList',
   components: {
-    Node,
     VirtualList,
   },
   props: {
@@ -105,7 +104,7 @@ export default {
     };
   },
   computed: {
-    Node() { return Node },
+    Node() { return Node; },
     sortedNodes() {
       let sorted;
       if (['key', 'value', 'expiry'].indexOf(this.sort.method) >= 0) {

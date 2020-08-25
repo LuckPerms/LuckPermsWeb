@@ -116,17 +116,16 @@
 </template>
 
 <script>
+import VirtualList from 'vue-virtual-scroll-list';
 import Node from '../components/Verbose/Node.vue';
 import Avatar from '../components/Avatar.vue';
 import updateSession from '@/util/session';
-import VirtualList from 'vue-virtual-scroll-list';
 
 export default {
   metaInfo: {
     title: 'Verbose',
   },
   components: {
-    Node,
     Avatar,
     VirtualList,
   },

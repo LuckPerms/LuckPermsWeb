@@ -17,9 +17,9 @@ import CreateGroup from './Modals/CreateGroup.vue';
 import DeleteGroup from './Modals/DeleteGroup.vue';
 import CreateTrack from './Modals/CreateTrack.vue';
 import SavedChanges from './Modals/SavedChanges.vue';
-import CopyNodes from "./Modals/CopyNodes";
-import MoveNodes from "./Modals/MoveNodes";
-import DeleteNodes from "./Modals/DeleteNodes";
+import CopyNodes from './Modals/CopyNodes.vue';
+import MoveNodes from './Modals/MoveNodes.vue';
+import DeleteNodes from './Modals/DeleteNodes.vue';
 
 export default {
   name: 'Modal',

@@ -4,7 +4,8 @@
     <div class="col-2">
       <div>
         <p>
-          Are you sure you want to delete {{ selectedNodes.length }} permission node{{ selectedNodes.length === 1 ? '' : 's' }}?
+          Are you sure you want to delete {{ selectedNodes.length }}
+          permission node{{ selectedNodes.length === 1 ? '' : 's' }}?
         </p>
       </div>
       <div>
@@ -18,26 +19,26 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        selectedSession: null,
-      }
+export default {
+  data() {
+    return {
+      selectedSession: null,
+    };
+  },
+  props: {
+    props: Array,
+  },
+  computed: {
+    selectedNodes() {
+      return this.$store.getters.selectedNodes;
     },
-    props: {
-      props: Array,
+  },
+  methods: {
+    deleteNodes() {
+      this.$store.dispatch('deleteNodes');
     },
-    computed: {
-      selectedNodes() {
-        return this.$store.getters.selectedNodes;
-      }
-    },
-    methods: {
-      deleteNodes() {
-        this.$store.dispatch('deleteNodes');
-      }
-    }
-  }
+  },
+};
 </script>
 
 <style lang="scss">

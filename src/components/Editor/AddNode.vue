@@ -101,7 +101,14 @@
       <div class="form-group contexts">
         <label v-if="!selectedNodes.length">
           Contexts
-          <button type="button" class="code" @click="context.ui = true">Add Contexts</button>
+          <button
+            type="button"
+            class="code"
+            title="Add contexts"
+            @click="context.ui = true"
+          >
+            <font-awesome icon="plus" />
+          </button>
         </label>
         <div class="bulk-contexts" v-else>
           <label for="bulk_contexts">Contexts</label>
@@ -113,14 +120,16 @@
               title="Replace contexts instead of adding?"
             >
               <font-awesome icon="check" />
+              Replace
             </button>
             <button
               id="bulk_contexts"
               type="button"
               class="code"
+              title="Add contexts"
               @click="context.ui = true"
             >
-              Add Contexts
+              <font-awesome icon="plus" />
             </button>
           </div>
         </div>
@@ -133,16 +142,25 @@
       </div>
 
       <button
+        v-if="!selectedNodes.length"
         type="submit"
         :disabled="permissions.length === 0"
-        @click="addNodesToSession"
         title="Add node"
+        @click="addNodesToSession"
       >
-        <span v-if="!selectedNodes.length">
+        <span>
           <font-awesome icon="plus" />
           Add
         </span>
-        <span v-else>
+      </button>
+      <button
+        v-else
+        type="submit"
+        :disabled="!canUpdateNode"
+        title="Update nodes"
+        @click="updateNodes"
+      >
+        <span>
           <font-awesome icon="edit" />
           Update
         </span>
@@ -159,6 +177,9 @@
           <li v-for="entry in flattenedContexts">
             <span v-html="entry.key"></span>
             <span v-html="entry.value"></span>
+            <button @click="removeContext(entry.key, entry.value)">
+              <font-awesome icon="times" fixed-width />
+            </button>
           </li>
           <li>
             <h5>
@@ -276,7 +297,10 @@ export default {
       return context.values;
     },
     selectedNodes() {
-      return this.$store.getters.selectedNodes;
+      return this.$store.getters.selectedNodeIds;
+    },
+    canUpdateNode() {
+      return (this.expiry || this.bulk.value !== null || Object.keys(this.context.contexts).length);
     }
   },
   methods: {
@@ -320,6 +344,19 @@ export default {
       this.expiry = null;
       this.context.contexts = {};
     },
+    updateNodes() {
+      const payload = {
+        value: this.bulk.value,
+        replace: this.bulk.replaceContexts,
+        contexts: this.context.contexts,
+        expiry: this.expiry
+      }
+
+      this.$store.dispatch('updateNodes', payload);
+      this.context.contexts = {};
+      this.bulk.value = null;
+      this.expiry = null;
+    },
     closeContextUi() {
       this.context.ui = false;
       this.context.key = '';
@@ -336,6 +373,13 @@ export default {
 
       this.context.key = '';
       this.context.value = '';
+    },
+    removeContext(key, value) {
+      const { contexts } = this.context;
+
+      if (contexts[key].includes(value)) {
+        this.$set(contexts, key, contexts[key].filter(v => v !== value));
+      }
     },
     blurField(type) {
       setTimeout(() => {
@@ -755,6 +799,12 @@ export default {
     opacity: .5;
     margin-right: .2rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin-right: .5rem;
+    }
 
     &:hover {
       opacity: .75;

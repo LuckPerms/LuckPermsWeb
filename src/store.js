@@ -82,7 +82,13 @@ export default new Vuex.Store({
 
     tracks: state => state.editor.tracks,
 
-    selectedNodes: state => state.editor.selectedNodes,
+    selectedNodeIds: state => state.editor.selectedNodes,
+
+    selectedNodes: (state, getters) => {
+      return getters.selectedNodeIds.map(nodeId => {
+        return getters.allNodes.find(({ id }) => nodeId === id);
+      });
+    },
 
     potentialContexts: state => state.editor.potentialContexts,
 
@@ -300,12 +306,42 @@ export default new Vuex.Store({
       state.editor.sessions[payload.node.sessionId].modified = true;
     },
 
-    updateNodeContext(state, payload) {
-      const updatedNode = payload;
+    bulkUpdateNode(state, { node, payload }) {
+      const updateNode = node;
+      const {
+        value,
+        expiry,
+        replace,
+        contexts
+      } = payload;
 
-      updatedNode.node.context = payload.data;
-      updatedNode.node.modified = true;
-      state.editor.sessions[payload.node.sessionId].modified = true;
+      if (value !== null) {
+        updateNode.value = value;
+      }
+
+      if (expiry) {
+        updateNode.expiry = expiry;
+      }
+
+      if (replace) {
+        updateNode.context = contexts;
+      } else {
+        updateNode.context = {
+          ...node.contexts,
+          ...contexts
+        }
+      }
+
+      updateNode.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
+    },
+
+    updateNodeContext(state, payload) {
+      const { node, data } = payload;
+
+      node.context = data;
+      node.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
     },
 
     addNodeToSession(state, node) {
@@ -549,13 +585,7 @@ export default new Vuex.Store({
     },
 
     copyNodes({ getters, dispatch, commit }, sessions) {
-      const selectedNodeIDs = getters.selectedNodes;
-      const selectedNodes = [];
-
-      selectedNodeIDs.forEach(nodeId => {
-        const node = getters.allNodes.find(n => n.id === nodeId);
-        selectedNodes.push(node);
-      });
+      const { selectedNodes } = getters;
 
       selectedNodes.forEach(node => {
         const nodeCopies = [];
@@ -576,13 +606,7 @@ export default new Vuex.Store({
     },
 
     moveNodes({ getters, commit }, session) {
-      const selectedNodeIDs = getters.selectedNodes;
-      const selectedNodes = [];
-
-      selectedNodeIDs.forEach(nodeId => {
-        const node = getters.allNodes.find(n => n.id === nodeId);
-        selectedNodes.push(node);
-      });
+      const { selectedNodes } = getters;
 
       selectedNodes.forEach(node => {
         commit('updateNode', {
@@ -599,13 +623,21 @@ export default new Vuex.Store({
     },
 
     deleteNodes({ getters, commit }) {
-      const selectedNodes = getters.selectedNodes.map(node => node);
+      const selectedNodes = getters.selectedNodeIds.map(node => node);
 
       selectedNodes.forEach(nodeId => {
         commit('deleteNode', nodeId);
       });
 
       commit('closeModal');
+    },
+
+    updateNodes({ getters, commit }, payload) {
+      const { selectedNodes } = getters;
+
+      selectedNodes.forEach(node => {
+        commit('bulkUpdateNode', { node, payload });
+      });
     },
 
     saveData({ state, getters, commit }) {

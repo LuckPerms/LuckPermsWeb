@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     selectedNodes() {
-      return this.$store.getters.selectedNodes;
+      return this.$store.getters.selectedNodeIds;
     },
   },
   methods: {

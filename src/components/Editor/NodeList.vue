@@ -119,7 +119,7 @@ export default {
       return sorted.reverse();
     },
     selectedNodes() {
-      return this.$store.getters.selectedNodes;
+      return this.$store.getters.selectedNodeIds;
     },
     currentSelectedNodes() {
       const map = this.nodes.map(node => node.id);

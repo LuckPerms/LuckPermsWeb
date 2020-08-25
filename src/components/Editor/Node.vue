@@ -178,7 +178,7 @@ export default {
       return this.$store.getters.currentSession;
     },
     selectedNodes() {
-      return this.$store.getters.selectedNodes;
+      return this.$store.getters.selectedNodeIds;
     },
     isSelected() {
       return this.selectedNodes.indexOf(this.source.id) >= 0;

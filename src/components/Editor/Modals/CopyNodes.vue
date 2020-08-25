@@ -35,7 +35,7 @@
     },
     computed: {
       selectedNodes() {
-        return this.$store.getters.selectedNodes;
+        return this.$store.getters.selectedNodeIds;
       },
       sessions() {
         return this.$store.getters.sessionSet;

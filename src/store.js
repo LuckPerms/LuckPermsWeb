@@ -82,7 +82,13 @@ export default new Vuex.Store({
 
     tracks: state => state.editor.tracks,
 
-    selectedNodes: state => state.editor.selectedNodes,
+    selectedNodeIds: state => state.editor.selectedNodes,
+
+    selectedNodes: (state, getters) => {
+      return getters.selectedNodeIds.map(nodeId => {
+        return getters.allNodes.find(({ id }) => nodeId === id);
+      });
+    },
 
     potentialContexts: state => state.editor.potentialContexts,
 
@@ -100,7 +106,7 @@ export default new Vuex.Store({
       if (!state.version || !state.editor.metaData?.pluginVersion) return null;
 
       return compareVersions(state.version, state.editor.metaData.pluginVersion);
-    }
+    },
   },
 
 
@@ -255,6 +261,10 @@ export default new Vuex.Store({
     deleteNode(state, nodeId) {
       const deletingNode = state.editor.nodes.find(node => node.id === nodeId);
 
+      if (state.editor.selectedNodes.includes(nodeId)) {
+        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(nodeId), 1);
+      }
+
       state.editor.nodes = state.editor.nodes.filter(node => node.id !== nodeId);
 
       state.editor.sessions[deletingNode.sessionId].modified = true;
@@ -296,23 +306,53 @@ export default new Vuex.Store({
       state.editor.sessions[payload.node.sessionId].modified = true;
     },
 
-    updateNodeContext(state, payload) {
-      const updatedNode = payload;
+    bulkUpdateNode(state, { node, payload }) {
+      const updateNode = node;
+      const {
+        value,
+        expiry,
+        replace,
+        contexts
+      } = payload;
 
-      updatedNode.node.context = payload.data;
-      updatedNode.node.modified = true;
-      state.editor.sessions[payload.node.sessionId].modified = true;
+      if (value !== null) {
+        updateNode.value = value;
+      }
+
+      if (expiry) {
+        updateNode.expiry = expiry;
+      }
+
+      if (replace) {
+        updateNode.context = contexts;
+      } else {
+        updateNode.context = {
+          ...node.contexts,
+          ...contexts
+        }
+      }
+
+      updateNode.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
+    },
+
+    updateNodeContext(state, payload) {
+      const { node, data } = payload;
+
+      node.context = data;
+      node.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
     },
 
     addNodeToSession(state, node) {
       state.editor.nodes.push(node);
     },
 
-    toggleNodeSelect(state, nodeId) {
-      if (state.editor.selectedNodes.indexOf(nodeId) >= 0) {
-        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(nodeId), 1);
+    toggleNodeSelect(state, node) {
+      if (state.editor.selectedNodes.includes(node.id)) {
+        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(node.id), 1);
       } else {
-        state.editor.selectedNodes.push(nodeId);
+        state.editor.selectedNodes.push(node.id);
       }
     },
 
@@ -330,6 +370,10 @@ export default new Vuex.Store({
           state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(node.id), 1);
         }
       });
+    },
+
+    deselectAllSelectedNodes(state) {
+      state.editor.selectedNodes.splice(0, state.editor.selectedNodes.length);
     },
 
     addKnownPermission(state, permission) {
@@ -351,7 +395,12 @@ export default new Vuex.Store({
     setVerboseData(state, { data, status }) {
       state.verbose.status = status;
       if (!data) return;
-      state.verbose.data = data.data;
+      state.verbose.data = data.data.map((node) => {
+        return {
+          ...node,
+          id: uuid(),
+        }
+      });
       state.verbose.metadata = data.metadata;
       state.verbose.sessionId = data.sessionId;
     },
@@ -443,6 +492,7 @@ export default new Vuex.Store({
         addingNode.id = uuid();
         addingNode.expiry = node.expiry || null;
         addingNode.context = node.context || {};
+        addingNode.selected = false;
         commit('addEditorNode', addingNode);
       });
     },
@@ -532,6 +582,62 @@ export default new Vuex.Store({
 
     deleteTrack({ commit }, trackId) {
       commit('deleteTrack', trackId);
+    },
+
+    copyNodes({ getters, dispatch, commit }, sessions) {
+      const { selectedNodes } = getters;
+
+      selectedNodes.forEach(node => {
+        const nodeCopies = [];
+
+        sessions.forEach(sessionId => {
+          nodeCopies.push({
+            ...node,
+            sessionId,
+            isNew: true,
+          });
+        });
+
+        dispatch('addNodes', nodeCopies);
+      });
+
+      commit('closeModal');
+      commit('deselectAllSelectedNodes');
+    },
+
+    moveNodes({ getters, commit }, session) {
+      const { selectedNodes } = getters;
+
+      selectedNodes.forEach(node => {
+        commit('updateNode', {
+          type: 'sessionId',
+          data: {
+            value: session,
+          },
+          node
+        });
+      });
+
+      commit('deselectAllSelectedNodes');
+      commit('closeModal');
+    },
+
+    deleteNodes({ getters, commit }) {
+      const selectedNodes = getters.selectedNodeIds.map(node => node);
+
+      selectedNodes.forEach(nodeId => {
+        commit('deleteNode', nodeId);
+      });
+
+      commit('closeModal');
+    },
+
+    updateNodes({ getters, commit }, payload) {
+      const { selectedNodes } = getters;
+
+      selectedNodes.forEach(node => {
+        commit('bulkUpdateNode', { node, payload });
+      });
     },
 
     saveData({ state, getters, commit }) {

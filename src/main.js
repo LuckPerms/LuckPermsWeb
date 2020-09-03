@@ -31,6 +31,8 @@ import {
   faQuestionCircle,
   faBars,
   faCodeBranch,
+  faClone,
+  faSignInAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -54,6 +56,7 @@ Vue.use(Vuex);
 Vue.directive('autofocus', autofocus);
 
 Vue.config.productionTip = false;
+Vue.config.performance = true;
 
 library.add(
   faSave,
@@ -83,6 +86,8 @@ library.add(
   faQuestionCircle,
   faBars,
   faCodeBranch,
+  faClone,
+  faSignInAlt,
 
   faGithub,
   faDiscord,

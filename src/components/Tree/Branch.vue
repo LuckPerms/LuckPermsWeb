@@ -52,10 +52,10 @@ export default {
 
       if (Object.keys(this.checkResults).includes(this.node)) {
         return this.checkResults[this.node];
-      } else {
-        return null;
       }
-    }
+
+      return null;
+    },
   },
   created() {
     this.$root.$on('collapseTree', () => {

@@ -70,11 +70,14 @@
         </div>
       </div>
       <div class="col-2">
-        <ul class="data">
-          <li v-for="(node, index) in filteredNodes" :key="`verboseNode_${node}_${index}`">
-            <Node :node="node" :node-count="filteredNodeCount" />
-          </li>
-        </ul>
+        <virtual-list
+          :data-sources="filteredNodes"
+          data-key="id"
+          :data-component="Node"
+          :keeps="50"
+          class="data"
+          :estimate-size="38"
+        />
       </div>
     </div>
     <div v-else class="tool-intro">
@@ -113,6 +116,7 @@
 </template>
 
 <script>
+import VirtualList from 'vue-virtual-scroll-list';
 import Node from '../components/Verbose/Node.vue';
 import Avatar from '../components/Avatar.vue';
 import updateSession from '@/util/session';
@@ -122,8 +126,8 @@ export default {
     title: 'Verbose',
   },
   components: {
-    Node,
     Avatar,
+    VirtualList,
   },
   data() {
     return {
@@ -131,6 +135,7 @@ export default {
     };
   },
   computed: {
+    Node() { return Node; },
     verboseData() { return this.$store.getters.verbose; },
     filteredNodes() {
       const { data } = this.verboseData;
@@ -213,14 +218,14 @@ export default {
       flex-direction: column;
       padding: 1rem 1rem 1rem 0;
 
-      ul.data {
+      .data {
         flex: 1;
         overflow: auto;
         list-style: none;
         margin: 0;
         padding: 0 1rem 0 0;
 
-        > li {
+        [role="listitem"] {
           background: $grey;
           border-radius: 2px;
         }

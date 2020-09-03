@@ -3,30 +3,30 @@
     <div class="main" @click="open = !open">
       <span class="name">
         <avatar
-          v-if="node.who.identifier !== 'internal/console' && nodeCount < 1000"
-          :id="node.who.identifier"
-          :name="node.who.identifier"
+          v-if="source.who.identifier !== 'internal/console'"
+          :id="source.who.identifier"
+          :name="source.who.identifier"
           :size="16"
           :title="false"
         />
-        {{ node.who.identifier }}
+        {{ source.who.identifier }}
       </span>
       <span class="permission">
-        <code>{{ node.permission || `meta: ${node.key}` }}</code>
+        <code>{{ source.permission || `meta: ${source.key}` }}</code>
       </span>
-      <span class="value" :class="node.result">
-        <code :class="node.result">{{ node.result }}</code>
+      <span class="value" :class="source.result">
+        <code :class="source.result">{{ source.result }}</code>
         <font-awesome :icon="valueIcon" fixed-width />
       </span>
     </div>
     <transition name="slide">
-      <div class="data" v-if="open">
+      <div class="stack" v-if="open">
         <div class="col-1">
           <table>
-            <tr v-if="node.context.length">
+            <tr v-if="source.context.length">
               <td>Context</td>
               <td>
-                <code v-for="context in node.context">
+                <code v-for="context in source.context">
                   {{ context.key }}: {{ context.value }}
                 </code>
               </td>
@@ -34,25 +34,25 @@
             <tr>
               <td>Origin</td>
               <td>
-                <code>{{ node.origin }}</code>
+                <code>{{ source.origin }}</code>
               </td>
             </tr>
-            <tr v-if="node.resultInfo">
+            <tr v-if="source.resultInfo">
               <td>Processor</td>
               <td>
-                <code>{{ node.resultInfo.processorClass }}</code>
+                <code>{{ source.resultInfo.processorClass }}</code>
               </td>
             </tr>
-            <tr v-if="node.resultInfo">
+            <tr v-if="source.resultInfo">
               <td>Cause</td>
               <td>
-                <code>{{ node.resultInfo.cause }}</code>
+                <code>{{ source.resultInfo.cause }}</code>
               </td>
             </tr>
             <tr>
               <td>Thread</td>
               <td>
-                <code>{{ node.thread }}</code>
+                <code>{{ source.thread }}</code>
               </td>
             </tr>
           </table>
@@ -60,7 +60,7 @@
         <div class="col-2">
           Trace
           <ul>
-            <li v-for="trace in node.trace">
+            <li v-for="trace in source.trace">
               <code>{{ trace }}</code>
             </li>
           </ul>
@@ -78,8 +78,7 @@ export default {
     Avatar,
   },
   props: {
-    node: Object,
-    nodeCount: Number,
+    source: Object,
   },
   data() {
     return {
@@ -88,7 +87,7 @@ export default {
   },
   computed: {
     valueIcon() {
-      switch (this.node.result) {
+      switch (this.source.result) {
         case 'true':
           return 'check';
         case 'false':
@@ -124,8 +123,10 @@ export default {
         margin-right: 1rem;
         display: flex;
         align-items: center;
+        min-width: 10rem;
 
         img {
+          width: 1rem;
           margin-right: .5rem;
         }
       }
@@ -159,7 +160,7 @@ export default {
         }
       }
 
-      .data {
+      .stack {
         background: rgba(0,0,0,.2);
         padding: .5rem 1rem;
         display: flex;

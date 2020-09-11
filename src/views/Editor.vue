@@ -74,13 +74,23 @@
                 Web Permissions Editor
               </div>
               <div class="buttons">
-                <button @click="undo" :disabled="!canUndo">
+                <button
+                  @click="undo"
+                  :disabled="!canUndo"
+                  class="history undo"
+                  title="Undo last action"
+                >
                   <font-awesome icon="undo" />
                 </button>
-                <button>
+                <button
+                  @click="redo"
+                  :disabled="!canRedo"
+                  class="history redo"
+                  title="Redo last action"
+                >
                   <font-awesome icon="redo" />
                 </button>
-                <button @click="saveData" title="Save and generate code">
+                <button @click="saveData" class="save-button" title="Save and generate code">
                   <span v-if="saveStatus !== 'saving'">
                     <font-awesome icon="save" fixed-width />
                     Save
@@ -215,11 +225,14 @@ export default {
       return this.$store.getters.metaData.pluginVersion;
     },
     history() {
-      return this.$store.history();
+      return this.$store.history('editor');
     },
     canUndo() {
       return this.history.canUndo();
-    }
+    },
+    canRedo() {
+      return this.history.canRedo();
+    },
   },
 
   created() {
@@ -254,7 +267,10 @@ export default {
     },
     undo() {
       if (this.canUndo) this.history.undo();
-    }
+    },
+    redo() {
+      if (this.canRedo) this.history.redo();
+    },
   },
 };
 </script>
@@ -325,18 +341,24 @@ main.editor {
 
           .buttons {
             button {
-              background: $brand-color;
-              color: $navy;
               font: inherit;
               font-size: 1rem;
               font-weight: bold;
               padding: .25rem .5rem;
               border:0;
               margin-left: .5rem;
-              cursor: pointer;
 
-              &:hover {
-                opacity: .8;
+              &:not([disabled]) {
+                cursor: pointer;
+              }
+
+              &.save-button {
+                background: $brand-color;
+                color: $navy;
+              }
+
+              &:not([disabled]):hover {
+                filter: brightness(1.25);
               }
             }
           }

@@ -443,12 +443,12 @@ export default new Vuex.Store({
     getAppData: async ({ commit, dispatch }) => {
       commit('setConfig', config);
       try {
-        const appData = await axios.get(`${config.api_url}/data/all`);
-        commit('setVersion', appData.data.version);
-        commit('setDownloads', appData.data.downloads);
-        commit('setExtensions', appData.data.extensions);
-        commit('setDiscordUserCount', appData.data.discordUserCount);
-        commit('setPatreonCount', appData.data.patreonCount);
+        const { data } = await axios.get(`${config.api_url}/data/all`);
+        commit('setVersion', data.version);
+        commit('setDownloads', data.downloads);
+        commit('setExtensions', data.extensions);
+        commit('setDiscordUserCount', data.discordUserCount);
+        commit('setPatreonCount', data.patreonCount);
       } catch (error) {
         console.error('Error getting data, trying again in 10 seconds...');
         setTimeout(async () => {
@@ -500,6 +500,7 @@ export default new Vuex.Store({
       commit('setTracks', data.tracks);
 
       commit('setEditorHistoryState', true);
+      this.history('editor').clearHistory();
     },
 
     addKnownPermission({ commit }, permission) {

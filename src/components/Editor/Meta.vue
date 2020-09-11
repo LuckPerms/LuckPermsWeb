@@ -114,7 +114,6 @@ export default {
 .editor-meta {
   background-color: rgba(255,255,255,.1);
   padding: 0 1em 1em;
-  // display: flex;
 
   > div {
     flex: 1;
@@ -126,7 +125,9 @@ export default {
       padding: 0;
       list-style: none;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      max-height: 40vh;
+      overflow-y: auto;
 
       li {
         margin-right: .5em;

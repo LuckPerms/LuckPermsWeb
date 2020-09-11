@@ -427,7 +427,6 @@ export default {
   z-index: 11;
   top: 50%;
   right: 3rem;
-  transform: translateY(-50%);
   box-shadow: 0 0 1em rgba(0,0,0,.2);
   cursor: initial;
   min-width: 25%;
@@ -536,7 +535,7 @@ export default {
 
   .context-list {
     position: absolute;
-    width: 100%;
+    min-width: 100%;
     top: 100%;
     margin: 0;
     padding: 0;

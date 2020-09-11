@@ -158,12 +158,12 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
 
   h2 {
-    margin: 0;
-    margin-bottom: .5em;
-    padding: .5em 1rem 0;
+    font-size: 1.25rem;
+    margin: 0 0 .5rem;
+    padding: .5rem 1rem 0;
 
     span {
       margin-left: .5em;
@@ -174,6 +174,9 @@ export default {
   .node-list-header {
     background-color: rgb(67,67,78);
     border-bottom: 1px solid rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 
     .sorting-tabs {
       display: flex;
@@ -221,6 +224,7 @@ export default {
         &.delete-column {
           pointer-events: none;
           flex: 0 0 3rem;
+          margin-right: .5rem;
         }
 
         svg {
@@ -274,8 +278,10 @@ export default {
   //  width: 100%;
   //  pointer-events: none;
   //}
-}
-.node-list-scroll {
-  overflow-y: auto;
+  .node-list-scroll {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    flex: 1;
+  }
 }
 </style>

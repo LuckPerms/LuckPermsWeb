@@ -653,6 +653,7 @@ export default new Vuex.Store({
         changes: [],
         groupDeletions: state.editor.deletedGroups,
         trackDeletions: state.editor.deletedTracks,
+        userDeletions: state.editor.deletedUsers,
       };
 
       getters.modifiedSessions.forEach((modifiedSession) => {

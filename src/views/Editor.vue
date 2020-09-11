@@ -252,6 +252,10 @@ export default {
     updateSession($route, 'getEditorData');
   },
 
+  mounted() {
+    this.registerListeners();
+  },
+
   watch: {
     $route(route) {
       updateSession(route, 'getEditorData');
@@ -270,6 +274,47 @@ export default {
     },
     redo() {
       if (this.canRedo) this.history.redo();
+    },
+    registerListeners() {
+      console.log(`Listeners registered: ${this.$store.getters.listenersRegistered}`);
+      if (this.$store.getters.listenersRegistered) return;
+
+      const keyCodes = [
+        {
+          code: 83, // S/s
+          function: () => {
+            console.log('Saved changes by CTRL+S')
+            this.saveData();
+          },
+        },
+      ];
+      console.log(`Registered: ${this.$store.getters.listenersRegistered}`);
+      window.addEventListener('keydown', (event) => {
+        console.log(event);
+        if (
+          !(
+            window.navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey
+            &&
+            keyCodes.map(element => element.code).includes(event.keyCode)
+            &&
+            (
+              this.$route.name === 'editor'
+              ||
+              (
+                this.$route.name === 'editor-home'
+                &&
+                this.sessionId
+              )
+            )
+          )
+        ) return;
+
+        event.preventDefault();
+        keyCodes.filter(element => {
+          return element.code === event.keyCode
+        })[0].function();
+      });
+      this.$store.dispatch('setListenersRegistered');
     },
   },
 };

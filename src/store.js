@@ -33,6 +33,7 @@ export default new Vuex.Store({
     editor: {
       sessionId: null,
       historyEnabled: false,
+      listenersRegistered: false,
     },
     verbose: {
       status: 0,
@@ -68,6 +69,8 @@ export default new Vuex.Store({
     patreonCount: state => state.patreonCount,
 
     editorSessionId: state => state.editor.sessionId,
+
+    listenersRegistered: state => state.editor.listenersRegistered,
 
     verbose: state => state.verbose,
 
@@ -157,6 +160,7 @@ export default new Vuex.Store({
         knownPermissions: [],
         potentialContexts: [],
         currentSession: null,
+        listenersRegistered: false,
         selectedNodes: [],
         modal: {
           type: null,
@@ -398,6 +402,11 @@ export default new Vuex.Store({
       state.editor.errors.load = true;
     },
 
+    setListenersRegistered(state) {
+      console.log(`Bla`);
+      state.editor.listenersRegistered = true;
+    },
+
     setSaveStatus(state, status) {
       state.editor.save.status = status;
     },
@@ -476,6 +485,10 @@ export default new Vuex.Store({
             commit('setLoadError');
           });
       }
+    },
+
+    setListenersRegistered({ commit }) {
+      commit('setListenersRegistered');
     },
 
     setEditorData({ commit, dispatch }, data) {

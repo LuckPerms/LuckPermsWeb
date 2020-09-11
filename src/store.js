@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import { compareVersions } from './util/version';
+import { editorHistory } from '@/util/vuexMultiHistory';
 
 const uuid = require('uuid/v4');
 const config = require('../config');
@@ -9,6 +10,9 @@ const config = require('../config');
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  plugins: [
+    editorHistory.plugin
+  ],
   state: {
     version: null,
     config: null,
@@ -28,6 +32,7 @@ export default new Vuex.Store({
     patreonCount: null,
     editor: {
       sessionId: null,
+      historyEnabled: false,
     },
     verbose: {
       status: 0,
@@ -107,6 +112,8 @@ export default new Vuex.Store({
 
       return compareVersions(state.version, state.editor.metaData.pluginVersion);
     },
+
+    editorHistoryEnabled: state => state.editor.historyEnabled,
   },
 
 
@@ -137,6 +144,7 @@ export default new Vuex.Store({
 
     initEditorData(state, sessionId) {
       state.editor = {
+        ...state.editor,
         sessionId,
         sessions: {},
         sessionList: [],
@@ -398,6 +406,10 @@ export default new Vuex.Store({
       state.editor.save.key = key;
     },
 
+    setEditorHistoryState(state, value) {
+      state.editor.historyEnabled = value;
+    },
+
     setVerboseData(state, { data, status }) {
       state.verbose.status = status;
       if (!data) return;
@@ -486,6 +498,8 @@ export default new Vuex.Store({
       commit('setKnownPermissions', data.knownPermissions);
       commit('setPotentialContexts', data.potentialContexts);
       commit('setTracks', data.tracks);
+
+      commit('setEditorHistoryState', true);
     },
 
     addKnownPermission({ commit }, permission) {

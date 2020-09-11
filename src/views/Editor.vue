@@ -74,12 +74,12 @@
                 Web Permissions Editor
               </div>
               <div class="buttons">
-<!--                <button>-->
-<!--                  <font-awesome icon="undo" />-->
-<!--                </button>-->
-<!--                <button>-->
-<!--                  <font-awesome icon="redo" />-->
-<!--                </button>-->
+                <button @click="undo" :disabled="!canUndo">
+                  <font-awesome icon="undo" />
+                </button>
+                <button>
+                  <font-awesome icon="redo" />
+                </button>
                 <button @click="saveData" title="Save and generate code">
                   <span v-if="saveStatus !== 'saving'">
                     <font-awesome icon="save" fixed-width />
@@ -214,6 +214,12 @@ export default {
     userVersion() {
       return this.$store.getters.metaData.pluginVersion;
     },
+    history() {
+      return this.$store.history();
+    },
+    canUndo() {
+      return this.history.canUndo();
+    }
   },
 
   created() {
@@ -246,6 +252,9 @@ export default {
     checkVersion(version) {
       return checkVersion(version, this.userVersion);
     },
+    undo() {
+      if (this.canUndo) this.history.undo();
+    }
   },
 };
 </script>

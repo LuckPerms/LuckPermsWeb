@@ -403,7 +403,6 @@ export default new Vuex.Store({
     },
 
     setListenersRegistered(state) {
-      console.log(`Bla`);
       state.editor.listenersRegistered = true;
     },
 

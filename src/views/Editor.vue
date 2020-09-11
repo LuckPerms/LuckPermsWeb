@@ -276,21 +276,23 @@ export default {
       if (this.canRedo) this.history.redo();
     },
     registerListeners() {
-      console.log(`Listeners registered: ${this.$store.getters.listenersRegistered}`);
       if (this.$store.getters.listenersRegistered) return;
 
       const keyCodes = [
         {
           code: 83, // S/s
-          function: () => {
-            console.log('Saved changes by CTRL+S')
-            this.saveData();
-          },
+          function: () => this.saveData(),
+        },
+        {
+          code: 89, // Y/y
+          function: () => this.redo(),
+        },
+        {
+          code: 90, // Z/z
+          function: () => this.undo(),
         },
       ];
-      console.log(`Registered: ${this.$store.getters.listenersRegistered}`);
       window.addEventListener('keydown', (event) => {
-        console.log(event);
         if (
           !(
             window.navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey

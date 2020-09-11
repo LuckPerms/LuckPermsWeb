@@ -1,17 +1,17 @@
 <template>
   <div class="editor-menu-track">
-    <h3>
+    <h3 @click="toggle = !toggle">
       <span>
-        <button @click="toggle = !toggle" title="Show/hide track groups">
+        <button title="Show/hide track groups">
           <font-awesome icon="caret-right" fixed-width :rotation="toggle ? 90 : null" />
         </button>
         <span>{{ track.id }}</span>
       </span>
       <span class="actions">
-        <button @click="editTrack" title="Edit track">
+        <button @click.stop="editTrack" title="Edit track">
           <font-awesome icon="edit" fixed-width />
         </button>
-        <button @click="deleteTrack" title="Delete track">
+        <button @click.stop="deleteTrack" title="Delete track">
           <font-awesome icon="times" fixed-width />
         </button>
       </span>
@@ -109,6 +109,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      user-select: none;
 
       &:hover {
         .actions {

@@ -14,15 +14,15 @@
 
     <div class="sessions">
       <div class="tracks">
-        <h2>
-          <button @click="toggle.tracks = !toggle.tracks" title="Show/hide tracks">
+        <h2 @click="toggle.tracks = !toggle.tracks">
+          <button title="Show/hide tracks">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.tracks ? 90 : null" />
           </button>
           <span>
-          Tracks
-          <small>({{ filteredTracks.length }})</small>
-        </span>
-          <button @click="createTrack" title="Add a track">
+            Tracks
+            <small>({{ filteredTracks.length }})</small>
+          </span>
+          <button @click.stop="createTrack" title="Add a track">
             <font-awesome icon="plus-circle" fixed-width />
           </button>
         </h2>
@@ -45,15 +45,15 @@
       </div>
 
       <div class="groups" v-if="filteredGroups.length">
-        <h2>
-          <button @click="toggle.groups = !toggle.groups" title="Show/hide groups">
+        <h2 @click="toggle.groups = !toggle.groups">
+          <button title="Show/hide groups">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.groups ? 90 : null" />
           </button>
           <span>
           Groups
           <small>({{ filteredGroups.length }})</small>
         </span>
-          <button @click="createGroup" title="Add a group">
+          <button @click.stop="createGroup" title="Add a group">
             <font-awesome icon="plus-circle" fixed-width />
           </button>
         </h2>
@@ -77,8 +77,8 @@
       </div>
 
       <div class="users" v-if="filteredUsers.length">
-        <h2>
-          <button @click="toggle.users = !toggle.users" title="Show/hide users">
+        <h2 @click="toggle.users = !toggle.users">
+          <button title="Show/hide users">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.users ? 90 : null" />
           </button>
           <span>
@@ -226,6 +226,7 @@ export default {
     bottom: 0;
     left: -20rem;
     transition: left .2s;
+    user-select: none;
 
     @include breakpoint($sm) {
       position: relative;
@@ -291,6 +292,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      cursor: pointer;
 
       small {
         opacity: .6;

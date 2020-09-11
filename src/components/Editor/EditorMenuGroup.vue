@@ -19,6 +19,7 @@
 
 <script>
 import Intersect from 'vue-intersect';
+import { checkVersion } from '@/util/version';
 
 export default {
   name: 'EditorMenuGroup',

@@ -97,21 +97,25 @@
               :key="user.id"
               title="Edit user"
             >
-              <img :src="`https://minotar.net/helm/${user.id}/100.png`">
-              {{user.displayName}}
+              <span class="username">
+                <img :src="`https://minotar.net/helm/${user.id}/100.png`">
+                {{user.displayName}}
+              </span>
+              <button @click="deleteUser(user.id)" v-if="canDeleteUsers" title="Delete user">
+                <font-awesome icon="times" fixed-width />
+              </button>
             </li>
           </ul>
         </transition>
       </div>
     </div>
-
-
   </nav>
 </template>
 
 <script>
 import EditorMenuTrack from './EditorMenuTrack.vue';
 import EditorMenuGroup from './EditorMenuGroup.vue';
+import { checkVersion } from '@/util/version';
 
 export default {
   name: 'editor-menu',
@@ -164,6 +168,12 @@ export default {
     modifiedSessions() {
       return this.$store.getters.modifiedSessions;
     },
+    canDeleteUsers() {
+      const supportedVersion = '5.1.105';
+      const { pluginVersion } = this.$store.getters.metaData;
+
+      return checkVersion(supportedVersion, pluginVersion);
+    },
   },
 
   methods: {
@@ -177,6 +187,14 @@ export default {
     },
     createGroup() {
       this.$store.commit('setModal', { type: 'createGroup', object: this.groups });
+    },
+    deleteUser(userId) {
+      this.$store.commit('setModal', {
+        type: 'deleteUser',
+        object: {
+          userId,
+        },
+      });
     },
   },
 
@@ -419,6 +437,28 @@ export default {
         width: 1em;
         height: auto;
         margin-right: .5em;
+      }
+
+      li {
+        &:hover {
+          button {
+            opacity: 0.5;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
+        }
+
+        button {
+          position: absolute;
+          right: 1rem;
+          background: transparent;
+          border: 0;
+          opacity: 0;
+          cursor: pointer;
+          color: white;
+        }
       }
     }
   }

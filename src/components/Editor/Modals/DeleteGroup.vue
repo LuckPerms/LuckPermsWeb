@@ -22,14 +22,11 @@
 </template>
 
 <script>
-
 export default {
   name: 'DeleteGroup',
-
   props: {
     props: Object,
   },
-
   computed: {
     permissions() {
       return this.$store.getters.allNodes.filter(node => node.sessionId === this.props.groupId);
@@ -37,7 +34,7 @@ export default {
   },
   methods: {
     deleteGroup() {
-      this.$store.commit('deleteGroup', this.props.groupId);
+      this.$store.commit('deleteSession', this.props.groupId);
       this.$emit('close');
     },
   },

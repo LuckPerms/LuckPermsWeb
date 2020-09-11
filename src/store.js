@@ -145,6 +145,7 @@ export default new Vuex.Store({
         tracks: [],
         deletedTracks: [],
         deletedGroups: [],
+        deletedUsers: [],
         knownPermissions: [],
         potentialContexts: [],
         currentSession: null,
@@ -196,20 +197,25 @@ export default new Vuex.Store({
       state.editor.tracks = value;
     },
 
-    deleteGroup(state, groupId) {
-      const sessionListIndex = state.editor.sessionList.findIndex(group => group === groupId);
+    deleteSession(state, sessionId) {
+      const { type } = state.editor.sessions[sessionId];
+      const sessionListIndex = state.editor.sessionList.findIndex(group => group === sessionId);
 
       state.editor.sessionList.splice(sessionListIndex, 1);
 
-      delete state.editor.sessions[groupId];
+      delete state.editor.sessions[sessionId];
 
-      state.editor.deletedGroups.push(groupId);
+      if (type === 'group') {
+        state.editor.deletedGroups.push(sessionId);
+      } else if (type === 'user') {
+        state.editor.deletedUsers.push(sessionId);
+      }
 
-      if (state.editor.currentSession === groupId) {
+      if (state.editor.currentSession === sessionId) {
         state.editor.currentSession = null;
       }
 
-      state.editor.nodes = state.editor.nodes.filter(node => node.sessionId !== groupId);
+      state.editor.nodes = state.editor.nodes.filter(node => node.sessionId !== sessionId);
     },
 
     setPotentialContexts(state, contexts) {

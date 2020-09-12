@@ -278,26 +278,20 @@ export default {
     registerListeners() {
       if (this.$store.getters.listenersRegistered) return;
 
-      const keyCodes = [
-        {
-          code: 83, // S/s
-          function: () => this.saveData(),
-        },
-        {
-          code: 89, // Y/y
-          function: () => this.redo(),
-        },
-        {
-          code: 90, // Z/z
-          function: () => this.undo(),
-        },
-      ];
+      const keyCodes = {
+        // S/s
+        83: this.saveData,
+        // Y/y
+        89: this.redo,
+        // Z/z
+        90: this.undo,
+      };
       window.addEventListener('keydown', (event) => {
         if (
           !(
             window.navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey
             &&
-            keyCodes.map(element => element.code).includes(event.keyCode)
+            event.keyCode in keyCodes
             &&
             (
               this.$route.name === 'editor'
@@ -312,9 +306,7 @@ export default {
         ) return;
 
         event.preventDefault();
-        keyCodes.filter(element => {
-          return element.code === event.keyCode
-        })[0].function();
+        keyCodes[event.keyCode]();
       });
       this.$store.dispatch('setListenersRegistered');
     },

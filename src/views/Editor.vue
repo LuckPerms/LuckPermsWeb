@@ -252,6 +252,10 @@ export default {
     updateSession($route, 'getEditorData');
   },
 
+  mounted() {
+    this.registerListeners();
+  },
+
   watch: {
     $route(route) {
       updateSession(route, 'getEditorData');
@@ -270,6 +274,41 @@ export default {
     },
     redo() {
       if (this.canRedo) this.history.redo();
+    },
+    registerListeners() {
+      if (this.$store.getters.listenersRegistered) return;
+
+      const keyCodes = {
+        // S/s
+        83: this.saveData,
+        // Y/y
+        89: this.redo,
+        // Z/z
+        90: this.undo,
+      };
+      window.addEventListener('keydown', (event) => {
+        if (
+          !(
+            window.navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey
+            &&
+            event.keyCode in keyCodes
+            &&
+            (
+              this.$route.name === 'editor'
+              ||
+              (
+                this.$route.name === 'editor-home'
+                &&
+                this.sessionId
+              )
+            )
+          )
+        ) return;
+
+        event.preventDefault();
+        keyCodes[event.keyCode]();
+      });
+      this.$store.dispatch('setListenersRegistered');
     },
   },
 };

@@ -299,17 +299,18 @@ export default new Vuex.Store({
       state.editor.sessions[node.sessionId].modified = true;
     },
 
-    updateNode(state, payload) {
-      const updatedNode = payload;
-
-      if (payload.type !== 'expiry') {
-        updatedNode.node[payload.type] = payload.data.value;
+    updateNode(state, { node, type, data }) {
+      if (type === 'expiry') {
+        node[type] = data.value ? data.value.getTime() / 1000 : null;
       } else {
-        updatedNode.node[payload.type] = payload.data.value ? payload.data.value.getTime() / 1000 : null;
+        if (type === 'sessionId') {
+          state.editor.sessions[node.sessionId].modified = true;
+        }
+        node[type] = data.value;
       }
 
-      updatedNode.node.modified = true;
-      state.editor.sessions[payload.node.sessionId].modified = true;
+      node.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
     },
 
     bulkUpdateNode(state, { node, payload }) {
@@ -605,7 +606,7 @@ export default new Vuex.Store({
       commit('deselectAllSelectedNodes');
     },
 
-    moveNodes({ getters, commit }, session) {
+    moveNodes({ state, getters, commit }, session) {
       const { selectedNodes } = getters;
 
       selectedNodes.forEach(node => {

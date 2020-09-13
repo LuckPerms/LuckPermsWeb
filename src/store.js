@@ -313,7 +313,6 @@ export default new Vuex.Store({
     },
 
     bulkUpdateNode(state, { node, payload }) {
-      const updateNode = node;
       const {
         value,
         expiry,
@@ -322,29 +321,24 @@ export default new Vuex.Store({
       } = payload;
 
       if (value !== null) {
-        updateNode.value = value;
+        node.value = value;
       }
 
       if (expiry) {
-        updateNode.expiry = expiry;
+        node.expiry = expiry;
       }
 
       if (replace) {
-        updateNode.context = contexts;
+        node.context = contexts;
       } else {
-        updateNode.context = {
-          ...node.contexts,
-          ...contexts
-        }
+        Vue.set(node, 'context', { ...node.context, ...contexts });
       }
 
-      updateNode.modified = true;
+      node.modified = true;
       state.editor.sessions[node.sessionId].modified = true;
     },
 
-    updateNodeContext(state, payload) {
-      const { node, data } = payload;
-
+    updateNodeContext(state, { node, data }) {
       node.context = data;
       node.modified = true;
       state.editor.sessions[node.sessionId].modified = true;

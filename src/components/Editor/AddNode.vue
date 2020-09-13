@@ -253,7 +253,7 @@ export default {
   data() {
     return {
       permissions: [],
-      knownPermissions: this.getMatchingPerms(0, ""),
+      knownPermissions: this.getMatchingPerms(0, ''),
       value: true,
       expiry: null,
       server: null,
@@ -306,14 +306,26 @@ export default {
       return (str.match(/\./g) || []).length;
     },
     getMatchingPerms(dotCount, permissionSearch) {
+      let matchCount = 0;
+
       return this.$store.state.editor.knownPermissions
-        .filter(knownPermission => (this.countDots(knownPermission) <= dotCount) && knownPermission.startsWith(permissionSearch));
+        .filter((knownPermission) => {
+          if (matchCount >= 1000) return false;
+
+          const match = (this.countDots(knownPermission) <= dotCount)
+            && knownPermission.startsWith(permissionSearch);
+          if (match) matchCount += 1;
+
+          return match;
+        });
     },
     updateMatchingPermissions(searchQuery) {
       const dotCount = this.countDots(searchQuery);
       let newKnownPermissions = this.getMatchingPerms(dotCount, searchQuery);
 
-      if (newKnownPermissions.length <= 1) newKnownPermissions = this.getMatchingPerms(dotCount + 1, searchQuery);
+      if (newKnownPermissions.length <= 1) {
+        newKnownPermissions = this.getMatchingPerms(dotCount + 1, searchQuery);
+      }
 
       this.knownPermissions = newKnownPermissions;
     },

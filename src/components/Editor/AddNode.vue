@@ -7,6 +7,8 @@
           id="permissions"
           v-model="permissions"
           :options="knownPermissions"
+          :internal-search="false"
+          @search-change="updateMatchingPermissions"
           :multiple="true"
           :taggable="true"
           @tag="onTag"
@@ -251,6 +253,7 @@ export default {
   data() {
     return {
       permissions: [],
+      knownPermissions: this.getMatchingPerms(0, ""),
       value: true,
       expiry: null,
       server: null,
@@ -266,21 +269,18 @@ export default {
       bulk: {
         value: null,
         replaceContexts: false,
-      }
+      },
     };
   },
   computed: {
     session() {
       return this.$store.getters.currentSession || null;
     },
-    knownPermissions() {
-      return this.$store.state.editor.knownPermissions;
-    },
     flattenedContexts() {
       const entries = [];
       for (const [key, values] of Object.entries(this.context.contexts)) {
         for (const value of values) {
-          entries.push({key: key, value: value});
+          entries.push({ key, value });
         }
       }
       return entries;
@@ -290,9 +290,7 @@ export default {
     },
     potentialContextValues() {
       if (!this.context.key) return null;
-      const context = this.potentialContexts.find(context => {
-        return context.key === this.context.key;
-      });
+      const context = this.potentialContexts.find(context => context.key === this.context.key);
       if (!context) return null;
       return context.values;
     },
@@ -301,9 +299,24 @@ export default {
     },
     canUpdateNode() {
       return (this.expiry || this.bulk.value !== null || Object.keys(this.context.contexts).length);
-    }
+    },
   },
   methods: {
+    countDots(str) {
+      return (str.match(/\./g) || []).length;
+    },
+    getMatchingPerms(dotCount, permissionSearch) {
+      return this.$store.state.editor.knownPermissions
+        .filter(knownPermission => (this.countDots(knownPermission) <= dotCount) && knownPermission.startsWith(permissionSearch));
+    },
+    updateMatchingPermissions(searchQuery) {
+      const dotCount = this.countDots(searchQuery);
+      let newKnownPermissions = this.getMatchingPerms(dotCount, searchQuery);
+
+      if (newKnownPermissions.length <= 1) newKnownPermissions = this.getMatchingPerms(dotCount + 1, searchQuery);
+
+      this.knownPermissions = newKnownPermissions;
+    },
     onTag(tag) {
       const permissions = tag.split(/,\s*|\s+|\s*-\s+/);
 
@@ -349,8 +362,8 @@ export default {
         value: this.bulk.value,
         replace: this.bulk.replaceContexts,
         contexts: this.context.contexts,
-        expiry: this.expiry
-      }
+        expiry: this.expiry,
+      };
 
       this.$store.dispatch('updateNodes', payload);
       this.context.contexts = {};
@@ -403,7 +416,7 @@ export default {
       this.$store.commit('setModal', {
         type: 'deleteNodes',
       });
-    }
+    },
   },
 };
 </script>

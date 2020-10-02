@@ -3,7 +3,7 @@
     <div class="filter">
       <input
         type="text"
-        placeholder="Search"
+        placeholder="Filter groups/users"
         v-model="filter"
         title="Filter tracks, groups and users"
       >

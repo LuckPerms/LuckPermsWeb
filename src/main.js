@@ -33,6 +33,7 @@ import {
   faCodeBranch,
   faClone,
   faSignInAlt,
+  faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -88,6 +89,7 @@ library.add(
   faCodeBranch,
   faClone,
   faSignInAlt,
+  faSearch,
 
   faGithub,
   faDiscord,

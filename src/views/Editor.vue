@@ -71,9 +71,22 @@
           <div class="editor-main">
             <nav>
               <div class="logo">
-                Web Permissions Editor
+                <h1>Web Permissions Editor</h1>
               </div>
               <div class="buttons">
+                <div class="search">
+                  <input
+                    v-if="search.toggle"
+                    type="text"
+                    v-model="search.query"
+                    placeholder="Search"
+                    ref="searchInput"
+                  />
+                  <button @click="toggleSearch">
+                    <font-awesome v-if="search.query" icon="times" fixed-width />
+                    <font-awesome v-else icon="search" fixed-width />
+                  </button>
+                </div>
 <!--                <button>-->
 <!--                  <font-awesome icon="undo" />-->
 <!--                </button>-->
@@ -94,7 +107,7 @@
             </nav>
 
             <transition name="fade" mode="in-out">
-              <div class="editor-no-session" v-if="!currentSession">
+              <div class="editor-no-session" v-if="!currentSession && !search.query">
                 <font-awesome icon="arrow-left" />
                 <h1>Choose a group or user from the side bar</h1>
               </div>
@@ -103,7 +116,7 @@
             <transition name="fade" mode="out-in">
               <div
                 class="editor-session"
-                v-if="currentSession"
+                v-if="currentSession && !search.query"
                 :key="`session_${currentSession.id}`"
               >
                 <div class="session-container">
@@ -114,8 +127,15 @@
               </div>
             </transition>
 
+            <transition name="fade" mode="out-in">
+              <search-nodes
+                v-if="search.query"
+                :query="search.query"
+              />
+            </transition>
+
             <transition name="fade">
-              <AddNode v-if="currentSession" />
+              <AddNode v-if="(currentSession && !search.query) || selectedNodes.length" />
             </transition>
           </div>
         </div>
@@ -136,6 +156,7 @@ import Header from '@/components/Editor/Header.vue';
 import Meta from '@/components/Editor/Meta.vue';
 import NodeList from '@/components/Editor/NodeList.vue';
 import AddNode from '@/components/Editor/AddNode.vue';
+import SearchNodes from '@/components/Editor/SearchNodes';
 import Modal from '@/components/Editor/Modal.vue';
 import { checkVersion } from '@/util/version';
 import updateSession from '@/util/session';
@@ -153,12 +174,17 @@ export default {
     Meta,
     NodeList,
     AddNode,
+    SearchNodes,
     Modal,
   },
 
   data() {
     return {
       menu: false,
+      search: {
+        toggle: false,
+        query: '',
+      }
     };
   },
 
@@ -214,6 +240,9 @@ export default {
     userVersion() {
       return this.$store.getters.metaData.pluginVersion;
     },
+    selectedNodes() {
+      return this.$store.getters.selectedNodeIds;
+    },
   },
 
   created() {
@@ -246,6 +275,17 @@ export default {
     checkVersion(version) {
       return checkVersion(version, this.userVersion);
     },
+    async toggleSearch() {
+      const { search } = this;
+      if (search.toggle === true) {
+        search.query = '';
+        search.toggle = false;
+      } else {
+        search.toggle = true;
+        await this.$nextTick();
+        this.$refs.searchInput.focus();
+      }
+    }
   },
 };
 </script>
@@ -312,9 +352,15 @@ main.editor {
             @include breakpoint($sm) {
               margin-left: 0;
             }
+
+            h1 {
+              font-size: 1.5rem;
+            }
           }
 
           .buttons {
+            display: flex;
+
             button {
               background: $brand-color;
               color: $navy;
@@ -329,6 +375,26 @@ main.editor {
               &:hover {
                 opacity: .8;
               }
+            }
+
+            .search {
+              display: flex;
+              position: relative;
+
+              button {
+                background: white;
+                margin: 0;
+              }
+            }
+
+            input {
+              padding: .5rem;
+              width: 20rem;
+              background: white;
+              border: 0;
+              background: rgba(255,255,255,.85);
+              border-right: 1px solid rgba(0,0,0,.25);
+              font-family: "Source Code Pro", monospace;
             }
           }
         }

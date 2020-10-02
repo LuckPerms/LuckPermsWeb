@@ -43,14 +43,25 @@ export default {
   },
   data() {
     return {
-      debouncedQuery: '',
+      debouncedQuery: this.query,
     };
   },
   computed: {
     results() {
       const { allNodes } = this.$store.getters;
 
-      return allNodes.filter(({ key }) => key.includes(this.debouncedQuery));
+      return allNodes.filter(node => {
+        const query = this.debouncedQuery;
+
+        const key = node.key.includes(query);
+
+        let contextKey = false;
+        let contextValue = false;
+        const contextKeys = Object.keys(node.context);
+        contextKey = contextKeys.includes(query);
+        contextValue = contextKeys.some(key => node.context[key].some(value => value.includes(query)));
+        return (key || contextKey || contextValue);
+      });
     },
     groupedResults() {
       const { results } = this;

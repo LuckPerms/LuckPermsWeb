@@ -27,6 +27,7 @@
 <script>
 import Node from '@/components/Editor/Node';
 import Avatar from '@/components/Avatar';
+import debounce from 'lodash.debounce';
 
 export default {
   name: 'SearchNodes',
@@ -40,11 +41,16 @@ export default {
       type: String,
     }
   },
+  data() {
+    return {
+      debouncedQuery: '',
+    };
+  },
   computed: {
     results() {
       const { allNodes } = this.$store.getters;
 
-      return allNodes.filter(({ key }) => key.includes(this.query));
+      return allNodes.filter(({ key }) => key.includes(this.debouncedQuery));
     },
     groupedResults() {
       const { results } = this;
@@ -62,6 +68,13 @@ export default {
         nodes: results.filter(node => node.sessionId === sessionId),
       }));
     }
+  },
+  methods: {
+  },
+  watch: {
+    query: debounce(function(value) {
+      this.debouncedQuery = value;
+    }, 500),
   }
 }
 </script>

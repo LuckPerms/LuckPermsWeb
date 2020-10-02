@@ -1,6 +1,6 @@
 <template>
   <div class="search-results">
-    <ul>
+    <ul v-if="groupedResults.length">
       <li v-for="group in groupedResults" :key="`search_session_${group.session.id}`">
         <h2>
           <small>{{ group.session.type }}</small>
@@ -18,6 +18,9 @@
         </ul>
       </li>
     </ul>
+    <div v-else class="no-results">
+      No results found
+    </div>
   </div>
 </template>
 
@@ -102,6 +105,13 @@ export default {
       background-color: rgba(255,255,255,.2);
       margin: 0 0 1rem;
     }
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 4rem;
+    font-size: 2.5rem;
+    opacity: .5;
   }
 }
 </style>

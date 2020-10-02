@@ -58,8 +58,10 @@ export default {
         let contextKey = false;
         let contextValue = false;
         const contextKeys = Object.keys(node.context);
-        contextKey = contextKeys.includes(query);
-        contextValue = contextKeys.some(key => node.context[key].some(value => value.includes(query)));
+        if (contextKeys.length) {
+          contextKey = contextKeys.includes(query);
+          contextValue = contextKeys.some(key => node.context[key].some(value => value.includes(query)));
+        }
         return (key || contextKey || contextValue);
       });
     },

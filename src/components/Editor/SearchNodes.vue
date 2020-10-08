@@ -53,14 +53,15 @@ export default {
       return allNodes.filter(node => {
         const query = this.debouncedQuery;
 
-        const key = node.key.includes(query);
+        const key = String(node.key).toLowerCase().includes(query);
 
         let contextKey = false;
         let contextValue = false;
         const contextKeys = Object.keys(node.context);
         if (contextKeys.length) {
-          contextKey = contextKeys.includes(query);
-          contextValue = contextKeys.some(key => node.context[key].some(value => value.includes(query)));
+          const lowerCaseKeys = contextKeys.map(key => String(key).toLowerCase());
+          contextKey = lowerCaseKeys.includes(query);
+          contextValue = contextKeys.some(key => node.context[key].some(value => String(value).toLowerCase().includes(query)));
         }
         return (key || contextKey || contextValue);
       });
@@ -86,7 +87,7 @@ export default {
   },
   watch: {
     query: debounce(function(value) {
-      this.debouncedQuery = value;
+      this.debouncedQuery = String(value).toLowerCase();
     }, 500),
   }
 }

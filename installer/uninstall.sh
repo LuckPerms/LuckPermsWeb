@@ -33,7 +33,7 @@ deconfigure_nginx() {
 }
 
 deconfigure_apache() {
-    echo "Cleaning up nginx..."
+    echo "Cleaning up apache..."
     echo
 
     # Delete config files

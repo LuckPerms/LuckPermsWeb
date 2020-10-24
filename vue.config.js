@@ -23,7 +23,7 @@ module.exports = {
       .loader('vue-markdown-loader/lib/markdown-compiler')
       .options({
         raw: true,
-        linkify: true,
+        linkify: false,
         use: [
           // eslint-disable-next-line global-require
           [require('markdown-it-anchor'), {
@@ -33,6 +33,8 @@ module.exports = {
           }],
           // eslint-disable-next-line global-require
           require('markdown-it-emoji'),
+          // eslint-disable-next-line global-require
+          require('markdown-it-highlightjs')
         ],
       });
   },

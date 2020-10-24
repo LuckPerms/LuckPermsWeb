@@ -56,7 +56,7 @@ export default {
 
   aside {
     width: 100%;
-    padding: 2em 2em 0 2em;
+    padding: 1em .5em 0 1em;
     background-color: rgba(0,0,0,.25);
     order: 2;
 
@@ -79,6 +79,12 @@ export default {
     h1 {
       font-size: 2rem;
       margin-top: 0;
+      margin-bottom: .3em;
+    }
+
+    h3 {
+      padding: 1rem 0 .2rem 0;
+      margin: 0;
     }
 
     a {
@@ -88,11 +94,13 @@ export default {
 
     ul {
       margin: 0;
-      padding: 0;
-      list-style: none;
+      padding: 0 0 0 1.5rem;
+      /*list-style: none;*/
 
       ul {
         padding-left: 1rem;
+        padding-bottom: .1rem;
+        line-height: 1.2;
       }
     }
   }
@@ -127,9 +135,25 @@ export default {
 
       h1, h2 {
         background: rgba(0,0,0,.25);
+        margin-top: 0;
+      }
+
+      h1 {
         padding: 1rem 2rem;
         font-size: 2rem;
-        margin-top: 0;
+      }
+
+      h2 {
+        padding: .5rem 2rem;
+        font-size: 1.5rem;
+      }
+
+      h3 {
+        font-size: 1.4rem;
+      }
+
+      h4 {
+        font-size: 1.2rem;
       }
 
       h3, h4, h5, h6, p, ol, ul {
@@ -144,8 +168,14 @@ export default {
         text-decoration: none;
       }
 
+      code {
+        padding: .1em .3em;
+      }
+
       p, ol, ul {
-        color: rgba(255,255,255,.66);
+        // Prioritse the system font for wiki content
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        color: rgba(255,255,255,.76);
 
         code {
           color: #FFF;
@@ -158,12 +188,16 @@ export default {
         }
       }
 
+      ol, ul {
+        padding: 0 4rem;
+      }
+
       pre {
         padding: 0 2rem;
         white-space: pre-wrap;
 
         code {
-          padding: 1.5rem 2rem;
+          padding: .7rem;
           border: 1px solid rgba(0,0,0,.2);
         }
       }

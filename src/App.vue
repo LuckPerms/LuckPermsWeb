@@ -113,13 +113,13 @@
         <ul>
           <li>
             <font-awesome icon="code-branch" fixed-width />
-            <a href="https://github.com/lucko" target="_blank">lucko</a>
-            /
             <a href="https://github.com/lucko/LuckPermsWeb" target="_blank">LuckPermsWeb</a>
+            @
+            <a :href="'https://github.com/lucko/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
           </li>
           <li>
             <a href="https://github.com/lucko/LuckPermsWeb/blob/master/LICENSE.txt" target="_blank">
-            Copyright © 2017-{{new Date().getFullYear().toString()}} LuckPerms contributors
+            Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
             </a>
           </li>
         </ul>
@@ -167,6 +167,9 @@ export default {
   },
 
   computed: {
+    commitHash() {
+      return process.env.VUE_APP_GIT_HASH;
+    },
     version() {
       return this.$store.getters.version;
     },

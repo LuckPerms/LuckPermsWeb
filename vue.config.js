@@ -1,5 +1,8 @@
 const config = require('./config.json');
 
+const {gitDescribe, gitDescribeSync} = require('git-describe');
+process.env.VUE_APP_GIT_HASH = gitDescribeSync().hash
+
 module.exports = {
   publicPath: config.base,
   css: {

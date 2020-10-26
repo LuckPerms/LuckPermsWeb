@@ -83,8 +83,6 @@ export default {
       }));
     }
   },
-  methods: {
-  },
   watch: {
     query: debounce(function(value) {
       this.debouncedQuery = String(value).toLowerCase();

@@ -1,5 +1,8 @@
 const config = require('./config.json');
 
+const {gitDescribe, gitDescribeSync} = require('git-describe');
+process.env.VUE_APP_GIT_HASH = gitDescribeSync().hash
+
 module.exports = {
   publicPath: config.base,
   css: {
@@ -23,7 +26,7 @@ module.exports = {
       .loader('vue-markdown-loader/lib/markdown-compiler')
       .options({
         raw: true,
-        linkify: true,
+        linkify: false,
         use: [
           // eslint-disable-next-line global-require
           [require('markdown-it-anchor'), {
@@ -33,6 +36,8 @@ module.exports = {
           }],
           // eslint-disable-next-line global-require
           require('markdown-it-emoji'),
+          // eslint-disable-next-line global-require
+          require('markdown-it-highlightjs')
         ],
       });
   },

@@ -4,16 +4,11 @@
       <div class="container">
         <div>
           <h1>Download LuckPerms</h1>
-          <p>
-            Current version: {{ version }}
+          <div class="version">
+            <p><span>v{{ version }}</span></p>
+            <p>Latest, built {{ versionTimestamp | moment('calendar', null, { sameElse: 'll [at] LT' }) }}</p>
             <font-awesome icon="asterisk" :spin="true" v-if="!version" />
-          </p>
-        </div>
-        <div>
-          <button class="button" @click="openQuiz">
-            <font-awesome icon="question-circle" />
-            Not sure which type?
-          </button>
+          </div>
         </div>
       </div>
     </section>
@@ -41,7 +36,7 @@
               <font-awesome icon="arrow-alt-circle-down" />
               Sponge
             </span>
-            <small>For SpongeForge/SpongeVanilla, releases 5-8</small>
+            <small>For SpongeForge/SpongeVanilla API 5-8</small>
           </a>
           <a :href="downloads.nukkit" class="resource">
             <span>
@@ -55,18 +50,29 @@
               <font-awesome icon="arrow-alt-circle-down" />
               Velocity
             </span>
-            <small>For Velocity, 1.0 or newer</small>
+            <small>For Velocity, 1.1.0 or newer</small>
           </a>
           <a :href="downloads['bukkit-legacy']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Bukkit Legacy
             </span>
-            <small>For CraftBukkit/Spigot/Paper etc, 1.7.10</small>
+            <small>For CraftBukkit/Spigot/Paper etc, 1.7.10 only</small>
           </a>
+          <button class="button" @click="openQuiz">
+            <font-awesome icon="question-circle" />
+            Not sure which type?
+          </button>
         </div>
 
         <div>
+          <h2>Recent Changelog</h2>
+          <ul>
+            <li v-for="entry in changeLog" :key="entry.version">
+              <a :href="'https://github.com/lucko/LuckPerms/commit/' + entry.commit" target="_blank">v{{ entry.version }}</a>
+               - {{ entry.title }}
+            </li>
+          </ul>
           <h2>How to install</h2>
           <ol>
             <li>Add the downloaded plugin <code>.jar</code> file into your server's
@@ -96,7 +102,7 @@
         <div>
           <h1>Extensions</h1>
           <p>Extensions can modify the behaviour of LuckPerms, you can read more about them
-            <router-link to="/wiki/Extensions">on the wiki</router-link>
+            <router-link to="/wiki/Extensions">on the wiki</router-link>.
           </p>
         </div>
       </div>
@@ -113,11 +119,11 @@
           </a>
           <div>
             <p>Allows some common API methods to be used by plugins that haven't upgraded to v5
-              version of the api yet.
+              version of the API yet.
             </p>
             <p>Check out the
               <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link>
-              for more information!
+              for more information.
             </p>
           </div>
         </div>
@@ -135,9 +141,9 @@
               if the workarounds are not possible.
             </p>
             <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
-              section</router-link> for more information! See also
+              section</router-link> for more information. See also
               <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about
-              configuring default assignments!
+              configuring default assignments.
             </p>
           </div>
         </div>
@@ -170,6 +176,8 @@ export default {
     extensions() { return this.$store.getters.extensions; },
     downloads() { return this.$store.getters.downloads; },
     version() { return this.$store.getters.version; },
+    versionTimestamp() { return this.$store.getters.versionTimestamp; },
+    changeLog() { return this.$store.getters.changeLog; },
   },
   methods: {
     openQuiz() {
@@ -201,13 +209,8 @@ export default {
         }
       }
 
-      p {
-        text-align: center;
-        font-size: 1.5rem;
-
-        @include breakpoint($md) {
-          text-align: left;
-        }
+      .version {
+        line-height: 1.2;
       }
 
       h1 {
@@ -218,17 +221,21 @@ export default {
         }
       }
 
-      button {
-        margin-top: 2rem;
+      p {
+        text-align: center;
+        font-size: 1.5rem;
+        opacity: 1;
+        color: rgba(225, 255, 255, .5);
 
         @include breakpoint($md) {
-          margin: 0;
+          text-align: left;
         }
+      }
 
-        svg {
-          opacity: .5;
-          margin-right: 1rem;
-        }
+      span {
+        color: $brand_color;
+        font-weight: bold;
+        font-size: 2.2em;
       }
     }
 
@@ -253,6 +260,20 @@ export default {
         @include breakpoint($md) {
           margin: 0;
         }
+      }
+    }
+
+    .button {
+      color: $brand-color;
+      background-color: $grey;
+
+      &:hover {
+        background: lighten($grey, 10%);
+      }
+
+      svg {
+        opacity: .5;
+        margin-right: 1rem;
       }
     }
 

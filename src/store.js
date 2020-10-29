@@ -11,6 +11,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     version: null,
+    versionTimestamp: null,
+    changeLog: [],
     config: null,
     downloads: {
       bukkit: null,
@@ -51,6 +53,10 @@ export default new Vuex.Store({
 
   getters: {
     version: state => state.version,
+
+    versionTimestamp: state => state.versionTimestamp,
+
+    changeLog: state => state.changeLog,
 
     config: state => state.config,
 
@@ -113,6 +119,14 @@ export default new Vuex.Store({
   mutations: {
     setVersion: (state, version) => {
       state.version = version;
+    },
+
+    setVersionTimestamp: (state, versionTimestamp) => {
+      state.versionTimestamp = versionTimestamp;
+    },
+
+    setChangeLog: (state, changeLog) => {
+      state.changeLog = changeLog;
     },
 
     setConfig: (state, configData) => {
@@ -428,6 +442,8 @@ export default new Vuex.Store({
       try {
         const appData = await axios.get(`${config.api_url}/data/all`);
         commit('setVersion', appData.data.version);
+        commit('setVersionTimestamp', appData.data.versionTimestamp);
+        commit('setChangeLog', appData.data.changeLog);
         commit('setDownloads', appData.data.downloads);
         commit('setExtensions', appData.data.extensions);
         commit('setDiscordUserCount', appData.data.discordUserCount);

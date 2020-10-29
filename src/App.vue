@@ -22,45 +22,45 @@
         <li>
           <router-link to="/">
             <font-awesome icon="home" fixed-width />
-            Home
+            {{ $t('links.home') }}
           </router-link>
         </li>
         <template v-if="!config.selfHosted">
           <li>
             <router-link to="/download">
               <font-awesome icon="arrow-alt-circle-down" fixed-width />
-              Download
+              {{ $t('links.download') }}
             </router-link>
           </li>
           <li>
             <router-link to="/wiki">
               <font-awesome icon="book" fixed-width />
-              Wiki
+              {{ $t('wiki') }}
             </router-link>
           </li>
         </template>
         <li>
           <span :class="{ 'router-link-active': isToolsRoute, tools: true }">
             <font-awesome icon="tools" fixed-width />
-            Tools
+            {{ $t('links.tools.name') }}
           </span>
           <ul>
             <li>
               <router-link to="/editor">
                 <font-awesome icon="edit" fixed-width />
-                Editor
+                {{ $t('links.tools.editor') }}
               </router-link>
             </li>
             <li>
               <router-link to="/verbose">
                 <font-awesome icon="comment-alt" fixed-width />
-                Verbose
+                {{ $t('links.tools.verbose') }}
               </router-link>
             </li>
             <li>
               <router-link to="/treeview">
                 <font-awesome icon="sitemap" fixed-width />
-                Tree
+                {{ $t('links.tools.tree') }}
               </router-link>
             </li>
           </ul>

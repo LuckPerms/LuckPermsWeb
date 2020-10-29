@@ -1,20 +1,20 @@
 <template>
 <div>
-  <h2>Create a group</h2>
+  <h2>{{ $t('editor.group.create') }}</h2>
   <div class="row">
     <div class="col">
       <div class="form-group">
-        <label for="groupName">Group name</label>
+        <label for="groupName">{{ $t('editor.group.name') }}</label>
         <input type="text" id="groupName" :value="group.name" @input="updateGroupName($event)">
       </div>
       <div class="form-group">
-        <label for="displayName">Display name</label>
+        <label for="displayName">{{ $t('editor.group.displayName') }}</label>
         <input type="text" id="displayName" v-model="group.displayName">
       </div>
       <div class="form-group">
-        <label for="parent">Parent</label>
+        <label for="parent">{{ $t('editor.group.parent') }}</label>
         <select name="parent" id="parent" v-model="group.parent">
-          <option value="0">None</option>
+          <option value="0">{{ $t('editor.group.none') }}</option>
           <option v-for="groupItem in props" :value="groupItem.id" :key="groupItem.id">
             {{ groupItem.displayName }}
           </option>
@@ -23,22 +23,22 @@
     </div>
     <div class="col">
       <div class="form-group">
-        <label for="weight">Weight</label>
+        <label for="weight">{{ $t('editor.group.weight') }}</label>
         <input type="number" id="weight" v-model="group.weight">
       </div>
       <div class="form-group">
-        <label for="prefix">Prefix</label>
+        <label for="prefix">{{ $t('editor.group.prefix') }}</label>
         <input type="text" id="prefix" v-model="group.prefix">
       </div>
       <div class="form-group">
-        <label for="suffix">Suffix</label>
+        <label for="suffix">{{ $t('editor.group.suffix') }}</label>
         <input type="text" id="suffix" v-model="group.suffix">
       </div>
     </div>
   </div>
   <button type="button" @click="addGroup" class="save-button">
     <font-awesome icon="plus-circle" />
-    Add group
+    {{ $t('editor.group.add') }}
   </button>
 </div>
 </template>

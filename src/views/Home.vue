@@ -6,7 +6,7 @@
           <img alt="LuckPerms logo" src="../assets/logo.png">
           <div>
             <h1>LuckPerms</h1>
-            <p>A permissions plugin for Minecraft servers.</p>
+            <p>{{ $t('description') }}</p>
           </div>
         </div>
 
@@ -14,7 +14,7 @@
           <router-link to="/download">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
-            Download
+            {{ $t('links.download') }}
           </span>
             <small>
               v{{ version }}
@@ -22,7 +22,7 @@
             </small>
           </router-link>
           <small>
-            Supports Bukkit/Spigot/Paper, BungeeCord, Sponge, Nukkit and Velocity servers
+            {{ $t('home.supported') }}
           </small>
         </div>
       </div>
@@ -31,9 +31,8 @@
     <div class="container" v-if="!config.selfHosted">
       <section class="resources">
         <div>
-          <h2>Why LuckPerms?</h2>
-          <p>LuckPerms is a permissions plugin for Minecraft servers. It allows server admins to
-            control what features players can use by creating groups and assigning permissions.</p>
+          <h2>{{ $t('home.why') }}</h2>
+          <p>{{ $t('home.description') }}</p>
           <p>It is:</p>
           <ul>
             <li><b>fast</b> - written with performance and scalability in mind.</li>
@@ -51,22 +50,21 @@
           <p>For more information, see the wiki article on
             <router-link to="/wiki/Why-LuckPerms">Why LuckPerms?</router-link></p>
 
-          <h2>Web Apps</h2>
-          <p>This site hosts a number of extra web applications which work with the plugin.</p>
-          <p>These applications are designed to work for all users, even those without the ability
-            to install/host an application on their own web server.</p>
+          <h2>{{ $t('home.apps') }}</h2>
+          <p>{{ $t('home.appsDescription1') }}</p>
+          <p>{{ $t('home.appsDescription2') }}</p>
           <div class="tools">
             <router-link to="/editor" alt="Web Editor">
               <font-awesome icon="edit" />
-              Web Editor
+              {{ $t('links.editor') }}
             </router-link>
             <router-link to="/verbose" alt="Verbose Viewer">
               <font-awesome icon="comment-alt" />
-              Verbose Viewer
+              {{ $t('links.verbose') }}
             </router-link>
             <router-link to="/treeview" alt="Tree Viewer">
               <font-awesome icon="sitemap" />
-              Tree Viewer
+              {{ $t('links.tree') }}
             </router-link>
           </div>
         </div>
@@ -74,31 +72,30 @@
           <a href="/wiki" class="resource">
             <span>
               <font-awesome icon="book" />
-              Wiki
+              {{ $t('links.wiki') }}
             </span>
-            <small>Learn how to install, setup, configure and effectively use LuckPerms</small>
+            <small>{{ $t('home.wiki') }}</small>
           </a>
           <a href="https://github.com/lucko/LuckPerms" class="resource">
             <span>
               <font-awesome :icon="['fab', 'github']" />
               GitHub
             </span>
-            <small>Browse the source code, report issues and contribute to the project</small>
+            <small>{{ $t('home.github') }}</small>
           </a>
           <a href="https://discord.gg/luckperms" class="resource">
             <span>
               <font-awesome :icon="['fab', 'discord']" />
               Discord
             </span>
-            <small>Join {{ discordUserCount }} others to discuss the project and ask/answer
-              questions</small>
+            <small>{{ $t('home.discord', { count: discordUserCount }) }}</small>
           </a>
           <a href="https://patreon.com/luckdev" class="resource">
             <span>
               <font-awesome :icon="['fab', 'patreon']" />
               Patreon
             </span>
-            <small>Join {{ patreonCount }} others supporting the project on Patreon</small>
+            <small>{{ $t('home.patreon', { count: patreonCount }) }}</small>
           </a>
         </div>
       </section>
@@ -110,15 +107,15 @@
           <div class="tools">
             <router-link to="/editor" alt="Web Editor">
               <font-awesome icon="edit" />
-              Web Editor
+              {{ $t('links.editor') }}
             </router-link>
             <router-link to="/verbose" alt="Verbose Viewer">
               <font-awesome icon="comment-alt" />
-              Verbose Viewer
+              {{ $t('links.verbose') }}
             </router-link>
             <router-link to="/treeview" alt="Tree Viewer">
               <font-awesome icon="sitemap" />
-              Tree Viewer
+              {{ $t('links.tree') }}
             </router-link>
           </div>
         </div>

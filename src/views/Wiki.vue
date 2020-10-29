@@ -4,7 +4,7 @@
       <router-view />
     </article>
     <aside>
-      <h1>Wiki</h1>
+      <h1>{{ $t('wiki') }}</h1>
       <sidebar />
     </aside>
   </main>

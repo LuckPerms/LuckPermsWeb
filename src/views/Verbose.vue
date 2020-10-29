@@ -2,11 +2,11 @@
   <main class="verbose container">
     <div class="verbose-viewer" v-if="verboseData.status === 2">
       <div class="col-1">
-        <h1>Verbose viewer</h1>
+        <h1>{{ $t('verbose.title') }}</h1>
         <div class="meta-info">
           <table>
             <tr>
-              <td>Uploaded by</td>
+              <td>{{ $t('verbose.uploaded') }}</td>
               <td>
                 <avatar
                   v-if="verboseData.metadata.uploader.name !== 'Console'"
@@ -19,26 +19,26 @@
               </td>
             </tr>
             <tr>
-              <td title="When the recording started">
-                Start time
+              <td :title="$t('verbose.started')">
+                {{ $t('verbose.start') }}
               </td>
               <td>{{ verboseData.metadata.startTime }}</td>
             </tr>
             <tr>
-              <td title="When the recording ended">
-                End time
+              <td title="$t('verbose.ended')">
+                {{ $t('verbose.end') }}
               </td>
               <td>{{ verboseData.metadata.endTime }}</td>
             </tr>
             <tr>
               <td title="How long the plugin was recording for">
-                Duration
+                {{ $t('verbose.duration') }}
               </td>
               <td>{{ verboseData.metadata.duration }}</td>
             </tr>
             <tr>
               <td title="How many values matched and how many checks were made in total">
-                Count
+                {{ $t('verbose.count') }}
               </td>
               <td>
                 {{ verboseData.metadata.count.matched }} / {{ verboseData.metadata.count.total }}
@@ -46,7 +46,7 @@
             </tr>
             <tr>
               <td title="The string used to filter the output">
-                Filter
+                {{ $t('verbose.filter') }}
               </td>
               <td>
                 <code>{{ verboseData.metadata.filter }}</code>
@@ -54,7 +54,7 @@
             </tr>
             <tr>
               <td title="If the data was truncated (limited in size) when uploaded">
-                Truncated
+                {{ $t('verbose.truncated') }}
               </td>
               <td>
                 <code :class="verboseData.metadata.truncated ? 'true' : 'false'">
@@ -85,7 +85,7 @@
         <img alt="LuckPerms logo" src="../assets/logo.png">
         <div class="text">
           <h1>LuckPerms</h1>
-          <p>Verbose Viewer</p>
+          <p>{{ $t('verbose.title') }}</p>
           <div v-if="verboseData.status === 3" class="error">
             <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong
               or the session has expired.</p>
@@ -94,7 +94,7 @@
           <template v-if="verboseData.status === 1">
             <p>
               <font-awesome icon="asterisk" :spin="true" />
-              Loading data...
+              {{ $t('editor.loading') }}
             </p>
           </template>
           <template v-if="verboseData.status === 0">

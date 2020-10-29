@@ -18,7 +18,7 @@
         @click="changeSort('key')"
         title="Sort nodes by permission"
       >
-        Permissions
+        {{ $t('editor.permissions') }}
         <font-awesome
           v-if="sort.method === 'key'"
           :class="{'reverse': !sort.desc}"
@@ -32,7 +32,7 @@
         @click="changeSort('value')"
         title="Sort nodes by true/false"
       >
-        Value
+        {{ $t('editor.value') }}
         <font-awesome
           v-if="sort.method === 'value'"
           :class="{'reverse': !sort.desc}"
@@ -46,7 +46,7 @@
         @click="changeSort('expiry')"
         title="Sort nodes by expiry"
       >
-        Expiry
+        {{ $t('editor.expiry') }}
         <font-awesome
           v-if="sort.method === 'expiry'"
           :class="{'reverse': !sort.desc}"
@@ -59,7 +59,7 @@
         @click="changeSort('contexts')"
         title="Sort nodes by contexts"
       >
-        Contexts
+        {{ $t('editor.contexts') }}
         <font-awesome
           v-if="sort.method === 'contexts'"
           :class="{'reverse': !sort.desc}"

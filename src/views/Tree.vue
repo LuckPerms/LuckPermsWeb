@@ -2,11 +2,11 @@
   <main class="tree container">
     <div class="tree-viewer" v-if="metaData">
       <div class="col-1">
-        <h1>Permission Tree Viewer</h1>
+        <h1>{{ $t('tree.title') }}</h1>
         <div class="meta-info">
           <table>
             <tr>
-              <td>Uploaded by</td>
+              <td>{{ $t('tree.uploaded') }}</td>
               <td>
                 <avatar
                   v-if="metaData.uploader.name !== 'Console'"
@@ -18,8 +18,8 @@
               </td>
             </tr>
             <tr>
-              <td title="When the recording started">
-                Time
+              <td :title="$t('tree.started')">
+                {{ $t('tree.time') }}
               </td>
               <td>{{ metaData.time }}</td>
             </tr>
@@ -32,8 +32,8 @@
               </td>
             </tr>
             <tr v-if="metaData.referenceUser">
-              <td title="Reference user">
-                Reference user
+              <td :title="$t('tree.user')">
+                {{ $t('tree.user') }}
               </td>
               <td>
                 <avatar
@@ -48,11 +48,11 @@
         </div>
         <button @click="expandTree">
           <font-awesome icon="plus-square" />
-          Expand
+          {{ $t('tree.expand') }}
         </button>
         <button @click="collapseTree">
           <font-awesome icon="minus-square" />
-          Collapse
+          {{ $t('tree.collapse') }}
         </button>
       </div>
       <div class="col-2">
@@ -71,15 +71,15 @@
         <img alt="LuckPerms logo" src="../assets/logo.png">
         <div class="text">
           <h1>LuckPerms</h1>
-          <p>Permission Tree Viewer</p>
+          <p>{{ $t('tree.title') }}</p>
           <template v-if="!errors.load">
             <router-link to="/treeview/demo">
-              <button class="button demo-button">View Demo</button>
+              <button class="button demo-button">{{ $t('editor.demo') }}</button>
             </router-link>
-            <p>To generate a permission tree, do the following in game or from the console:</p>
+            <p>{{ $t('tree.generate') }}</p>
             <ul>
-              <li><code>/lp tree [scope] [player]</code></li>
-              <li>Follow the URL that is generated</li>
+              <li><code>{{ $t('tree.generateCommand') }}</code></li>
+              <li>{{ $t('tree.generateUrl') }}</li>
             </ul>
           </template>
           <div v-else class="error">
@@ -102,7 +102,7 @@ import updateSession from '@/util/session';
 
 export default {
   metaInfo: {
-    title: 'Tree',
+    title: this.$t('tree.title'),
   },
   components: {
     Avatar,

@@ -5,11 +5,11 @@
         <img alt="LuckPerms logo" src="../assets/logo.png">
         <div class="text">
           <h1>LuckPerms</h1>
-          <p>Web Permissions Editor</p>
+          <p>{{ $t('editor.description') }}</p>
           <router-link to="/editor/demo">
-            <button class="button demo-button">View Demo</button>
+            <button class="button demo-button">{{ $t('editor.demo') }}</button>
           </router-link>
-          <p>To start a new editor session, use one of the following commands:</p>
+          <p>{{ $t('editor.start') }}</p>
           <ul>
             <li><code>/lp editor</code></li>
             <li><code>/lp user &lt;user&gt; editor</code></li>
@@ -26,11 +26,11 @@
             <img alt="LuckPerms logo" src="../assets/logo.png">
             <div class="text">
               <h1>LuckPerms</h1>
-              <p>Web Permissions Editor</p>
+              <p>{{ $t('editor.description') }}</p>
               <div v-if="!errors.load">
                 <p>
                   <font-awesome icon="asterisk" :spin="true" />
-                  Loading data...
+                  {{ $t('editor.loading') }}
                 </p>
               </div>
 
@@ -71,7 +71,7 @@
           <div class="editor-main">
             <nav>
               <div class="logo">
-                Web Permissions Editor
+                {{ $t('editor.description') }}
               </div>
               <div class="buttons">
 <!--                <button>-->
@@ -83,11 +83,11 @@
                 <button @click="saveData" title="Save and generate code">
                   <span v-if="saveStatus !== 'saving'">
                     <font-awesome icon="save" fixed-width />
-                    Save
+                    {{ $t('editor.save') }}
                   </span>
                   <span v-else>
                     <font-awesome icon="sync-alt" fixed-width :spin="true" />
-                    Saving...
+                    {{ $t('editor.saving') }}
                   </span>
                 </button>
               </div>
@@ -96,7 +96,7 @@
             <transition name="fade" mode="in-out">
               <div class="editor-no-session" v-if="!currentSession">
                 <font-awesome icon="arrow-left" />
-                <h1>Choose a group or user from the side bar</h1>
+                <h1>{{ $t('editor.group.choose') }}</h1>
               </div>
             </transition>
 

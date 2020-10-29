@@ -1,6 +1,6 @@
 <template>
 <div class="saved-changes">
-  <h2>Data was saved!</h2>
+  <h2>{{ $t('editor.saved') }}</h2>
 
   <p>
     Run this command on your server to apply the changes:

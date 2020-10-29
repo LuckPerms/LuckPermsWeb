@@ -3,16 +3,16 @@
     <section class="hero">
       <div class="container">
         <div>
-          <h1>Download LuckPerms</h1>
+          <h1>{{ $t('download.title') }}</h1>
           <p>
-            Current version: {{ version }}
+            {{ $t('download.version', { version }) }}
             <font-awesome icon="asterisk" :spin="true" v-if="!version" />
           </p>
         </div>
         <div>
           <button class="button" @click="openQuiz">
             <font-awesome icon="question-circle" />
-            Not sure which type?
+            {{ $t('download.typeHelp') }}
           </button>
         </div>
       </div>
@@ -21,7 +21,7 @@
     <div class="container">
       <section class="resources">
         <div>
-          <h2>Choose your server type</h2>
+          <h2>{{ $t('download.typeChoose') }}</h2>
           <a :href="downloads.bukkit" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
@@ -94,7 +94,7 @@
     <section class="hero extensions">
       <div class="container">
         <div>
-          <h1>Extensions</h1>
+          <h1>{{ $t('download.extensions.title') }}</h1>
           <p>Extensions can modify the behaviour of LuckPerms, you can read more about them
             <router-link to="/wiki/Extensions">on the wiki</router-link>
           </p>

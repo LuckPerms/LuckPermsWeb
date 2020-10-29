@@ -27,15 +27,15 @@
         <div class="buttons">
           <button @click="copyNodes">
             <font-awesome icon="clone" />
-            Copy
+            {{ $t('editor.copy') }}
           </button>
           <button @click="moveNodes">
             <font-awesome icon="sign-in-alt" />
-            Move
+            {{ $t('editor.move') }}
           </button>
           <button @click="deleteNodes">
             <font-awesome icon="times" />
-            Delete
+            {{ $t('editor.delete') }}
           </button>
         </div>
       </div>

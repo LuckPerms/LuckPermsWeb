@@ -3,11 +3,11 @@
     <section class="hero">
       <h1>
         <font-awesome icon="exclamation-circle" />
-        <span>Not found!</span>
-        <div class="error">
-          <p>The page <code>{{ this.$route.path }}</code> couldn't be found</p>
-        </div>
+        <span>{{ $t('notFound.title') }}</span>
       </h1>
+      <div class="error">
+        <p>The page <code>{{ this.$route.path }}</code> couldn't be found</p>
+      </div>
     </section>
   </main>
 </template>

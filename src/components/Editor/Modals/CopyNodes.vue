@@ -16,7 +16,7 @@
       <div>
         <button :disabled="!selectedSessions.length" @click="copyNodes">
           <font-awesome icon="clone" />
-          Copy
+          {{ $t('copy') }}
         </button>
       </div>
     </div>

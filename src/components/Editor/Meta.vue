@@ -168,6 +168,8 @@ export default {
         overflow-y: auto;
         z-index: 100;
         box-shadow: 0 .2rem 1rem rgba(0,0,0,.2);
+        max-height: 40vh;
+        overflow-y: auto;
 
         li {
           padding: .25rem 1rem;

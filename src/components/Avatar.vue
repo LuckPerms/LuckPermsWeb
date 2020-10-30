@@ -1,7 +1,8 @@
 <template>
   <img
     :src="`https://minotar.net/helm/${id}/${size}.png`"
-    :title="title ? `${name}'s avatar` : ''"
+    :alt="$t('avatar', { name })"
+    :title="title ? $t('avatar', { name }) : ''"
   />
 </template>
 

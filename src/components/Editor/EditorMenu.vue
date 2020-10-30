@@ -3,7 +3,7 @@
     <div class="filter">
       <input
         type="text"
-        placeholder="Search"
+        :placeholder="$t('editor.search')"
         v-model="filter"
         title="Filter tracks, groups and users"
       >
@@ -98,7 +98,7 @@
               title="Edit user"
             >
               <span class="username">
-                <img :src="`https://minotar.net/helm/${user.id}/100.png`">
+                <img :src="`https://minotar.net/helm/${user.id}/100.png`" :alt="$t('avatar', { name })">
                 {{user.displayName}}
               </span>
               <button @click="deleteUser(user.id)" v-if="canDeleteUsers" title="Delete user">

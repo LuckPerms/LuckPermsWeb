@@ -74,20 +74,28 @@
           <p>{{ $t('tree.title') }}</p>
           <template v-if="!errors.load">
             <router-link to="/treeview/demo">
-              <button class="button demo-button">{{ $t('editor.demo') }}</button>
+              <button class="button demo-button">
+                {{ $t('tools.demo') }}
+              </button>
             </router-link>
-            <p>{{ $t('tree.generate') }}</p>
+            <p>{{ $t('tree.home.generate') }}</p>
             <ul>
-              <li><code>{{ $t('tree.generateCommand') }}</code></li>
-              <li>{{ $t('tree.generateUrl') }}</li>
+              <li>
+                <code>/lp tree [{{ $t('tree.home.scope') }}] [{{ $t('tree.home.player') }}]</code>
+              </li>
+              <li>{{ $t('tree.home.url') }}</li>
             </ul>
           </template>
           <div v-else class="error">
             <p>
-              <strong>There was an error loading the data.</strong>
-              Either the URL was copied wrong or the session has expired.
+              <strong>{{ $t('editor.error.new') }}</strong>
+              {{ $t('editor.error.info') }}
             </p>
-            <p>Please generate another editor session with <code>/lp editor</code>.</p>
+            <i18n path="editor.error.new" tag="p">
+              <template v-slot:path>
+                <code>/lp editor</code>
+              </template>
+            </i18n>
           </div>
         </div>
       </div>
@@ -102,7 +110,7 @@ import updateSession from '@/util/session';
 
 export default {
   metaInfo: {
-    title: this.$t('tree.title'),
+    title: 'Tree',
   },
   components: {
     Avatar,

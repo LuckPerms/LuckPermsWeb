@@ -24,7 +24,7 @@
             <li @click="proceed(3, 'nukkit')">NukkitX</li>
           </ul>
           <p class="lighter" v-if="options.network">
-            {{ $t('quiz.not') }}
+            {{ $t('quiz.note') }}
           </p>
           <ul class="options" v-if="options.network">
             <li @click="proceed(5, 'bungee')">BungeeCord / Waterfall / Travertine</li>
@@ -78,7 +78,7 @@
           </template>
           <template v-if="options.legacy">
             <img alt="LuckPerms logo" src="@/assets/logo.png">
-            <h1>You need LuckPerms{{ legacy }} for {{ serverType }}</h1>
+            <h1>{{ $t('quiz.resultLegacy', { serverType }) }}</h1>
             <div class="options">
               <a :href="downloads['bukkit-legacy']" v-if="options.bukkit" download>
                 {{ $t('links.download') }}
@@ -137,10 +137,6 @@ export default {
       if (this.options.nukkit) return 'Nukkit';
       if (this.options.bungee) return 'BungeeCord';
       if (this.options.velocity) return 'Velocity';
-      return null;
-    },
-    legacy() {
-      if (this.options.legacy) return ' Legacy';
       return null;
     },
   },

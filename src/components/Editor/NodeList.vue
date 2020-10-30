@@ -7,7 +7,7 @@
       <div
         :class="{ 'node-select-all': true, 'selected': allSelected }"
         @click="selectAll"
-        title="Select all nodes for mass operations"
+        :title="$t('editor.nodes.selectAll')"
       >
         <span></span>
       </div>
@@ -16,7 +16,7 @@
         class="permission"
         :class="{'active': sort.method === 'key'}"
         @click="changeSort('key')"
-        title="Sort nodes by permission"
+        :title="$t('editor.nodes.sort.permission')"
       >
         {{ $t('editor.permissions') }}
         <font-awesome
@@ -30,7 +30,7 @@
         class="value"
         :class="{'active': sort.method === 'value'}"
         @click="changeSort('value')"
-        title="Sort nodes by true/false"
+        :title="$t('editor.nodes.sort.value')"
       >
         {{ $t('editor.value') }}
         <font-awesome
@@ -44,7 +44,7 @@
         class="expiry"
         :class="{'active': sort.method === 'expiry'}"
         @click="changeSort('expiry')"
-        title="Sort nodes by expiry"
+        :title="$t('editor.nodes.sort.expiry')"
       >
         {{ $t('editor.expiry') }}
         <font-awesome
@@ -57,7 +57,7 @@
         class="context"
         :class="{'active': sort.method === 'contexts'}"
         @click="changeSort('contexts')"
-        title="Sort nodes by contexts"
+        :title="$t('editor.nodes.sort.contexts')"
       >
         {{ $t('editor.contexts') }}
         <font-awesome

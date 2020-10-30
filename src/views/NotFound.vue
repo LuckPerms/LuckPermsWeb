@@ -1,12 +1,16 @@
 <template>
   <main class="notfound">
     <section class="hero">
-      <h1>
+      <div class="hero-content">
         <font-awesome icon="exclamation-circle" />
-        <span>{{ $t('notFound.title') }}</span>
-      </h1>
-      <div class="error">
-        <p>The page <code>{{ this.$route.path }}</code> couldn't be found</p>
+        <h1>{{ $t('notFound.title') }}</h1>
+        <div class="error">
+          <i18n path="notFound.message" tag="p">
+            <template v-slot:path>
+              <code>{{ $route.path }}</code>
+            </template>
+          </i18n>
+        </div>
       </div>
     </section>
   </main>
@@ -30,7 +34,7 @@ export default {
       align-items: center;
       padding: 4rem;
 
-      h1 {
+      .hero-content {
         position: relative;
 
         svg {
@@ -43,14 +47,16 @@ export default {
           opacity: .5;
         }
 
-        span {
+        h1 {
           position: relative;
           z-index: 2;
+          margin-bottom: 0;
         }
       }
 
       p {
         font-size: 1.25rem;
+        font-weight: bold;
       }
 
       .error {

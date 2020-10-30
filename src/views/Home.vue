@@ -31,28 +31,26 @@
     <div class="container" v-if="!config.selfHosted">
       <section class="resources">
         <div>
-          <h2>{{ $t('home.why') }}</h2>
-          <p>{{ $t('home.description') }}</p>
-          <p>It is:</p>
+          <h2>{{ $t('home.why.title') }}</h2>
+          <p>{{ $t('home.why.description') }}</p>
+          <p>{{ $t('home.why.its') }}</p>
           <ul>
-            <li><b>fast</b> - written with performance and scalability in mind.</li>
-            <li><b>reliable</b> - trusted by thousands of server admins, and the largest of server
-              networks.</li>
-            <li><b>easy to use</b> - setup permissions using commands, directly in config files, or
-              using the web editor.</li>
-            <li><b>flexible</b> - supports a variety of data storage options, and works on lots of
-              different server types.</li>
-            <li><b>extensive</b> - a plethora of customization options and settings which can be
-              changed to suit your server.</li>
-            <li><b>free</b> - available for download and usage at no cost, and permissively licensed
-              so it can remain free forever.</li>
+            <li v-html="$t('home.why.fast')"/>
+            <li v-html="$t('home.why.reliable')"/>
+            <li v-html="$t('home.why.easy')"/>
+            <li v-html="$t('home.why.flexible')"/>
+            <li v-html="$t('home.why.extensive')"/>
+            <li v-html="$t('home.why.free')"/>
           </ul>
-          <p>For more information, see the wiki article on
-            <router-link to="/wiki/Why-LuckPerms">Why LuckPerms?</router-link></p>
+          <i18n path="home.why.more" tag="p">
+            <template v-slot:wiki>
+              <router-link to="/wiki/Why-LuckPerms">{{ $t('home.why.why') }}</router-link>
+            </template>
+          </i18n>
 
-          <h2>{{ $t('home.apps') }}</h2>
-          <p>{{ $t('home.appsDescription1') }}</p>
-          <p>{{ $t('home.appsDescription2') }}</p>
+          <h2>{{ $t('home.apps.title') }}</h2>
+          <p>{{ $t('home.apps.description1') }}</p>
+          <p>{{ $t('home.apps.description2') }}</p>
           <div class="tools">
             <router-link to="/editor" alt="Web Editor">
               <font-awesome icon="edit" />

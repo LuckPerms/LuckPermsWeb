@@ -9,7 +9,7 @@
       <strong>Parent groups </strong>
       <button
         @click="addingGroup = true"
-        :title="`Add a group to ${session.id}`"
+        :title="$t('editor.meta.add', { id: session.id })"
       >
         +
       </button>
@@ -27,12 +27,12 @@
       <li v-for="parent in parents" :key="`groupParent_${parent}`">
         <code
           @click="handleParentSessionSwitch(parent)"
-          :title="`Go to the ${parent} group`"
+          :title="$t('editor.meta.gotoParent', { parent })"
         >
           {{ parent }}
           <span
             @click.stop="deleteParent(parent)"
-            :title="`Remove ${parent} as a parent`"
+            :title="$t('editor.meta.removeParent', { parent })"
           >
             <font-awesome icon="times" />
           </span>

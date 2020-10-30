@@ -27,60 +27,57 @@
               <font-awesome icon="arrow-alt-circle-down" />
               Bukkit
             </span>
-            <small>For CraftBukkit/Spigot/Paper etc, 1.8.8 or newer</small>
+            <small>{{ $t('download.bukkit') }}</small>
           </a>
           <a :href="downloads.bungee" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               BungeeCord
             </span>
-            <small>For BungeeCord/Waterfall etc, use latest</small>
+            <small>{{ $t('download.bungee') }}</small>
           </a>
           <a :href="downloads.sponge" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Sponge
             </span>
-            <small>For SpongeForge/SpongeVanilla, releases 5-8</small>
+            <small>{{ $t('download.sponge') }}</small>
           </a>
           <a :href="downloads.nukkit" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Nukkit
             </span>
-            <small>For NukkitX, b93 or newer</small>
+            <small>{{ $t('download.nukkit') }}</small>
           </a>
           <a :href="downloads.velocity" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Velocity
             </span>
-            <small>For Velocity, 1.0 or newer</small>
+            <small>{{ $t('download.velociy') }}</small>
           </a>
           <a :href="downloads['bukkit-legacy']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Bukkit Legacy
             </span>
-            <small>For CraftBukkit/Spigot/Paper etc, 1.7.10</small>
+            <small>{{ $t('download.bukkitLegacy') }}</small>
           </a>
         </div>
 
         <div>
-          <h2>How to install</h2>
+          <h2>{{ $t('download.install.title') }}</h2>
           <ol>
-            <li>Add the downloaded plugin <code>.jar</code> file into your server's
-              <code>plugins</code> or <code>mods</code> folder.</li>
-            <li>Start or restart your server - <strong>do not reload!</strong></li>
-            <li>Locate the plugin's configuration file (usually found within
-              <code>/plugins/LuckPerms/</code>) and adjust any settings to your liking.</li>
+            <li v-html="$t('download.install.add')" />
+            <li v-html="$t('download.install.restart')" />
+            <li v-html="$t('download.install.config')" />
             <li>Start setting up your permissions! Check out the
               <router-link to="wiki/Usage">Getting Started</router-link> guide for more info.</li>
           </ol>
-          <h2>Having trouble installing?</h2>
+          <h2>{{ $t('download.trouble.title') }}</h2>
           <ul>
-            <li>Make sure to check your console for any error messages - especially during start
-              up</li>
+            <li v-html="$t('download.trouble.console')" />
             <li>Check the more detailed
               <router-link to="wiki/Installation">Installation</router-link> wiki page to see if you
               need to perform any additional steps.</li>
@@ -109,7 +106,7 @@
               <font-awesome icon="arrow-alt-circle-down" />
               {{ $t('download.extensions.legacy') }}
             </span>
-            <small>LuckPerms 5.0 and above</small>
+            <small>{{ $t('download.extensions.version') }}</small>
           </a>
           <div>
             <p>{{ $t('download.extensions.legacyInfo') }}</p>
@@ -125,7 +122,7 @@
               <font-awesome icon="arrow-alt-circle-down" />
               {{ $t('download.extensions.defaultAssignments') }}
             </span>
-            <small>LuckPerms 5.0 and above</small>
+            <small>{{ $t('download.extensions.version') }}</small>
           </a>
           <div>
             <p>Allows for other ways to make

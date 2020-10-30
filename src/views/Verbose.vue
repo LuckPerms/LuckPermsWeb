@@ -65,8 +65,8 @@
           </table>
         </div>
         <div class="filter">
-          Filter nodes by username or permission:
-          <input type="text" v-model="filter" :placeholder="$t('verbose.filterPlaceholder')">
+          <label for="filter">{{ $t('verbose.filter') }}</label>
+          <input type="text" id="filter" v-model="filter" :placeholder="$t('verbose.filterPlaceholder')">
         </div>
       </div>
       <div class="col-2">
@@ -87,9 +87,15 @@
           <h1>LuckPerms</h1>
           <p>{{ $t('verbose.title') }}</p>
           <div v-if="verboseData.status === 3" class="error">
-            <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong
-              or the session has expired.</p>
-            <p>Please generate another editor session with <code>/lp editor</code>.</p>
+            <p>
+              <strong>{{ $t('editor.error.new') }}</strong>
+              {{ $t('editor.error.info') }}
+            </p>
+            <i18n path="editor.error.new" tag="p">
+              <template v-slot:path>
+                <code>/lp editor</code>
+              </template>
+            </i18n>
           </div>
           <template v-if="verboseData.status === 1">
             <p>
@@ -99,14 +105,16 @@
           </template>
           <template v-if="verboseData.status === 0">
             <router-link to="/verbose/demo">
-              <button class="button demo-button">View Demo</button>
+              <button class="button demo-button">
+                {{ $t('tools.demo') }}
+              </button>
             </router-link>
-            <p>To generate a verbose report, do the following in game or from the console:</p>
+            <p>{{ $t('verbose.home.generate') }}</p>
             <ul>
-              <li><code>/lp verbose record [filter]</code></li>
-              <li>Perform a series of actions that require permissions</li>
+              <li><code>/lp verbose record [{{ $t('verbose.home.filter') }}]</code></li>
+              <li>{{ $t('verbose.home.performActions') }}</li>
               <li><code>/lp verbose paste</code></li>
-              <li>Follow the URL that is generated</li>
+              <li>{{ $t('verbose.home.url') }}</li>
             </ul>
           </template>
         </div>

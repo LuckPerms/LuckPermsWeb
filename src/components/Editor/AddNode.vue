@@ -2,7 +2,7 @@
   <div class="add-node">
     <form class="row" autocomplete="off" @submit.prevent>
       <div class="form-group" v-if="!selectedNodes.length">
-        <label for="permissions">Add permissions</label>
+        <label for="permissions">{{ $t('editor.nodes.addPermissions') }}</label>
         <multiselect
           id="permissions"
           v-model="permissions"
@@ -87,12 +87,12 @@
         </div>
 
         <div class="form-group">
-          <label for="expiry">Expiry</label>
+          <label for="expiry">{{ $t('editor.expiry') }}</label>
           <datepicker
             id="expiry"
             name="expiry"
             v-model="expiry"
-            placeholder="never"
+            :placeholder="$t('editor.nodes.never')"
             :disabled-dates="{ to: new Date() }"
           />
         </div>

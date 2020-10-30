@@ -7,7 +7,9 @@
           <h1>LuckPerms</h1>
           <p>{{ $t('editor.description') }}</p>
           <router-link to="/editor/demo">
-            <button class="button demo-button">{{ $t('editor.demo') }}</button>
+            <button class="button demo-button">
+              {{ $t('tools.demo') }}
+            </button>
           </router-link>
           <p>{{ $t('editor.start') }}</p>
           <ul>
@@ -36,10 +38,14 @@
 
               <div v-else class="error">
                 <p>
-                  <strong>There was an error loading the data.</strong>
-                  Either the URL was copied wrong or the session has expired.
+                  <strong>{{ $t('editor.error.new') }}</strong>
+                  {{ $t('editor.error.info') }}
                 </p>
-                <p>Please generate another editor session with <code>/lp editor</code>.</p>
+                <i18n path="editor.error.new" tag="p">
+                  <template v-slot:path>
+                    <code>/lp editor</code>
+                  </template>
+                </i18n>
               </div>
             </div>
           </div>

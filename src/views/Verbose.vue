@@ -25,19 +25,19 @@
               <td>{{ verboseData.metadata.startTime }}</td>
             </tr>
             <tr>
-              <td title="$t('verbose.ended')">
+              <td :title="$t('verbose.ended')">
                 {{ $t('verbose.end') }}
               </td>
               <td>{{ verboseData.metadata.endTime }}</td>
             </tr>
             <tr>
-              <td title="How long the plugin was recording for">
+              <td :title="$t('verbose.recording')">
                 {{ $t('verbose.duration') }}
               </td>
               <td>{{ verboseData.metadata.duration }}</td>
             </tr>
             <tr>
-              <td title="How many values matched and how many checks were made in total">
+              <td :title="$t('verbose.values')">
                 {{ $t('verbose.count') }}
               </td>
               <td>
@@ -45,7 +45,7 @@
               </td>
             </tr>
             <tr>
-              <td title="The string used to filter the output">
+              <td :title="$t('verbose.filterDesc')">
                 {{ $t('verbose.filter') }}
               </td>
               <td>
@@ -53,7 +53,7 @@
               </td>
             </tr>
             <tr>
-              <td title="If the data was truncated (limited in size) when uploaded">
+              <td :title="$t('verbose.truncatedDesc')">
                 {{ $t('verbose.truncated') }}
               </td>
               <td>
@@ -66,7 +66,7 @@
         </div>
         <div class="filter">
           Filter nodes by username or permission:
-          <input type="text" v-model="filter" placeholder="Enter filter here">
+          <input type="text" v-model="filter" :placeholder="$t('verbose.filterPlaceholder')">
         </div>
       </div>
       <div class="col-2">

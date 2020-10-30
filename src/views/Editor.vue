@@ -96,7 +96,7 @@
             <transition name="fade" mode="in-out">
               <div class="editor-no-session" v-if="!currentSession">
                 <font-awesome icon="arrow-left" />
-                <h1>{{ $t('editor.group.choose') }}</h1>
+                <h1>{{ $t('editor.groups.choose') }}</h1>
               </div>
             </transition>
 

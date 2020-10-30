@@ -43,7 +43,7 @@
       <div>
         <div class="form-group">
           <label v-if="!selectedNodes.length">
-            Value
+            {{ $t('editor.value') }}
             <button
               type="button"
               @click="value = !value"
@@ -53,7 +53,7 @@
             </button>
           </label>
           <div v-else class="bulk-value">
-            <label>Value</label>
+            <label>{{ $t('editor.value') }}</label>
             <div>
               <button
                 type="button"
@@ -100,7 +100,7 @@
 
       <div class="form-group contexts">
         <label v-if="!selectedNodes.length">
-          Contexts
+          {{ $t('editor.contexts') }}
           <button
             type="button"
             class="code"
@@ -111,7 +111,7 @@
           </button>
         </label>
         <div class="bulk-contexts" v-else>
-          <label for="bulk_contexts">Contexts</label>
+          <label for="bulk_contexts">{{ $t('editor.contexts') }}</label>
           <div>
             <button
               id="bulk_contexts_replace"
@@ -120,7 +120,7 @@
               title="Replace contexts instead of adding?"
             >
               <font-awesome icon="check" />
-              Replace
+              {{ $t('editor.replace') }}
             </button>
             <button
               id="bulk_contexts"
@@ -150,7 +150,7 @@
       >
         <span>
           <font-awesome icon="plus" />
-          Add
+          {{ $t('editor.add') }}
         </span>
       </button>
       <button
@@ -162,7 +162,7 @@
       >
         <span>
           <font-awesome icon="edit" />
-          Update
+          {{ $t('editor.update') }}
         </span>
       </button>
     </form>

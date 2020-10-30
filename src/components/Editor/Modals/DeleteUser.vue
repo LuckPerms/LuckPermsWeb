@@ -8,17 +8,16 @@
     </code>
   </h2>
   <p class="lighter">
-    All {{ permissions.length }} of their permissions will be deleted.
-    This currently can not be undone.
+    {{ $t('editor..users.deleteConfirm', { count: permissions.length }) }}
   </p>
   <div>
     <button type="button" @click="deleteUser">
       <font-awesome icon="check" />
-      Delete user
+      {{ $t('editor.delete') }}
     </button>
     <button type="button" class="red" @click="$emit('close')">
       <font-awesome icon="times" />
-      Cancel
+      {{ $t('editor.cancel') }}
     </button>
   </div>
 </div>

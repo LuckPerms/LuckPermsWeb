@@ -96,11 +96,11 @@
         <div v-if="page === 5" class="page page-5">
           <h1>{{ $t('quiz.version', { serverType }) }}</h1>
           <ul class="options" v-if="options.bungee">
-            <li @click="proceed(4, 'latest')">1.8.8 or newer</li>
-            <li @click="proceed(4, 'unsupported')">1.8.7 or older</li>
+            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: '1.8.8' }) }}</li>
+            <li @click="proceed(4, 'unsupported')">{{ $t('quiz.older', { version: '1.8.7' }) }}</li>
           </ul>
           <ul class="options" v-if="options.velocity">
-            <li @click="proceed(4, 'latest')">1.0 or newer</li>
+            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: '1.0' }) }}</li>
           </ul>
         </div>
       </transition>

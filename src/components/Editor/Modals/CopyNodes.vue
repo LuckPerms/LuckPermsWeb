@@ -1,6 +1,6 @@
 <template>
   <div class="copy-nodes-modal">
-    <h2>Copy {{ selectedNodes.length }} node{{ selectedNodes.length === 1 ? '' : 's' }} to...</h2>
+    <h2>{{ $tc('editor.nodes.copy', selectedNodes.length) }}</h2>
     <div class="col-2">
       <ul>
         <li

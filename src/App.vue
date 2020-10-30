@@ -69,7 +69,7 @@
           <li class="external">
             <a href="https://github.com/lucko/LuckPerms" target="_blank" class="github">
               <font-awesome :icon="['fab', 'github']" fixed-width />
-              <span>Github</span>
+              <span>GitHub</span>
             </a>
           </li>
           <li class="external">

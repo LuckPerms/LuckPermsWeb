@@ -5,17 +5,16 @@
     <code>{{ props.groupId }}</code>
   </h2>
   <p class="lighter">
-    All {{ permissions.length }} of its permissions will be deleted.
-    This currently can not be undone.
+    {{ $t('editor.groups.deleteConfirm', { count: permissions.length }) }}
   </p>
   <div>
     <button type="button" @click="deleteGroup">
       <font-awesome icon="check" />
-      Delete group
+      {{ $t('editor.delete') }}
     </button>
     <button type="button" class="red" @click="$emit('close')">
       <font-awesome icon="times" />
-      Cancel
+      {{ $t('editor.cancel') }}
     </button>
   </div>
 </div>

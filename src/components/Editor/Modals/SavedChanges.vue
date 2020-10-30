@@ -3,7 +3,7 @@
   <h2>{{ $t('editor.saved') }}</h2>
 
   <p>
-    Run this command on your server to apply the changes:
+    {{ $t('editor.command') }}
   </p>
 
   <div class="command">
@@ -11,7 +11,7 @@
       /{{ metaData.commandAlias }} applyedits {{ props }}
     </code>
     <span class="command-copied" v-if="commandCopied">
-    Command copied to clipboard
+      {{ $t('editor.copied') }}
     </span>
   </div>
 

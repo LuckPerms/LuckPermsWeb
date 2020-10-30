@@ -19,7 +19,7 @@
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.tracks ? 90 : null" />
           </button>
           <span>
-            Tracks
+            {{ $t('editor.nav.tracks') }}
             <small>({{ filteredTracks.length }})</small>
           </span>
           <button @click.stop="createTrack" title="Add a track">
@@ -50,7 +50,7 @@
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.groups ? 90 : null" />
           </button>
           <span>
-          Groups
+          {{ $t('editor.nav.groups') }}
           <small>({{ filteredGroups.length }})</small>
         </span>
           <button @click.stop="createGroup" title="Add a group">
@@ -82,7 +82,7 @@
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.users ? 90 : null" />
           </button>
           <span>
-          Users
+          {{ $t('editor.nav.users') }}
           <small>({{ filteredUsers.length }})</small>
         </span>
 <!--      Add a fake button to force the flex layout-->

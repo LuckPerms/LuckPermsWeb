@@ -107,14 +107,12 @@
           <a :href="extensions['extension-legacy-api']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
-              Legacy API Extension
+              {{ $t('download.extensions.legacy') }}
             </span>
             <small>LuckPerms 5.0 and above</small>
           </a>
           <div>
-            <p>Allows some common API methods to be used by plugins that haven't upgraded to v5
-              version of the api yet.
-            </p>
+            <p>{{ $t('download.extensions.legacyInfo') }}</p>
             <p>Check out the
               <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link>
               for more information!
@@ -125,7 +123,7 @@
           <a :href="extensions['extension-default-assignments']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
-              Default Assignments Extension
+              {{ $t('download.extensions.defaultAssignments') }}
             </span>
             <small>LuckPerms 5.0 and above</small>
           </a>

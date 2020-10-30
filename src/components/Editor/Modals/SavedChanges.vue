@@ -15,10 +15,7 @@
     </span>
   </div>
 
-  <p>
-    <strong>Note:</strong> after running the <code>applyedits</code> command, you should generate
-    another editor URL to continue editing your server's permissions.
-  </p>
+  <p v-html="$t('editor.applyNote')" />
 </div>
 </template>
 

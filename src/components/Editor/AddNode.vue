@@ -60,7 +60,7 @@
                 class="code true"
                 :class="{ selected: bulk.value === true }"
                 @click="bulk.value = true"
-                title="Change all values to TRUE"
+                :title="$t('editor.nodes.selection.true')"
               >
                 true
               </button>
@@ -69,7 +69,7 @@
                 class="code null"
                 :class="{ selected: bulk.value === null }"
                 @click="bulk.value = null"
-                title="Keep values unchanged"
+                title="$t('editor.nodes.selection.keep')"
               >
                 -
               </button>
@@ -78,7 +78,7 @@
                 class="code false"
                 :class="{ selected: bulk.value === false }"
                 @click="bulk.value = false"
-                title="Change all values to FALSE"
+                title="$t('editor.nodes.selection.false')"
               >
                 false
               </button>
@@ -104,7 +104,7 @@
           <button
             type="button"
             class="code"
-            title="Add contexts"
+            :title="$t('editor.nodes.addContexts')"
             @click="context.ui = true"
           >
             <font-awesome icon="plus" />
@@ -117,7 +117,7 @@
               id="bulk_contexts_replace"
               :class="{ selected: bulk.replaceContexts }"
               @click="bulk.replaceContexts = !bulk.replaceContexts"
-              title="Replace contexts instead of adding?"
+              :title="$t('editor.nodes.replace')"
             >
               <font-awesome icon="check" />
               {{ $t('editor.replace') }}
@@ -145,7 +145,7 @@
         v-if="!selectedNodes.length"
         type="submit"
         :disabled="permissions.length === 0"
-        title="Add node"
+        :title="$t('editor.nodes.add')"
         @click="addNodesToSession"
       >
         <span>
@@ -157,7 +157,7 @@
         v-else
         type="submit"
         :disabled="!canUpdateNode"
-        title="Update nodes"
+        title="$t('editor.nodes.update')"
         @click="updateNodes"
       >
         <span>
@@ -227,7 +227,7 @@
         </ul>
         <button @click="addContext">
           <font-awesome icon="plus" />
-          Add context
+          {{ $t('editor.nodes.addContext') }}
         </button>
       </div>
     </transition>

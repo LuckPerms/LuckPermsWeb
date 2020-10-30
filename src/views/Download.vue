@@ -72,18 +72,29 @@
             <li v-html="$t('download.install.add')" />
             <li v-html="$t('download.install.restart')" />
             <li v-html="$t('download.install.config')" />
-            <li>Start setting up your permissions! Check out the
-              <router-link to="wiki/Usage">Getting Started</router-link> guide for more info.</li>
+            <i18n path="download.install.setup" tag="li">
+              <template v-slot:wiki>
+                <router-link to="wiki/Usage">
+                  {{ $t('download.install.wiki') }}
+                </router-link>
+              </template>
+            </i18n>
           </ol>
           <h2>{{ $t('download.trouble.title') }}</h2>
           <ul>
             <li v-html="$t('download.trouble.console')" />
-            <li>Check the more detailed
-              <router-link to="wiki/Installation">Installation</router-link> wiki page to see if you
-              need to perform any additional steps.</li>
-            <li>If all else fails, get in touch with us on
-              <a href="https://discord.gg/luckperms" target="_blank">Discord</a>
-              and we'll be happy to help.</li>
+            <i18n path="download.trouble.read" tag="li">
+              <template v-slot:wiki>
+                <router-link to="wiki/Installation">
+                  {{ $t('download.trouble.wiki') }}
+                </router-link>
+              </template>
+            </i18n>
+            <i18n path="download.trouble.support" tag="li">
+              <template v-slot:discord>
+                  <a href="https://discord.gg/luckperms" target="_blank">Discord</a>
+              </template>
+            </i18n>
           </ul>
         </div>
       </section>
@@ -110,10 +121,13 @@
           </a>
           <div>
             <p>{{ $t('download.extensions.legacyInfo') }}</p>
-            <p>Check out the
-              <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link>
-              for more information!
-            </p>
+            <i18n path="download.extensions.more" tag="p">
+              <template v-slot:wiki>
+                <router-link to="/wiki/Extensions#extension-legacy-api">
+                  {{ $t('download.extensions.wiki') }}
+                </router-link>
+              </template>
+            </i18n>
           </div>
         </div>
         <div>
@@ -125,10 +139,13 @@
             <small>{{ $t('download.extensions.version') }}</small>
           </a>
           <div>
-            <p>Allows for other ways to make
-              <router-link to="/wiki/Default-Groups">Default Groups</router-link>
-              if the workarounds are not possible.
-            </p>
+            <i18n path="download.extensions.defaultAssignmentsInfo" tag="p">
+              <template v-slot:wiki>
+                <router-link to="/wiki/Default-Groups">
+                  {{ $t('download.extensions.groups') }}
+                </router-link>
+              </template>
+            </i18n>
             <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
               section</router-link> for more information! See also
               <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about

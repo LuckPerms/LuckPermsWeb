@@ -9,11 +9,7 @@
         <div v-if="!config.selfHosted" class="nav-message">
           <a href="https://bisecthosting.com/luck" target="_blank">
             <img src="@/assets/bisect.svg" alt="Bisect Hosting">
-            <span>
-              Proudly sponsored by
-              <strong>BisectHosting</strong><br/>
-              Use code <code>luck</code> for 25% off!
-            </span>
+            <span v-html="$t('sponsor')" />
           </a>
         </div>
       </div>

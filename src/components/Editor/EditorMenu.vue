@@ -5,7 +5,7 @@
         type="text"
         :placeholder="$t('editor.search')"
         v-model="filter"
-        title="Filter tracks, groups and users"
+        :title="$t('editor.tracks.filter')"
       >
       <button class="delete" @click="filter = ''" v-if="filter !== ''" title="Clear filter">
         <font-awesome icon="times" fixed-width />
@@ -15,14 +15,14 @@
     <div class="sessions">
       <div class="tracks">
         <h2 @click="toggle.tracks = !toggle.tracks">
-          <button title="Show/hide tracks">
+          <button :title="$t('editor.tracks.toggle')">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.tracks ? 90 : null" />
           </button>
           <span>
             {{ $t('editor.nav.tracks') }}
             <small>({{ filteredTracks.length }})</small>
           </span>
-          <button @click.stop="createTrack" title="Add a track">
+          <button @click.stop="createTrack" :title="$t('editor.tracks.add')">
             <font-awesome icon="plus-circle" fixed-width />
           </button>
         </h2>
@@ -46,7 +46,7 @@
 
       <div class="groups" v-if="filteredGroups.length">
         <h2 @click="toggle.groups = !toggle.groups">
-          <button title="Show/hide groups">
+          <button :title="$t('editor.groups.toggle')">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.groups ? 90 : null" />
           </button>
           <span>
@@ -78,7 +78,7 @@
 
       <div class="users" v-if="filteredUsers.length">
         <h2 @click="toggle.users = !toggle.users">
-          <button title="Show/hide users">
+          <button :title="$t('editor.users.toggle')">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.users ? 90 : null" />
           </button>
           <span>
@@ -95,7 +95,7 @@
               @click="changeCurrentSession(user.id)"
               :class="{'active': currentSession && currentSession === user}"
               :key="user.id"
-              title="Edit user"
+              :title="$t('editor.users.edit')"
             >
               <span class="username">
                 <img :src="`https://minotar.net/helm/${user.id}/100.png`" :alt="$t('avatar', { name })">

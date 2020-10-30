@@ -8,7 +8,7 @@
     </code>
   </h2>
   <p class="lighter">
-    {{ $t('editor..users.deleteConfirm', { count: permissions.length }) }}
+    {{ $t('editor.users.deleteConfirm', { count: permissions.length }) }}
   </p>
   <div>
     <button type="button" @click="deleteUser">

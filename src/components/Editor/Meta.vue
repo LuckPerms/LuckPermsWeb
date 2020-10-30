@@ -6,7 +6,7 @@
   </div>
   <div class="meta-parents">
     <div class="add-group">
-      <strong>Parent groups </strong>
+      <strong>{{ $t('editor.meta.parents') }}</strong>
       <button
         @click="addingGroup = true"
         :title="$t('editor.meta.add', { id: session.id })"

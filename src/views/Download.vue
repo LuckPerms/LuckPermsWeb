@@ -50,7 +50,7 @@
               <font-awesome icon="arrow-alt-circle-down" />
               Velocity
             </span>
-            <small>{{ $t('download.velociy') }}</small>
+            <small>{{ $t('download.velocity') }}</small>
           </a>
           <a :href="downloads['bukkit-legacy']" class="resource">
             <span>
@@ -61,7 +61,7 @@
           </a>
           <button class="button" @click="openQuiz">
             <font-awesome icon="question-circle" />
-            Not sure which type?
+            {{ $t('download.typeHelp') }}
           </button>
         </div>
 
@@ -109,9 +109,13 @@
       <div class="container">
         <div>
           <h1>{{ $t('download.extensions.title') }}</h1>
-          <p>Extensions can modify the behaviour of LuckPerms, you can read more about them
-            <router-link to="/wiki/Extensions">on the wiki</router-link>.
-          </p>
+          <i18n path="download.extensions.description" tag="p">
+            <template v-slot:wiki>
+              <router-link to="/wiki/Extensions">
+                {{ $t('download.extensions.descriptionWiki') }}
+              </router-link>
+            </template>
+          </i18n>
         </div>
       </div>
     </section>

@@ -6,7 +6,7 @@
         <small v-if="group.displayName !== group.id">{{ group.id }}</small>
       </span>
       <span v-if="isVisible">
-        <span v-if="weight" class="weight" title="Weight">
+        <span v-if="weight" class="weight" :title="$t('editor.groups.weight')">
           {{ weight }}
         </span>
         <button @click="deleteGroup" :disabled="group.id === 'default'">

@@ -1,9 +1,6 @@
 <template>
 <div class="delete-group">
-  <h2>
-    Are you sure you want to delete group:
-    <code>{{ props.groupId }}</code>
-  </h2>
+  <h2 v-html="$t('editor.groups.delete', { group: props.groupId })" />
   <p class="lighter">
     {{ $t('editor.groups.deleteConfirm', { count: permissions.length }) }}
   </p>

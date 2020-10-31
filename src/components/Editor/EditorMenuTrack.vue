@@ -26,7 +26,7 @@
             'modified': modifiedSessions.includes(group)
           }"
           :key="`${track.id}_${group}`"
-          title="Edit group"
+          :title="$t('editor.groups.edit')"
         >
           {{ group }}
         </li>

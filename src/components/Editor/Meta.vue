@@ -1,7 +1,7 @@
 <template>
 <div class="editor-meta">
   <div class="meta-weight" v-if="sessionData.type === 'group'">
-    <strong>Weight: </strong>
+    <strong>{{ $t('editor.meta.weight') }}</strong>
     <code>{{ groupWeight }}</code>
   </div>
   <div class="meta-parents">

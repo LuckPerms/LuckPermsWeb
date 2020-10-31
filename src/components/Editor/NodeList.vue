@@ -1,6 +1,6 @@
 <template>
 <div class="node-list">
-  <h2>Permission nodes <span>({{ nodes.length }})</span></h2>
+  <h2 v-html="$tc('editor.nodes.permissionsCount', nodes.length)" />
 
   <div class="node-list-header">
     <div class="sorting-tabs">

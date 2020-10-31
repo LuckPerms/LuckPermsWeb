@@ -44,7 +44,7 @@
       <code v-if="source.expiry">{{ source.expiry | moment('from') }}</code>
       <code v-else disabled>{{ $t('editor.nodes.never') }}</code>
 
-      <button v-if="source.expiry" class="delete" @click.stop="deleteExpiry()" title="Delete expiry">
+      <button v-if="source.expiry" class="delete" @click.stop="deleteExpiry()" :title="$t('editor.nodes.deleteExpiry')">
         <font-awesome icon="times" />
       </button>
     </div>
@@ -97,7 +97,7 @@
               <input
                 type="text"
                 v-model="context.key"
-                placeholder="key"
+                :placeholder="$t('editor.key')"
                 @focus="context.keyFocus = true"
                 @blur="blurField('keyFocus')"
               >
@@ -114,7 +114,7 @@
               <input
                 type="text"
                 v-model="context.value"
-                placeholder="value"
+                :placeholder="$t('editor.value')"
                 @focus="context.valueFocus = true"
                 @blur="blurField('valueFocus')"
                 @keydown.enter="addContext"

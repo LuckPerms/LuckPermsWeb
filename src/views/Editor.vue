@@ -86,7 +86,7 @@
 <!--                <button>-->
 <!--                  <font-awesome icon="redo" />-->
 <!--                </button>-->
-                <button @click="saveData" title="Save and generate code">
+                <button @click="saveData" :title="$t('editor.saveAndGenerate')">
                   <span v-if="saveStatus !== 'saving'">
                     <font-awesome icon="save" fixed-width />
                     {{ $t('editor.save') }}

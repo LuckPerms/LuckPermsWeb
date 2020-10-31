@@ -7,7 +7,7 @@
   </p>
 
   <div class="command">
-    <code class="apply-edits" @click="copyCommand" title="Copy to clipboard">
+    <code class="apply-edits" @click="copyCommand" :title="$t('editor.clipboardCopy')">
       /{{ metaData.commandAlias }} applyedits {{ props }}
     </code>
     <span class="command-copied" v-if="commandCopied">

@@ -7,7 +7,7 @@
         v-model="filter"
         :title="$t('editor.tracks.filter')"
       >
-      <button class="delete" @click="filter = ''" v-if="filter !== ''" title="Clear filter">
+      <button class="delete" @click="filter = ''" v-if="filter !== ''" :title="$t('editor.clearFilters')">
         <font-awesome icon="times" fixed-width />
       </button>
     </div>
@@ -68,7 +68,7 @@
                 'new': group.new
               }"
               :key="`group_${group.id}`"
-              title="Edit group"
+              :title="$t('editor.groups.edit')"
             >
               <EditorMenuGroup :group="group" />
             </li>

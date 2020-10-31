@@ -4,16 +4,11 @@
       <div class="container">
         <div>
           <h1>{{ $t('download.title') }}</h1>
-          <p>
-            {{ $t('download.version', { version }) }}
+          <div class="version">
+            <p><span>v{{ version }}</span></p>
+            <p>Latest, built {{ versionTimestamp | moment('calendar', null, { sameElse: 'll [at] LT' }) }}</p>
             <font-awesome icon="asterisk" :spin="true" v-if="!version" />
-          </p>
-        </div>
-        <div>
-          <button class="button" @click="openQuiz">
-            <font-awesome icon="question-circle" />
-            {{ $t('download.typeHelp') }}
-          </button>
+          </div>
         </div>
       </div>
     </section>
@@ -64,9 +59,20 @@
             </span>
             <small>{{ $t('download.bukkitLegacy') }}</small>
           </a>
+          <button class="button" @click="openQuiz">
+            <font-awesome icon="question-circle" />
+            Not sure which type?
+          </button>
         </div>
 
         <div>
+          <h2>{{ $t('download.changelog') }}</h2>
+          <ul>
+            <li v-for="entry in changeLog" :key="entry.version">
+              <a :href="'https://github.com/lucko/LuckPerms/commit/' + entry.commit" target="_blank">v{{ entry.version }}</a>
+               - {{ entry.title }}
+            </li>
+          </ul>
           <h2>{{ $t('download.install.title') }}</h2>
           <ol>
             <li v-html="$t('download.install.add')" />
@@ -104,7 +110,7 @@
         <div>
           <h1>{{ $t('download.extensions.title') }}</h1>
           <p>Extensions can modify the behaviour of LuckPerms, you can read more about them
-            <router-link to="/wiki/Extensions">on the wiki</router-link>
+            <router-link to="/wiki/Extensions">on the wiki</router-link>.
           </p>
         </div>
       </div>
@@ -147,9 +153,9 @@
               </template>
             </i18n>
             <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
-              section</router-link> for more information! See also
+              section</router-link> for more information. See also
               <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about
-              configuring default assignments!
+              configuring default assignments.
             </p>
           </div>
         </div>
@@ -182,6 +188,8 @@ export default {
     extensions() { return this.$store.getters.extensions; },
     downloads() { return this.$store.getters.downloads; },
     version() { return this.$store.getters.version; },
+    versionTimestamp() { return this.$store.getters.versionTimestamp; },
+    changeLog() { return this.$store.getters.changeLog; },
   },
   methods: {
     openQuiz() {
@@ -213,13 +221,8 @@ export default {
         }
       }
 
-      p {
-        text-align: center;
-        font-size: 1.5rem;
-
-        @include breakpoint($md) {
-          text-align: left;
-        }
+      .version {
+        line-height: 1.2;
       }
 
       h1 {
@@ -230,17 +233,21 @@ export default {
         }
       }
 
-      button {
-        margin-top: 2rem;
+      p {
+        text-align: center;
+        font-size: 1.5rem;
+        opacity: 1;
+        color: rgba(225, 255, 255, .5);
 
         @include breakpoint($md) {
-          margin: 0;
+          text-align: left;
         }
+      }
 
-        svg {
-          opacity: .5;
-          margin-right: 1rem;
-        }
+      span {
+        color: $brand_color;
+        font-weight: bold;
+        font-size: 2.2em;
       }
     }
 
@@ -265,6 +272,20 @@ export default {
         @include breakpoint($md) {
           margin: 0;
         }
+      }
+    }
+
+    .button {
+      color: $brand-color;
+      background-color: $grey;
+
+      &:hover {
+        background: lighten($grey, 10%);
+      }
+
+      svg {
+        opacity: .5;
+        margin-right: 1rem;
       }
     }
 

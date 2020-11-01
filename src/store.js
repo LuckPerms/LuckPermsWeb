@@ -11,6 +11,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     version: null,
+    versionTimestamp: null,
+    changeLog: [],
     config: null,
     downloads: {
       bukkit: null,
@@ -51,6 +53,10 @@ export default new Vuex.Store({
 
   getters: {
     version: state => state.version,
+
+    versionTimestamp: state => state.versionTimestamp,
+
+    changeLog: state => state.changeLog,
 
     config: state => state.config,
 
@@ -113,6 +119,14 @@ export default new Vuex.Store({
   mutations: {
     setVersion: (state, version) => {
       state.version = version;
+    },
+
+    setVersionTimestamp: (state, versionTimestamp) => {
+      state.versionTimestamp = versionTimestamp;
+    },
+
+    setChangeLog: (state, changeLog) => {
+      state.changeLog = changeLog;
     },
 
     setConfig: (state, configData) => {
@@ -255,7 +269,7 @@ export default new Vuex.Store({
     addEditorNode(state, node) {
       const addingNode = node;
 
-      if (node.expiry instanceof Date) addingNode.expiry = node.expiry.getTime() / 1000;
+      if (node.expiry instanceof Date) addingNode.expiry = node.expiry.getTime();
 
       state.editor.nodes.push(addingNode);
 
@@ -301,7 +315,7 @@ export default new Vuex.Store({
 
     updateNode(state, { node, type, data }) {
       if (type === 'expiry') {
-        node[type] = data.value ? data.value.getTime() / 1000 : null;
+        node[type] = data.value ? data.value.getTime() : null;
       } else {
         if (type === 'sessionId') {
           state.editor.sessions[node.sessionId].modified = true;
@@ -428,6 +442,8 @@ export default new Vuex.Store({
       try {
         const appData = await axios.get(`${config.api_url}/data/all`);
         commit('setVersion', appData.data.version);
+        commit('setVersionTimestamp', appData.data.versionTimestamp);
+        commit('setChangeLog', appData.data.changeLog);
         commit('setDownloads', appData.data.downloads);
         commit('setExtensions', appData.data.extensions);
         commit('setDiscordUserCount', appData.data.discordUserCount);
@@ -466,11 +482,13 @@ export default new Vuex.Store({
 
       data.permissionHolders.forEach((session) => {
         session.nodes.forEach((node) => {
+          const expiry = node.expiry ? node.expiry * 1000 : null;
+
           dispatch('addNodes', [{
             sessionId: session.id,
             key: node.key,
             value: node.value,
-            expiry: node.expiry,
+            expiry,
             context: node.context,
           }]);
         });
@@ -491,7 +509,7 @@ export default new Vuex.Store({
       nodes.forEach((node) => {
         const addingNode = node;
         addingNode.id = uuid();
-        addingNode.expiry = node.expiry || null;
+        addingNode.expiry = node.expiry;
         addingNode.context = node.context || {};
         addingNode.selected = false;
         commit('addEditorNode', addingNode);
@@ -660,7 +678,7 @@ export default new Vuex.Store({
         sessionNodes.forEach(node => nodes.push({
           key: node.key,
           value: node.value,
-          ...node.expiry && { expiry: node.expiry },
+          ...node.expiry && { expiry: Math.floor(node.expiry / 1000) },
           ...(Object.entries(node.context).length) && { context: node.context },
         }));
 

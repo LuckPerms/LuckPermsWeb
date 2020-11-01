@@ -3,41 +3,45 @@
  *
  * @param {number} date - The timestamp being compared
  * @param {number} [baseDate] - The timestamp being compared from (defaults to now)
+ * @param {boolean} [includeTime=false] - Whether to include return the time
  * @returns {String}
  */
-export function relativeDate(date, baseDate) {
-  const rtf = new Intl.RelativeTimeFormat();
+export function relativeDate(date, baseDate, includeTime) {
+  const rtf = new Intl.RelativeTimeFormat(navigator.language, {
+    numeric: 'auto',
+  });
   const now = baseDate ? baseDate : new Date().getTime();
   const diff = date - now;
+  const absDiff = Math.abs(diff);
 
   let value, unit;
 
   // Seconds
-  if (diff < 60000) {
+  if (absDiff < 60000) {
     value = Math.floor(diff / 1000);
     unit = 'second';
   }
 
   // Minutes
-  else if (diff >= 60000 && diff < 3600000) {
+  else if (absDiff >= 60000 && absDiff < 3600000) {
     value = Math.floor(diff / 60000);
     unit = 'minute';
   }
 
   // Hours
-  else if (diff >= 3600000 && diff < 86400000) {
+  else if (absDiff >= 3600000 && absDiff < 86400000) {
     value = Math.floor(diff / 3600000);
     unit = 'hour';
   }
 
   // Days
-  else if (diff >= 86400000 && diff < 604800000) {
+  else if (absDiff >= 86400000 && absDiff < 604800000) {
     value = Math.floor(diff / 86400000);
     unit = 'day';
   }
 
   // Weeks
-  else if (diff >= 604800000 && diff < 2629800000) {
+  else if (absDiff >= 604800000 && absDiff < 2629800000) {
     value = Math.floor(diff / 604800000);
     unit = 'week';
   }
@@ -48,5 +52,19 @@ export function relativeDate(date, baseDate) {
     unit = 'month';
   }
 
-  return rtf.format(value, unit);
+  const dateFormat = rtf.format(value, unit);
+
+  if (includeTime) {
+    const dateTime = new Intl.DateTimeFormat(navigator.language, {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    });
+
+    const timeFormat = dateTime.format(new Date(date));
+
+    return `${dateFormat} @ ${timeFormat}`;
+  }
+
+  return dateFormat;
 }

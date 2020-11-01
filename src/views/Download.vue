@@ -6,7 +6,7 @@
           <h1>Download LuckPerms</h1>
           <div class="version">
             <p><span>v{{ version }}</span></p>
-            <p>Latest, built {{ versionTimestamp | moment('calendar', null, { sameElse: 'll [at] LT' }) }}</p>
+            <p>Latest, built {{ relativeTimestamp }}</p>
             <font-awesome icon="asterisk" :spin="true" v-if="!version" />
           </div>
         </div>
@@ -157,6 +157,8 @@
 </template>
 
 <script>
+import { relativeDate } from '@/util/date';
+
 export default {
   name: 'Download',
   metaInfo: {
@@ -177,6 +179,10 @@ export default {
     downloads() { return this.$store.getters.downloads; },
     version() { return this.$store.getters.version; },
     versionTimestamp() { return this.$store.getters.versionTimestamp; },
+    relativeTimestamp() {
+      if (this.versionTimestamp) return relativeDate(this.versionTimestamp, new Date().getTime(), true);
+      return null;
+    },
     changeLog() { return this.$store.getters.changeLog; },
   },
   methods: {

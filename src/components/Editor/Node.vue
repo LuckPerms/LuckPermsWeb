@@ -41,7 +41,7 @@
       @click="expiry.edit = true"
       title="Click to choose an expiry"
     >
-      <code v-if="source.expiry">{{ source.expiry | moment('from') }}</code>
+      <code v-if="source.expiry">{{ relativeExpiry }}</code>
       <code v-else disabled>never</code>
 
       <button v-if="source.expiry" class="delete" @click.stop="deleteExpiry()" title="Delete expiry">
@@ -142,6 +142,7 @@
 <script>
 import Datepicker from '@turbotailz/vuejs-datepicker';
 import vClickOutside from 'v-click-outside';
+import { relativeDate } from '@/util/date';
 
 export default {
   name: 'Node',
@@ -205,6 +206,9 @@ export default {
       if (!context) return null;
       return context.values;
     },
+    relativeExpiry() {
+      return relativeDate(this.source.expiry);
+    }
   },
   methods: {
     toggleNodeSelect() {

@@ -67,10 +67,15 @@
 
         <div>
           <h2>Recent Changelog</h2>
-          <ul>
+          <ul class="changelog">
             <li v-for="entry in changeLog" :key="entry.version">
-              <a :href="'https://github.com/lucko/LuckPerms/commit/' + entry.commit" target="_blank">v{{ entry.version }}</a>
-               - {{ entry.title }}
+              <span>
+                <a :href="`https://github.com/lucko/LuckPerms/commit/${entry.commit}`" target="_blank">
+                  <code>v{{ entry.version }}</code>
+                </a>
+                <span class="title">{{ entry.title }}</span>
+              </span>
+              <span class="time lighter">{{ relativeDate(entry.timestamp) }}</span>
             </li>
           </ul>
           <h2>How to install</h2>
@@ -189,10 +194,12 @@ export default {
     openQuiz() {
       this.quiz.open = true;
     },
-
     closeQuiz() {
       this.quiz.open = false;
     },
+    relativeDate(value) {
+      return relativeDate(value);
+    }
   },
 };
 </script>
@@ -280,6 +287,34 @@ export default {
       svg {
         opacity: .5;
         margin-right: 1rem;
+      }
+    }
+
+    .changelog {
+      list-style: none;
+      padding: 0;
+
+      li {
+        padding-bottom: .25rem;
+        margin-bottom: .25rem;
+        display: flex;
+        justify-content: space-between;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        > span {
+          display: flex;
+        }
+
+        .title {
+          margin: 0 1rem;
+        }
+
+        .time {
+          flex-shrink: 0;
+        }
       }
     }
 

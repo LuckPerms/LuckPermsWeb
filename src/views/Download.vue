@@ -4,11 +4,11 @@
       <div class="container">
         <div>
           <h1>Download LuckPerms</h1>
-          <div class="version">
-            <p><span>v{{ version }}</span></p>
-            <p>Latest, built {{ relativeTimestamp }}</p>
-            <font-awesome icon="asterisk" :spin="true" v-if="!version" />
-          </div>
+        </div>
+        <div class="version">
+          <p><span>v{{ version }}</span></p>
+          <p>Latest, built {{ relativeTimestamp }}</p>
+          <font-awesome icon="asterisk" :spin="true" v-if="!version" />
         </div>
       </div>
     </section>
@@ -234,7 +234,7 @@ export default {
         color: rgba(225, 255, 255, .5);
 
         @include breakpoint($md) {
-          text-align: left;
+          text-align: right;
         }
       }
 

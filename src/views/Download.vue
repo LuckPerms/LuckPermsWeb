@@ -4,11 +4,11 @@
       <div class="container">
         <div>
           <h1>{{ $t('download.title') }}</h1>
-          <div class="version">
-            <p><span>v{{ version }}</span></p>
-            <p>Latest, built {{ versionTimestamp | moment('calendar', null, { sameElse: 'll [at] LT' }) }}</p>
-            <font-awesome icon="asterisk" :spin="true" v-if="!version" />
-          </div>
+        </div>
+        <div class="version">
+          <p><span>v{{ version }}</span></p>
+          <p>Latest, built {{ relativeTimestamp }}</p>
+          <font-awesome icon="asterisk" :spin="true" v-if="!version" />
         </div>
       </div>
     </section>
@@ -67,10 +67,15 @@
 
         <div>
           <h2>{{ $t('download.changelog') }}</h2>
-          <ul>
+          <ul class="changelog">
             <li v-for="entry in changeLog" :key="entry.version">
-              <a :href="'https://github.com/lucko/LuckPerms/commit/' + entry.commit" target="_blank">v{{ entry.version }}</a>
-               - {{ entry.title }}
+              <span>
+                <a :href="`https://github.com/lucko/LuckPerms/commit/${entry.commit}`" target="_blank">
+                  <code>v{{ entry.version }}</code>
+                </a>
+                <span class="title">{{ entry.title }}</span>
+              </span>
+              <span class="time lighter">{{ relativeDate(entry.timestamp) }}</span>
             </li>
           </ul>
           <h2>{{ $t('download.install.title') }}</h2>
@@ -173,6 +178,8 @@
 </template>
 
 <script>
+import { relativeDate } from '@/util/date';
+
 export default {
   name: 'Download',
   metaInfo: {
@@ -193,16 +200,22 @@ export default {
     downloads() { return this.$store.getters.downloads; },
     version() { return this.$store.getters.version; },
     versionTimestamp() { return this.$store.getters.versionTimestamp; },
+    relativeTimestamp() {
+      if (this.versionTimestamp) return relativeDate(this.versionTimestamp, new Date().getTime(), true);
+      return null;
+    },
     changeLog() { return this.$store.getters.changeLog; },
   },
   methods: {
     openQuiz() {
       this.quiz.open = true;
     },
-
     closeQuiz() {
       this.quiz.open = false;
     },
+    relativeDate(value) {
+      return relativeDate(value);
+    }
   },
 };
 </script>
@@ -244,7 +257,7 @@ export default {
         color: rgba(225, 255, 255, .5);
 
         @include breakpoint($md) {
-          text-align: left;
+          text-align: right;
         }
       }
 
@@ -290,6 +303,34 @@ export default {
       svg {
         opacity: .5;
         margin-right: 1rem;
+      }
+    }
+
+    .changelog {
+      list-style: none;
+      padding: 0;
+
+      li {
+        padding-bottom: .25rem;
+        margin-bottom: .25rem;
+        display: flex;
+        justify-content: space-between;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        > span {
+          display: flex;
+        }
+
+        .title {
+          margin: 0 1rem;
+        }
+
+        .time {
+          flex-shrink: 0;
+        }
       }
     }
 

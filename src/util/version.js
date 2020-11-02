@@ -15,7 +15,7 @@ function parseVersion(version) {
 }
 
 /**
- * Compare's the user's version to the latest version
+ * Compares the user's version to the latest version
  * Returns an object showing which semver is up to date (major, minor, patch)
  *
  * @param {string} latest - the most up to date version

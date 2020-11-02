@@ -1,7 +1,7 @@
 <template>
 <div class="delete-user">
   <i18n path="editor.users.delete" tag="h2">
-    <template v-slot:user>
+    <template #user>
       <code class="username">
         <avatar :id="user.id" :name="user.displayName" />
         {{ user.displayName }}

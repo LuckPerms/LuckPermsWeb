@@ -43,7 +43,7 @@
             <li v-html="$t('home.why.free')"/>
           </ul>
           <i18n path="home.why.more" tag="p">
-            <template v-slot:wiki>
+            <template #wiki>
               <router-link to="/wiki/Why-LuckPerms">{{ $t('home.why.why') }}</router-link>
             </template>
           </i18n>

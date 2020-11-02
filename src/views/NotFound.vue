@@ -6,7 +6,7 @@
         <h1>{{ $t('notFound.title') }}</h1>
         <div class="error">
           <i18n path="notFound.message" tag="p">
-            <template v-slot:path>
+            <template #path>
               <code>{{ $route.path }}</code>
             </template>
           </i18n>

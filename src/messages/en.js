@@ -47,6 +47,7 @@ export default {
   },
   download: {
     title: 'Download LuckPerms',
+    build: 'Latest, built {time}',
     typeHelp: 'Not sure wich type?',
     typeChoose: 'Choose your server type',
     bukkit: 'For CraftBukkit/Spigot/Paper etc, 1.8.8 or newer',

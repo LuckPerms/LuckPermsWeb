@@ -2,12 +2,10 @@
   <main class="download">
     <section class="hero">
       <div class="container">
-        <div>
           <h1>{{ $t('download.title') }}</h1>
-        </div>
         <div class="version">
           <p><span>v{{ version }}</span></p>
-          <p>Latest, built {{ relativeTimestamp }}</p>
+          <p>{{ $t('download.build', { time: relativeTimestamp }) }}</p>
           <font-awesome icon="asterisk" :spin="true" v-if="!version" />
         </div>
       </div>
@@ -84,7 +82,7 @@
             <li v-html="$t('download.install.restart')" />
             <li v-html="$t('download.install.config')" />
             <i18n path="download.install.setup" tag="li">
-              <template v-slot:wiki>
+              <template #wiki>
                 <router-link to="wiki/Usage">
                   {{ $t('download.install.wiki') }}
                 </router-link>
@@ -95,14 +93,14 @@
           <ul>
             <li v-html="$t('download.trouble.console')" />
             <i18n path="download.trouble.read" tag="li">
-              <template v-slot:wiki>
+              <template #wiki>
                 <router-link to="wiki/Installation">
                   {{ $t('download.trouble.wiki') }}
                 </router-link>
               </template>
             </i18n>
             <i18n path="download.trouble.support" tag="li">
-              <template v-slot:discord>
+              <template #discord>
                   <a href="https://discord.gg/luckperms" target="_blank">Discord</a>
               </template>
             </i18n>
@@ -115,7 +113,7 @@
         <div>
           <h1>{{ $t('download.extensions.title') }}</h1>
           <i18n path="download.extensions.description" tag="p">
-            <template v-slot:wiki>
+            <template #wiki>
               <router-link to="/wiki/Extensions">
                 {{ $t('download.extensions.descriptionWiki') }}
               </router-link>
@@ -137,7 +135,7 @@
           <div>
             <p>{{ $t('download.extensions.legacyInfo') }}</p>
             <i18n path="download.extensions.more" tag="p">
-              <template v-slot:wiki>
+              <template #wiki>
                 <router-link to="/wiki/Extensions#extension-legacy-api">
                   {{ $t('download.extensions.wiki') }}
                 </router-link>
@@ -155,7 +153,7 @@
           </a>
           <div>
             <i18n path="download.extensions.defaultAssignmentsInfo" tag="p">
-              <template v-slot:wiki>
+              <template #wiki>
                 <router-link to="/wiki/Default-Groups">
                   {{ $t('download.extensions.groups') }}
                 </router-link>

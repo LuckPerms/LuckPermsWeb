@@ -92,7 +92,7 @@
               {{ $t('editor.error.info') }}
             </p>
             <i18n path="editor.error.new" tag="p">
-              <template v-slot:path>
+              <template #path>
                 <code>/lp editor</code>
               </template>
             </i18n>

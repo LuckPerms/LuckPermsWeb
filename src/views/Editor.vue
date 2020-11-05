@@ -2,7 +2,7 @@
   <main class="editor">
     <div v-if="!sessionId" class="tool-intro">
       <div>
-        <img alt="LuckPerms logo" src="../assets/logo.png">
+        <img alt="LuckPerms logo" src="../assets/logo.svg">
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Web Permissions Editor</p>
@@ -23,7 +23,7 @@
       <transition name="fade" mode="out-in">
         <div v-if="!sessions.length" class="tool-intro" key="loading">
           <div>
-            <img alt="LuckPerms logo" src="../assets/logo.png">
+            <img alt="LuckPerms logo" src="../assets/logo.svg">
             <div class="text">
               <h1>LuckPerms</h1>
               <p>Web Permissions Editor</p>

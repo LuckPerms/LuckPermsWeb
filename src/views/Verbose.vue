@@ -82,7 +82,7 @@
     </div>
     <div v-else class="tool-intro">
       <div>
-        <img alt="LuckPerms logo" src="../assets/logo.png">
+        <img alt="LuckPerms logo" src="../assets/logo.svg">
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Verbose Viewer</p>

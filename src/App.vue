@@ -3,7 +3,7 @@
     <nav id="nav">
       <div>
         <router-link to="/" class="logo">
-          <img alt="LuckPerms logo" src="@/assets/logo.png">
+          <img alt="LuckPerms logo" src="@/assets/logo.svg">
           <span>LuckPerms</span>
         </router-link>
         <div v-if="!config.selfHosted" class="nav-message">

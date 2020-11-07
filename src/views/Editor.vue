@@ -218,18 +218,7 @@ export default {
 
   created() {
     const { $route } = this;
-
-    if (window.location.search && window.location.search.length === 11) {
-      const code = window.location.search.split('?')[1];
-      window.location = `https://legacy.luckperms.net/editor/?${code}`;
-    }
-
-    if ($route.hash && $route.hash.length === 11) {
-      window.location = `https://legacy.luckperms.net/editor/${$route.hash}`;
-    }
-
     if (this.sessions?.length) return;
-
     updateSession($route, 'getEditorData');
   },
 

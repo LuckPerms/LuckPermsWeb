@@ -29,7 +29,7 @@
       </ul>
     </div>
   </div>
-  <button type="button" @click="addTrack" :disabled="buttonDisabled">
+  <button type="button" @click="addTrack" :disabled="buttonDisabled" class="save-button">
     <font-awesome icon="plus-circle" />
     {{ isAddingTrack ? 'Add' : 'Save' }} track
   </button>

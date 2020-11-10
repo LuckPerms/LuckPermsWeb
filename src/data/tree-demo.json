@@ -1,0 +1,220 @@
+{
+  "metadata": {
+    "time": "2020-01-01 12:00:00 UTC",
+    "root": ".",
+    "uploader": {
+      "name": "Console",
+      "uuid": "00000000-0000-0000-0000-000000000000"
+    }
+  },
+  "data": {
+    "tree": {
+      "craftbukkit": {},
+      "bukkit": {
+        "bukkit.broadcast": {
+          "bukkit.broadcast.admin": {},
+          "bukkit.broadcast.user": {}
+        },
+        "bukkit.command": {
+          "bukkit.command.help": {},
+          "bukkit.command.plugins": {},
+          "bukkit.command.reload": {},
+          "bukkit.command.version": {}
+        }
+      },
+      "luckperms": {
+        "luckperms.applyedits": {},
+        "luckperms.bulkupdate": {},
+        "luckperms.check": {},
+        "luckperms.creategroup": {},
+        "luckperms.createtrack": {},
+        "luckperms.debug": {},
+        "luckperms.deletegroup": {},
+        "luckperms.deletetrack": {},
+        "luckperms.editor": {},
+        "luckperms.export": {},
+        "luckperms.import": {},
+        "luckperms.info": {},
+        "luckperms.listgroups": {},
+        "luckperms.listtracks": {},
+        "luckperms.migration": {},
+        "luckperms.reloadconfig": {},
+        "luckperms.search": {},
+        "luckperms.sync": {},
+        "luckperms.tree": {},
+        "luckperms.verbose": {},
+        "luckperms.group": {
+          "luckperms.group.clear": {},
+          "luckperms.group.clone": {},
+          "luckperms.group.editor": {},
+          "luckperms.group.info": {},
+          "luckperms.group.listmembers": {},
+          "luckperms.group.rename": {},
+          "luckperms.group.setdisplayname": {},
+          "luckperms.group.setweight": {},
+          "luckperms.group.showtracks": {},
+          "luckperms.group.meta": {
+            "luckperms.group.meta.addprefix": {},
+            "luckperms.group.meta.addsuffix": {},
+            "luckperms.group.meta.addtempprefix": {},
+            "luckperms.group.meta.addtempsuffix": {},
+            "luckperms.group.meta.clear": {},
+            "luckperms.group.meta.info": {},
+            "luckperms.group.meta.removeprefix": {},
+            "luckperms.group.meta.removesuffix": {},
+            "luckperms.group.meta.removetempprefix": {},
+            "luckperms.group.meta.removetempsuffix": {},
+            "luckperms.group.meta.set": {},
+            "luckperms.group.meta.setprefix": {},
+            "luckperms.group.meta.setsuffix": {},
+            "luckperms.group.meta.settemp": {},
+            "luckperms.group.meta.settempprefix": {},
+            "luckperms.group.meta.settempsuffix": {},
+            "luckperms.group.meta.unset": {},
+            "luckperms.group.meta.unsettemp": {}
+          },
+          "luckperms.group.parent": {
+            "luckperms.group.parent.add": {},
+            "luckperms.group.parent.addtemp": {},
+            "luckperms.group.parent.clear": {},
+            "luckperms.group.parent.cleartrack": {},
+            "luckperms.group.parent.info": {},
+            "luckperms.group.parent.remove": {},
+            "luckperms.group.parent.removetemp": {},
+            "luckperms.group.parent.set": {},
+            "luckperms.group.parent.settrack": {}
+          },
+          "luckperms.group.permission": {
+            "luckperms.group.permission.check": {},
+            "luckperms.group.permission.checkinherits": {},
+            "luckperms.group.permission.clear": {},
+            "luckperms.group.permission.info": {},
+            "luckperms.group.permission.set": {},
+            "luckperms.group.permission.settemp": {},
+            "luckperms.group.permission.unset": {},
+            "luckperms.group.permission.unsettemp": {}
+          }
+        },
+        "luckperms.log": {
+          "luckperms.log.grouphistory": {},
+          "luckperms.log.notify": {},
+          "luckperms.log.recent": {},
+          "luckperms.log.search": {},
+          "luckperms.log.trackhistory": {},
+          "luckperms.log.userhistory": {}
+        },
+        "luckperms.sponge": {
+          "luckperms.sponge.option": {
+            "luckperms.sponge.option.clear": {},
+            "luckperms.sponge.option.info": {},
+            "luckperms.sponge.option.set": {},
+            "luckperms.sponge.option.unset": {}
+          },
+          "luckperms.sponge.parent": {
+            "luckperms.sponge.parent.add": {},
+            "luckperms.sponge.parent.clear": {},
+            "luckperms.sponge.parent.info": {},
+            "luckperms.sponge.parent.remove": {}
+          },
+          "luckperms.sponge.permission": {
+            "luckperms.sponge.permission.clear": {},
+            "luckperms.sponge.permission.info": {},
+            "luckperms.sponge.permission.set": {}
+          }
+        },
+        "luckperms.track": {
+          "luckperms.track.append": {},
+          "luckperms.track.clear": {},
+          "luckperms.track.clone": {},
+          "luckperms.track.info": {},
+          "luckperms.track.insert": {},
+          "luckperms.track.remove": {},
+          "luckperms.track.rename": {}
+        },
+        "luckperms.user": {
+          "luckperms.user.clear": {},
+          "luckperms.user.clone": {},
+          "luckperms.user.demote": {},
+          "luckperms.user.editor": {},
+          "luckperms.user.info": {},
+          "luckperms.user.promote": {},
+          "luckperms.user.showtracks": {},
+          "luckperms.user.meta": {
+            "luckperms.user.meta.addprefix": {},
+            "luckperms.user.meta.addsuffix": {},
+            "luckperms.user.meta.addtempprefix": {},
+            "luckperms.user.meta.addtempsuffix": {},
+            "luckperms.user.meta.clear": {},
+            "luckperms.user.meta.info": {},
+            "luckperms.user.meta.removeprefix": {},
+            "luckperms.user.meta.removesuffix": {},
+            "luckperms.user.meta.removetempprefix": {},
+            "luckperms.user.meta.removetempsuffix": {},
+            "luckperms.user.meta.set": {},
+            "luckperms.user.meta.setprefix": {},
+            "luckperms.user.meta.setsuffix": {},
+            "luckperms.user.meta.settemp": {},
+            "luckperms.user.meta.settempprefix": {},
+            "luckperms.user.meta.settempsuffix": {},
+            "luckperms.user.meta.unset": {},
+            "luckperms.user.meta.unsettemp": {}
+          },
+          "luckperms.user.parent": {
+            "luckperms.user.parent.add": {},
+            "luckperms.user.parent.addtemp": {},
+            "luckperms.user.parent.clear": {},
+            "luckperms.user.parent.cleartrack": {},
+            "luckperms.user.parent.info": {},
+            "luckperms.user.parent.remove": {},
+            "luckperms.user.parent.removetemp": {},
+            "luckperms.user.parent.set": {},
+            "luckperms.user.parent.settrack": {},
+            "luckperms.user.parent.switchprimarygroup": {}
+          },
+          "luckperms.user.permission": {
+            "luckperms.user.permission.check": {},
+            "luckperms.user.permission.checkinherits": {},
+            "luckperms.user.permission.clear": {},
+            "luckperms.user.permission.info": {},
+            "luckperms.user.permission.set": {},
+            "luckperms.user.permission.settemp": {},
+            "luckperms.user.permission.unset": {},
+            "luckperms.user.permission.unsettemp": {}
+          }
+        }
+      },
+      "minecraft": {
+        "minecraft.admin": {
+          "minecraft.admin.command_feedback": {}
+        },
+        "minecraft.command": {
+          "minecraft.command.defaultgamemode": {},
+          "minecraft.command.effect": {},
+          "minecraft.command.gamemode": {},
+          "minecraft.command.give": {},
+          "minecraft.command.help": {},
+          "minecraft.command.kick": {},
+          "minecraft.command.kill": {},
+          "minecraft.command.list": {},
+          "minecraft.command.me": {},
+          "minecraft.command.msg": {},
+          "minecraft.command.say": {},
+          "minecraft.command.seed": {},
+          "minecraft.command.selector": {},
+          "minecraft.command.stop": {},
+          "minecraft.command.teleport": {},
+          "minecraft.command.toggledownfall": {},
+          "minecraft.command.trigger": {},
+          "minecraft.command.xp": {}
+        },
+        "minecraft.debugstick": {
+          "minecraft.debugstick.always": {}
+        },
+        "minecraft.nbt": {
+          "minecraft.nbt.copy": {},
+          "minecraft.nbt.place": {}
+        }
+      }
+    }
+  }
+}

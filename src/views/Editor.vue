@@ -1,11 +1,14 @@
 <template>
   <main class="editor">
-    <div v-if="!sessionId" class="editor-intro">
+    <div v-if="!sessionId" class="tool-intro">
       <div>
-        <img alt="LuckPerms logo" src="../assets/logo.png">
+        <img alt="LuckPerms logo" src="../assets/logo.svg">
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Web Permissions Editor</p>
+          <router-link to="/editor/demo">
+            <button class="button demo-button">View Demo</button>
+          </router-link>
           <p>To start a new editor session, use one of the following commands:</p>
           <ul>
             <li><code>/lp editor</code></li>
@@ -17,11 +20,10 @@
     </div>
 
     <div v-else class="editor-container">
-
       <transition name="fade" mode="out-in">
-        <div v-if="!sessions.length" class="editor-intro" key="loading">
+        <div v-if="!sessions.length" class="tool-intro" key="loading">
           <div>
-            <img alt="LuckPerms logo" src="../assets/logo.png">
+            <img alt="LuckPerms logo" src="../assets/logo.svg">
             <div class="text">
               <h1>LuckPerms</h1>
               <p>Web Permissions Editor</p>
@@ -33,7 +35,10 @@
               </div>
 
               <div v-else class="error">
-                <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong or the session has expired.</p>
+                <p>
+                  <strong>There was an error loading the data.</strong>
+                  Either the URL was copied wrong or the session has expired.
+                </p>
                 <p>Please generate another editor session with <code>/lp editor</code>.</p>
               </div>
             </div>
@@ -41,15 +46,32 @@
         </div>
 
         <div v-else class="editor-wrap" :key="sessionId">
-          <editor-menu :sessions="sessions" :current-session="currentSession" />
+          <editor-menu
+            :sessions="sessions"
+            :current-session="currentSession"
+            :class="{ active: menu }"
+          />
+
+          <transition name="fade">
+            <div
+              id="editor-menu-focus"
+              class="overlay-focus"
+              v-if="menu"
+              @click="menu = !menu"
+            ></div>
+          </transition>
+
+          <button
+            id="editor-menu-toggle"
+            @click="menu = !menu"
+          >
+            <font-awesome icon="bars" />
+          </button>
 
           <div class="editor-main">
             <nav>
               <div class="logo">
-                <img alt="LuckPerms logo" src="../assets/logo.png">
                 Web Permissions Editor
-                <span>BETA</span>
-                <small>Please send any bugs, suggestions or feedback to <a href="https://github.com/lucko/LuckPermsWeb/issues" target="_blank">GitHub</a>.</small>
               </div>
               <div class="buttons">
 <!--                <button>-->
@@ -79,15 +101,22 @@
             </transition>
 
             <transition name="fade" mode="out-in">
-              <div class="editor-session" v-if="currentSession" :key="`session_${currentSession.id}`">
-                <div>
+              <div
+                class="editor-session"
+                v-if="currentSession"
+                :key="`session_${currentSession.id}`"
+              >
+                <div class="session-container">
                   <Header :session="currentSession" :sessionData="currentSessionData" />
                   <Meta :session="currentSession" :sessionData="currentSessionData" />
-                  <NodeList :nodes="currentNodes" :session="currentSession" />
+                  <NodeList :nodes="currentNodes" />
                 </div>
               </div>
             </transition>
 
+            <transition name="fade">
+              <AddNode v-if="currentSession" />
+            </transition>
           </div>
         </div>
       </transition>
@@ -102,30 +131,41 @@
 </template>
 
 <script>
-import EditorMenu from '@/components/Editor/EditorMenu';
-import Header from '@/components/Editor/Header';
-import Meta from '@/components/Editor/Meta';
-import NodeList from '@/components/Editor/NodeList';
-import Modal from '@/components/Editor/Modal';
+import EditorMenu from '@/components/Editor/EditorMenu.vue';
+import Header from '@/components/Editor/Header.vue';
+import Meta from '@/components/Editor/Meta.vue';
+import NodeList from '@/components/Editor/NodeList.vue';
+import AddNode from '@/components/Editor/AddNode.vue';
+import Modal from '@/components/Editor/Modal.vue';
+import { checkVersion } from '@/util/version';
+import updateSession from '@/util/session';
 
 export default {
   name: 'Editor',
+
+  metaInfo: {
+    title: 'Editor',
+  },
 
   components: {
     EditorMenu,
     Header,
     Meta,
     NodeList,
+    AddNode,
     Modal,
   },
 
   data() {
     return {
-      sessionId: '',
+      menu: false,
     };
   },
 
   computed: {
+    sessionId() {
+      return this.$store.getters.editorSessionId;
+    },
     sessions() {
       return this.$store.getters.sessionSet;
     },
@@ -168,99 +208,58 @@ export default {
     saveStatus() {
       return this.$store.getters.saveStatus;
     },
+    version() {
+      return this.$store.getters.version;
+    },
+    userVersion() {
+      return this.$store.getters.metaData.pluginVersion;
+    },
   },
 
   created() {
-    if (this.$route.params.id) {
-      this.sessionId = this.$route.params.id;
-    }
-    if (this.$route.query.id) {
-      this.sessionId = this.$route.query.id;
-    }
-    if (this.sessionId) {
-      this.$store.dispatch('getEditorData', this.sessionId);
-    }
+    const { $route } = this;
+    if (this.sessions?.length) return;
+    updateSession($route, 'getEditorData');
+  },
+
+  watch: {
+    $route(route) {
+      updateSession(route, 'getEditorData');
+    },
   },
 
   methods: {
     saveData() {
       this.$store.dispatch('saveData');
     },
+    checkVersion(version) {
+      return checkVersion(version, this.userVersion);
+    },
   },
 };
 </script>
 
 <style lang="scss">
+#editor-menu-toggle {
+  position: absolute;
+  left: 0;
+  z-index: 55;
+  background: transparent;
+  font: inherit;
+  font-size: 2rem;
+  border: 0;
+  height: 4rem;
+  width: 4rem;
+  color: $brand-color;
+
+  @include breakpoint($sm) {
+    display: none;
+  }
+}
+
 main.editor {
   display: flex;
   flex-direction: column;
-
-  .editor-intro {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    > div {
-      display: flex;
-      align-items: center;
-      background: rgba(255,255,255,.2);
-      padding: 2em;
-      max-width: 550px;
-      border-radius: 2px;
-    }
-
-    img {
-      margin-right: 2em;
-    }
-
-    h1 {
-      font-size: 3em;
-      line-height: 1;
-      margin: 0;
-
-      + p {
-        font-size: 1.5em;
-        margin-top: 0;
-        margin-bottom: 1rem;
-      }
-    }
-
-    p {
-      &:first-of-type {
-        margin-top: 0;
-      }
-
-      &:last-of-type {
-        margin-bottom: 0;
-      }
-    }
-
-    ul {
-      margin: 0;
-      margin-top: 1em;
-      padding-left: 1.5em;
-
-      li {
-        margin-bottom: .25em;
-
-        &:last-child {
-          margin: 0;
-        }
-      }
-    }
-
-    svg {
-      margin-right: .5em;
-      opacity: .5;
-    }
-
-    .error {
-      margin-top: 1em;
-      color: $red;
-    }
-  }
 
   .editor-container {
     width: 100%;
@@ -288,46 +287,29 @@ main.editor {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: .5em 1rem;
-          font-size: 1.5em;
+          padding: 1rem;
+          font-size: 1.5rem;
           position: relative;
-          z-index: 2;
+          z-index: 52;
 
           .logo {
             display: flex;
             align-items: center;
             font-weight: bold;
+            margin-left: 4rem;
 
-            img {
-              height: 1.5em;
-              width: auto;
-              margin-right: .5em;
-            }
-
-            span {
-              background: tomato;
-              display: inline-block;
-              padding: .1rem .5rem;
-              margin-left: 1rem;
-              border-radius: 2px;
-            }
-
-            small {
-              font-weight: normal;
-              opacity: .6;
-              font-size: 1rem;
-              max-width: 15em;
-              line-height: 1;
-              margin-left: 1rem;
+            @include breakpoint($sm) {
+              margin-left: 0;
             }
           }
 
           .buttons {
             button {
-              background: transparent;
-              color: white;
+              background: $brand-color;
+              color: $navy;
               font: inherit;
-              font-size: 1em;
+              font-size: 1rem;
+              font-weight: bold;
               padding: .25rem .5rem;
               border:0;
               margin-left: .5rem;
@@ -340,14 +322,20 @@ main.editor {
           }
         }
 
-        > div {
+        .editor-session {
           max-height: 100%;
           width: 100%;
-          overflow-y: auto;
-          overflow-x: hidden;
+          overflow: hidden;
           flex: 1;
           display: flex;
           flex-direction: column;
+
+          .session-container {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+          }
         }
 
         .editor-no-session {

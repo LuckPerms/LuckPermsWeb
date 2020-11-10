@@ -1,141 +1,148 @@
 <template>
-<li :class="{ 'permission-node': true, modified: node.modified, new: node.isNew }">
-<!--  <div-->
-<!--    :class="{ 'node-select': true, 'selected': isSelected }"-->
-<!--    @click="toggleNodeSelect(node.id)"-->
-<!--    title="Select node for mass operations"-->
-<!--  >-->
-<!--    <span></span>-->
-<!--  </div>-->
+  <div :class="{ 'permission-node': true, modified: source.modified, new: source.isNew }">
+    <div
+      :class="{ 'node-select': true, 'selected': isSelected }"
+      @click="toggleNodeSelect()"
+      title="Select node for mass operations"
+    >
+      <span></span>
+    </div>
 
-<!-- Permission node -->
-  <div
-    v-if="!permission.edit"
-    class="permission"
-    @click="permission.edit = true"
-    title="Click to edit the permission"
-  >
-    <code>{{ node.key }}</code>
-  </div>
-  <div v-else class="permission">
-    <input
-      v-autofocus
-      type="text"
-      v-model="permission.value"
-      @keydown.enter="updateNode('key', permission)"
-      @keydown.tab="updateNode('key', permission)"
-      @blur="updateNode('key', permission)"
-    />
-  </div>
+    <div
+      v-if="!permission.edit"
+      class="permission"
+      @click="permission.edit = true"
+      title="Click to edit the permission"
+    >
+      <code>{{ source.key }}</code>
+    </div>
+    <div v-else class="permission">
+      <input
+        v-autofocus
+        type="text"
+        v-model="permission.value"
+        @keydown.enter="updateNode('key', permission)"
+        @keydown.tab="updateNode('key', permission)"
+        @blur="updateNode('key', permission)"
+      />
+    </div>
 
-  <div
-    class="value"
-    @click="toggleValue(node)"
-    title="Click to toggle true/false"
-  >
-    <code :class="{'true': node.value}">{{ node.value }}</code>
-  </div>
+    <div
+      class="value"
+      @click="toggleValue()"
+      title="Click to toggle true/false"
+    >
+      <code :class="{'true': source.value}">{{ source.value }}</code>
+    </div>
 
-<!--  Expiry -->
-  <div
-    v-if="!expiry.edit"
-    class="expiry"
-    @click="expiry.edit = true"
-    title="Click to choose an expiry"
-  >
-    <code v-if="node.expiry">{{ node.expiry | moment('from') }}</code>
-    <code v-else disabled>never</code>
-  </div>
-  <div v-else class="expiry">
-    <datepicker
-      @closed="updateNode('expiry', expiry)"
-      v-model="expiry.value"
-      :disabled-dates="{ to: new Date() }"
-      :autofocus="true"
-    />
-  </div>
+    <div
+      v-if="!expiry.edit"
+      class="expiry"
+      @click="expiry.edit = true"
+      title="Click to choose an expiry"
+    >
+      <code v-if="source.expiry">{{ relativeExpiry }}</code>
+      <code v-else disabled>never</code>
 
-  <div
-    class="contexts"
-    @click="context.ui = true"
-    title="Click to edit the contexts for this node"
-  >
-    <span v-if="Object.keys(node.context).length">
-      <code v-for="(value, key) in node.context"><small>{{ key }}:</small> {{ value }}</code>
-    </span>
-    <code v-else disabled>none</code>
-  </div>
-
-  <div class="delete" @click="deleteNode(node.id)">
-    <font-awesome icon="times" />
-  </div>
-
-  <transition name="fade">
-    <div v-if="context.ui" class="context-ui" v-click-outside="closeContextUi">
-      <h4>Contexts <span>({{ Object.keys(node.context).length }})</span></h4>
-      <div class="close" @click="closeContextUi">
+      <button v-if="source.expiry" class="delete" @click.stop="deleteExpiry()" title="Delete expiry">
         <font-awesome icon="times" />
-      </div>
-      <ul>
-        <li v-for="(value, key) in node.context">
-          <span>{{ key }}</span>
-          <span>{{ value }}</span>
-          <button @click="removeContext(key)">
-            <font-awesome icon="times" fixed-width />
-          </button>
-        </li>
-        <li>
-          <h5>
-            Add context:
-            <span class="lighter">(world, server, etc.)</span>
-          </h5>
-        </li>
-        <li>
-          <span class="edit">
-            <input
-              type="text"
-              v-model="context.key"
-              placeholder="key"
-              @focus="context.keyFocus = true"
-              @blur="blurField('keyFocus')"
-            >
-            <ul class="context-list" v-if="context.keyFocus">
-              <li
-                v-for="pContext in potentialContexts"
-                @click="context.key = pContext.key"
-              >{{ pContext.key }}</li>
-            </ul>
-          </span>
-          <span class="edit">
-            <input
-              type="text"
-              v-model="context.value"
-              placeholder="value"
-              @focus="context.valueFocus = true"
-              @blur="blurField('valueFocus')"
-              @keydown.enter="addContext"
-            >
-            <ul class="context-list" v-if="context.valueFocus">
-              <li
-                v-for="value in potentialContextValues"
-                @click="context.value = value"
-              >{{ value }}</li>
-            </ul>
-          </span>
-        </li>
-      </ul>
-      <button @click="addContext">
-        <font-awesome icon="plus" />
-        Add context
       </button>
     </div>
-  </transition>
-</li>
+    <div v-else class="expiry">
+      <datepicker
+        @closed="updateNode('expiry', expiry)"
+        v-model="expiry.value"
+        :disabled-dates="{ to: new Date() }"
+        :autofocus="true"
+      />
+    </div>
+
+    <div
+      class="contexts"
+      @click="context.ui = true"
+      title="Click to edit the contexts for this node"
+    >
+      <span v-if="flattenedContexts.length">
+        <code v-for="entry in flattenedContexts"><small>{{ entry.key }}:</small> {{ entry.value }}</code>
+      </span>
+      <code v-else disabled>none</code>
+    </div>
+
+    <div class="delete" @click="deleteNode(source.id)">
+      <font-awesome icon="times" />
+    </div>
+
+    <transition name="fade">
+      <div v-if="context.ui" class="context-ui" v-click-outside="closeContextUi">
+        <h4>Contexts <span>({{ flattenedContexts.length }})</span></h4>
+        <div class="close" @click="closeContextUi">
+          <font-awesome icon="times" />
+        </div>
+        <ul>
+          <li v-for="entry in flattenedContexts">
+            <span>{{ entry.key }}</span>
+            <span>{{ entry.value }}</span>
+            <button @click="removeContext(entry.key, entry.value)">
+              <font-awesome icon="times" fixed-width />
+            </button>
+          </li>
+          <li>
+            <h5>
+              Add context:
+              <span class="lighter">(world, server, etc.)</span>
+            </h5>
+          </li>
+          <li>
+            <div class="edit">
+              <input
+                type="text"
+                v-model="context.key"
+                placeholder="key"
+                @focus="context.keyFocus = true"
+                @blur="blurField('keyFocus')"
+              >
+              <transition name="fade">
+                <ul class="context-list" v-if="context.keyFocus">
+                  <li
+                    v-for="pContext in potentialContexts"
+                    @click="context.key = pContext.key"
+                  >{{ pContext.key }}</li>
+                </ul>
+              </transition>
+            </div>
+            <div class="edit">
+              <input
+                type="text"
+                v-model="context.value"
+                placeholder="value"
+                @focus="context.valueFocus = true"
+                @blur="blurField('valueFocus')"
+                @keydown.enter="addContext"
+              >
+              <transition name="fade">
+                <ul class="context-list" v-if="context.valueFocus">
+                  <li
+                    v-for="value in potentialContextValues"
+                    @click="context.value = value"
+                  >{{ value }}</li>
+                </ul>
+              </transition>
+            </div>
+          </li>
+        </ul>
+        <button @click="addContext">
+          <font-awesome icon="plus" />
+          Add context
+        </button>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
 import Datepicker from '@turbotailz/vuejs-datepicker';
 import vClickOutside from 'v-click-outside';
+import { relativeDate } from '@/util/date';
 
 export default {
   name: 'Node',
@@ -149,11 +156,11 @@ export default {
     return {
       permission: {
         edit: false,
-        value: this.node.key,
+        value: this.source.key,
       },
       expiry: {
         edit: false,
-        value: this.node.expiry,
+        value: this.source.expiry,
       },
       context: {
         ui: false,
@@ -165,49 +172,68 @@ export default {
     };
   },
   props: {
-    node: Object,
-    selectedNodes: Array,
+    source: Object,
   },
   computed: {
     session() {
       return this.$store.getters.currentSession;
     },
+    selectedNodes() {
+      return this.$store.getters.selectedNodeIds;
+    },
     isSelected() {
-      return this.selectedNodes.indexOf(this.node.id) >= 0;
+      return this.selectedNodes.indexOf(this.source.id) >= 0;
+    },
+    flattenedContexts() {
+      const entries = [];
+      for (const [key, values] of Object.entries(this.source.context)) {
+        if (Array.isArray(values)) {
+          for (const value of values) {
+            entries.push({ key, value });
+          }
+        } else {
+          entries.push({ key, value: values });
+        }
+      }
+      return entries;
     },
     potentialContexts() {
       return this.$store.getters.potentialContexts;
     },
     potentialContextValues() {
       if (!this.context.key) return null;
-      const context = this.potentialContexts.find(context => {
-        return context.key === this.context.key;
-      });
-
+      const context = this.potentialContexts.find(pContext => pContext.key === this.context.key);
+      if (!context) return null;
       return context.values;
+    },
+    relativeExpiry() {
+      return relativeDate(this.source.expiry);
     }
   },
   methods: {
-    toggleNodeSelect(nodeId) {
-      this.$store.commit('toggleNodeSelect', nodeId);
+    toggleNodeSelect() {
+      this.$store.commit('toggleNodeSelect', this.source);
     },
-    toggleValue(node) {
-      this.$store.commit('toggleNodeValue', node);
+    toggleValue() {
+      this.$store.commit('toggleNodeValue', this.source);
     },
     updateNode(type, data) {
       switch (type) {
         case 'key':
         case 'value':
         case 'expiry':
-          if (this.node[type] !== data.value) {
-            this.$store.commit('updateNode', { node: this.node, type, data });
+          if (this.source[type] !== data.value) {
+            this.$store.commit('updateNode', { node: this.source, type, data });
           }
           data.edit = false;
           break;
         case 'context':
-          this.$store.commit('updateNodeContext', { node: this.node, data });
+          this.$store.commit('updateNodeContext', { node: this.source, data });
           break;
       }
+    },
+    deleteExpiry() {
+      this.updateNode('expiry', { value: null });
     },
     deleteNode(nodeId) {
       this.$store.commit('deleteNode', nodeId);
@@ -218,26 +244,40 @@ export default {
     addContext() {
       if (this.context.key === '' || this.context.value === '') return;
 
-      const context = JSON.parse(JSON.stringify(this.node.context));
+      const context = JSON.parse(JSON.stringify(this.source.context));
 
-      context[this.context.key] = this.context.value;
+      let values = context[this.context.key] || [];
+      if (!Array.isArray(values)) {
+        values = [values];
+      }
 
-      this.updateNode('context', context);
+      if (!values.find(value => value === this.context.value)) {
+        values.push(this.context.value);
+        context[this.context.key] = values;
+        this.updateNode('context', context);
+      }
+
       this.context.key = '';
       this.context.value = '';
     },
-    removeContext(key) {
-      const context = JSON.parse(JSON.stringify(this.node.context));
+    removeContext(key, value) {
+      const context = JSON.parse(JSON.stringify(this.source.context));
 
-      delete context[key];
+      let values = context[key] || [];
+      if (!Array.isArray(values)) {
+        values = [values];
+      }
 
-      this.updateNode('context', context);
+      if (values.find(v => v === value)) {
+        context[key] = values.filter(v => v !== value);
+        this.updateNode('context', context);
+      }
     },
     blurField(type) {
       setTimeout(() => {
         this.context[type] = false;
-      }, 100);
-    }
+      }, 250);
+    },
   },
 };
 </script>
@@ -318,6 +358,18 @@ export default {
 
   .expiry {
     flex: 1 1 15%;
+
+    .delete {
+      background: transparent;
+      border: 0;
+      margin-left: .5rem;
+      opacity: .75;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 
   .contexts {
@@ -363,8 +415,9 @@ export default {
     border: 0;
     background: rgba(0,0,0,0.2);
     border-radius: 2px;
-    padding: .2em .5em;
+    padding: .2rem .5rem;
     color: #FFF;
+    font-size: .8rem;
     font-family: 'Source Code Pro', monospace;
     line-height: 1.5;
   }
@@ -378,7 +431,6 @@ export default {
   z-index: 11;
   top: 50%;
   right: 3rem;
-  transform: translateY(-50%);
   box-shadow: 0 0 1em rgba(0,0,0,.2);
   cursor: initial;
   min-width: 25%;
@@ -432,7 +484,7 @@ export default {
         }
       }
 
-      span {
+      div, span {
         padding: .5rem 1rem;
         flex: 1;
 
@@ -442,6 +494,7 @@ export default {
 
           input {
             padding: .5rem 1rem;
+            width: 100%;
           }
         }
       }
@@ -486,11 +539,13 @@ export default {
 
   .context-list {
     position: absolute;
-    width: 100%;
+    min-width: 100%;
     top: 100%;
     margin: 0;
     padding: 0;
     background: $grey;
+    max-height: 12rem;
+    overflow-y: auto;
 
     li {
       padding: .5rem 1rem;

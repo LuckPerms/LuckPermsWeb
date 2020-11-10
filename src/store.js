@@ -1,67 +1,157 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import { compareVersions } from './util/version';
 
-const config = require('../config');
 const uuid = require('uuid/v4');
+const config = require('../config');
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    editor: {},
+    version: null,
+    versionTimestamp: null,
+    changeLog: [],
+    config: null,
+    downloads: {
+      bukkit: null,
+      'bukkit-legacy': null,
+      bungee: null,
+      nukkit: null,
+      sponge: null,
+      velocity: null,
+    },
+    extensions: {
+      'extension-legacy-api': null,
+      'extension-default-assignments': null,
+    },
+    discordUserCount: null,
+    patreonCount: null,
+    editor: {
+      sessionId: null,
+    },
+    verbose: {
+      status: 0,
+      sessionId: null,
+      metadata: null,
+      data: null,
+      errors: {
+        load: false,
+      },
+    },
+    tree: {
+      sessionId: null,
+      metadata: null,
+      data: null,
+      errors: {
+        load: false,
+      },
+    },
   },
 
 
   getters: {
-    metaData: (state) => {
-      return state.editor.metaData;
-    },
+    version: state => state.version,
 
-    sessionSet: (state) => {
-      if (state.editor.sessionList) {
-        return state.editor.sessionList.map(sessionId => state.editor.sessions[sessionId]);
-      }
-    },
+    versionTimestamp: state => state.versionTimestamp,
 
-    currentSession: (state) => {
-      if (state.editor.sessions) return state.editor.sessions[state.editor.currentSession];
-    },
+    changeLog: state => state.changeLog,
 
-    currentNodes: (state) => {
-      if (state.editor.nodes) return state.editor.nodes.filter(node => node.sessionId === state.editor.currentSession);
-    },
+    config: state => state.config,
 
-    allNodes: (state) => {
-      if (state.editor.nodes) return state.editor.nodes;
-    },
+    downloads: state => state.downloads,
+
+    extensions: state => state.extensions,
+
+    discordUserCount: state => state.discordUserCount,
+
+    patreonCount: state => state.patreonCount,
+
+    editorSessionId: state => state.editor.sessionId,
+
+    verbose: state => state.verbose,
+
+    tree: state => state.tree,
+
+    metaData: state => state.editor.metaData,
+
+    // eslint-disable-next-line max-len
+    sessionSet: state => state.editor.sessionList?.map(sessionId => state.editor.sessions[sessionId]),
+
+    currentSession: state => state.editor.sessions[state.editor.currentSession],
+
+    // eslint-disable-next-line max-len
+    currentNodes: state => state.editor.nodes?.filter(node => node.sessionId === state.editor.currentSession),
+
+    allNodes: state => state.editor.nodes,
 
     tracks: state => state.editor.tracks,
 
-    selectedNodes: state => state.editor.selectedNodes,
+    selectedNodeIds: state => state.editor.selectedNodes,
+
+    selectedNodes: (state, getters) => {
+      return getters.selectedNodeIds.map(nodeId => {
+        return getters.allNodes.find(({ id }) => nodeId === id);
+      });
+    },
 
     potentialContexts: state => state.editor.potentialContexts,
 
+    // eslint-disable-next-line max-len
     modifiedSessions: (state, getters) => getters.sessionSet.filter(session => (session.new || session.modified))
       .map(session => session.id),
 
-    weightNodes: (state) => {
-      if (state.editor.nodes) return state.editor.nodes.filter(node => node.key.startsWith('weight'));
-    },
+    weightNodes: state => state.editor.nodes?.filter(node => node.key.startsWith('weight')),
 
-    saveStatus: (state) => {
-      if (state.editor.save) return state.editor.save.status;
-    },
+    saveStatus: state => state.editor.save?.status,
 
-    saveKey: (state) => {
-      if (state.editor.save) return state.editor.save.key;
+    saveKey: state => state.editor.save?.key,
+
+    editorVersionStatus: (state) => {
+      if (!state.version || !state.editor.metaData?.pluginVersion) return null;
+
+      return compareVersions(state.version, state.editor.metaData.pluginVersion);
     },
   },
 
 
   mutations: {
-    initEditorData(state) {
+    setVersion: (state, version) => {
+      state.version = version;
+    },
+
+    setVersionTimestamp: (state, versionTimestamp) => {
+      state.versionTimestamp = versionTimestamp;
+    },
+
+    setChangeLog: (state, changeLog) => {
+      state.changeLog = changeLog;
+    },
+
+    setConfig: (state, configData) => {
+      state.config = configData;
+    },
+
+    setDownloads: (state, downloads) => {
+      state.downloads = downloads;
+    },
+
+    setExtensions: (state, extensions) => {
+      state.extensions = extensions;
+    },
+
+    setDiscordUserCount: (state, discordUserCount) => {
+      state.discordUserCount = discordUserCount;
+    },
+
+    setPatreonCount: (state, patreonCount) => {
+      state.patreonCount = patreonCount;
+    },
+
+    initEditorData(state, sessionId) {
       state.editor = {
+        sessionId,
         sessions: {},
         sessionList: [],
         nodes: [],
@@ -69,6 +159,7 @@ export default new Vuex.Store({
         tracks: [],
         deletedTracks: [],
         deletedGroups: [],
+        deletedUsers: [],
         knownPermissions: [],
         potentialContexts: [],
         currentSession: null,
@@ -104,9 +195,9 @@ export default new Vuex.Store({
     },
 
     updateTrack(state, { id, newTrack }) {
-      const track = state.editor.tracks.find(track => track.id === id);
+      const updatedTrack = state.editor.tracks.find(track => track.id === id);
 
-      track.groups = newTrack.groups;
+      updatedTrack.groups = newTrack.groups;
     },
 
     deleteTrack(state, trackId) {
@@ -120,29 +211,35 @@ export default new Vuex.Store({
       state.editor.tracks = value;
     },
 
-    deleteGroup(state, groupId) {
-      const sessionListIndex = state.editor.sessionList.findIndex(group => group === groupId);
+    deleteSession(state, sessionId) {
+      const { type } = state.editor.sessions[sessionId];
+      const sessionListIndex = state.editor.sessionList.findIndex(group => group === sessionId);
 
       state.editor.sessionList.splice(sessionListIndex, 1);
 
-      delete state.editor.sessions[groupId];
+      delete state.editor.sessions[sessionId];
 
-      state.editor.deletedGroups.push(groupId);
+      if (type === 'group') {
+        state.editor.deletedGroups.push(sessionId);
+      } else if (type === 'user') {
+        state.editor.deletedUsers.push(sessionId);
+      }
 
-      if (state.editor.currentSession === groupId) {
+      if (state.editor.currentSession === sessionId) {
         state.editor.currentSession = null;
       }
 
-      state.editor.nodes = state.editor.nodes.filter(node => node.sessionId !== groupId);
+      state.editor.nodes = state.editor.nodes.filter(node => node.sessionId !== sessionId);
     },
 
     setPotentialContexts(state, contexts) {
-      let potentialContexts = [];
+      const potentialContexts = [];
 
-      for (let [key, value] of Object.entries(contexts)) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [key, value] of Object.entries(contexts)) {
         potentialContexts.push({
           key,
-          values: Array.isArray(value) ? value : [ value ]
+          values: Array.isArray(value) ? value : [value],
         });
       }
 
@@ -162,7 +259,7 @@ export default new Vuex.Store({
       // state.editor.sessions[id] = ;
       state.editor.sessionList.push(id);
 
-      const deletedGroups = state.editor.deletedGroups;
+      const { deletedGroups } = state.editor;
 
       if (deletedGroups.includes(id)) {
         deletedGroups.splice(deletedGroups.findIndex(groupId => groupId === id), 1);
@@ -170,19 +267,27 @@ export default new Vuex.Store({
     },
 
     addEditorNode(state, node) {
-      if (node.expiry instanceof Date) node.expiry = node.expiry.getTime() / 1000;
+      const addingNode = node;
 
-      state.editor.nodes.push(node);
+      if (node.expiry instanceof Date) addingNode.expiry = node.expiry.getTime();
 
-      if (node.isNew && state.editor.sessions[node.sessionId]) state.editor.sessions[node.sessionId].modified = true;
+      state.editor.nodes.push(addingNode);
+
+      if (node.isNew && state.editor.sessions[node.sessionId]) {
+        state.editor.sessions[node.sessionId].modified = true;
+      }
     },
 
     deleteNode(state, nodeId) {
-      const node = state.editor.nodes.find(node => node.id === nodeId);
+      const deletingNode = state.editor.nodes.find(node => node.id === nodeId);
+
+      if (state.editor.selectedNodes.includes(nodeId)) {
+        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(nodeId), 1);
+      }
 
       state.editor.nodes = state.editor.nodes.filter(node => node.id !== nodeId);
 
-      state.editor.sessions[node.sessionId].modified = true;
+      state.editor.sessions[deletingNode.sessionId].modified = true;
     },
 
     setCurrentSession(state, sessionId) {
@@ -208,32 +313,61 @@ export default new Vuex.Store({
       state.editor.sessions[node.sessionId].modified = true;
     },
 
-    updateNode(state, payload) {
-      if (payload.type !== 'expiry') {
-        payload.node[payload.type] = payload.data.value;
+    updateNode(state, { node, type, data }) {
+      if (type === 'expiry') {
+        node[type] = data.value ? data.value.getTime() : null;
       } else {
-        payload.node[payload.type] = payload.data.value.getTime() / 1000;
+        if (type === 'sessionId') {
+          state.editor.sessions[node.sessionId].modified = true;
+        }
+        node[type] = data.value;
       }
 
-      payload.node.modified = true;
-      state.editor.sessions[payload.node.sessionId].modified = true;
+      node.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
     },
 
-    updateNodeContext(state, payload) {
-      payload.node.context = payload.data;
-      payload.node.modified = true;
-      state.editor.sessions[payload.node.sessionId].modified = true;
+    bulkUpdateNode(state, { node, payload }) {
+      const {
+        value,
+        expiry,
+        replace,
+        contexts
+      } = payload;
+
+      if (value !== null) {
+        node.value = value;
+      }
+
+      if (expiry) {
+        node.expiry = expiry;
+      }
+
+      if (replace) {
+        node.context = contexts;
+      } else {
+        Vue.set(node, 'context', { ...node.context, ...contexts });
+      }
+
+      node.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
+    },
+
+    updateNodeContext(state, { node, data }) {
+      node.context = data;
+      node.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
     },
 
     addNodeToSession(state, node) {
       state.editor.nodes.push(node);
     },
 
-    toggleNodeSelect(state, nodeId) {
-      if (state.editor.selectedNodes.indexOf(nodeId) >= 0) {
-        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(nodeId), 1);
+    toggleNodeSelect(state, node) {
+      if (state.editor.selectedNodes.includes(node.id)) {
+        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(node.id), 1);
       } else {
-        state.editor.selectedNodes.push(nodeId);
+        state.editor.selectedNodes.push(node.id);
       }
     },
 
@@ -253,6 +387,10 @@ export default new Vuex.Store({
       });
     },
 
+    deselectAllSelectedNodes(state) {
+      state.editor.selectedNodes.splice(0, state.editor.selectedNodes.length);
+    },
+
     addKnownPermission(state, permission) {
       state.editor.knownPermissions.push(permission);
     },
@@ -268,22 +406,68 @@ export default new Vuex.Store({
     setBytebinKey(state, key) {
       state.editor.save.key = key;
     },
+
+    setVerboseData(state, { data, status }) {
+      state.verbose.status = status;
+      if (!data) return;
+      state.verbose.data = data.data.map((node) => {
+        return {
+          ...node,
+          id: uuid(),
+        }
+      });
+      state.verbose.metadata = data.metadata;
+      state.verbose.sessionId = data.sessionId;
+    },
+
+    setVerboseLoadError(state) {
+      state.verbose.errors.load = true;
+    },
+
+    setTreeData(state, data) {
+      state.tree.data = data.data;
+      state.tree.metadata = data.metadata;
+      state.tree.sessionId = data.sessionId;
+    },
+
+    setTreeLoadError(state) {
+      state.tree.errors.load = true;
+    },
   },
 
 
   actions: {
+    getAppData: async ({ commit, dispatch }) => {
+      commit('setConfig', config);
+      try {
+        const appData = await axios.get(`${config.api_url}/data/all`);
+        commit('setVersion', appData.data.version);
+        commit('setVersionTimestamp', appData.data.versionTimestamp);
+        commit('setChangeLog', appData.data.changeLog);
+        commit('setDownloads', appData.data.downloads);
+        commit('setExtensions', appData.data.extensions);
+        commit('setDiscordUserCount', appData.data.discordUserCount);
+        commit('setPatreonCount', appData.data.patreonCount);
+      } catch (error) {
+        console.error('Error getting data, trying again in 10 seconds...');
+        setTimeout(async () => {
+          await dispatch('getAppData');
+        }, 10000);
+      }
+    },
+
     getEditorData({ commit, dispatch }, sessionId) {
-      commit('initEditorData');
+      commit('initEditorData', sessionId);
 
       if (sessionId === 'demo') {
-        import('./data/editor-demo.json').then(json => {
+        import('./data/editor-demo.json').then((json) => {
           dispatch('setEditorData', json.default);
         });
       } else {
         axios.get(`${config.bytebin_url}${sessionId}`)
           .then((response) => {
-            const data = response.data;
-            dispatch('setEditorData', data);
+            const { data } = response;
+            dispatch('setEditorData', data, sessionId);
           })
           .catch((error) => {
             console.error(error);
@@ -296,13 +480,15 @@ export default new Vuex.Store({
     setEditorData({ commit, dispatch }, data) {
       commit('setMetaData', data.metadata);
 
-      data.permissionHolders.forEach((session, index) => {
+      data.permissionHolders.forEach((session) => {
         session.nodes.forEach((node) => {
+          const expiry = node.expiry ? node.expiry * 1000 : null;
+
           dispatch('addNodes', [{
             sessionId: session.id,
             key: node.key,
             value: node.value,
-            expiry: node.expiry,
+            expiry,
             context: node.context,
           }]);
         });
@@ -319,12 +505,14 @@ export default new Vuex.Store({
       commit('addKnownPermission', permission);
     },
 
-    addNodes({ commit, getters }, nodes) {
-      nodes.forEach(node => {
-        node.id = uuid();
-        node.expiry = node.expiry || null;
-        node.context = node.context || {};
-        commit('addEditorNode', node);
+    addNodes({ commit }, nodes) {
+      nodes.forEach((node) => {
+        const addingNode = node;
+        addingNode.id = uuid();
+        addingNode.expiry = node.expiry;
+        addingNode.context = node.context || {};
+        addingNode.selected = false;
+        commit('addEditorNode', addingNode);
       });
     },
 
@@ -415,6 +603,62 @@ export default new Vuex.Store({
       commit('deleteTrack', trackId);
     },
 
+    copyNodes({ getters, dispatch, commit }, sessions) {
+      const { selectedNodes } = getters;
+
+      selectedNodes.forEach(node => {
+        const nodeCopies = [];
+
+        sessions.forEach(sessionId => {
+          nodeCopies.push({
+            ...node,
+            sessionId,
+            isNew: true,
+          });
+        });
+
+        dispatch('addNodes', nodeCopies);
+      });
+
+      commit('closeModal');
+      commit('deselectAllSelectedNodes');
+    },
+
+    moveNodes({ state, getters, commit }, session) {
+      const { selectedNodes } = getters;
+
+      selectedNodes.forEach(node => {
+        commit('updateNode', {
+          type: 'sessionId',
+          data: {
+            value: session,
+          },
+          node
+        });
+      });
+
+      commit('deselectAllSelectedNodes');
+      commit('closeModal');
+    },
+
+    deleteNodes({ getters, commit }) {
+      const selectedNodes = getters.selectedNodeIds.map(node => node);
+
+      selectedNodes.forEach(nodeId => {
+        commit('deleteNode', nodeId);
+      });
+
+      commit('closeModal');
+    },
+
+    updateNodes({ getters, commit }, payload) {
+      const { selectedNodes } = getters;
+
+      selectedNodes.forEach(node => {
+        commit('bulkUpdateNode', { node, payload });
+      });
+    },
+
     saveData({ state, getters, commit }) {
       commit('setSaveStatus', 'saving');
 
@@ -422,6 +666,7 @@ export default new Vuex.Store({
         changes: [],
         groupDeletions: state.editor.deletedGroups,
         trackDeletions: state.editor.deletedTracks,
+        userDeletions: state.editor.deletedUsers,
       };
 
       getters.modifiedSessions.forEach((modifiedSession) => {
@@ -433,7 +678,7 @@ export default new Vuex.Store({
         sessionNodes.forEach(node => nodes.push({
           key: node.key,
           value: node.value,
-          ...node.expiry && { expiry: node.expiry },
+          ...node.expiry && { expiry: Math.floor(node.expiry / 1000) },
           ...(Object.entries(node.context).length) && { context: node.context },
         }));
 
@@ -444,7 +689,7 @@ export default new Vuex.Store({
         });
       });
 
-      getters.tracks.forEach(track => {
+      getters.tracks.forEach((track) => {
         payload.changes.push({
           type: 'track',
           id: track.id,
@@ -459,6 +704,53 @@ export default new Vuex.Store({
           commit('setModal', { type: 'savedChanges', object: getters.saveKey });
         })
         .catch(console.error);
+    },
+
+    getVerboseData({ commit }, sessionId) {
+      commit('setVerboseData', { data: null, status: 0 });
+      if (sessionId === 'demo') {
+        commit('setVerboseData', { data: null, status: 1 });
+        import('./data/verbose-demo.json').then((json) => {
+          commit('setVerboseData', { data: json.default, status: 2 });
+        });
+      } else {
+        commit('setVerboseData', { data: null, status: 1 });
+        axios.get(`${config.bytebin_url}${sessionId}`)
+          .then((response) => {
+            const data = {
+              ...response.data,
+              sessionId,
+            };
+            commit('setVerboseData', { data, status: 2 });
+          })
+          .catch(() => {
+            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+            commit('setVerboseLoadError');
+            commit('setVerboseData', { data: null, status: 3 });
+          });
+      }
+    },
+
+    getTreeData({ commit }, sessionId) {
+      if (sessionId === 'demo') {
+        import('./data/tree-demo.json').then((json) => {
+          commit('setTreeData', json.default);
+        });
+      } else {
+        axios.get(`${config.bytebin_url}${sessionId}`)
+          .then((response) => {
+            const data = {
+              ...response.data,
+              sessionId,
+            };
+            commit('setTreeData', data);
+          })
+          .catch((error) => {
+            console.error(error);
+            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+            commit('setTreeLoadError');
+          });
+      }
     },
   },
 });

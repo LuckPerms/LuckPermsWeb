@@ -1,0 +1,5 @@
+# In case people don't have core.autocrlf set.
+* text=auto
+
+# All .sh files need to keep their linux line endings. Else bash is confused!
+*.sh text eol=lf

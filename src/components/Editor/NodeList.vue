@@ -4,13 +4,13 @@
 
   <div class="node-list-header">
     <div class="sorting-tabs">
-<!--      <div-->
-<!--        :class="{ 'node-select-all': true, 'selected': allSelected }"-->
-<!--        @click="selectAll"-->
-<!--        title="Select all nodes for mass operations"-->
-<!--      >-->
-<!--        <span></span>-->
-<!--      </div>-->
+      <div
+        :class="{ 'node-select-all': true, 'selected': allSelected }"
+        @click="selectAll"
+        title="Select all nodes for mass operations"
+      >
+        <span></span>
+      </div>
 
       <div
         class="permission"
@@ -19,7 +19,11 @@
         title="Sort nodes by permission"
       >
         Permissions
-        <font-awesome v-if="sort.method === 'key'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+        <font-awesome
+          v-if="sort.method === 'key'"
+          :class="{'reverse': !sort.desc}"
+          icon="chevron-circle-down"
+        />
       </div>
 
       <div
@@ -29,7 +33,11 @@
         title="Sort nodes by true/false"
       >
         Value
-        <font-awesome v-if="sort.method === 'value'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+        <font-awesome
+          v-if="sort.method === 'value'"
+          :class="{'reverse': !sort.desc}"
+          icon="chevron-circle-down"
+        />
       </div>
 
       <div
@@ -39,60 +47,53 @@
         title="Sort nodes by expiry"
       >
         Expiry
-        <font-awesome v-if="sort.method === 'expiry'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+        <font-awesome
+          v-if="sort.method === 'expiry'"
+          :class="{'reverse': !sort.desc}"
+          icon="chevron-circle-down" />
       </div>
-
-<!--      <div :class="{'active': sort.method == 'server'}" @click="changeSort('server')">-->
-<!--        Server-->
-<!--        <font-awesome v-if="sort.method == 'server'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />-->
-<!--      </div>-->
-
-<!--      <div :class="{'active': sort.method == 'world'}" @click="changeSort('world')">-->
-<!--        World-->
-<!--        <font-awesome v-if="sort.method == 'world'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />-->
-<!--      </div>-->
 
       <div
         class="context"
-        :class="{'active': sort.method == 'contexts'}"
+        :class="{'active': sort.method === 'contexts'}"
         @click="changeSort('contexts')"
         title="Sort nodes by contexts"
       >
         Contexts
-        <font-awesome v-if="sort.method == 'contexts'" :class="{'reverse': !sort.desc}" icon="chevron-circle-down" />
+        <font-awesome
+          v-if="sort.method === 'contexts'"
+          :class="{'reverse': !sort.desc}"
+          icon="chevron-circle-down"
+        />
       </div>
 
       <div class="delete-column"></div>
     </div>
   </div>
 
-
-  <transition-group name="node-list" tag="ul">
-    <Node
-      v-for="(node, i) in sortedNodes"
-      :node="node"
-      :key="`node_${node.id}`"
-      :selected-nodes="selectedNodes"
-    />
-  </transition-group>
-
-  <AddNode :session="session" />
-
+  <virtual-list
+    :data-sources="sortedNodes"
+    data-key="id"
+    :data-component="Node"
+    :keeps="50"
+    class="node-list-scroll"
+    :estimate-size="42"
+  />
 </div>
 </template>
 
 <script>
-const sortBy = require('lodash.sortby');
+import sortBy from 'lodash.sortby';
+import VirtualList from 'vue-virtual-scroll-list';
+import Node from './Node.vue';
 
 export default {
   name: 'NodeList',
   components: {
-    Node: () => import('./Node'),
-    AddNode: () => import('./AddNode'),
+    VirtualList,
   },
   props: {
     nodes: Array,
-    session: Object,
   },
   data() {
     return {
@@ -103,6 +104,7 @@ export default {
     };
   },
   computed: {
+    Node() { return Node; },
     sortedNodes() {
       let sorted;
       if (['key', 'value', 'expiry'].indexOf(this.sort.method) >= 0) {
@@ -117,7 +119,7 @@ export default {
       return sorted.reverse();
     },
     selectedNodes() {
-      return this.$store.getters.selectedNodes;
+      return this.$store.getters.selectedNodeIds;
     },
     currentSelectedNodes() {
       const map = this.nodes.map(node => node.id);
@@ -125,7 +127,7 @@ export default {
       return this.selectedNodes.filter(nodeId => map.indexOf(nodeId) !== -1);
     },
     allSelected() {
-      return this.nodes.length === this.currentSelectedNodes.length;
+      return this.nodes.length && this.nodes.length === this.currentSelectedNodes.length;
     },
   },
   methods: {
@@ -154,11 +156,14 @@ export default {
   background-color: rgba(255,255,255,.2);
   flex: 1;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 
   h2 {
-    margin: 0;
-    margin-bottom: .5em;
-    padding: .5em 1rem 0;
+    font-size: 1.25rem;
+    margin: 0 0 .5rem;
+    padding: .5rem 1rem 0;
 
     span {
       margin-left: .5em;
@@ -167,11 +172,11 @@ export default {
   }
 
   .node-list-header {
-    position: sticky;
-    top: 4em;
     background-color: rgb(67,67,78);
     border-bottom: 1px solid rgba(0,0,0,0.2);
-    z-index: 4;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 
     .sorting-tabs {
       display: flex;
@@ -219,6 +224,7 @@ export default {
         &.delete-column {
           pointer-events: none;
           flex: 0 0 3rem;
+          margin-right: .5rem;
         }
 
         svg {
@@ -260,20 +266,22 @@ export default {
     list-style: none;
   }
 
-  &-move {
+  // TODO: figure out if it's possible to use transitions with virtual scroller
+  //&-enter, &-leave-to {
+  //  opacity: 0;
+  //  transform: translateX(10%);
+  //}
 
-  }
-
-  &-enter, &-leave-to {
-    opacity: 0;
-    transform: translateX(10%);
-  }
-
-  &-leave-active {
-    position: absolute;
-    background: $red;
-    width: 100%;
-    pointer-events: none;
+  //&-leave-active {
+  //  position: absolute;
+  //  background: $red;
+  //  width: 100%;
+  //  pointer-events: none;
+  //}
+  .node-list-scroll {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    flex: 1;
   }
 }
 </style>

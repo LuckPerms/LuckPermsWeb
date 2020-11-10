@@ -19,6 +19,7 @@
 
 <script>
 import Intersect from 'vue-intersect';
+import { checkVersion } from '@/util/version';
 
 export default {
   name: 'EditorMenuGroup',
@@ -30,11 +31,11 @@ export default {
   data() {
     return {
       isVisible: false,
-    }
+    };
   },
 
   props: {
-    group: Object
+    group: Object,
   },
 
   computed: {
@@ -42,7 +43,7 @@ export default {
       return this.$store.getters.weightNodes;
     },
     weight() {
-      const node = this.weightNodes.find(node => node.sessionId === this.group.id);
+      const node = this.weightNodes.find(weightNode => weightNode.sessionId === this.group.id);
 
       if (!node) return null;
 
@@ -54,12 +55,14 @@ export default {
     deleteGroup() {
       if (this.group.id === 'default') return;
 
-      this.$store.commit('setModal', { type: 'deleteGroup', object: {
-          groupId: this.group.id
-        }
+      this.$store.commit('setModal', {
+        type: 'deleteGroup',
+        object: {
+          groupId: this.group.id,
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

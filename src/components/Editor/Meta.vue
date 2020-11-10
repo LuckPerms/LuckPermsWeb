@@ -14,13 +14,17 @@
         +
       </button>
       <ul v-if="addingGroup" v-click-outside="closeGroups">
-        <li v-for="group in groups" @click="addParentToGroup(group.id)">
+        <li
+          v-for="group in groups"
+          @click="addParentToGroup(group.id)"
+          :key="`addParent_${group.id}`"
+        >
           {{ group.id }}
         </li>
       </ul>
     </div>
     <ul>
-      <li v-for="parent in parents">
+      <li v-for="parent in parents" :key="`groupParent_${parent}`">
         <code
           @click="handleParentSessionSwitch(parent)"
           :title="`Go to the ${parent} group`"
@@ -55,12 +59,12 @@ export default {
   data() {
     return {
       addingGroup: false,
-    }
+    };
   },
 
   computed: {
     groupWeight() {
-      const weight = this.sessionData.weight;
+      const { weight } = this.sessionData;
 
       if (weight.length === 0) {
         return 'N/A';
@@ -70,19 +74,13 @@ export default {
       return 'Multiple';
     },
     groups() {
-      return this.$store.getters.sessionSet.filter(session => {
-        return session.type === 'group';
-      }).filter(group =>  {
-        return !this.parents.includes(group.id);
-      });
+      return this.$store.getters.sessionSet.filter(session => session.type === 'group').filter(group => !this.parents.includes(group.id));
     },
     parents() {
       return this.sessionData.parents
         .filter(parent => parent.value)
-        .map(parent => {
-        return parent.key.split('.').pop();
-      });
-    }
+        .map(parent => parent.key.split('.').pop());
+    },
   },
 
   methods: {
@@ -93,7 +91,7 @@ export default {
       const node = {
         sessionId: this.session.id,
         type: 'permission',
-        key: 'group.' + parentId,
+        key: `group.${parentId}`,
         value: true,
         isNew: true,
       };
@@ -104,10 +102,10 @@ export default {
     closeGroups() {
       this.addingGroup = false;
     },
-    deleteParent(parent) {
-      const node = this.sessionData.parents.find(node => node.key === `group.${parent}`);
+    deleteParent(parentId) {
+      const node = this.sessionData.parents.find(parent => parent.key === `group.${parentId}`);
       this.$store.commit('deleteNode', node.id);
-    }
+    },
   },
 };
 </script>
@@ -116,7 +114,6 @@ export default {
 .editor-meta {
   background-color: rgba(255,255,255,.1);
   padding: 0 1em 1em;
-  // display: flex;
 
   > div {
     flex: 1;
@@ -128,7 +125,6 @@ export default {
       padding: 0;
       list-style: none;
       display: flex;
-      flex-wrap: wrap;
 
       li {
         margin-right: .5em;
@@ -168,6 +164,8 @@ export default {
         top: 100%;
         background: $grey;
         flex-direction: column;
+        max-height: 40vh;
+        overflow-y: auto;
         z-index: 100;
         box-shadow: 0 .2rem 1rem rgba(0,0,0,.2);
 

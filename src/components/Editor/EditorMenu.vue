@@ -1,7 +1,12 @@
 <template>
   <nav id="editor-menu">
     <div class="filter">
-      <input type="text" placeholder="Search" v-model="filter" title="Filter tracks, groups and users">
+      <input
+        type="text"
+        placeholder="Search"
+        v-model="filter"
+        title="Filter tracks, groups and users"
+      >
       <button class="delete" @click="filter = ''" v-if="filter !== ''" title="Clear filter">
         <font-awesome icon="times" fixed-width />
       </button>
@@ -9,15 +14,15 @@
 
     <div class="sessions">
       <div class="tracks">
-        <h2>
-          <button @click="toggle.tracks = !toggle.tracks" title="Show/hide tracks">
+        <h2 @click="toggle.tracks = !toggle.tracks">
+          <button title="Show/hide tracks">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.tracks ? 90 : null" />
           </button>
           <span>
-          Tracks
-          <small>({{ filteredTracks.length }})</small>
-        </span>
-          <button @click="createTrack" title="Add a track">
+            Tracks
+            <small>({{ filteredTracks.length }})</small>
+          </span>
+          <button @click.stop="createTrack" title="Add a track">
             <font-awesome icon="plus-circle" fixed-width />
           </button>
         </h2>
@@ -40,15 +45,15 @@
       </div>
 
       <div class="groups" v-if="filteredGroups.length">
-        <h2>
-          <button @click="toggle.groups = !toggle.groups" title="Show/hide groups">
+        <h2 @click="toggle.groups = !toggle.groups">
+          <button title="Show/hide groups">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.groups ? 90 : null" />
           </button>
           <span>
           Groups
           <small>({{ filteredGroups.length }})</small>
         </span>
-          <button @click="createGroup" title="Add a group">
+          <button @click.stop="createGroup" title="Add a group">
             <font-awesome icon="plus-circle" fixed-width />
           </button>
         </h2>
@@ -57,7 +62,11 @@
             <li
               v-for="group in filteredGroups"
               @click="changeCurrentSession(group.id)"
-              :class="{ 'active': currentSession && currentSession === group, 'modified': modifiedSessions.includes(group.id), 'new': group.new }"
+              :class="{
+                'active': currentSession && currentSession === group,
+                'modified': modifiedSessions.includes(group.id),
+                'new': group.new
+              }"
               :key="`group_${group.id}`"
               title="Edit group"
             >
@@ -68,8 +77,8 @@
       </div>
 
       <div class="users" v-if="filteredUsers.length">
-        <h2>
-          <button @click="toggle.users = !toggle.users" title="Show/hide users">
+        <h2 @click="toggle.users = !toggle.users">
+          <button title="Show/hide users">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.users ? 90 : null" />
           </button>
           <span>
@@ -88,21 +97,25 @@
               :key="user.id"
               title="Edit user"
             >
-              <img :src="`https://minotar.net/helm/${user.id}/100.png`">
-              {{user.displayName}}
+              <span class="username">
+                <img :src="`https://minotar.net/helm/${user.id}/100.png`">
+                {{user.displayName}}
+              </span>
+              <button @click="deleteUser(user.id)" v-if="canDeleteUsers" title="Delete user">
+                <font-awesome icon="times" fixed-width />
+              </button>
             </li>
           </ul>
         </transition>
       </div>
     </div>
-
-
   </nav>
 </template>
 
 <script>
-import EditorMenuTrack from './EditorMenuTrack';
-import EditorMenuGroup from './EditorMenuGroup';
+import EditorMenuTrack from './EditorMenuTrack.vue';
+import EditorMenuGroup from './EditorMenuGroup.vue';
+import { checkVersion } from '@/util/version';
 
 export default {
   name: 'editor-menu',
@@ -146,13 +159,20 @@ export default {
       }).sort((a, b) => a.id.localeCompare(b.id));
     },
     filteredGroups() {
-      return this.groups.filter(group => group.id.includes(this.filter) || group.displayName.includes(this.filter));
+      return this.groups.filter(group => group.id.includes(this.filter)
+        || group.displayName.includes(this.filter));
     },
     filteredUsers() {
       return this.users.filter(user => user.displayName.includes(this.filter));
     },
     modifiedSessions() {
       return this.$store.getters.modifiedSessions;
+    },
+    canDeleteUsers() {
+      const supportedVersion = '5.1.105';
+      const { pluginVersion } = this.$store.getters.metaData;
+
+      return checkVersion(supportedVersion, pluginVersion);
     },
   },
 
@@ -167,6 +187,14 @@ export default {
     },
     createGroup() {
       this.$store.commit('setModal', { type: 'createGroup', object: this.groups });
+    },
+    deleteUser(userId) {
+      this.$store.commit('setModal', {
+        type: 'deleteUser',
+        object: {
+          userId,
+        },
+      });
     },
   },
 
@@ -186,10 +214,30 @@ export default {
 
 <style lang="scss">
   #editor-menu {
-    flex: 0 0 20em;
+    width: 100%;
+    max-width: 20rem;
     overflow-y: auto;
     max-height: 100%;
     border-right: 1px solid rgba(255,255,255,.2);
+    position: absolute;
+    z-index: 55;
+    background: black;
+    top: 4rem;
+    bottom: 0;
+    left: -20rem;
+    transition: left .2s;
+    user-select: none;
+
+    @include breakpoint($sm) {
+      position: relative;
+      flex: 0 0 20rem;
+      left: unset;
+      top: unset;
+    }
+
+    &.active {
+      left: 0;
+    }
 
     .filter {
       position: sticky;
@@ -203,8 +251,16 @@ export default {
         background: rgba(255,255,255,.1);
         border: none;
         padding: .5rem 1rem;
-        width: 100%;
+        width: calc(100% - 4rem);
         outline-offset: -1px;
+        height: 4rem;
+        margin-left: 4rem;
+
+        @include breakpoint($sm) {
+          height: unset;
+          width: 100%;
+          margin: 0;
+        }
       }
 
       .delete {
@@ -236,6 +292,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      cursor: pointer;
 
       small {
         opacity: .6;
@@ -382,6 +439,28 @@ export default {
         width: 1em;
         height: auto;
         margin-right: .5em;
+      }
+
+      li {
+        &:hover {
+          button {
+            opacity: 0.5;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
+        }
+
+        button {
+          position: absolute;
+          right: 1rem;
+          background: transparent;
+          border: 0;
+          opacity: 0;
+          cursor: pointer;
+          color: white;
+        }
       }
     }
   }

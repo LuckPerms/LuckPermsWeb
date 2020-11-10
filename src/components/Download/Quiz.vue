@@ -2,7 +2,7 @@
   <div class="download-quiz" @click="closeModal">
     <div class="modal" @click.stop>
       <button class="close-button" @click="closeModal">
-        <font-awesome icon="times" />
+        <font-awesome icon="times"/>
         Close
       </button>
       <transition name="fade" mode="out-in">
@@ -20,11 +20,14 @@
           <h1>What type of server are you running?</h1>
           <ul class="options" v-if="options.single">
             <li @click="proceed(3, 'bukkit')">CraftBukkit / Spigot / Paper</li>
-            <li @click="proceed(3, 'sponge')">Sponge</li>
-            <li @click="proceed(3, 'nukkit')">Nukkit</li>
+            <li @click="proceed(3, 'sponge')">SpongeForge / SpongeVanilla</li>
+            <li @click="proceed(3, 'nukkit')">NukkitX</li>
           </ul>
+          <p class="lighter" v-if="options.network">
+            Note: LuckPerms is still required on all backend servers.
+          </p>
           <ul class="options" v-if="options.network">
-            <li @click="proceed(5, 'bungee')">Bungeecord / Waterfall / Travertine</li>
+            <li @click="proceed(5, 'bungee')">BungeeCord / Waterfall / Travertine</li>
             <li @click="proceed(5, 'velocity')">Velocity</li>
           </ul>
         </div>
@@ -34,18 +37,18 @@
         <div v-if="page === 3" class="page page-3">
           <h1>What version of {{ serverType }} are you running?</h1>
           <ul class="options" v-if="options.bukkit">
-            <li @click="proceed(4, 'latest')">1.8.8 or higher</li>
+            <li @click="proceed(4, 'latest')">1.8.8 or newer</li>
             <li @click="proceed(4, 'unsupported')">1.8 - 1.8.7</li>
             <li @click="proceed(4, 'legacy')">1.7.10</li>
-            <li @click="proceed(4, 'unsupported')">1.7.9 or lower</li>
+            <li @click="proceed(4, 'unsupported')">1.7.9 or older</li>
           </ul>
           <ul class="options" v-if="options.sponge">
-            <li @click="proceed(4, 'latest')">SpongeAPI 5 or higher</li>
-            <li @click="proceed(4, 'unsupported')">SpongeAPI 4 or lower</li>
+            <li @click="proceed(4, 'latest')">SpongeAPI 5 or newer</li>
+            <li @click="proceed(4, 'unsupported')">SpongeAPI 4 or older</li>
           </ul>
           <ul class="options" v-if="options.nukkit">
-            <li @click="proceed(4, 'latest')">b93 or higher</li>
-            <li @click="proceed(4, 'unsupported')">b92 or lower</li>
+            <li @click="proceed(4, 'latest')">b93 or newer</li>
+            <li @click="proceed(4, 'unsupported')">b92 or older</li>
           </ul>
         </div>
       </transition>
@@ -53,7 +56,7 @@
       <transition name="fade" mode="out-in">
         <div v-if="page === 4" class="page page-4">
           <template v-if="options.latest">
-            <img alt="LuckPerms logo" src="@/assets/logo.png">
+            <img alt="LuckPerms logo" src="@/assets/logo.svg">
             <h1>You need LuckPerms for {{ serverType }}</h1>
             <div class="options">
               <a :href="downloads.bukkit" v-if="options.bukkit" download>
@@ -65,41 +68,44 @@
               <a :href="downloads.nukkit" v-if="options.nukkit" download>
                 Download
               </a>
-			        <a :href="downloads.bungee" v-if="options.bungee" download>
-			          Download
-			        </a>
-			        <a :href="downloads.velocity" v-if="options.velocity" download>
-			          Download
-			        </a>
+              <a :href="downloads.bungee" v-if="options.bungee" download>
+                Download
+              </a>
+              <a :href="downloads.velocity" v-if="options.velocity" download>
+                Download
+              </a>
             </div>
           </template>
-		      <template v-if="options.legacy">
-			      <img alt="LuckPerms logo" src="@/assets/logo.png">
-			      <h1>You need LuckPerms{{ legacy }} for {{ serverType }}</h1>
-			      <div class="options">
-			        <a :href="downloads['bukkit-legacy']" v-if="options.bukkit" download>
-				        Download
-			        </a>
-			      </div>
-		      </template>
+          <template v-if="options.legacy">
+            <img alt="LuckPerms logo" src="@/assets/logo.svg">
+            <h1>You need LuckPerms{{ legacy }} for {{ serverType }}</h1>
+            <div class="options">
+              <a :href="downloads['bukkit-legacy']" v-if="options.bukkit" download>
+                Download
+              </a>
+            </div>
+          </template>
           <template v-if="options.unsupported">
-            <h1>Your version of {{ serverType }} is not supported, you must upgrade if you want to use LuckPerms</h1>
+            <h1 v-if="options.bungee">Your version of BungeeCord is not supported, consider
+              switching to Travertine if you want to use LuckPerms.</h1>
+            <h1 v-if="!options.bungee">Your version of {{ serverType }} is not supported, you must
+              upgrade if you want to use LuckPerms</h1>
           </template>
         </div>
       </transition>
-	  
-	  <transition name="fade" mode="out-in">
-	    <div v-if="page === 5" class="page page-5">
-		    <h1>What version of {{ serverType }} are you running?</h1>
-        <ul class="options" v-if="options.bungee">
-          <li @click="proceed(4, 'latest')">1.8.8 or higher</li>
-          <li @click="proceed(4, 'unsupported')">1.8.7 or lower</li>
-        </ul>
-        <ul class="options" v-if="options.velocity">
-          <li @click="proceed(4, 'latest')">Velocity 1.0 or higher</li>
-        </ul>
-		  </div>
-	  </transition>
+
+      <transition name="fade" mode="out-in">
+        <div v-if="page === 5" class="page page-5">
+          <h1>What version of {{ serverType }} are you running?</h1>
+          <ul class="options" v-if="options.bungee">
+            <li @click="proceed(4, 'latest')">1.8.8 or newer</li>
+            <li @click="proceed(4, 'unsupported')">1.8.7 or older</li>
+          </ul>
+          <ul class="options" v-if="options.velocity">
+            <li @click="proceed(4, 'latest')">1.0 or newer</li>
+          </ul>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -128,17 +134,17 @@ export default {
   },
   computed: {
     serverType() {
-      if (this.options.bukkit) return 'CraftBukkit / Spigot / Paper';
+      if (this.options.bukkit) return 'Bukkit';
       if (this.options.sponge) return 'Sponge';
       if (this.options.nukkit) return 'Nukkit';
-	    if (this.options.bungee) return 'Bungeecord / Waterfall / Travertine';
-	    if (this.options.velocity) return 'Velocity'
+      if (this.options.bungee) return 'BungeeCord';
+      if (this.options.velocity) return 'Velocity';
       return null;
     },
     legacy() {
-	    if (this.options.legacy) return ' Legacy';
-	    return null;
-	  }
+      if (this.options.legacy) return ' Legacy';
+      return null;
+    },
   },
   methods: {
     proceed(page, answer) {
@@ -147,6 +153,7 @@ export default {
     },
     reset() {
       this.page = 1;
+      // eslint-disable-next-line guard-for-in,no-restricted-syntax
       for (const option in this.options) {
         this.options[option] = false;
       }
@@ -161,7 +168,7 @@ export default {
 
 <style lang="scss">
   .download-quiz {
-    background: rgba(0,0,0,.9);
+    background: rgba(0, 0, 0, .9);
     position: fixed;
     top: 0;
     bottom: 0;
@@ -173,7 +180,7 @@ export default {
     justify-content: center;
 
     .modal {
-      background-color: $grey;
+      background: $bg-gradient-dark;
       padding: 4rem;
       border-radius: 4px;
       width: 100%;
@@ -218,7 +225,7 @@ export default {
         }
 
         h1 {
-          margin: 0 0 1em;
+          margin: 0 0 1rem;
           text-align: center;
         }
 
@@ -240,6 +247,7 @@ export default {
             cursor: pointer;
             font-size: 1.5rem;
             text-align: center;
+            text-decoration: none;
 
             &:hover {
               background: lighten($brand-color, 10%);

@@ -16,7 +16,8 @@
   </div>
 
   <p>
-    <strong>Note:</strong> after running the <code>applyedits</code> command, you should generate another editor URL to continue editing your server's permissions.
+    <strong>Note:</strong> after running the <code>applyedits</code> command, you should generate
+    another editor URL to continue editing your server's permissions.
   </p>
 </div>
 </template>
@@ -38,17 +39,15 @@ export default {
   computed: {
     metaData() {
       return this.$store.getters.metaData;
-    }
+    },
   },
 
   methods: {
-    copyCommand() {
-      this.$copyText(`/${this.metaData.commandAlias} applyedits ${this.props}`)
-      .then(() => {
-        this.commandCopied = true;
-      }).catch(console.error);
-    }
-  }
+    async copyCommand() {
+      await this.$copyText(`/${this.metaData.commandAlias} applyedits ${this.props}`);
+      this.commandCopied = true;
+    },
+  },
 };
 </script>
 

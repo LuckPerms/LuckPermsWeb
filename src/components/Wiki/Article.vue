@@ -1,20 +1,25 @@
 <template>
     <div>
-      <h1>
+      <template v-if="article">
+        <h1>
+          <transition name="fade" mode="out-in">
+            <span :key="title">
+              {{ title }}
+            </span>
+          </transition>
+        </h1>
         <transition name="fade" mode="out-in">
-          <span :key="title">
-            {{ title }}
-          </span>
+          <component :is="article" />
         </transition>
-      </h1>
-      <transition name="fade" mode="out-in">
-        <component :is="article" />
-      </transition>
+      </template>
+      <template v-else>
+        <NotFound/>
+      </template>
     </div>
-
 </template>
 
 <script>
+import NotFound from '@/views/NotFound.vue';
 import 'highlight.js/styles/atom-one-dark.css';
 
 export default {
@@ -23,6 +28,9 @@ export default {
     return {
       title,
     };
+  },
+  components: {
+    NotFound,
   },
   data() {
     return {
@@ -45,7 +53,12 @@ export default {
   methods: {
     async getArticle() {
       // eslint-disable-next-line global-require,import/no-dynamic-require
-      this.article = require(`@/wiki/${this.route}.md`).default;
+      try {
+        this.article = require(`@/wiki/${this.route}.md`).default;
+      } catch(e) {
+        this.article = null;
+        return;
+      }
 
       await this.$nextTick();
 

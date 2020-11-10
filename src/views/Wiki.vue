@@ -242,6 +242,24 @@ export default {
         display: initial;
       }
     }
+
+    .notfound .hero {
+      padding: 4rem;
+
+      h1 {
+        background: none;
+        font-size: 4rem;
+        
+        svg {
+          top: 1rem;
+        }
+      }
+
+      p, code {
+        padding: inherit;
+        color: inherit;
+      }
+    }
   }
 
   :target {

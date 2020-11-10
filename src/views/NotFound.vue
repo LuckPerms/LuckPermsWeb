@@ -5,7 +5,7 @@
         <font-awesome icon="exclamation-circle" />
         <span>Not found!</span>
         <div class="error">
-          <p>The page <code>{{ this.$route.path }}</code> couldn't be found</p>
+          <p>The page <code>{{ this.$route.path }}</code> doesn't exist</p>
         </div>
       </h1>
     </section>

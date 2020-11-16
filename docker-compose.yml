@@ -1,0 +1,44 @@
+version: '3'
+services:
+  # LuckPerms Web container
+  luckpermsweb:
+    # Use the latest LuckPermsWeb container
+    image: luckperms/luckpermsweb:latest
+    # Set the container name
+    container_name: luckpermsweb
+    # Set how the container restarts on fails
+    restart: always
+    # Expose ports
+    ports:
+      - 7666:7666
+    # Set a depend to mark the container creation and start order
+    depends_on:
+      - bytebin
+    # Set a enviroment variable for versioning
+    environment:
+    # The url under which bytebin will be avaiable
+      - BYTEBIN_URL="https://bytebin.lucko.me/"
+    # The base directory on your webserver ( e.g. if your editor is avaiable from a sub url like example.com/lpweb enter "/lpweb/")
+      - BASE_DIRECTORY="/"
+    # The url under which the metadata endpoint is avaiable
+      - METADATA_URL="https://metadata.luckperms.net"
+
+  # Bytebin service used for exchanging data
+  bytebin:
+    # Use the latest bytebin version avaiable
+    image: luckperms/bytebin:latest
+    # Set the container name
+    container_name: bytebin
+    # Set how the container restarts on fails
+    restart: always
+    # Expose ports
+    ports:
+      - 7665:7665
+    # Set enviroment variables
+    environment: 
+    # How long should Unique keys of bytebin be
+      - BYTEBIN_KEYLEN=10
+    # How long should a bytebin post last in seconds
+      - BYTEBIN_LIFETIME=10080
+    # How big can a bytebin post be in megabytes
+      - BYTEBIN_CONTENTLEN=10

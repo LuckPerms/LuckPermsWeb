@@ -1,0 +1,6 @@
+{
+    "bytebin_url": "#bytebin#",
+    "base": "#baseDir#",
+    "selfHosted": true,
+    "api_url": "#metadata#"
+  }

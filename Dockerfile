@@ -5,7 +5,6 @@ RUN apk add --no-cache nodejs npm nginx git bash &&\
 WORKDIR /opt/luckpermsweb
 # Clone, install and prepare LuckPErmsWeb
 RUN git clone --recursive https://github.com/lucko/LuckPermsWeb.git /opt/luckpermsweb &&\
-    npm install &&\
     rm /opt/luckpermsweb/config.json &&\
     rm /etc/nginx/conf.d/default.conf
 # Copy entrypoint and config files into container

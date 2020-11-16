@@ -27,6 +27,7 @@ fi
 if [ ! -f '/opt/luckpermsweb/dist' ]; then
     echo "[INFO] Building LuckPermsWeb"
     cd /opt/luckpermsweb
+    /usr/bin/npm install
     /usr/bin/npm run build
 fi
 

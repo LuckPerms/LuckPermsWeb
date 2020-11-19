@@ -86,14 +86,12 @@ export default {
       });
 
       if (this.$route.hash) {
-        console.log(this.$route.hash);
         await this.scrollTo(this.$route.hash);
       }
     },
     async scrollTo(hash) {
       await this.$nextTick();
       const element = document.getElementById(hash.split('#')[1]);
-      console.log(element);
       if (!element) return;
       element.scrollIntoView({
         behavior: 'smooth',

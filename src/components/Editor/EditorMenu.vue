@@ -3,7 +3,7 @@
     <div class="filter">
       <input
         type="text"
-        placeholder="Search"
+        placeholder="Filter groups/users"
         v-model="filter"
         title="Filter tracks, groups and users"
       >
@@ -70,7 +70,10 @@
               :key="`group_${group.id}`"
               title="Edit group"
             >
-              <EditorMenuGroup :group="group" />
+              <EditorMenuGroup
+                :group="group"
+                @clear-query="emitClearQuery"
+              />
             </li>
           </ul>
         </transition>
@@ -179,6 +182,7 @@ export default {
   methods: {
     changeCurrentSession(sessionId) {
       this.$store.commit('setCurrentSession', sessionId);
+      this.emitClearQuery();
     },
     createTrack() {
       this.$store.commit('setModal', {
@@ -195,6 +199,9 @@ export default {
           userId,
         },
       });
+    },
+    emitClearQuery() {
+      this.$emit('clear-query');
     },
   },
 

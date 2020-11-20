@@ -86,7 +86,7 @@ export default {
   watch: {
     query: debounce(function(value) {
       this.debouncedQuery = String(value).toLowerCase();
-    }, 500),
+    }, 200),
   }
 }
 </script>

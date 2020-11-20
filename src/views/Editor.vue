@@ -20,7 +20,6 @@
     </div>
 
     <div v-else class="editor-container">
-      <transition name="fade" mode="out-in">
         <div v-if="!sessions.length" class="tool-intro" key="loading">
           <div>
             <img alt="LuckPerms logo" src="../assets/logo.svg">
@@ -52,14 +51,12 @@
             :class="{ active: menu }"
           />
 
-          <transition name="fade">
             <div
               id="editor-menu-focus"
               class="overlay-focus"
               v-if="menu"
               @click="menu = !menu"
             ></div>
-          </transition>
 
           <button
             id="editor-menu-toggle"
@@ -106,17 +103,15 @@
               </div>
             </nav>
 
-            <transition name="fade" mode="in-out">
-              <div class="editor-no-session" v-if="!currentSession && !search.query">
+
+              <div class="editor-no-session" v-if="!currentSession && !search.debouncedQuery">
                 <font-awesome icon="arrow-left" />
                 <h1>Choose a group or user from the side bar</h1>
               </div>
-            </transition>
 
-            <transition name="fade" mode="out-in">
               <div
                 class="editor-session"
-                v-if="currentSession && !search.query"
+                v-if="currentSession && !search.debouncedQuery"
                 :key="`session_${currentSession.id}`"
               >
                 <div class="session-container">
@@ -125,22 +120,15 @@
                   <NodeList :nodes="currentNodes" />
                 </div>
               </div>
-            </transition>
 
-            <transition name="fade" mode="out-in">
               <search-nodes
-                v-if="search.query"
-                :query="search.query"
+                v-if="search.debouncedQuery"
+                :query="search.debouncedQuery"
               />
-            </transition>
 
-            <transition name="fade">
-              <AddNode v-if="(currentSession && !search.query) || selectedNodes.length" />
-            </transition>
+              <AddNode v-if="(currentSession && !search.debouncedQuery) || selectedNodes.length" />
           </div>
         </div>
-      </transition>
-
     </div>
 
     <transition name="fade">
@@ -160,14 +148,13 @@ import SearchNodes from '@/components/Editor/SearchNodes';
 import Modal from '@/components/Editor/Modal.vue';
 import { checkVersion } from '@/util/version';
 import updateSession from '@/util/session';
+import debounce from "lodash.debounce";
 
 export default {
   name: 'Editor',
-
   metaInfo: {
     title: 'Editor',
   },
-
   components: {
     EditorMenu,
     Header,
@@ -177,17 +164,16 @@ export default {
     SearchNodes,
     Modal,
   },
-
   data() {
     return {
       menu: false,
       search: {
         toggle: false,
         query: '',
+        debouncedQuery: '',
       }
     };
   },
-
   computed: {
     sessionId() {
       return this.$store.getters.editorSessionId;
@@ -244,19 +230,19 @@ export default {
       return this.$store.getters.selectedNodeIds;
     },
   },
-
   created() {
     const { $route } = this;
     if (this.sessions?.length) return;
     updateSession($route, 'getEditorData');
   },
-
   watch: {
     $route(route) {
       updateSession(route, 'getEditorData');
     },
+    'search.query': debounce(function(value) {
+      this.search.debouncedQuery = String(value).toLowerCase();
+    }, 200),
   },
-
   methods: {
     saveData() {
       this.$store.dispatch('saveData');

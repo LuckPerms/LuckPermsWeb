@@ -266,6 +266,7 @@ export default {
     clearQuery() {
       this.search.query = '';
       this.search.debouncedQuery = '';
+      this.search.toggle = false;
     }
   },
 };

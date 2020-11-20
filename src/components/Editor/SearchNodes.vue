@@ -115,6 +115,7 @@ export default {
     margin: 0;
     background: rgba(255,255,255,.1);
     text-transform: uppercase;
+    cursor: pointer;
 
     small {
       display: inline-block;

@@ -49,6 +49,7 @@
             :sessions="sessions"
             :current-session="currentSession"
             :class="{ active: menu }"
+            @clear-query="clearQuery"
           />
 
             <div
@@ -124,6 +125,7 @@
               <search-nodes
                 v-if="search.debouncedQuery"
                 :query="search.debouncedQuery"
+                @clear-query="clearQuery"
               />
 
               <AddNode v-if="(currentSession && !search.debouncedQuery) || selectedNodes.length" />
@@ -260,6 +262,10 @@ export default {
         await this.$nextTick();
         this.$refs.searchInput.focus();
       }
+    },
+    clearQuery() {
+      this.search.query = '';
+      this.search.debouncedQuery = '';
     }
   },
 };

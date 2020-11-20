@@ -72,6 +72,7 @@ export default {
   methods: {
     changeCurrentSession(sessionId) {
       this.$store.commit('setCurrentSession', sessionId);
+      this.$emit('clear-query');
     },
 
     editTrack() {

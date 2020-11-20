@@ -2,7 +2,9 @@
   <div class="search-results">
     <ul v-if="groupedResults.length">
       <li v-for="group in groupedResults" :key="`search_session_${group.session.id}`">
-        <h2>
+        <h2
+          @click="setCurrentSession(group.session.id)"
+        >
           <small>{{ group.session.type }}</small>
           <avatar
             v-if="group.session.type === 'user'"
@@ -82,6 +84,13 @@ export default {
         nodes: results.filter(node => node.sessionId === sessionId),
       }));
     }
+  },
+  methods: {
+    setCurrentSession(session) {
+      console.log('hi');
+      this.$store.commit('setCurrentSession', session);
+      this.$emit('clear-query');
+    },
   },
   watch: {
     query: debounce(function(value) {

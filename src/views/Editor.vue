@@ -2,7 +2,7 @@
   <main class="editor">
     <div v-if="!sessionId" class="tool-intro">
       <div>
-        <img alt="LuckPerms logo" src="../assets/logo.png">
+        <img alt="LuckPerms logo" src="../assets/logo.svg">
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Web Permissions Editor</p>
@@ -23,7 +23,7 @@
       <transition name="fade" mode="out-in">
         <div v-if="!sessions.length" class="tool-intro" key="loading">
           <div>
-            <img alt="LuckPerms logo" src="../assets/logo.png">
+            <img alt="LuckPerms logo" src="../assets/logo.svg">
             <div class="text">
               <h1>LuckPerms</h1>
               <p>Web Permissions Editor</p>
@@ -247,18 +247,7 @@ export default {
 
   created() {
     const { $route } = this;
-
-    if (window.location.search && window.location.search.length === 11) {
-      const code = window.location.search.split('?')[1];
-      window.location = `https://legacy.luckperms.net/editor/?${code}`;
-    }
-
-    if ($route.hash && $route.hash.length === 11) {
-      window.location = `https://legacy.luckperms.net/editor/${$route.hash}`;
-    }
-
     if (this.sessions?.length) return;
-
     updateSession($route, 'getEditorData');
   },
 

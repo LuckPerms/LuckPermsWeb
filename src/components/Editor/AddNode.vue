@@ -365,10 +365,13 @@ export default {
     addContext() {
       if (this.context.key === '' || this.context.value === '') return;
 
-      const values = this.context.contexts[this.context.key] || [];
-      if (!values.find(value => value === this.context.value)) {
-        values.push(this.context.value);
-        this.$set(this.context.contexts, this.context.key, values);
+      const key = this.context.key.trim();
+      const value = this.context.value.trim();
+
+      const values = this.context.contexts[key] || [];
+      if (!values.find(val => val === value)) {
+        values.push(value.trim());
+        this.$set(this.context.contexts, key, values);
       }
 
       this.context.key = '';

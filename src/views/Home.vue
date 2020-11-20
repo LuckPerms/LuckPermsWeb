@@ -3,7 +3,7 @@
     <section class="hero">
       <div class="container">
         <div :class="{'logo': true, 'selfhosted': config.selfHosted }">
-          <img alt="LuckPerms logo" src="../assets/logo.png">
+          <img alt="LuckPerms logo" src="../assets/logo.svg">
           <div>
             <h1>LuckPerms</h1>
             <p>A permissions plugin for Minecraft servers.</p>

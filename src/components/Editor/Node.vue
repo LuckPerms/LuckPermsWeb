@@ -244,16 +244,19 @@ export default {
     addContext() {
       if (this.context.key === '' || this.context.value === '') return;
 
+      const key = this.context.key.trim();
+      const value = this.context.value.trim();
+
       const context = JSON.parse(JSON.stringify(this.source.context));
 
-      let values = context[this.context.key] || [];
+      let values = context[key] || [];
       if (!Array.isArray(values)) {
         values = [values];
       }
 
-      if (!values.find(value => value === this.context.value)) {
-        values.push(this.context.value);
-        context[this.context.key] = values;
+      if (!values.find(val => val === value)) {
+        values.push(value);
+        context[key] = values;
         this.updateNode('context', context);
       }
 

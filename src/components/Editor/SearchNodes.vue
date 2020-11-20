@@ -63,7 +63,14 @@ export default {
         if (contextKeys.length) {
           const lowerCaseKeys = contextKeys.map(key => String(key).toLowerCase());
           contextKey = lowerCaseKeys.includes(query);
-          contextValue = contextKeys.some(key => node.context[key].some(value => String(value).toLowerCase().includes(query)));
+          contextValue = contextKeys.some(key => {
+            if (typeof node.context[key] === 'string') {
+              return String(node.context[key]).toLowerCase().includes(query);
+            } else if (Array.isArray(node.context[key])) {
+              return node.context[key].some(value => String(value).toLowerCase().includes(query));
+            }
+            return false;
+          });
         }
         return (key || contextKey || contextValue);
       });

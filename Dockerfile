@@ -1,4 +1,6 @@
 FROM alpine:3.12
+# Set Maintainer
+LABEL maintainer="LuckPerms <luck@lucko.me>"
 # Install Dependencies and prepare work directory
 RUN apk add --no-cache nodejs npm nginx git bash &&\
     mkdir /opt/luckpermsweb

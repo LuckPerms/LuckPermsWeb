@@ -45,6 +45,7 @@ npm run build
 ```
 
 ### Self hosting
-There is a convenient installation script provided for self hosting the web apps.
+There is a convenient installation script provided for self hosting the web apps, alternatively you can use docker.
 
-For more details, see [here](installer/README.md).
+If you want to use the installation script click [here](installer/README.md) for instructions.
+If you want to use Docker click [here](docker/README.md) for instructions.

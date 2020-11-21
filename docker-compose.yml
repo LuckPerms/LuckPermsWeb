@@ -20,8 +20,6 @@ services:
       - BYTEBIN_URL="https://bytebin.lucko.me/"
     # The base directory on your webserver ( e.g. if your editor is avaiable from a sub url like example.com/lpweb enter "/lpweb/")
       - BASE_DIRECTORY="/"
-    # The url under which the metadata endpoint is avaiable
-      - METADATA_URL="https://metadata.luckperms.net"
 
   # Bytebin service used for exchanging data
   bytebin:

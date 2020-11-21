@@ -14,14 +14,9 @@ if [ ! -f '/opt/luckpermsweb/config.json' ]; then
         BASE_DIRECTORY="/"
     fi
 
-    if [ -z ${METADATA_URL+x} ]; then
-        METADATA_URL="https://metadata.luckperms.net"
-    fi
-
     # write config file
     sed -i "s|#bytebin#|$BYTEBIN_URL|g" /opt/luckpermsweb/config.json
     sed -i "s|#baseDir#|$BASE_DIRECTORY|g" /opt/luckpermsweb/config.json
-    sed -i "s|#metadata#|$METADATA_URL|g" /opt/luckpermsweb/config.json
 fi
 
 if [ ! -f '/opt/luckpermsweb/dist' ]; then

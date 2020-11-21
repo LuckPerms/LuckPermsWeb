@@ -2,7 +2,7 @@
 
 ## Installation and Updating
 
-All the following methods require you to clone the LpckPermsWeb repository onto your device and to ``cd`` into it.
+All the following methods require you to clone the LuckPermsWeb repository onto your device and to ``cd`` into it.
 
 ### Using docker-compose
 

@@ -6,17 +6,6 @@
           <img alt="LuckPerms logo" src="@/assets/logo.svg">
           <span>LuckPerms</span>
         </router-link>
-        <div v-if="!config.selfHosted" class="nav-message">
-          <router-link to="/sponsor">
-            <img src="@/assets/bisect.svg" alt="Bisect Hosting">
-            <span>
-              Proudly sponsored by
-              <strong>BisectHosting</strong><br/>
-              <span class="green">NEW:</span>
-              Special offer for LuckPerms users!
-            </span>
-          </router-link>
-        </div>
       </div>
 
       <ul :class="{ active: menu, 'top-level': true }">
@@ -79,18 +68,6 @@
               <span>Discord</span>
             </a>
           </li>
-          <li class="external">
-            <router-link to="/sponsor" class="sponsor">
-              <font-awesome icon="server" fixed-width />
-              <span>Sponsor</span>
-            </router-link>
-          </li>
-          <li class="external">
-            <a href="https://patreon.com/luckdev" target="_blank" class="patreon">
-              <font-awesome :icon="['fab', 'patreon']" fixed-width />
-              <span>Patreon</span>
-            </a>
-          </li>
         </template>
       </ul>
 
@@ -123,6 +100,18 @@
             <a href="https://github.com/lucko/LuckPermsWeb" target="_blank">LuckPermsWeb</a>
             @
             <a :href="'https://github.com/lucko/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
+          </li>
+          <li>
+            <div v-if="!config.selfHosted && !isSponsorRoute" class="sponsor-message">
+              <router-link to="/sponsor">
+                <span>
+                  Proudly sponsored by
+                  <img src="@/assets/bisect.svg" alt="Bisect Hosting">
+                  <strong>BisectHosting</strong>
+                  - special offers for LP users!
+                </span>
+              </router-link>
+            </div>
           </li>
           <li>
             <a href="https://github.com/lucko/LuckPermsWeb/blob/master/LICENSE.txt" target="_blank">
@@ -193,6 +182,9 @@ export default {
         'tree-home',
       ].includes(this.$route.name);
     },
+    isSponsorRoute() {
+      return this.$route.name === 'sponsor';
+    },
   },
 
   created() {
@@ -253,10 +245,6 @@ body {
   overflow-x: hidden;
 }
 
-.green {
-  color: $brand-color;
-}
-
 #app {
   font-family: 'Source Sans Pro', 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -297,6 +285,30 @@ body {
       list-style: none;
       display: flex;
       justify-content: space-between;
+    }
+
+    .sponsor-message {
+      opacity: .5;
+      transition: opacity .2s;
+
+      img {
+        height: 1.4rem;
+        margin-right: .2rem;
+        vertical-align: middle;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .offer {
+        color: $brand-color;
+      }
+
+      &:hover {
+        opacity: .75;
+      }
     }
   }
 }
@@ -350,38 +362,6 @@ body {
       height: 100%;
       width: auto;
       margin-right: .5rem;
-    }
-  }
-
-  .nav-message {
-    margin-left: 1rem;
-    opacity: .5;
-    max-width: 25rem;
-    font-size: .9rem;
-    line-height: 1.2;
-    transition: opacity .2s;
-
-    img {
-      height: 2rem;
-      margin-right: .5rem;
-    }
-
-    a {
-      padding: .25rem;
-      color: inherit;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      font-size: .8rem;
-
-      code {
-        border: 1px solid rgba(255,255,255,.2);
-        padding: 0 .25em;
-      }
-    }
-
-    &:hover {
-      opacity: .75;
     }
   }
 
@@ -539,14 +519,6 @@ body {
 
           &.discord {
             color: #7289DA;
-          }
-
-          &.sponsor {
-            color: #03ddff;
-          }
-
-          &.patreon {
-            color: #f96854;
           }
 
           span {

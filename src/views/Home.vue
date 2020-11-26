@@ -93,6 +93,14 @@
             <small>Join {{ discordUserCount }} others to discuss the project and ask/answer
               questions</small>
           </a>
+          <router-link to="/sponsor" class="resource">
+            <span>
+              <font-awesome icon="server" />
+              Hosting Partner
+            </span>
+            <small>Find out how you can get a great deal on your server hosting and support
+              us at the same time</small>
+          </router-link>
           <a href="https://patreon.com/luckdev" class="resource">
             <span>
               <font-awesome :icon="['fab', 'patreon']" />

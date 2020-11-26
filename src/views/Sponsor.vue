@@ -25,14 +25,13 @@
             <li>By using our discount code, not only do you get a better deal on your hosting plan, but it also directly <strong>supports</strong> us in return, allowing us to continue developing and providing LuckPerms for everyone to enjoy!</li>
           </ul>
           <hr>
-          <p class="larger">We'd like to thank Bisect for sponsoring open source projects like ours and enabling us to continue to provide LuckPerms for free to the community, for all to enjoy. They're awesome & their support is much appreciated! 😎</p>
+          <p>We'd like to thank Bisect for sponsoring open source projects like ours and enabling us to continue to provide LuckPerms for free to the community, for all to enjoy. They're awesome & their support is much appreciated! 😎</p>
         </div>
         <div>
-          <h2>The deal!</h2>
-          <p>Ok, this is the bit you're here for right?</p>
-          <p>BisectHosting are generously giving LuckPerms users a massive 25% off the first month of any of their game server hosting plans.</p>
-          <p>Already have a server hosted somewhere else? Not to worry! Bisect are also offering to match the price of your existing plan if you transfer your server to them! You get all of the benefits of their Premium package for the same price you're paying already, and you get to support LuckPerms too! What's not to love?! ❤</p>
-          <p>➡️ ​ To get the 25% off discount, all you need to do is enter the promo code luck when you checkout! 🎉</p>
+          <h2>So, what's the deal?!</h2>
+          <p>BisectHosting are generously giving LuckPerms users a massive <strong>25% off</strong> the first month of any of their game server hosting plans.</p>
+          <p>Already have a server hosted somewhere else? Not to worry! Bisect are also offering to <strong>match the price of your existing plan</strong> if you transfer your server to them! You get all of the benefits of their Premium package for the same price you're paying already, and you get to support LuckPerms too! What's not to love?! 💚</p>
+          <p>➡️ ​ To get the 25% off discount, all you need to do is enter the promo code "luck" when you checkout! 🎉</p>
           <p>➡️ ​ To take advantage of their price-match offer, just get in touch with their support team and let them know you've come via us!</p>
         </div>
       </section>
@@ -138,11 +137,6 @@ export default {
       border-color: $brand-color;
       width: 12rem;
       margin: 1rem auto 2rem;
-    }
-
-    .larger {
-      font-size: 1.25rem;
-      opacity: 1;
     }
 
     .cta {

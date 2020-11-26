@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome';
 import {
   faSave,
   faUndo,
@@ -34,6 +34,8 @@ import {
   faClone,
   faSignInAlt,
   faSearch,
+  faServer,
+  faHeart,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -89,6 +91,8 @@ library.add(
   faClone,
   faSignInAlt,
   faSearch,
+  faServer,
+  faHeart,
 
   faGithub,
   faDiscord,
@@ -96,6 +100,7 @@ library.add(
 );
 
 Vue.component('font-awesome', FontAwesomeIcon);
+Vue.component('font-awesome-layers', FontAwesomeLayers);
 
 Vue.use(VueClipboard);
 Vue.use(VueMeta);

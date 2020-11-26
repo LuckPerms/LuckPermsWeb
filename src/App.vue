@@ -7,12 +7,13 @@
           <span>LuckPerms</span>
         </router-link>
         <div v-if="!config.selfHosted" class="nav-message">
-          <a href="https://bisecthosting.com/luck" target="_blank">
+          <a href="https://bisecthosting.com/luck">
             <img src="@/assets/bisect.svg" alt="Bisect Hosting">
             <span>
               Proudly sponsored by
               <strong>BisectHosting</strong><br/>
-              Use code <code>luck</code> for 25% off!
+              <span class="green">NEW:</span>
+              Special offer for LuckPerms users!
             </span>
           </a>
         </div>
@@ -77,6 +78,12 @@
               <font-awesome :icon="['fab', 'discord']" fixed-width />
               <span>Discord</span>
             </a>
+          </li>
+          <li class="external">
+            <router-link to="/sponsor" class="sponsor">
+              <font-awesome icon="server" fixed-width />
+              <span>Sponsor</span>
+            </router-link>
           </li>
           <li class="external">
             <a href="https://patreon.com/luckdev" target="_blank" class="patreon">
@@ -244,6 +251,10 @@ body {
   height: 100vh;
   display: flex;
   overflow-x: hidden;
+}
+
+.green {
+  color: $brand-color;
 }
 
 #app {
@@ -528,6 +539,10 @@ body {
 
           &.discord {
             color: #7289DA;
+          }
+
+          &.sponsor {
+            color: #03ddff;
           }
 
           &.patreon {

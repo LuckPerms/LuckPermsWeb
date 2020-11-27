@@ -38,7 +38,7 @@
       <section class="hero cta">
         <h1>Sound good?</h1>
         <p>Click the link below to go to the BisectHosting website and check out their plans!</p>
-        <a href="https://bisecthosting.com/luck">
+        <a href="https://bisecthosting.com/luck" target="_blank" v-on:click="logClick">
           Go to BisectHosting
         </a>
       </section>
@@ -61,7 +61,9 @@ export default {
 
   },
   methods: {
-
+    logClick() {
+      plausible('SponsorLinkOut');
+    },
   },
 };
 </script>

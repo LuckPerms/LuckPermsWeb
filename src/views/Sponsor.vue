@@ -21,7 +21,7 @@
           <h2>Why BisectHosting?</h2>
           <ul>
             <li>Bisect are a <strong>trusted</strong> and well established hosting provider in the community, and have already been serving many of our users for a number of years.</li>
-            <li>They provide an <strong>outstanding</strong> level of service we're happy to reccommend. We've personally used their product and can vouch for how awesome it is!</li>
+            <li>They provide an <strong>outstanding</strong> level of service we're happy to recommend. We've personally used their product and can vouch for how awesome it is!</li>
             <li>By using our discount code, not only do you get a better deal on your hosting plan, but it also directly <strong>supports</strong> us in return, allowing us to continue developing and providing LuckPerms for everyone to enjoy!</li>
           </ul>
           <hr>
@@ -31,12 +31,13 @@
           <h2>So, what's the deal?!</h2>
           <p>BisectHosting are generously giving LuckPerms users a massive <strong>25% off</strong> the first month of any of their game server hosting plans.</p>
           <p>Already have a server hosted somewhere else? Not to worry! Bisect are also offering to <strong>match the price of your existing plan</strong> if you transfer your server to them! You get all of the benefits of their Premium package for the same price you're paying already, and you get to support LuckPerms too! What's not to love?! 💚</p>
-          <p>➡️ ​ To get the 25% off discount, all you need to do is enter the promo code "luck" when you checkout! 🎉</p>
-          <p>➡️ ​ To take advantage of their price-match offer, just get in touch with their support team and let them know you've come via us!</p>
+          <p><font-awesome icon="arrow-circle-right" /> ​ To get the <strong>25% off</strong> discount, all you need to do is enter the promo code "luck" when you checkout! 🎉</p>
+          <p><font-awesome icon="arrow-circle-right" /> ​ To take advantage of their <strong>price-match</strong> offer, just get in touch with their support team and let them know you've come via us!</p>
         </div>
       </section>
       <section class="hero cta">
-        <h1>Ready to switch?</h1>
+        <h1>Sound good?</h1>
+        <p>Click the link below to go to the BisectHosting website and check out their plans!</p>
         <a href="https://bisecthosting.com/luck">
           Go to BisectHosting
         </a>
@@ -153,6 +154,11 @@ export default {
         font-size: 2rem;
         font-weight: bold;
         margin-top: 1rem;
+      }
+
+      p {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
       }
     }
   }

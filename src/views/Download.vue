@@ -17,42 +17,42 @@
       <section class="resources">
         <div>
           <h2>Choose your server type</h2>
-          <a :href="downloads.bukkit" class="resource">
+          <a :href="downloads.bukkit" v-on:click="logDownload('bukkit')" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Bukkit
             </span>
             <small>For CraftBukkit/Spigot/Paper etc, 1.8.8 or newer</small>
           </a>
-          <a :href="downloads.bungee" class="resource">
+          <a :href="downloads.bungee" v-on:click="logDownload('bungee')" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               BungeeCord
             </span>
             <small>For BungeeCord/Waterfall etc, use latest</small>
           </a>
-          <a :href="downloads.sponge" class="resource">
+          <a :href="downloads.sponge" v-on:click="logDownload('sponge')" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Sponge
             </span>
             <small>For SpongeForge/SpongeVanilla API 5-8</small>
           </a>
-          <a :href="downloads.nukkit" class="resource">
+          <a :href="downloads.nukkit" v-on:click="logDownload('nukkit')" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Nukkit
             </span>
             <small>For NukkitX, b93 or newer</small>
           </a>
-          <a :href="downloads.velocity" class="resource">
+          <a :href="downloads.velocity" v-on:click="logDownload('velocity')" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Velocity
             </span>
             <small>For Velocity, 1.1.0 or newer</small>
           </a>
-          <a :href="downloads['bukkit-legacy']" class="resource">
+          <a :href="downloads['bukkit-legacy']" v-on:click="logDownload('bukkit-legacy')" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Bukkit Legacy
@@ -115,7 +115,7 @@
     <div class="container extensions">
       <section class="resources">
         <div>
-          <a :href="extensions['extension-legacy-api']" class="resource">
+          <a :href="extensions['extension-legacy-api']" v-on:click="logDownload('extension-legacy-api')" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Legacy API Extension
@@ -133,7 +133,7 @@
           </div>
         </div>
         <div>
-          <a :href="extensions['extension-default-assignments']" class="resource">
+          <a :href="extensions['extension-default-assignments']" v-on:click="logDownload('extension-default-assignments')" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Default Assignments Extension
@@ -191,6 +191,9 @@ export default {
     changeLog() { return this.$store.getters.changeLog; },
   },
   methods: {
+    logDownload(platform) {
+      plausible('Download', {props: {type: platform}});
+    },
     openQuiz() {
       this.quiz.open = true;
     },

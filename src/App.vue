@@ -6,17 +6,20 @@
           <img alt="LuckPerms logo" src="@/assets/logo.svg">
           <span>LuckPerms</span>
         </router-link>
-        <div v-if="!config.selfHosted && !isSponsorRoute" class="nav-message">
-          <router-link to="/sponsor">
-            <img src="@/assets/bisect.svg" alt="Bisect Hosting">
-            <span>
+        <hr />
+        <transition name="fade">
+          <div v-if="!config.selfHosted && !isSponsorRoute" class="nav-message">
+            <router-link to="/sponsor">
+              <img src="@/assets/bisect.svg" alt="Bisect Hosting">
+              <span>
               Proudly sponsored by
               <strong>BisectHosting</strong><br/>
               <span class="new">NEW:</span>
               Special offer for LuckPerms users!
             </span>
-          </router-link>
-        </div>
+            </router-link>
+          </div>
+        </transition>
       </div>
 
       <ul :class="{ active: menu, 'top-level': true }">
@@ -340,13 +343,18 @@ body {
     }
   }
 
+  hr {
+    height: 2rem;
+    margin: 0 1rem;
+    border-color: $brand-color;
+  }
+
   .nav-message {
-    margin-left: 1rem;
-    opacity: .5;
     max-width: 25rem;
     font-size: .9rem;
     line-height: 1.2;
-    transition: opacity .2s;
+    color: rgba(255,255,255,.66);
+    transition: all .2s;
 
     .new {
       color: $brand-color;
@@ -371,7 +379,7 @@ body {
     }
 
     &:hover {
-      opacity: .75;
+      color: rgba(255,255,255,.8);
     }
   }
 

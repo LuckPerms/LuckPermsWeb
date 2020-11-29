@@ -39,7 +39,11 @@
         <h1>Sound good?</h1>
         <p>Click the link below to go to the BisectHosting website and check out their plans!</p>
         <a href="https://bisecthosting.com/luck" target="_blank" v-on:click="logClick">
-          Go to BisectHosting
+          Go to BisectHosting plans
+        </a>
+        <p>If you have any questions or want to take advantage of the price-match offer, get in touch with their support team!</p>
+        <a href="https://www.bisecthosting.com/clients/submitticket.php?step=2&deptid=1" target="_blank" v-on:click="logClick">
+          Chat with BisectHosting support
         </a>
       </section>
     </div>
@@ -155,12 +159,15 @@ export default {
         text-decoration: none;
         font-size: 2rem;
         font-weight: bold;
-        margin-top: 1rem;
+        margin: 2rem 0;
       }
 
       p {
         font-size: 1.5rem;
-        margin-bottom: 1.5rem;
+        width: 100%;
+        max-width: 44rem;
+        text-align: center;
+        padding: 0 2rem;
       }
     }
   }

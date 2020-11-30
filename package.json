@@ -20,6 +20,7 @@
     "i": "^0.3.6",
     "lodash.debounce": "^4.0.8",
     "lodash.sortby": "^4.7.0",
+    "lunr": "^2.3.9",
     "markdown-it": "^9.1.0",
     "markdown-it-highlightjs": "^3.3.0",
     "markdown-loader": "^5.1.0",

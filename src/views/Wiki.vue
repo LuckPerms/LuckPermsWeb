@@ -4,6 +4,20 @@
       <router-view />
     </article>
     <aside>
+      <div class="search-container">
+        <button @click="toggleSearch">
+          <font-awesome v-if="search.toggle && !wikiIndex.loaded" icon="asterisk" :spin="true" fixed-width />
+          <font-awesome v-else-if="search.query" icon="times" fixed-width />
+          <font-awesome v-else icon="search" fixed-width />
+        </button>
+        <input
+          v-if="search.toggle"
+          type="text"
+          v-model="search.query"
+          placeholder="Search"
+          ref="searchInput"
+        />
+      </div>
       <h1>Wiki</h1>
       <sidebar />
     </aside>
@@ -11,7 +25,9 @@
 </template>
 
 <script>
-import Sidebar from '../wiki/_Sidebar.md';
+import Sidebar from '../wiki/pages/_Sidebar.md';
+import store from '../store';
+import debounce from "lodash.debounce";
 
 export default {
   metaInfo: {
@@ -19,6 +35,20 @@ export default {
   },
   components: {
     Sidebar,
+  },
+  data() {
+    return {
+      search: {
+        toggle: false,
+        query: '',
+        debouncedQuery: '',
+      }
+    };
+  },
+  computed: {
+    wikiIndex() {
+      return this.$store.getters.wikiIndex;
+    },
   },
   mounted() {
     if (window.innerWidth >= 922) return;
@@ -31,6 +61,31 @@ export default {
         });
       });
     });
+  },
+  watch: {
+    'search.query': debounce(function(value) {
+      this.search.debouncedQuery = String(value).toLowerCase();
+    }, 200),
+  },
+  methods: {
+    async toggleSearch() {
+      store.dispatch('getWikiIndex');
+
+      const { search } = this;
+      if (search.toggle === true) {
+        search.query = '';
+        search.toggle = false;
+      } else {
+        search.toggle = true;
+        await this.$nextTick();
+        this.$refs.searchInput.focus();
+      }
+    },
+    clearQuery() {
+      this.search.query = '';
+      this.search.debouncedQuery = '';
+      this.search.toggle = false;
+    }
   },
 };
 </script>
@@ -101,6 +156,32 @@ export default {
         padding-left: 1rem;
         padding-bottom: .1rem;
         line-height: 1.2;
+      }
+    }
+
+    .search-container {
+      display: flex;
+      position: relative;
+
+      button {
+        background: $brand-color;
+        color: $navy;
+        font: inherit;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: .25rem .5rem;
+        border:0;
+        cursor: pointer;
+
+        &:hover {
+          opacity: .8;
+        }
+      }
+
+      input {
+        padding: .5rem;
+        width: 20rem;
+        border: 0;
       }
     }
   }

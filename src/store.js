@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import lunr from 'lunr';
 import { compareVersions } from './util/version';
 
 const uuid = require('uuid/v4');
@@ -28,6 +29,10 @@ export default new Vuex.Store({
     },
     discordUserCount: null,
     patreonCount: null,
+    wikiIndex: {
+      loaded: false,
+      index: {},
+    },
     editor: {
       sessionId: null,
     },
@@ -67,6 +72,8 @@ export default new Vuex.Store({
     discordUserCount: state => state.discordUserCount,
 
     patreonCount: state => state.patreonCount,
+
+    wikiIndex: state => state.wikiIndex,
 
     editorSessionId: state => state.editor.sessionId,
 
@@ -147,6 +154,11 @@ export default new Vuex.Store({
 
     setPatreonCount: (state, patreonCount) => {
       state.patreonCount = patreonCount;
+    },
+
+    setWikiIndex: (state, index) => {
+      state.wikiIndex.loaded = true;
+      state.wikiIndex.index = index;
     },
 
     initEditorData(state, sessionId) {
@@ -454,6 +466,15 @@ export default new Vuex.Store({
           await dispatch('getAppData');
         }, 10000);
       }
+    },
+
+    getWikiIndex({ commit }) {
+      Promise.all([
+        import('./wiki/indexer/plain.json'),
+        import('./wiki/indexer/index.json')
+      ]).then(([plain, index]) => {
+        commit('setWikiIndex', { plain: plain, index: lunr.Index.load(index) });
+      });
     },
 
     getEditorData({ commit, dispatch }, sessionId) {

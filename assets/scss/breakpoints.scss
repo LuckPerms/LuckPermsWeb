@@ -1,8 +1,8 @@
 $xs: ( max:  767px );
 $sm: ( min:  768px );
 $md: ( min:  992px );
-$lg: ( min: 1300px );
-$xl: ( min: 1500px );
+$lg: ( min: 1400px );
+$xl: ( min: 1800px );
 $sm-only: ( min: map-get($sm, min), max: map-get($md, min) - 1 );
 $md-only: ( min: map-get($md, min), max: map-get($lg, min) - 1 );
 

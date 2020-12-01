@@ -114,7 +114,6 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/markdownit',
-    'nuxt-interpolation',
     '@nuxtjs/style-resources'
   ],
   /*

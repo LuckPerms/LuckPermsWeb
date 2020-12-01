@@ -23,6 +23,9 @@
             <li @click="proceed(3, 'sponge')">SpongeForge / SpongeVanilla</li>
             <li @click="proceed(3, 'nukkit')">NukkitX</li>
           </ul>
+          <p class="lighter" v-if="options.network">
+            Note: LuckPerms is still required on all backend servers.
+          </p>
           <ul class="options" v-if="options.network">
             <li @click="proceed(5, 'bungee')">BungeeCord / Waterfall / Travertine</li>
             <li @click="proceed(5, 'velocity')">Velocity</li>
@@ -53,7 +56,7 @@
       <transition name="fade" mode="out-in">
         <div v-if="page === 4" class="page page-4">
           <template v-if="options.latest">
-            <img alt="LuckPerms logo" src="@/assets/logo.png">
+            <img alt="LuckPerms logo" src="@/assets/logo.svg">
             <h1>You need LuckPerms for {{ serverType }}</h1>
             <div class="options">
               <a :href="downloads.bukkit" v-if="options.bukkit" download>
@@ -74,7 +77,7 @@
             </div>
           </template>
           <template v-if="options.legacy">
-            <img alt="LuckPerms logo" src="@/assets/logo.png">
+            <img alt="LuckPerms logo" src="@/assets/logo.svg">
             <h1>You need LuckPerms{{ legacy }} for {{ serverType }}</h1>
             <div class="options">
               <a :href="downloads['bukkit-legacy']" v-if="options.bukkit" download>
@@ -108,59 +111,59 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        page: 1,
-        options: {
-          single: false,
-          network: false,
-          bukkit: false,
-          sponge: false,
-          nukkit: false,
-          bungee: false,
-          velocity: false,
-          legacy: false,
-          latest: false,
-          unsupported: false,
-        },
-      };
+export default {
+  data() {
+    return {
+      page: 1,
+      options: {
+        single: false,
+        network: false,
+        bukkit: false,
+        sponge: false,
+        nukkit: false,
+        bungee: false,
+        velocity: false,
+        legacy: false,
+        latest: false,
+        unsupported: false,
+      },
+    };
+  },
+  props: {
+    downloads: Object,
+  },
+  computed: {
+    serverType() {
+      if (this.options.bukkit) return 'Bukkit';
+      if (this.options.sponge) return 'Sponge';
+      if (this.options.nukkit) return 'Nukkit';
+      if (this.options.bungee) return 'BungeeCord';
+      if (this.options.velocity) return 'Velocity';
+      return null;
     },
-    props: {
-      downloads: Object,
+    legacy() {
+      if (this.options.legacy) return ' Legacy';
+      return null;
     },
-    computed: {
-      serverType() {
-        if (this.options.bukkit) return 'Bukkit';
-        if (this.options.sponge) return 'Sponge';
-        if (this.options.nukkit) return 'Nukkit';
-        if (this.options.bungee) return 'BungeeCord';
-        if (this.options.velocity) return 'Velocity';
-        return null;
-      },
-      legacy() {
-        if (this.options.legacy) return ' Legacy';
-        return null;
-      },
+  },
+  methods: {
+    proceed(page, answer) {
+      this.options[answer] = true;
+      this.page = page;
     },
-    methods: {
-      proceed(page, answer) {
-        this.options[answer] = true;
-        this.page = page;
-      },
-      reset() {
-        this.page = 1;
-        // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        for (const option in this.options) {
-          this.options[option] = false;
-        }
-      },
-      closeModal() {
-        this.reset();
-        this.$emit('close');
-      },
+    reset() {
+      this.page = 1;
+      // eslint-disable-next-line guard-for-in,no-restricted-syntax
+      for (const option in this.options) {
+        this.options[option] = false;
+      }
     },
-  };
+    closeModal() {
+      this.reset();
+      this.$emit('close');
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -222,7 +225,7 @@
         }
 
         h1 {
-          margin: 0 0 1em;
+          margin: 0 0 1rem;
           text-align: center;
         }
 

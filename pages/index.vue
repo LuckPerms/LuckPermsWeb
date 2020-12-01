@@ -3,7 +3,7 @@
     <section class="hero">
       <div class="container">
         <div :class="{'logo': true, 'selfhosted': config.selfHosted }">
-          <img alt="LuckPerms logo" src="../assets/logo.png">
+          <img alt="LuckPerms logo" src="../assets/logo.svg">
           <div>
             <h1>LuckPerms</h1>
             <p>A permissions plugin for Minecraft servers.</p>
@@ -11,7 +11,7 @@
         </div>
 
         <div class="download" v-if="!config.selfHosted">
-          <nuxt-link to="/download">
+          <router-link to="/download">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
             Download
@@ -20,7 +20,7 @@
               v{{ version }}
               <font-awesome icon="asterisk" :spin="true" v-if="!version" />
             </small>
-          </nuxt-link>
+          </router-link>
           <small>
             Supports Bukkit/Spigot/Paper, BungeeCord, Sponge, Nukkit and Velocity servers
           </small>
@@ -49,25 +49,25 @@
               so it can remain free forever.</li>
           </ul>
           <p>For more information, see the wiki article on
-            <nuxt-link to="/wiki/Why-LuckPerms">Why LuckPerms?</nuxt-link></p>
+            <router-link to="/wiki/Why-LuckPerms">Why LuckPerms?</router-link></p>
 
           <h2>Web Apps</h2>
           <p>This site hosts a number of extra web applications which work with the plugin.</p>
           <p>These applications are designed to work for all users, even those without the ability
             to install/host an application on their own web server.</p>
           <div class="tools">
-            <nuxt-link to="/editor" alt="Web Editor">
+            <router-link to="/editor" alt="Web Editor">
               <font-awesome icon="edit" />
               Web Editor
-            </nuxt-link>
-            <nuxt-link to="/verbose" alt="Verbose Viewer">
+            </router-link>
+            <router-link to="/verbose" alt="Verbose Viewer">
               <font-awesome icon="comment-alt" />
               Verbose Viewer
-            </nuxt-link>
-            <nuxt-link to="/treeview" alt="Tree Viewer">
+            </router-link>
+            <router-link to="/treeview" alt="Tree Viewer">
               <font-awesome icon="sitemap" />
               Tree Viewer
-            </nuxt-link>
+            </router-link>
           </div>
         </div>
         <div>
@@ -93,6 +93,14 @@
             <small>Join {{ discordUserCount }} others to discuss the project and ask/answer
               questions</small>
           </a>
+          <router-link to="/sponsor" class="resource">
+            <span>
+              <font-awesome icon="server" />
+              Hosting Partner
+            </span>
+            <small>Find out how you can get a great deal on your server hosting and support
+              us at the same time</small>
+          </router-link>
           <a href="https://patreon.com/luckdev" class="resource">
             <span>
               <font-awesome :icon="['fab', 'patreon']" />
@@ -108,18 +116,18 @@
       <section class="resources">
         <div>
           <div class="tools">
-            <nuxt-link to="/editor" alt="Web Editor">
+            <router-link to="/editor" alt="Web Editor">
               <font-awesome icon="edit" />
               Web Editor
-            </nuxt-link>
-            <nuxt-link to="/verbose" alt="Verbose Viewer">
+            </router-link>
+            <router-link to="/verbose" alt="Verbose Viewer">
               <font-awesome icon="comment-alt" />
               Verbose Viewer
-            </nuxt-link>
-            <nuxt-link to="/tree" alt="Tree Viewer">
+            </router-link>
+            <router-link to="/treeview" alt="Tree Viewer">
               <font-awesome icon="sitemap" />
               Tree Viewer
-            </nuxt-link>
+            </router-link>
           </div>
         </div>
       </section>
@@ -129,27 +137,31 @@
 </template>
 
 <script>
-  export default {
-    name: 'Home',
-    metaInfo: {
-      title: 'LuckPerms',
-      titleTemplate: null,
+export default {
+  name: 'Home',
+  head: {
+    title: 'LuckPerms',
+    titleTemplate: null,
+  },
+  data() {
+    return {
+    };
+  },
+  computed: {
+    version() {
+      return this.$store.getters.version;
     },
-    computed: {
-      version() {
-        return this.$store.getters.version;
-      },
-      config() {
-        return this.$store.state.config;
-      },
-      discordUserCount() {
-        return this.$store.getters.discordUserCount;
-      },
-      patreonCount() {
-        return this.$store.getters.patreonCount;
-      },
+    config() {
+      return this.$store.getters.config;
     },
-  };
+    discordUserCount() {
+      return this.$store.getters.discordUserCount;
+    },
+    patreonCount() {
+      return this.$store.getters.patreonCount;
+    },
+  },
+};
 </script>
 
 <style lang="scss">

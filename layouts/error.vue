@@ -1,13 +1,11 @@
 <template>
-  <main class="errorpage">
+  <main class="notfound">
     <section class="hero">
       <h1>
         <font-awesome icon="exclamation-circle" />
-        <span v-if="error.statusCode === 404">Not found!</span>
-        <span v-else>Error!</span>
+        <span>Not found!</span>
         <div class="error">
-          <p v-if="error.statusCode === 404">The page <code>{{ this.$route.path }}</code> couldn't be found</p>
-          <p v-else>An error occured</p>
+          <p>The page <code>{{ this.$route.path }}</code> doesn't exist</p>
         </div>
       </h1>
     </section>
@@ -16,16 +14,15 @@
 
 <script>
 export default {
-  name: 'Error',
-  props: ['error'],
-  metaInfo: {
+  name: 'NotFound',
+  head: {
     title: '404',
   },
 };
 </script>
 
 <style lang="scss">
-  main.errorpage {
+  main.notfound {
     overflow-y: auto;
     .hero {
       flex-direction: column;

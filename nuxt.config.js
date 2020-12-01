@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export default {
-  mode: 'universal',
   generate: {
     fallback: true,
     routes: function () {
@@ -30,11 +29,9 @@ export default {
       { name: 'twitter:card', content: 'summary'},
       { name: 'twitter:title', content: 'LuckPerms'},
       { hid: 'twitter:description', name: 'twitter:description', content: 'LuckPerms is a permissions plugin for Minecraft servers.'},
-      { name: 'twitter:image', content: '/logo.png' },
       { name: 'og:title', content: 'LuckPerms' },
       { hid: 'og:description', name: 'og:description', content: 'LuckPerms is a permissions plugin for Minecraft servers.' },
       { name: 'og:type', content: 'product' },
-      { name: 'og:image', content: '/logo.png' },
       { name: 'og:url', content: 'https://luckperms.net'},
       { name: 'og:site_name', content: 'LuckPerms - A permissions plugin for Minecraft servers' },
       { name: 'theme-color', content: '#141422' },

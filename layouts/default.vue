@@ -127,34 +127,13 @@
 </template>
 
 <script>
+import logo from '@/assets/logo.png'
+
 export default {
-  metaInfo: {
-    titleTemplate: '%s | LuckPerms',
+  head: {
     meta: [
-      {
-        property: 'og:title',
-        content: 'LuckPerms',
-      },
-      {
-        property: 'og:description',
-        content: 'Resources, useful links and the latest downloads for LuckPerms',
-      },
-      {
-        property: 'og:type',
-        content: 'product',
-      },
-      {
-        property: 'og:image',
-        content: 'https://luckperms.github.io/assets/logo/720px.png',
-      },
-      {
-        property: 'og:url',
-        content: 'https://luckperms.net',
-      },
-      {
-        property: 'og:site_name',
-        content: 'LuckPerms',
-      },
+      { name: 'twitter:image', content: logo },
+      { name: 'og:image', content: logo },
     ],
   },
   data() {

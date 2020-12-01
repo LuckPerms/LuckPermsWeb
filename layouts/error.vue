@@ -17,6 +17,11 @@ export default {
   name: 'NotFound',
   head: {
     title: '404',
+    meta: [
+      { hid: 'description', name: 'description', content: 'This page couldn\'t be found' },
+      { hid: 'twitter:description', name: 'twitter:description', content: 'This page couldn\'t be found' },
+      { hid: 'og:description', name: 'og:description', content: 'This page couldn\'t be found' },
+    ],
   },
 };
 </script>

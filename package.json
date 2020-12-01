@@ -11,15 +11,21 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "nuxt": "^2.0.0",
-    "uuid": "^8.1.0"
+    "@nuxtjs/markdownit": "^1.2.10",
+    "markdown-it": "^12.0.2",
+    "markdown-it-anchor": "^6.0.1",
+    "markdown-it-emoji": "^2.0.0",
+    "nuxt": "^2.14.7",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
-    "@fortawesome/free-brands-svg-icons": "^5.13.0",
-    "@fortawesome/free-solid-svg-icons": "^5.13.0",
-    "@nuxtjs/axios": "^5.11.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@nuxtjs/axios": "^5.12.3",
     "@nuxtjs/fontawesome": "^1.1.2",
     "@nuxtjs/style-resources": "^1.0.0",
+    "axios": "^0.21.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2"
   }

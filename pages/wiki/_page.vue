@@ -55,9 +55,6 @@ export default {
     title() {
       return this.route.split('-').join(' ');
     },
-    isBrowser() {
-      return process.browser;
-    },
   },
   created() {
     if (this.route) {
@@ -89,6 +86,7 @@ export default {
                 path: target.pathname,
                 hash: target.hash,
               });
+              this.getArticle();
             } else {
               window.open(target.href);
             }
@@ -121,7 +119,6 @@ export default {
           behavior: 'smooth',
         });
       }
-      this.getArticle();
     },
   },
 };

@@ -17,7 +17,7 @@ export default {
   head: {
     titleTemplate: '%s | Wiki | LuckPerms',
     meta: [
-     { hid: 'description', name: 'description', content: 'Learn about the features of LuckPerms.' },
+      { hid: 'description', name: 'description', content: 'Learn about the features of LuckPerms.' },
       { hid: 'twitter:description', name: 'twitter:description', content: 'Learn about the features of LuckPerms.' },
       { hid: 'og:description', name: 'og:description', content: 'Learn about the features of LuckPerms.' },
     ],
@@ -27,11 +27,12 @@ export default {
       return Sidebar;
     },
   },
-  mounted() {
-    if (window.innerWidth >= 922 || !process.client) return;
+  created() {
+    if (!process.browser || window.innerWidth >= 922) return;
     const wiki = document.getElementById('wiki');
     document.querySelectorAll('.wiki aside a').forEach((link) => {
       link.addEventListener('click', () => {
+        console.log('Heya');
         wiki.scrollTo({
           top: 0,
           behavior: 'smooth',

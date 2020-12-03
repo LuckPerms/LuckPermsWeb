@@ -116,9 +116,9 @@
             <a :href="'https://github.com/lucko/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
           </li>
           <li>
-            <a href="https://github.com/lucko/LuckPermsWeb/blob/master/LICENSE.txt" target="_blank">
-            Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
-            </a>
+            <router-link to="/wiki/Credits">
+              Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
+            </router-link>
           </li>
         </ul>
       </div>

@@ -1,8 +1,17 @@
-import { v4 as uuid } from 'uuid';
-const config = require('../config');
+import Vue from 'vue';
+import Vuex from 'vuex';
+import axios from 'axios';
+import { compareVersions } from '@/util/version';
+
+const { v4: uuid } = require('uuid');
+const config = require('@/config');
+
+Vue.use(Vuex);
 
 export const state = () => ({
   version: null,
+  versionTimestamp: null,
+  changeLog: [],
   config: null,
   downloads: {
     bukkit: null,
@@ -37,579 +46,709 @@ export const state = () => ({
     errors: {
       load: false,
     },
-  }
+  },
 });
 
 
 export const getters = {
-  version: state => state.version,
+    version: state => state.version,
 
-  config: state => state.config,
+    versionTimestamp: state => state.versionTimestamp,
 
-  downloads: state => state.downloads,
+    changeLog: state => state.changeLog,
 
-  extensions: state => state.extensions,
+    config: state => state.config,
 
-  discordUserCount: state => state.discordUserCount,
+    downloads: state => state.downloads,
 
-  patreonCount: state => state.patreonCount,
+    extensions: state => state.extensions,
 
-  editorSessionId: state => state.editor.sessionId,
+    discordUserCount: state => state.discordUserCount,
 
-  verbose: state => state.verbose,
+    patreonCount: state => state.patreonCount,
 
-  tree: state => state.tree,
+    editorSessionId: state => state.editor.sessionId,
+    
+    verbose: state => state.verbose,
 
-  metaData: state => state.editor.metaData,
+    tree: state => state.tree,
 
-  // eslint-disable-next-line max-len
-  sessionSet: state => state.editor.sessionList?.map(sessionId => state.editor.sessions[sessionId]),
+    metaData: state => state.editor.metaData,
 
-  currentSession: state => state.editor.sessions[state.editor.currentSession],
+    // eslint-disable-next-line max-len
+    sessionSet: state => state.editor.sessionList?.map(sessionId => state.editor.sessions[sessionId]),
+    
+    currentSession: state => state.editor.sessions[state.editor.currentSession],
 
-  // eslint-disable-next-line max-len
-  currentNodes: state => state.editor.nodes?.filter(node => node.sessionId === state.editor.currentSession),
+    // eslint-disable-next-line max-len
+    currentNodes: state => state.editor.nodes?.filter(node => node.sessionId === state.editor.currentSession),
 
-  allNodes: state => state.editor.nodes,
+    allNodes: state => state.editor.nodes,
 
-  tracks: state => state.editor.tracks,
+    tracks: state => state.editor.tracks,
 
-  selectedNodes: state => state.editor.selectedNodes,
+    selectedNodeIds: state => state.editor.selectedNodes,
 
-  potentialContexts: state => state.editor.potentialContexts,
+    selectedNodes: (state, getters) => {
+      return getters.selectedNodeIds.map(nodeId => {
+        return getters.allNodes.find(({ id }) => nodeId === id);
+      });
+    },
 
-  // eslint-disable-next-line max-len
-  modifiedSessions: (state, getters) => getters.sessionSet.filter(session => (session.new || session.modified))
-    .map(session => session.id),
+    potentialContexts: state => state.editor.potentialContexts,
 
-  weightNodes: state => state.editor.nodes?.filter(node => node.key.startsWith('weight')),
+    // eslint-disable-next-line max-len
+    modifiedSessions: (state, getters) => getters.sessionSet.filter(session => (session.new || session.modified))
+      .map(session => session.id),
 
-  saveStatus: state => state.editor.save?.status,
+    weightNodes: state => state.editor.nodes?.filter(node => node.key.startsWith('weight')),
 
-  saveKey: state => state.editor.save?.key,
-};
+    saveStatus: state => state.editor.save?.status,
+
+    saveKey: state => state.editor.save?.key,
+
+    editorVersionStatus: (state) => {
+      if (!state.version || !state.editor.metaData?.pluginVersion) return null;
+
+      return compareVersions(state.version, state.editor.metaData.pluginVersion);
+    },
+  };
 
 
 export const mutations = {
-  setVersion: (state, version) => {
-    state.version = version;
-  },
+    setVersion: (state, version) => {
+      state.version = version;
+    },
 
-  setConfig: (state, configData) => {
-    state.config = configData;
-  },
+    setVersionTimestamp: (state, versionTimestamp) => {
+      state.versionTimestamp = versionTimestamp;
+    },
 
-  setDownloads: (state, downloads) => {
-    state.downloads = downloads;
-  },
+    setChangeLog: (state, changeLog) => {
+      state.changeLog = changeLog;
+    },
 
-  setExtensions: (state, extensions) => {
-    state.extensions = extensions;
-  },
+    setConfig: (state, configData) => {
+      state.config = configData;
+    },
 
-  setDiscordUserCount: (state, discordUserCount) => {
-    state.discordUserCount = discordUserCount;
-  },
+    setDownloads: (state, downloads) => {
+      state.downloads = downloads;
+    },
 
-  setPatreonCount: (state, patreonCount) => {
-    state.patreonCount = patreonCount;
-  },
+    setExtensions: (state, extensions) => {
+      state.extensions = extensions;
+    },
 
-  initEditorData(state, sessionId) {
-    state.editor = {
-      sessionId,
-      sessions: {},
-      sessionList: [],
-      nodes: [],
-      metaData: {},
-      tracks: [],
-      deletedTracks: [],
-      deletedGroups: [],
-      knownPermissions: [],
-      potentialContexts: [],
-      currentSession: null,
-      selectedNodes: [],
-      modal: {
-        type: null,
-        object: null,
-      },
-      errors: {
-        load: false,
-      },
-      save: {
-        status: null,
-        key: null,
-      },
-    };
-  },
+    setDiscordUserCount: (state, discordUserCount) => {
+      state.discordUserCount = discordUserCount;
+    },
 
-  setMetaData(state, object) {
-    state.editor.metaData = object;
-  },
+    setPatreonCount: (state, patreonCount) => {
+      state.patreonCount = patreonCount;
+    },
 
-  setKnownPermissions(state, array) {
-    state.editor.knownPermissions = array;
-  },
+    initEditorData(state, sessionId) {
+      state.editor = {
+        sessionId,
+        sessions: {},
+        sessionList: [],
+        nodes: [],
+        metaData: {},
+        tracks: [],
+        deletedTracks: [],
+        deletedGroups: [],
+        deletedUsers: [],
+        knownPermissions: [],
+        potentialContexts: [],
+        currentSession: null,
+        selectedNodes: [],
+        modal: {
+          type: null,
+          object: null,
+        },
+        errors: {
+          load: false,
+        },
+        save: {
+          status: null,
+          key: null,
+        },
+      };
+    },
 
-  setTracks(state, array) {
-    state.editor.tracks = array;
-  },
+    setMetaData(state, object) {
+      state.editor.metaData = object;
+    },
 
-  addTrack(state, track) {
-    state.editor.tracks.push(track);
-  },
+    setKnownPermissions(state, array) {
+      state.editor.knownPermissions = array;
+    },
 
-  updateTrack(state, { id, newTrack }) {
-    const updatedTrack = state.editor.tracks.find(track => track.id === id);
+    setTracks(state, array) {
+      state.editor.tracks = array;
+    },
 
-    updatedTrack.groups = newTrack.groups;
-  },
+    addTrack(state, track) {
+      state.editor.tracks.push(track);
+    },
 
-  deleteTrack(state, trackId) {
-    const index = state.editor.tracks.findIndex(track => track.id === trackId);
+    updateTrack(state, { id, newTrack }) {
+      const updatedTrack = state.editor.tracks.find(track => track.id === id);
 
-    state.editor.tracks.splice(index, 1);
-    state.editor.deletedTracks.push(trackId);
-  },
+      updatedTrack.groups = newTrack.groups;
+    },
 
-  updateTrackOrder(state, value) {
-    state.editor.tracks = value;
-  },
+    deleteTrack(state, trackId) {
+      const index = state.editor.tracks.findIndex(track => track.id === trackId);
 
-  deleteGroup(state, groupId) {
-    const sessionListIndex = state.editor.sessionList.findIndex(group => group === groupId);
+      state.editor.tracks.splice(index, 1);
+      state.editor.deletedTracks.push(trackId);
+    },
 
-    state.editor.sessionList.splice(sessionListIndex, 1);
+    updateTrackOrder(state, value) {
+      state.editor.tracks = value;
+    },
 
-    delete state.editor.sessions[groupId];
+    deleteSession(state, sessionId) {
+      const { type } = state.editor.sessions[sessionId];
+      const sessionListIndex = state.editor.sessionList.findIndex(group => group === sessionId);
 
-    state.editor.deletedGroups.push(groupId);
+      state.editor.sessionList.splice(sessionListIndex, 1);
 
-    if (state.editor.currentSession === groupId) {
-      state.editor.currentSession = null;
-    }
+      delete state.editor.sessions[sessionId];
 
-    state.editor.nodes = state.editor.nodes.filter(node => node.sessionId !== groupId);
-  },
+      if (type === 'group') {
+        state.editor.deletedGroups.push(sessionId);
+      } else if (type === 'user') {
+        state.editor.deletedUsers.push(sessionId);
+      }
 
-  setPotentialContexts(state, contexts) {
-    const potentialContexts = [];
+      if (state.editor.currentSession === sessionId) {
+        state.editor.currentSession = null;
+      }
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const [key, value] of Object.entries(contexts)) {
-      potentialContexts.push({
-        key,
-        values: Array.isArray(value) ? value : [value],
+      state.editor.nodes = state.editor.nodes.filter(node => node.sessionId !== sessionId);
+    },
+
+    setPotentialContexts(state, contexts) {
+      const potentialContexts = [];
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [key, value] of Object.entries(contexts)) {
+        potentialContexts.push({
+          key,
+          values: Array.isArray(value) ? value : [value],
+        });
+      }
+
+      state.editor.potentialContexts = potentialContexts;
+    },
+
+    addEditorSession(state, {
+      id, type, displayName, isNew = false,
+    }) {
+      Vue.set(state.editor.sessions, id, {
+        id,
+        type,
+        displayName,
+        new: isNew,
+        modified: false,
       });
-    }
+      // state.editor.sessions[id] = ;
+      state.editor.sessionList.push(id);
 
-    state.editor.potentialContexts = potentialContexts;
-  },
+      const { deletedGroups } = state.editor;
 
-  addEditorSession(state, {
-    id, type, displayName, isNew = false,
-  }) {
-    Vue.set(state.editor.sessions, id, {
-      id,
-      type,
-      displayName,
-      new: isNew,
-      modified: false,
-    });
-    // state.editor.sessions[id] = ;
-    state.editor.sessionList.push(id);
+      if (deletedGroups.includes(id)) {
+        deletedGroups.splice(deletedGroups.findIndex(groupId => groupId === id), 1);
+      }
+    },
 
-    const { deletedGroups } = state.editor;
+    addEditorNode(state, node) {
+      const addingNode = node;
 
-    if (deletedGroups.includes(id)) {
-      deletedGroups.splice(deletedGroups.findIndex(groupId => groupId === id), 1);
-    }
-  },
+      if (node.expiry instanceof Date) addingNode.expiry = node.expiry.getTime();
 
-  addEditorNode(state, node) {
-    const addingNode = node;
+      state.editor.nodes.push(addingNode);
 
-    if (node.expiry instanceof Date) addingNode.expiry = node.expiry.getTime() / 1000;
+      if (node.isNew && state.editor.sessions[node.sessionId]) {
+        state.editor.sessions[node.sessionId].modified = true;
+      }
+    },
 
-    state.editor.nodes.push(addingNode);
+    deleteNode(state, nodeId) {
+      const deletingNode = state.editor.nodes.find(node => node.id === nodeId);
 
-    if (node.isNew && state.editor.sessions[node.sessionId]) {
+      if (state.editor.selectedNodes.includes(nodeId)) {
+        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(nodeId), 1);
+      }
+
+      state.editor.nodes = state.editor.nodes.filter(node => node.id !== nodeId);
+
+      state.editor.sessions[deletingNode.sessionId].modified = true;
+    },
+
+    setCurrentSession(state, sessionId) {
+      state.editor.currentSession = sessionId;
+    },
+
+    setModal(state, { type, object }) {
+      state.editor.modal.type = type || null;
+      state.editor.modal.object = object || null;
+    },
+
+    closeModal(state) {
+      state.editor.modal.type = null;
+      state.editor.modal.object = null;
+    },
+
+    toggleNodeValue(state, node) {
+      const nodeState = state.editor.nodes.find(nodeItem => nodeItem.id === node.id);
+
+      nodeState.value = !node.value;
+      nodeState.modified = true;
+
       state.editor.sessions[node.sessionId].modified = true;
-    }
-  },
+    },
 
-  deleteNode(state, nodeId) {
-    const deletingNode = state.editor.nodes.find(node => node.id === nodeId);
+    updateNode(state, { node, type, data }) {
+      if (type === 'expiry') {
+        node[type] = data.value ? data.value.getTime() : null;
+      } else {
+        if (type === 'sessionId') {
+          state.editor.sessions[node.sessionId].modified = true;
+        }
+        node[type] = data.value;
+      }
 
-    state.editor.nodes = state.editor.nodes.filter(node => node.id !== nodeId);
+      node.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
+    },
 
-    state.editor.sessions[deletingNode.sessionId].modified = true;
-  },
+    bulkUpdateNode(state, { node, payload }) {
+      const {
+        value,
+        expiry,
+        replace,
+        contexts
+      } = payload;
 
-  setCurrentSession(state, sessionId) {
-    state.editor.currentSession = sessionId;
-  },
+      if (value !== null) {
+        node.value = value;
+      }
 
-  setModal(state, { type, object }) {
-    state.editor.modal.type = type || null;
-    state.editor.modal.object = object || null;
-  },
+      if (expiry) {
+        node.expiry = expiry;
+      }
 
-  closeModal(state) {
-    state.editor.modal.type = null;
-    state.editor.modal.object = null;
-  },
+      if (replace) {
+        node.context = contexts;
+      } else {
+        Vue.set(node, 'context', { ...node.context, ...contexts });
+      }
 
-  toggleNodeValue(state, node) {
-    const nodeState = state.editor.nodes.find(nodeItem => nodeItem.id === node.id);
+      node.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
+    },
 
-    nodeState.value = !node.value;
-    nodeState.modified = true;
+    updateNodeContext(state, { node, data }) {
+      node.context = data;
+      node.modified = true;
+      state.editor.sessions[node.sessionId].modified = true;
+    },
 
-    state.editor.sessions[node.sessionId].modified = true;
-  },
+    addNodeToSession(state, node) {
+      state.editor.nodes.push(node);
+    },
 
-  updateNode(state, payload) {
-    const updatedNode = payload;
-
-    if (payload.type !== 'expiry') {
-      updatedNode.node[payload.type] = payload.data.value;
-    } else {
-      updatedNode.node[payload.type] = payload.data.value.getTime() / 1000;
-    }
-
-    updatedNode.node.modified = true;
-    state.editor.sessions[payload.node.sessionId].modified = true;
-  },
-
-  updateNodeContext(state, payload) {
-    const updatedNode = payload;
-
-    updatedNode.node.context = payload.data;
-    updatedNode.node.modified = true;
-    state.editor.sessions[payload.node.sessionId].modified = true;
-  },
-
-  addNodeToSession(state, node) {
-    state.editor.nodes.push(node);
-  },
-
-  toggleNodeSelect(state, nodeId) {
-    if (state.editor.selectedNodes.indexOf(nodeId) >= 0) {
-      state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(nodeId), 1);
-    } else {
-      state.editor.selectedNodes.push(nodeId);
-    }
-  },
-
-  selectAllSessionNodes(state, nodes) {
-    nodes.forEach((node) => {
-      if (state.editor.selectedNodes.indexOf(node.id) === -1) {
+    toggleNodeSelect(state, node) {
+      if (state.editor.selectedNodes.includes(node.id)) {
+        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(node.id), 1);
+      } else {
         state.editor.selectedNodes.push(node.id);
       }
-    });
-  },
+    },
 
-  deselectAllSessionNodes(state, nodes) {
-    nodes.forEach((node) => {
-      if (state.editor.selectedNodes.indexOf(node.id) >= 0) {
-        state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(node.id), 1);
-      }
-    });
-  },
+    selectAllSessionNodes(state, nodes) {
+      nodes.forEach((node) => {
+        if (state.editor.selectedNodes.indexOf(node.id) === -1) {
+          state.editor.selectedNodes.push(node.id);
+        }
+      });
+    },
 
-  addKnownPermission(state, permission) {
-    state.editor.knownPermissions.push(permission);
-  },
+    deselectAllSessionNodes(state, nodes) {
+      nodes.forEach((node) => {
+        if (state.editor.selectedNodes.indexOf(node.id) >= 0) {
+          state.editor.selectedNodes.splice(state.editor.selectedNodes.indexOf(node.id), 1);
+        }
+      });
+    },
 
-  setLoadError(state) {
-    state.editor.errors.load = true;
-  },
+    deselectAllSelectedNodes(state) {
+      state.editor.selectedNodes.splice(0, state.editor.selectedNodes.length);
+    },
 
-  setSaveStatus(state, status) {
-    state.editor.save.status = status;
-  },
+    addKnownPermission(state, permission) {
+      state.editor.knownPermissions.push(permission);
+    },
 
-  setBytebinKey(state, key) {
-    state.editor.save.key = key;
-  },
+    setLoadError(state) {
+      state.editor.errors.load = true;
+    },
 
-  setVerboseData(state, { data, status }) {
-    state.verbose.status = status;
-    if (!data) return;
-    state.verbose.data = data.data;
-    state.verbose.metadata = data.metadata;
-    state.verbose.sessionId = data.sessionId;
-  },
+    setSaveStatus(state, status) {
+      state.editor.save.status = status;
+    },
 
-  setVerboseLoadError(state) {
-    state.verbose.errors.load = true;
-  },
+    setBytebinKey(state, key) {
+      state.editor.save.key = key;
+    },
 
-  setTreeData(state, data) {
-    state.tree.data = data.data;
-    state.tree.metadata = data.metadata;
-    state.tree.sessionId = data.sessionId;
-  },
+    setVerboseData(state, { data, status }) {
+      state.verbose.status = status;
+      if (!data) return;
+      state.verbose.data = data.data.map((node) => {
+        return {
+          ...node,
+          id: uuid(),
+        }
+      });
+      state.verbose.metadata = data.metadata;
+      state.verbose.sessionId = data.sessionId;
+    },
 
-  setTreeLoadError(state) {
-    state.tree.errors.load = true;
-  },
-};
+    setVerboseLoadError(state) {
+      state.verbose.errors.load = true;
+    },
+
+    setTreeData(state, data) {
+      state.tree.data = data.data;
+      state.tree.metadata = data.metadata;
+      state.tree.sessionId = data.sessionId;
+    },
+
+    setTreeLoadError(state) {
+      state.tree.errors.load = true;
+    },
+  };
 
 
 export const actions = {
-  async getAppData({ commit, dispatch }) {
-    commit('setConfig', config);
-    try {
-      const appData = await this.$axios.$get(`${config.api_url}/data/all`);
-      commit('setVersion', appData.version);
-      commit('setDownloads', appData.downloads);
-      commit('setExtensions', appData.extensions);
-      commit('setDiscordUserCount', appData.discordUserCount);
-      commit('setPatreonCount', appData.patreonCount);
-    } catch (error) {
-      console.error('Error getting data, trying again in 10 seconds...');
-      setTimeout(async () => {
-        await dispatch('getAppData');
-      }, 10000);
-    }
-  },
+    getAppData: async ({ commit, dispatch }) => {
+      commit('setConfig', config);
+      try {
+        const appData = await axios.get(`${config.api_url}/data/all`);
+        commit('setVersion', appData.data.version);
+        commit('setVersionTimestamp', appData.data.versionTimestamp);
+        commit('setChangeLog', appData.data.changeLog);
+        commit('setDownloads', appData.data.downloads);
+        commit('setExtensions', appData.data.extensions);
+        commit('setDiscordUserCount', appData.data.discordUserCount);
+        commit('setPatreonCount', appData.data.patreonCount);
+      } catch (error) {
+        console.error('Error getting data, trying again in 10 seconds...');
+        setTimeout(async () => {
+          await dispatch('getAppData');
+        }, 10000);
+      }
+    },
 
-  getEditorData({ commit, dispatch }, sessionId) {
-    commit('initEditorData', sessionId);
+    getEditorData({ commit, dispatch }, sessionId) {
+      commit('initEditorData', sessionId);
 
-    if (sessionId === 'demo') {
-      import('../assets/data/editor-demo.json').then((json) => {
-        dispatch('setEditorData', json.default);
-      });
-    } else {
-      this.$axios.$get(`${config.bytebin_url}${sessionId}`)
-        .then((response) => {
-          const { data } = response;
-          dispatch('setEditorData', data, sessionId);
-        })
-        .catch((error) => {
-          console.error(error);
-          console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-          commit('setLoadError');
+      if (sessionId === 'demo') {
+        import('@/assets/data/editor-demo.json').then((json) => {
+          dispatch('setEditorData', json.default);
         });
-    }
-  },
+      } else {
+        axios.get(`${config.bytebin_url}${sessionId}`)
+          .then((response) => {
+            const { data } = response;
+            dispatch('setEditorData', data, sessionId);
+          })
+          .catch((error) => {
+            console.error(error);
+            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+            commit('setLoadError');
+          });
+      }
+    },
 
-  setEditorData({ commit, dispatch }, data) {
-    commit('setMetaData', data.metadata);
+    setEditorData({ commit, dispatch }, data) {
+      commit('setMetaData', data.metadata);
 
-    data.permissionHolders.forEach((session) => {
-      session.nodes.forEach((node) => {
+      data.permissionHolders.forEach((session) => {
+        session.nodes.forEach((node) => {
+          const expiry = node.expiry ? node.expiry * 1000 : null;
+
+          dispatch('addNodes', [{
+            sessionId: session.id,
+            key: node.key,
+            value: node.value,
+            expiry,
+            context: node.context,
+          }]);
+        });
+
+        commit('addEditorSession', session);
+      });
+
+      commit('setKnownPermissions', data.knownPermissions);
+      commit('setPotentialContexts', data.potentialContexts);
+      commit('setTracks', data.tracks);
+    },
+
+    addKnownPermission({ commit }, permission) {
+      commit('addKnownPermission', permission);
+    },
+
+    addNodes({ commit }, nodes) {
+      nodes.forEach((node) => {
+        const addingNode = node;
+        addingNode.id = uuid();
+        addingNode.expiry = node.expiry;
+        addingNode.context = node.context || {};
+        addingNode.selected = false;
+        commit('addEditorNode', addingNode);
+      });
+    },
+
+    changeCurrentSession({ commit }, session) {
+      commit('setCurrentSession', session);
+    },
+
+    addGroup({ commit, dispatch }, group) {
+      const session = {
+        id: group.name,
+        displayName: group.displayName || group.name,
+        type: 'group',
+        isNew: true,
+      };
+
+      if (group.displayName !== '') {
         dispatch('addNodes', [{
           sessionId: session.id,
-          key: node.key,
-          value: node.value,
-          expiry: node.expiry,
-          context: node.context,
+          type: 'display_name',
+          key: `displayname.${group.displayName}`,
+          value: true,
+          isNew: true,
         }]);
-      });
+      }
+
+      if (group.parent !== 0) {
+        dispatch('addNodes', [{
+          sessionId: session.id,
+          type: 'inheritance',
+          key: `group.${group.parent}`,
+          value: true,
+          isNew: true,
+        }]);
+      }
+
+      if (group.weight !== 0) {
+        dispatch('addNodes', [{
+          sessionId: session.id,
+          type: 'weight',
+          key: `weight.${group.weight}`,
+          value: true,
+          isNew: true,
+        }]);
+      }
+
+      if (group.prefix !== '') {
+        dispatch('addNodes', [{
+          sessionId: session.id,
+          type: 'prefix',
+          key: `prefix.${group.weight}.${group.prefix}`,
+          value: true,
+          isNew: true,
+        }]);
+      }
+
+      if (group.suffix !== '') {
+        dispatch('addNodes', [{
+          sessionId: session.id,
+          type: 'suffix',
+          key: `suffix.${group.weight}.${group.suffix}`,
+          value: true,
+          isNew: true,
+        }]);
+      }
 
       commit('addEditorSession', session);
-    });
+      commit('setCurrentSession', session.id);
+      commit('setModal', { type: null, object: null });
+    },
 
-    commit('setKnownPermissions', data.knownPermissions);
-    commit('setPotentialContexts', data.potentialContexts);
-    commit('setTracks', data.tracks);
-  },
+    addTrack({ commit }, track) {
+      commit('addTrack', track);
+      commit('setModal', { type: null, object: null });
+    },
 
-  addKnownPermission({ commit }, permission) {
-    commit('addKnownPermission', permission);
-  },
+    updateTrack({ commit }, { id, newTrack }) {
+      if (id === newTrack.id) {
+        commit('updateTrack', { id, newTrack });
+      } else {
+        commit('deleteTrack', id);
+        commit('addTrack', newTrack);
+      }
 
-  addNodes({ commit }, nodes) {
-    nodes.forEach((node) => {
-      const addingNode = node;
-      addingNode.id = uuid();
-      addingNode.expiry = node.expiry || null;
-      addingNode.context = node.context || {};
-      commit('addEditorNode', addingNode);
-    });
-  },
+      commit('setModal', { type: null, object: null });
+    },
 
-  changeCurrentSession({ commit }, session) {
-    commit('setCurrentSession', session);
-  },
+    deleteTrack({ commit }, trackId) {
+      commit('deleteTrack', trackId);
+    },
 
-  addGroup({ commit, dispatch }, group) {
-    const session = {
-      id: group.name,
-      displayName: group.displayName || group.name,
-      type: 'group',
-      isNew: true,
-    };
+    copyNodes({ getters, dispatch, commit }, sessions) {
+      const { selectedNodes } = getters;
 
-    if (group.displayName !== '') {
-      dispatch('addNodes', [{
-        sessionId: session.id,
-        type: 'display_name',
-        key: `displayname.${group.displayName}`,
-        value: true,
-        isNew: true,
-      }]);
-    }
+      selectedNodes.forEach(node => {
+        const nodeCopies = [];
 
-    if (group.parent !== 0) {
-      dispatch('addNodes', [{
-        sessionId: session.id,
-        type: 'inheritance',
-        key: `group.${group.parent}`,
-        value: true,
-        isNew: true,
-      }]);
-    }
-
-    if (group.weight !== 0) {
-      dispatch('addNodes', [{
-        sessionId: session.id,
-        type: 'weight',
-        key: `weight.${group.weight}`,
-        value: true,
-        isNew: true,
-      }]);
-    }
-
-    if (group.prefix !== '') {
-      dispatch('addNodes', [{
-        sessionId: session.id,
-        type: 'prefix',
-        key: `prefix.${group.weight}.${group.prefix}`,
-        value: true,
-        isNew: true,
-      }]);
-    }
-
-    if (group.suffix !== '') {
-      dispatch('addNodes', [{
-        sessionId: session.id,
-        type: 'suffix',
-        key: `suffix.${group.weight}.${group.suffix}`,
-        value: true,
-        isNew: true,
-      }]);
-    }
-
-    commit('addEditorSession', session);
-    commit('setCurrentSession', session.id);
-    commit('setModal', { type: null, object: null });
-  },
-
-  addTrack({ commit }, track) {
-    commit('addTrack', track);
-    commit('setModal', { type: null, object: null });
-  },
-
-  updateTrack({ commit }, { id, newTrack }) {
-    if (id === newTrack.id) {
-      commit('updateTrack', { id, newTrack });
-    } else {
-      commit('deleteTrack', id);
-      commit('addTrack', newTrack);
-    }
-
-    commit('setModal', { type: null, object: null });
-  },
-
-  deleteTrack({ commit }, trackId) {
-    commit('deleteTrack', trackId);
-  },
-
-  saveData({ state, getters, commit }) {
-    commit('setSaveStatus', 'saving');
-
-    const payload = {
-      changes: [],
-      groupDeletions: state.editor.deletedGroups,
-      trackDeletions: state.editor.deletedTracks,
-    };
-
-    getters.modifiedSessions.forEach((modifiedSession) => {
-      const session = state.editor.sessions[modifiedSession];
-      const sessionNodes = state.editor.nodes.filter(node => node.sessionId === session.id);
-
-      const nodes = [];
-
-      sessionNodes.forEach(node => nodes.push({
-        key: node.key,
-        value: node.value,
-        ...node.expiry && { expiry: node.expiry },
-        ...(Object.entries(node.context).length) && { context: node.context },
-      }));
-
-      payload.changes.push({
-        type: session.type,
-        id: session.id,
-        nodes,
-      });
-    });
-
-    getters.tracks.forEach((track) => {
-      payload.changes.push({
-        type: 'track',
-        id: track.id,
-        groups: track.groups,
-      });
-    });
-
-    this.$axios.$post(`${config.bytebin_url}post`, payload)
-      .then((response) => {
-        commit('setBytebinKey', response.data.key);
-        commit('setSaveStatus', 'saved');
-        commit('setModal', { type: 'savedChanges', object: getters.saveKey });
-      })
-      .catch(console.error);
-  },
-
-  getVerboseData({ commit }, sessionId) {
-    commit('setVerboseData', { data: null, status: 0 });
-    if (sessionId === 'demo') {
-      commit('setVerboseData', { data: null, status: 1 });
-      import('../assets/data/verbose-demo.json').then((json) => {
-        commit('setVerboseData', { data: json.default, status: 2 });
-      });
-    } else {
-      commit('setVerboseData', { data: null, status: 1 });
-      this.$axios.$get(`${config.bytebin_url}${sessionId}`)
-        .then((response) => {
-          const data = {
-            ...response.data,
+        sessions.forEach(sessionId => {
+          nodeCopies.push({
+            ...node,
             sessionId,
-          };
-          commit('setVerboseData', { data, status: 2 });
-        })
-        .catch(() => {
-          console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-          commit('setVerboseLoadError');
-          commit('setVerboseData', { data: null, status: 3 });
+            isNew: true,
+          });
         });
-    }
-  },
 
-  getTreeData({ commit }, sessionId) {
-    if (sessionId === 'demo') {
-      import('../assets/data/tree-demo.json').then((json) => {
-        commit('setTreeData', json.default);
+        dispatch('addNodes', nodeCopies);
       });
-    } else {
-      this.$axios.$get(`${config.bytebin_url}${sessionId}`)
-        .then((response) => {
-          const data = {
-            ...response.data,
-            sessionId,
-          };
-          commit('setTreeData', data);
-        })
-        .catch((error) => {
-          console.error(error);
-          console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-          commit('setTreeLoadError');
+
+      commit('closeModal');
+      commit('deselectAllSelectedNodes');
+    },
+
+    moveNodes({ state, getters, commit }, session) {
+      const { selectedNodes } = getters;
+
+      selectedNodes.forEach(node => {
+        commit('updateNode', {
+          type: 'sessionId',
+          data: {
+            value: session,
+          },
+          node
         });
-    }
-  },
-};
+      });
+
+      commit('deselectAllSelectedNodes');
+      commit('closeModal');
+    },
+
+    deleteNodes({ getters, commit }) {
+      const selectedNodes = getters.selectedNodeIds.map(node => node);
+
+      selectedNodes.forEach(nodeId => {
+        commit('deleteNode', nodeId);
+      });
+
+      commit('closeModal');
+    },
+
+    updateNodes({ getters, commit }, payload) {
+      const { selectedNodes } = getters;
+
+      selectedNodes.forEach(node => {
+        commit('bulkUpdateNode', { node, payload });
+      });
+    },
+
+    saveData({ state, getters, commit }) {
+      commit('setSaveStatus', 'saving');
+
+      const payload = {
+        changes: [],
+        groupDeletions: state.editor.deletedGroups,
+        trackDeletions: state.editor.deletedTracks,
+        userDeletions: state.editor.deletedUsers,
+      };
+
+      getters.modifiedSessions.forEach((modifiedSession) => {
+        const session = state.editor.sessions[modifiedSession];
+        const sessionNodes = state.editor.nodes.filter(node => node.sessionId === session.id);
+
+        const nodes = [];
+
+        sessionNodes.forEach(node => nodes.push({
+          key: node.key,
+          value: node.value,
+          ...node.expiry && { expiry: Math.floor(node.expiry / 1000) },
+          ...(Object.entries(node.context).length) && { context: node.context },
+        }));
+
+        payload.changes.push({
+          type: session.type,
+          id: session.id,
+          nodes,
+        });
+      });
+
+      getters.tracks.forEach((track) => {
+        payload.changes.push({
+          type: 'track',
+          id: track.id,
+          groups: track.groups,
+        });
+      });
+
+      axios.post(`${config.bytebin_url}post`, payload)
+        .then((response) => {
+          commit('setBytebinKey', response.data.key);
+          commit('setSaveStatus', 'saved');
+          commit('setModal', { type: 'savedChanges', object: getters.saveKey });
+        })
+        .catch(console.error);
+    },
+
+    getVerboseData({ commit }, sessionId) {
+      commit('setVerboseData', { data: null, status: 0 });
+      if (sessionId === 'demo') {
+        commit('setVerboseData', { data: null, status: 1 });
+        import('@/assets/data/verbose-demo.json').then((json) => {
+          commit('setVerboseData', { data: json.default, status: 2 });
+        });
+      } else {
+        commit('setVerboseData', { data: null, status: 1 });
+        axios.get(`${config.bytebin_url}${sessionId}`)
+          .then((response) => {
+            const data = {
+              ...response.data,
+              sessionId,
+            };
+            commit('setVerboseData', { data, status: 2 });
+          })
+          .catch(() => {
+            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+            commit('setVerboseLoadError');
+            commit('setVerboseData', { data: null, status: 3 });
+          });
+      }
+    },
+
+    getTreeData({ commit }, sessionId) {
+      if (sessionId === 'demo') {
+        import('@/assets/data/tree-demo.json').then((json) => {
+          commit('setTreeData', json.default);
+        });
+      } else {
+        axios.get(`${config.bytebin_url}${sessionId}`)
+          .then((response) => {
+            const data = {
+              ...response.data,
+              sessionId,
+            };
+            commit('setTreeData', data);
+          })
+          .catch((error) => {
+            console.error(error);
+            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
+            commit('setTreeLoadError');
+          });
+      }
+    },
+  };

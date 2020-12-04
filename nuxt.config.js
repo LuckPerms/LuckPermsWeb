@@ -57,6 +57,7 @@ export default {
   */
   plugins: [
     '@/plugins/directives.js',
+    '@/plugins/plugins.js',
   ],
   /*
   ** Nuxt.js dev-modules

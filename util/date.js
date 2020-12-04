@@ -7,6 +7,7 @@
  * @returns {String}
  */
 export function relativeDate(date, baseDate, includeTime) {
+  if (!process.browser) return;
   const rtf = new Intl.RelativeTimeFormat(navigator.language, {
     numeric: 'auto',
   });

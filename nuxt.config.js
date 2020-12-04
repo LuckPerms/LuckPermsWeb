@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+global.HTMLElement = Object;
+
 export default {
   generate: {
     fallback: true,
@@ -54,6 +56,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '@/plugins/directives.js',
   ],
   /*
   ** Nuxt.js dev-modules

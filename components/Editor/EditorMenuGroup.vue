@@ -1,5 +1,4 @@
 <template>
-  <client-only>
   <intersect @enter="isVisible = true" @leave="isVisible = false">
     <span class="group">
       <span class="group-name">
@@ -16,7 +15,6 @@
       </span>
     </span>
   </intersect>
-  </client-only>
 </template>
 
 <script>

@@ -247,7 +247,7 @@ export default {
         // eslint-disable-next-line prefer-destructuring
         sessionId = route.hash.split('#')[1];
       }
-      if (sessionId && process.browser) {
+      if (sessionId) {
         this.$store.dispatch(type, sessionId);
       }
     },

@@ -143,7 +143,7 @@ export default {
   },
   computed: {
     commitHash() {
-      return process.env.VUE_APP_GIT_HASH;
+      return process.env.APP_GIT_HASH;
     },
     version() {
       return this.$store.getters.version;

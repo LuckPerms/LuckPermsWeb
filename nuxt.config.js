@@ -1,8 +1,11 @@
 import axios from 'axios';
 
-global.HTMLElement = Object;
+const { gitDescribeSync } = require('git-describe');
 
 export default {
+  /*
+  ** Options for `nuxt generate`
+  */
   generate: {
     fallback: true,
     routes: function () {
@@ -16,6 +19,13 @@ export default {
         .map(pageName => `/wiki/${pageName}`);
       });
     },
+  },
+
+  /*
+  ** Environment variables
+  */
+  env: {
+    APP_GIT_HASH: gitDescribeSync().hash,
   },
 
   /*

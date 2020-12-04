@@ -8,6 +8,11 @@ export default {
   */
   generate: {
     fallback: true,
+    exclude: [
+      '/editor/demo',
+      '/treeview/demo',
+      '/verbose/demo',
+    ],
     routes: function () {
       // This is a temporary solution and we should probably read the file list of the submodule
       return axios.get('https://api.github.com/repos/LuckPerms/wiki/contents')

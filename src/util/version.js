@@ -46,7 +46,7 @@ export function checkVersion(version, current) {
 
   return (
     currentVersion[0] >= checkingVersion[0]
-    && currentVersion[1] >= checkingVersion[1]
-    && currentVersion[2] >= checkingVersion[2]
+    || currentVersion[1] >= checkingVersion[1]
+    || currentVersion[2] >= checkingVersion[2]
   );
 }

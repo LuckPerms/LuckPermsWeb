@@ -39,7 +39,7 @@
           <p>
             We'd like to thank Bisect for sponsoring open source projects like ours and enabling
             us to continue to provide LuckPerms for free to the community, for all to enjoy.
-            They're awesome & their support is much appreciated! 😎
+            They're awesome &amp; their support is much appreciated! 😎
           </p>
         </div>
         <div>
@@ -49,10 +49,11 @@
             the first month of any of their game server hosting plans.
           </p>
           <p>
-            Already have a server hosted somewhere else? Not to worry! Bisect are also offering to
-            <strong>match the price of your existing plan</strong> if you transfer your server to
-            them! You get all of the benefits of their Premium package for the same price you're
-            paying already, and you get to support LuckPerms too! What's not to love?! 💚
+            Already have a server hosted somewhere else? Not to worry! Bisect are offering to
+            give <strong>two weeks of hosting for free</strong> and <strong>match the price of
+            your existing plan</strong> if you transfer your server to them! Get all of the
+            benefits of their Premium package, and support LuckPerms at the same time! What's
+            not to love?! 💚
           </p>
           <p>
             <font-awesome icon="arrow-circle-right" />
@@ -61,8 +62,8 @@
           </p>
           <p>
             <font-awesome icon="arrow-circle-right" />
-            To take advantage of their <strong>price-match</strong> offer, just get in touch with
-            their support team and let them know you've come via us!
+            To take advantage of their <strong>2 weeks free + price-match</strong> offer, just get
+            in touch with their support team and let them know you've come via us!
           </p>
         </div>
       </section>

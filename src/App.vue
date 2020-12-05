@@ -137,7 +137,7 @@ export default {
       },
       {
         property: 'og:description',
-        content: 'Resources, useful links and the latest downloads for LuckPerms',
+        content: 'Website & online apps for the LuckPerms plugin.',
       },
       {
         property: 'og:type',
@@ -145,15 +145,15 @@ export default {
       },
       {
         property: 'og:image',
-        content: 'https://luckperms.github.io/assets/logo/720px.png',
+        content: 'https://luckperms.net/logo.png',
       },
       {
         property: 'og:url',
-        content: 'https://luckperms.net',
+        content: 'https://luckperms.net/',
       },
       {
         property: 'og:site_name',
-        content: 'LuckPerms',
+        content: 'LuckPerms - A permissions plugin for Minecraft servers.',
       },
     ],
   },

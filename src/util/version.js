@@ -14,39 +14,33 @@ function parseVersion(version) {
   return array;
 }
 
-/**
- * Compares the user's version to the latest version
- * Returns an object showing which semver is up to date (major, minor, patch)
- *
- * @param {string} latest - the most up to date version
- * @param {string} current - the user's current version
- * @returns {Object}
- */
-export function compareVersions(latest, current) {
-  const latestVersion = parseVersion(latest);
-  const currentVersion = parseVersion(current);
-
-  return {
-    major: latestVersion[0] === currentVersion[0],
-    minor: latestVersion[1] === currentVersion[1],
-    patch: latestVersion[2] === currentVersion[2],
-  };
+function compare(required, actual) {
+  if (required > actual) {
+    return 1;
+  }
+  if (required < actual) {
+    return -1;
+  }
+  return 0;
 }
 
 /**
- * Check whether the user has at least the version that is supplied
+ * Check whether the user has at least the version that is required
  *
- * @param {string} version - the version to check against
+ * @param {string} required - the version to check against
  * @param {string} current - the user's current version
  * @returns {boolean}
  */
-export function checkVersion(version, current) {
-  const checkingVersion = parseVersion(version);
+export function checkVersion(required, current) {
+  const requiredVersion = parseVersion(required);
   const currentVersion = parseVersion(current);
 
-  return (
-    currentVersion[0] >= checkingVersion[0]
-    || currentVersion[1] >= checkingVersion[1]
-    || currentVersion[2] >= checkingVersion[2]
-  );
+  let cmp = compare(requiredVersion[0], currentVersion[0]);
+  if (cmp != 0) return cmp === 1;
+
+  cmp = compare(requiredVersion[1], currentVersion[1]);
+  if (cmp != 0) return cmp === 1;
+
+  cmp = compare(requiredVersion[2], currentVersion[2]);
+  return cmp !== -1;
 }

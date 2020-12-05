@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import { compareVersions } from './util/version';
 
 const uuid = require('uuid/v4');
 const config = require('../config');
@@ -107,12 +106,6 @@ export default new Vuex.Store({
     saveStatus: state => state.editor.save?.status,
 
     saveKey: state => state.editor.save?.key,
-
-    editorVersionStatus: (state) => {
-      if (!state.version || !state.editor.metaData?.pluginVersion) return null;
-
-      return compareVersions(state.version, state.editor.metaData.pluginVersion);
-    },
   },
 
 

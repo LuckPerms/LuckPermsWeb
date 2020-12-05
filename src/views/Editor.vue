@@ -148,7 +148,6 @@ import NodeList from '@/components/Editor/NodeList.vue';
 import AddNode from '@/components/Editor/AddNode.vue';
 import SearchNodes from '@/components/Editor/SearchNodes';
 import Modal from '@/components/Editor/Modal.vue';
-import { checkVersion } from '@/util/version';
 import updateSession from '@/util/session';
 import debounce from "lodash.debounce";
 
@@ -248,9 +247,6 @@ export default {
   methods: {
     saveData() {
       this.$store.dispatch('saveData');
-    },
-    checkVersion(version) {
-      return checkVersion(version, this.userVersion);
     },
     async toggleSearch() {
       const { search } = this;

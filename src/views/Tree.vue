@@ -114,9 +114,8 @@ export default {
 
       if (tree.data?.tree) {
         return tree.data.tree;
-      } else if (tree.data) {
-        return tree.data;
       }
+      return tree.data;
     },
     metaData() {
       return this.$store.state.tree?.metadata;
@@ -125,7 +124,6 @@ export default {
   },
   created() {
     if (this.treeData?.sessionId) return;
-
     updateSession(this.$route, 'getTreeData');
   },
   methods: {

@@ -52,10 +52,10 @@ export default {
   },
   methods: {
     async getArticle() {
-      // eslint-disable-next-line global-require,import/no-dynamic-require
       try {
+        // eslint-disable-next-line global-require,import/no-dynamic-require
         this.article = require(`@/wiki/${this.route}.md`).default;
-      } catch(e) {
+      } catch (e) {
         this.article = null;
         return;
       }

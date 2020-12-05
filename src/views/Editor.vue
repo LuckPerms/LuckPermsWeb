@@ -141,15 +141,15 @@
 </template>
 
 <script>
+import debounce from 'lodash.debounce';
 import EditorMenu from '@/components/Editor/EditorMenu.vue';
 import Header from '@/components/Editor/Header.vue';
 import Meta from '@/components/Editor/Meta.vue';
 import NodeList from '@/components/Editor/NodeList.vue';
 import AddNode from '@/components/Editor/AddNode.vue';
-import SearchNodes from '@/components/Editor/SearchNodes';
+import SearchNodes from '@/components/Editor/SearchNodes.vue';
 import Modal from '@/components/Editor/Modal.vue';
 import updateSession from '@/util/session';
-import debounce from "lodash.debounce";
 
 export default {
   name: 'Editor',
@@ -172,7 +172,7 @@ export default {
         toggle: false,
         query: '',
         debouncedQuery: '',
-      }
+      },
     };
   },
   computed: {
@@ -240,7 +240,8 @@ export default {
     $route(route) {
       updateSession(route, 'getEditorData');
     },
-    'search.query': debounce(function(value) {
+    // eslint-disable-next-line func-names
+    'search.query': debounce(function (value) {
       this.search.debouncedQuery = String(value).toLowerCase();
     }, 200),
   },
@@ -263,7 +264,7 @@ export default {
       this.search.query = '';
       this.search.debouncedQuery = '';
       this.search.toggle = false;
-    }
+    },
   },
 };
 </script>

@@ -74,9 +74,9 @@ if (!config.selfHosted) {
           component: () => import(/* webpackChunkName: "wiki" */ './components/Wiki/Article'),
         },
       ],
-    }
+    },
   ];
-  routes = [ ...routes, ...publicRoutes];
+  routes = [...routes, ...publicRoutes];
 }
 
 export default new Router({

@@ -44,7 +44,12 @@
       <code v-if="source.expiry">{{ relativeExpiry }}</code>
       <code v-else disabled>never</code>
 
-      <button v-if="source.expiry" class="delete" @click.stop="deleteExpiry()" title="Delete expiry">
+      <button
+        v-if="source.expiry"
+        class="delete"
+        @click.stop="deleteExpiry()"
+        title="Delete expiry"
+      >
         <font-awesome icon="times" />
       </button>
     </div>
@@ -63,7 +68,9 @@
       title="Click to edit the contexts for this node"
     >
       <span v-if="flattenedContexts.length">
-        <code v-for="entry in flattenedContexts"><small>{{ entry.key }}:</small> {{ entry.value }}</code>
+        <code v-for="entry in flattenedContexts" v-bind:key="entry">
+          <small>{{ entry.key }}:</small> {{ entry.value }}
+        </code>
       </span>
       <code v-else disabled>none</code>
     </div>
@@ -79,7 +86,7 @@
           <font-awesome icon="times" />
         </div>
         <ul>
-          <li v-for="entry in flattenedContexts">
+          <li v-for="entry in flattenedContexts" v-bind:key="entry">
             <span>{{ entry.key }}</span>
             <span>{{ entry.value }}</span>
             <button @click="removeContext(entry.key, entry.value)">
@@ -105,8 +112,11 @@
                 <ul class="context-list" v-if="context.keyFocus">
                   <li
                     v-for="pContext in potentialContexts"
+                    v-bind:key="pContext"
                     @click="context.key = pContext.key"
-                  >{{ pContext.key }}</li>
+                  >
+                    {{ pContext.key }}
+                  </li>
                 </ul>
               </transition>
             </div>
@@ -123,8 +133,11 @@
                 <ul class="context-list" v-if="context.valueFocus">
                   <li
                     v-for="value in potentialContextValues"
+                    v-bind:key="value"
                     @click="context.value = value"
-                  >{{ value }}</li>
+                  >
+                    {{ value }}
+                  </li>
                 </ul>
               </transition>
             </div>
@@ -186,8 +199,10 @@ export default {
     },
     flattenedContexts() {
       const entries = [];
+      // eslint-disable-next-line no-restricted-syntax
       for (const [key, values] of Object.entries(this.source.context)) {
         if (Array.isArray(values)) {
+          // eslint-disable-next-line no-restricted-syntax
           for (const value of values) {
             entries.push({ key, value });
           }
@@ -202,13 +217,13 @@ export default {
     },
     potentialContextValues() {
       if (!this.context.key) return null;
-      const context = this.potentialContexts.find(pContext => pContext.key === this.context.key);
+      const context = this.potentialContexts.find(c => c.key === this.context.key);
       if (!context) return null;
       return context.values;
     },
     relativeExpiry() {
       return relativeDate(this.source.expiry);
-    }
+    },
   },
   methods: {
     toggleNodeSelect() {
@@ -225,10 +240,13 @@ export default {
           if (this.source[type] !== data.value) {
             this.$store.commit('updateNode', { node: this.source, type, data });
           }
+          // eslint-disable-next-line no-param-reassign
           data.edit = false;
           break;
         case 'context':
           this.$store.commit('updateNodeContext', { node: this.source, data });
+          break;
+        default:
           break;
       }
     },

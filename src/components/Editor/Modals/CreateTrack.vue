@@ -22,7 +22,11 @@
     <div class="col">
       <h3>Add groups</h3>
       <ul class="available-groups">
-        <li v-for="group in availableGroups" @click="track.groups.push(group.id)">
+        <li
+          v-for="group in availableGroups"
+          v-bind:key="group.id"
+          @click="track.groups.push(group.id)"
+        >
           <span>{{ group.id }}</span>
           <font-awesome icon="plus" fixed-width />
         </li>

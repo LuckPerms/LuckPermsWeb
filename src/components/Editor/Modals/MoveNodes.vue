@@ -24,32 +24,32 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        selectedSession: null,
-      }
+export default {
+  data() {
+    return {
+      selectedSession: null,
+    };
+  },
+  props: {
+    props: Array,
+  },
+  computed: {
+    selectedNodes() {
+      return this.$store.getters.selectedNodeIds;
     },
-    props: {
-      props: Array,
+    sessions() {
+      return this.$store.getters.sessionSet;
     },
-    computed: {
-      selectedNodes() {
-        return this.$store.getters.selectedNodeIds;
-      },
-      sessions() {
-        return this.$store.getters.sessionSet;
-      }
+  },
+  methods: {
+    toggleSession(session) {
+      this.selectedSession = session;
     },
-    methods: {
-      toggleSession(session) {
-        this.selectedSession = session;
-      },
-      moveNodes() {
-        this.$store.dispatch('moveNodes', this.selectedSession);
-      }
-    }
-  }
+    moveNodes() {
+      this.$store.dispatch('moveNodes', this.selectedSession);
+    },
+  },
+};
 </script>
 
 <style lang="scss">

@@ -24,36 +24,36 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        selectedSessions: [],
+export default {
+  data() {
+    return {
+      selectedSessions: [],
+    };
+  },
+  props: {
+    props: Array,
+  },
+  computed: {
+    selectedNodes() {
+      return this.$store.getters.selectedNodeIds;
+    },
+    sessions() {
+      return this.$store.getters.sessionSet;
+    },
+  },
+  methods: {
+    toggleSession(session) {
+      if (this.selectedSessions.includes(session)) {
+        this.selectedSessions.splice(this.selectedSessions.findIndex(s => s === session), 1);
+      } else {
+        this.selectedSessions.push(session);
       }
     },
-    props: {
-      props: Array,
+    copyNodes() {
+      this.$store.dispatch('copyNodes', this.selectedSessions);
     },
-    computed: {
-      selectedNodes() {
-        return this.$store.getters.selectedNodeIds;
-      },
-      sessions() {
-        return this.$store.getters.sessionSet;
-      }
-    },
-    methods: {
-      toggleSession(session) {
-        if (this.selectedSessions.includes(session)) {
-          this.selectedSessions.splice(this.selectedSessions.findIndex(s => s === session), 1);
-        } else {
-          this.selectedSessions.push(session);
-        }
-      },
-      copyNodes() {
-        this.$store.dispatch('copyNodes', this.selectedSessions);
-      }
-    }
-  }
+  },
+};
 </script>
 
 <style lang="scss">

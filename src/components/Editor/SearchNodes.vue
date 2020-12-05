@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import Node from '@/components/Editor/Node';
-import Avatar from '@/components/Avatar';
 import debounce from 'lodash.debounce';
+import Node from '@/components/Editor/Node.vue';
+import Avatar from '@/components/Avatar.vue';
 
 export default {
   name: 'SearchNodes',
@@ -41,7 +41,7 @@ export default {
     query: {
       required: true,
       type: String,
-    }
+    },
   },
   data() {
     return {
@@ -52,33 +52,36 @@ export default {
     results() {
       const { allNodes } = this.$store.getters;
 
-      return allNodes.filter(node => {
+      return allNodes.filter((node) => {
         const query = this.debouncedQuery;
 
-        const key = String(node.key).toLowerCase().includes(query);
-
-        let contextKey = false;
-        let contextValue = false;
-        const contextKeys = Object.keys(node.context);
-        if (contextKeys.length) {
-          const lowerCaseKeys = contextKeys.map(key => String(key).toLowerCase());
-          contextKey = lowerCaseKeys.includes(query);
-          contextValue = contextKeys.some(key => {
-            if (typeof node.context[key] === 'string') {
-              return String(node.context[key]).toLowerCase().includes(query);
-            } else if (Array.isArray(node.context[key])) {
-              return node.context[key].some(value => String(value).toLowerCase().includes(query));
-            }
-            return false;
-          });
+        const keyMatch = String(node.key).toLowerCase().includes(query);
+        if (keyMatch) {
+          return true;
         }
-        return (key || contextKey || contextValue);
+
+        const contextKeys = Object.keys(node.context);
+        if (!contextKeys.length) {
+          return false;
+        }
+
+        const lowerCaseKeys = contextKeys.map(k => String(k).toLowerCase());
+        const contextKey = lowerCaseKeys.includes(query);
+        const contextValue = contextKeys.some((key) => {
+          if (typeof node.context[key] === 'string') {
+            return String(node.context[key]).toLowerCase().includes(query);
+          } if (Array.isArray(node.context[key])) {
+            return node.context[key].some(value => String(value).toLowerCase().includes(query));
+          }
+          return false;
+        });
+        return (contextKey || contextValue);
       });
     },
     groupedResults() {
       const { results } = this;
       const { sessionSet } = this.$store.getters;
-      const filteredSessionSet = new Set;
+      const filteredSessionSet = new Set();
 
       results.forEach(({ sessionId }) => {
         filteredSessionSet.add(sessionId);
@@ -90,21 +93,21 @@ export default {
         session: sessionSet.find(({ id }) => sessionId === id),
         nodes: results.filter(node => node.sessionId === sessionId),
       }));
-    }
+    },
   },
   methods: {
     setCurrentSession(session) {
-      console.log('hi');
       this.$store.commit('setCurrentSession', session);
       this.$emit('clear-query');
     },
   },
   watch: {
-    query: debounce(function(value) {
+    // eslint-disable-next-line func-names
+    query: debounce(function (value) {
       this.debouncedQuery = String(value).toLowerCase();
     }, 200),
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">

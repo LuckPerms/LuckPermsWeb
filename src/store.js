@@ -89,11 +89,8 @@ export default new Vuex.Store({
 
     selectedNodeIds: state => state.editor.selectedNodes,
 
-    selectedNodes: (state, getters) => {
-      return getters.selectedNodeIds.map(nodeId => {
-        return getters.allNodes.find(({ id }) => nodeId === id);
-      });
-    },
+    // eslint-disable-next-line max-len
+    selectedNodes: (state, getters) => getters.selectedNodeIds.map(nodeId => getters.allNodes.find(({ id }) => nodeId === id)),
 
     potentialContexts: state => state.editor.potentialContexts,
 
@@ -306,6 +303,7 @@ export default new Vuex.Store({
       state.editor.sessions[node.sessionId].modified = true;
     },
 
+    /* eslint-disable no-param-reassign */
     updateNode(state, { node, type, data }) {
       if (type === 'expiry') {
         node[type] = data.value ? data.value.getTime() : null;
@@ -325,7 +323,7 @@ export default new Vuex.Store({
         value,
         expiry,
         replace,
-        contexts
+        contexts,
       } = payload;
 
       if (value !== null) {
@@ -351,6 +349,7 @@ export default new Vuex.Store({
       node.modified = true;
       state.editor.sessions[node.sessionId].modified = true;
     },
+    /* eslint-enable no-param-reassign */
 
     addNodeToSession(state, node) {
       state.editor.nodes.push(node);
@@ -403,12 +402,10 @@ export default new Vuex.Store({
     setVerboseData(state, { data, status }) {
       state.verbose.status = status;
       if (!data) return;
-      state.verbose.data = data.data.map((node) => {
-        return {
-          ...node,
-          id: uuid(),
-        }
-      });
+      state.verbose.data = data.data.map(node => ({
+        ...node,
+        id: uuid(),
+      }));
       state.verbose.metadata = data.metadata;
       state.verbose.sessionId = data.sessionId;
     },
@@ -599,10 +596,10 @@ export default new Vuex.Store({
     copyNodes({ getters, dispatch, commit }, sessions) {
       const { selectedNodes } = getters;
 
-      selectedNodes.forEach(node => {
+      selectedNodes.forEach((node) => {
         const nodeCopies = [];
 
-        sessions.forEach(sessionId => {
+        sessions.forEach((sessionId) => {
           nodeCopies.push({
             ...node,
             sessionId,
@@ -617,16 +614,17 @@ export default new Vuex.Store({
       commit('deselectAllSelectedNodes');
     },
 
+    // eslint-disable-next-line no-unused-vars
     moveNodes({ state, getters, commit }, session) {
       const { selectedNodes } = getters;
 
-      selectedNodes.forEach(node => {
+      selectedNodes.forEach((node) => {
         commit('updateNode', {
           type: 'sessionId',
           data: {
             value: session,
           },
-          node
+          node,
         });
       });
 
@@ -637,7 +635,7 @@ export default new Vuex.Store({
     deleteNodes({ getters, commit }) {
       const selectedNodes = getters.selectedNodeIds.map(node => node);
 
-      selectedNodes.forEach(nodeId => {
+      selectedNodes.forEach((nodeId) => {
         commit('deleteNode', nodeId);
       });
 
@@ -647,7 +645,7 @@ export default new Vuex.Store({
     updateNodes({ getters, commit }, payload) {
       const { selectedNodes } = getters;
 
-      selectedNodes.forEach(node => {
+      selectedNodes.forEach((node) => {
         commit('bulkUpdateNode', { node, payload });
       });
     },

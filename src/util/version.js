@@ -31,15 +31,16 @@ function compare(required, actual) {
  * @param {string} current - the user's current version
  * @returns {boolean}
  */
+// eslint-disable-next-line import/prefer-default-export
 export function checkVersion(required, current) {
   const requiredVersion = parseVersion(required);
   const currentVersion = parseVersion(current);
 
   let cmp = compare(requiredVersion[0], currentVersion[0]);
-  if (cmp != 0) return cmp === 1;
+  if (cmp !== 0) return cmp === 1;
 
   cmp = compare(requiredVersion[1], currentVersion[1]);
-  if (cmp != 0) return cmp === 1;
+  if (cmp !== 0) return cmp === 1;
 
   cmp = compare(requiredVersion[2], currentVersion[2]);
   return cmp !== -1;

@@ -116,9 +116,9 @@
 </template>
 
 <script>
+import { gte } from 'semver';
 import EditorMenuTrack from './EditorMenuTrack.vue';
 import EditorMenuGroup from './EditorMenuGroup.vue';
-import { checkVersion } from '@/util/version';
 
 export default {
   name: 'editor-menu',
@@ -175,7 +175,7 @@ export default {
       const supportedVersion = '5.1.105';
       const { pluginVersion } = this.$store.getters.metaData;
 
-      return checkVersion(supportedVersion, pluginVersion);
+      return gte(pluginVersion, supportedVersion);
     },
   },
 

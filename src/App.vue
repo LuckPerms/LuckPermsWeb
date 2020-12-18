@@ -11,12 +11,7 @@
             <router-link to="/sponsor">
               <hr />
               <img src="@/assets/bisect.svg" alt="Bisect Hosting">
-              <span>
-              Proudly sponsored by
-              <strong>BisectHosting</strong><br/>
-              <span class="new">NEW:</span>
-              Special offer for LuckPerms users!
-            </span>
+              <span v-html="$t('sponsor')" />
             </router-link>
           </div>
         </transition>

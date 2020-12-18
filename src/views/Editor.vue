@@ -75,7 +75,7 @@
           <div class="editor-main">
             <nav>
               <div class="logo">
-                {{ $t('editor.description') }}
+                <h1>{{ $t('editor.description') }}</h1>
               </div>
               <div class="buttons">
                 <div class="search">
@@ -83,7 +83,7 @@
                     v-if="search.toggle"
                     type="text"
                     v-model="search.query"
-                    placeholder="Search"
+                    :placeholder="$t('editor.search')"
                     ref="searchInput"
                   />
                   <button @click="toggleSearch">

@@ -4,7 +4,7 @@ export default {
   copy: 'Copy',
   wiki: 'Wiki',
   avatar: '{name}\'s avatar',
-  sponsor: 'Proudly sponsored by <strong>BisectHosting</strong><br/>Use code <code>luck</code> for 25% off!',
+  sponsor: 'Proudly sponsored by <strong>BisectHosting</strong><br/><span class="new">NEW:</span> Special offer for LuckPerms users!',
   links: {
     home: 'Home',
     download: 'Download',
@@ -44,6 +44,10 @@ export default {
     github: 'Browse the source code, report issues and contribute to the project',
     discord: 'Join {count} others to discuss the project and ask/answer questions',
     patreon: 'Join {count} others supporting the project on Patreon',
+    partner: {
+      title: 'Hosting Partner',
+      description: 'Find out how you can get a great deal on your server hosting and support us at the same time',
+    },
   },
   download: {
     title: 'Download LuckPerms',
@@ -111,6 +115,7 @@ export default {
     copied: 'Command copied to clipboard',
     clipboardCopy: 'Copy to clipboard',
     clearFilters: 'Clear filter',
+    noResults: 'No results found',
     applyNote: '<strong>Note:</strong> after running the <code>applyedits</code> command, you should generate another editor URL to continue editing your server\'s permissions.',
     nav: {
       tracks: 'Tracks',
@@ -268,6 +273,6 @@ export default {
   },
   notFound: {
     title: 'Not found!',
-    message: 'The page {path} couldn\'t be found',
+    message: 'The page {path} doesn\'t exist',
   },
 };

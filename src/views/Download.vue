@@ -15,42 +15,66 @@
       <section class="resources">
         <div>
           <h2>{{ $t('download.typeChoose') }}</h2>
-          <a :href="downloads.bukkit" class="resource">
+          <a
+            :href="downloads.bukkit"
+            v-on:click="logDownload('bukkit')"
+            class="resource"
+          >
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Bukkit
             </span>
             <small>{{ $t('download.bukkit') }}</small>
           </a>
-          <a :href="downloads.bungee" class="resource">
+          <a
+            :href="downloads.bungee"
+            v-on:click="logDownload('bungee')"
+            class="resource"
+          >
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               BungeeCord
             </span>
             <small>{{ $t('download.bungee') }}</small>
           </a>
-          <a :href="downloads.sponge" class="resource">
+          <a
+            :href="downloads.sponge"
+            v-on:click="logDownload('sponge')"
+            class="resource"
+          >
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Sponge
             </span>
             <small>{{ $t('download.sponge') }}</small>
           </a>
-          <a :href="downloads.nukkit" class="resource">
+          <a
+            :href="downloads.nukkit"
+            v-on:click="logDownload('nukkit')"
+            class="resource"
+          >
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Nukkit
             </span>
             <small>{{ $t('download.nukkit') }}</small>
           </a>
-          <a :href="downloads.velocity" class="resource">
+          <a
+            :href="downloads.velocity"
+            v-on:click="logDownload('velocity')"
+            class="resource"
+          >
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Velocity
             </span>
             <small>{{ $t('download.velocity') }}</small>
           </a>
-          <a :href="downloads['bukkit-legacy']" class="resource">
+          <a
+            :href="downloads['bukkit-legacy']"
+            v-on:click="logDownload('bukkit-legacy')"
+            class="resource"
+          >
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               Bukkit Legacy
@@ -68,7 +92,10 @@
           <ul class="changelog">
             <li v-for="entry in changeLog" :key="entry.version">
               <span>
-                <a :href="`https://github.com/lucko/LuckPerms/commit/${entry.commit}`" target="_blank">
+                <a
+                  :href="`https://github.com/lucko/LuckPerms/commit/${entry.commit}`"
+                  target="_blank"
+                >
                   <code>v{{ entry.version }}</code>
                 </a>
                 <span class="title">{{ entry.title }}</span>
@@ -125,7 +152,11 @@
     <div class="container extensions">
       <section class="resources">
         <div>
-          <a :href="extensions['extension-legacy-api']" class="resource">
+          <a
+            :href="extensions['extension-legacy-api']"
+            v-on:click="logDownload('extension-legacy-api')"
+            class="resource"
+          >
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               {{ $t('download.extensions.legacy') }}
@@ -144,7 +175,11 @@
           </div>
         </div>
         <div>
-          <a :href="extensions['extension-default-assignments']" class="resource">
+          <a
+            :href="extensions['extension-default-assignments']"
+            v-on:click="logDownload('extension-default-assignments')"
+            class="resource"
+          >
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               {{ $t('download.extensions.defaultAssignments') }}
@@ -199,12 +234,18 @@ export default {
     version() { return this.$store.getters.version; },
     versionTimestamp() { return this.$store.getters.versionTimestamp; },
     relativeTimestamp() {
-      if (this.versionTimestamp) return relativeDate(this.versionTimestamp, new Date().getTime(), true);
+      if (this.versionTimestamp) {
+        return relativeDate(this.versionTimestamp, new Date().getTime(), true);
+      }
       return null;
     },
     changeLog() { return this.$store.getters.changeLog; },
   },
   methods: {
+    logDownload(platform) {
+      // eslint-disable-next-line no-undef
+      plausible('Download', { props: { type: platform } });
+    },
     openQuiz() {
       this.quiz.open = true;
     },
@@ -213,7 +254,7 @@ export default {
     },
     relativeDate(value) {
       return relativeDate(value);
-    }
+    },
   },
 };
 </script>

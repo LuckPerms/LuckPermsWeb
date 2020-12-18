@@ -6,48 +6,40 @@
  * @param {boolean} [includeTime=false] - Whether to include return the time
  * @returns {String}
  */
+// eslint-disable-next-line import/prefer-default-export
 export function relativeDate(date, baseDate, includeTime) {
   const rtf = new Intl.RelativeTimeFormat(navigator.language, {
     numeric: 'auto',
   });
-  const now = baseDate ? baseDate : new Date().getTime();
+  const now = baseDate || new Date().getTime();
   const diff = date - now;
   const absDiff = Math.abs(diff);
 
-  let value, unit;
+  let value;
+  let unit;
 
-  // Seconds
   if (absDiff < 60000) {
+    // Seconds
     value = Math.floor(diff / 1000);
     unit = 'second';
-  }
-
-  // Minutes
-  else if (absDiff >= 60000 && absDiff < 3600000) {
+  } else if (absDiff >= 60000 && absDiff < 3600000) {
+    // Minutes
     value = Math.floor(diff / 60000);
     unit = 'minute';
-  }
-
-  // Hours
-  else if (absDiff >= 3600000 && absDiff < 86400000) {
+  } else if (absDiff >= 3600000 && absDiff < 86400000) {
+    // Hours
     value = Math.floor(diff / 3600000);
     unit = 'hour';
-  }
-
-  // Days
-  else if (absDiff >= 86400000 && absDiff < 604800000) {
+  } else if (absDiff >= 86400000 && absDiff < 604800000) {
+    // Days
     value = Math.floor(diff / 86400000);
     unit = 'day';
-  }
-
-  // Weeks
-  else if (absDiff >= 604800000 && absDiff < 2629800000) {
+  } else if (absDiff >= 604800000 && absDiff < 2629800000) {
+    // Weeks
     value = Math.floor(diff / 604800000);
     unit = 'week';
-  }
-
-  // Months
-  else {
+  } else {
+    // Months
     value = Math.floor(diff / 2629800000);
     unit = 'month';
   }
@@ -58,7 +50,7 @@ export function relativeDate(date, baseDate, includeTime) {
     const dateTime = new Intl.DateTimeFormat(navigator.language, {
       hour: 'numeric',
       minute: 'numeric',
-      second: 'numeric'
+      second: 'numeric',
     });
 
     const timeFormat = dateTime.format(new Date(date));

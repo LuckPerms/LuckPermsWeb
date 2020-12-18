@@ -174,7 +174,8 @@ export default {
 
       p, ol, ul {
         // Prioritise the system font for wiki content
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu,
+          Cantarell, 'Helvetica Neue', sans-serif;
         color: rgba(255,255,255,.76);
 
         code {
@@ -240,6 +241,24 @@ export default {
       h2:hover > .header-anchor,
       h3:hover > .header-anchor {
         display: initial;
+      }
+    }
+
+    .notfound .hero {
+      padding: 4rem;
+
+      h1 {
+        background: none;
+        font-size: 4rem;
+
+        svg {
+          top: 1rem;
+        }
+      }
+
+      p, code {
+        padding: inherit;
+        color: inherit;
       }
     }
   }

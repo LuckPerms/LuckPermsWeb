@@ -7,7 +7,7 @@ const config = require('../config.json');
 
 Vue.use(Router);
 
-const routes = [
+let routes = [
   {
     path: '/',
     name: 'home',
@@ -51,24 +51,32 @@ const routes = [
 ];
 
 if (!config.selfHosted) {
-  routes.push({
-    path: '/download',
-    name: 'download',
-    component: () => import(/* webpackChunkName: "download" */ './views/Download'),
-  });
-  routes.push({
-    path: '/wiki',
-    name: 'wiki',
-    component: () => import(/* webpackChunkName: "wiki" */ './views/Wiki'),
-    redirect: '/wiki/Home',
-    children: [
-      {
-        path: ':page',
-        name: 'wiki-article',
-        component: () => import(/* webpackChunkName: "wiki" */ './components/Wiki/Article'),
-      },
-    ],
-  });
+  const publicRoutes = [
+    {
+      path: '/download',
+      name: 'download',
+      component: () => import(/* webpackChunkName: "download" */ './views/Download'),
+    },
+    {
+      path: '/sponsor',
+      name: 'sponsor',
+      component: () => import(/* webpackChunkName: "sponsor" */ './views/Sponsor'),
+    },
+    {
+      path: '/wiki',
+      name: 'wiki',
+      component: () => import(/* webpackChunkName: "wiki" */ './views/Wiki'),
+      redirect: '/wiki/Home',
+      children: [
+        {
+          path: ':page',
+          name: 'wiki-article',
+          component: () => import(/* webpackChunkName: "wiki" */ './components/Wiki/Article'),
+        },
+      ],
+    },
+  ];
+  routes = [...routes, ...publicRoutes];
 }
 
 export default new Router({

@@ -68,7 +68,7 @@
     </div>
     <div v-else class="tool-intro">
       <div>
-        <img alt="LuckPerms logo" src="../assets/logo.png">
+        <img alt="LuckPerms logo" src="../assets/logo.svg">
         <div class="text">
           <h1>LuckPerms</h1>
           <p>{{ $t('tree.title') }}</p>
@@ -122,9 +122,8 @@ export default {
 
       if (tree.data?.tree) {
         return tree.data.tree;
-      } else if (tree.data) {
-        return tree.data;
       }
+      return tree.data;
     },
     metaData() {
       return this.$store.state.tree?.metadata;
@@ -133,7 +132,6 @@ export default {
   },
   created() {
     if (this.treeData?.sessionId) return;
-
     updateSession(this.$route, 'getTreeData');
   },
   methods: {

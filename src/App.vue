@@ -3,15 +3,23 @@
     <nav id="nav">
       <div>
         <router-link to="/" class="logo">
-          <img alt="LuckPerms logo" src="@/assets/logo.png">
+          <img alt="LuckPerms logo" src="@/assets/logo.svg">
           <span>LuckPerms</span>
         </router-link>
-        <div v-if="!config.selfHosted" class="nav-message">
-          <a href="https://bisecthosting.com/luck" target="_blank">
-            <img src="@/assets/bisect.svg" alt="Bisect Hosting">
-            <span v-html="$t('sponsor')" />
-          </a>
-        </div>
+        <transition name="fade">
+          <div v-if="!config.selfHosted && !isSponsorRoute" class="nav-message">
+            <router-link to="/sponsor">
+              <hr />
+              <img src="@/assets/bisect.svg" alt="Bisect Hosting">
+              <span>
+              Proudly sponsored by
+              <strong>BisectHosting</strong><br/>
+              <span class="new">NEW:</span>
+              Special offer for LuckPerms users!
+            </span>
+            </router-link>
+          </div>
+        </transition>
       </div>
 
       <ul :class="{ active: menu, 'top-level': true }">
@@ -74,12 +82,6 @@
               <span>Discord</span>
             </a>
           </li>
-          <li class="external">
-            <a href="https://patreon.com/luckdev" target="_blank" class="patreon">
-              <font-awesome :icon="['fab', 'patreon']" fixed-width />
-              <span>Patreon</span>
-            </a>
-          </li>
         </template>
       </ul>
 
@@ -114,9 +116,9 @@
             <a :href="'https://github.com/lucko/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
           </li>
           <li>
-            <a href="https://github.com/lucko/LuckPermsWeb/blob/master/LICENSE.txt" target="_blank">
-            Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
-            </a>
+            <router-link to="/wiki/Credits">
+              Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
+            </router-link>
           </li>
         </ul>
       </div>
@@ -135,7 +137,7 @@ export default {
       },
       {
         property: 'og:description',
-        content: 'Resources, useful links and the latest downloads for LuckPerms',
+        content: 'Website & online apps for the LuckPerms plugin.',
       },
       {
         property: 'og:type',
@@ -143,15 +145,15 @@ export default {
       },
       {
         property: 'og:image',
-        content: 'https://luckperms.github.io/assets/logo/720px.png',
+        content: 'https://luckperms.net/logo.png',
       },
       {
         property: 'og:url',
-        content: 'https://luckperms.net',
+        content: 'https://luckperms.net/',
       },
       {
         property: 'og:site_name',
-        content: 'LuckPerms',
+        content: 'LuckPerms - A permissions plugin for Minecraft servers.',
       },
     ],
   },
@@ -181,6 +183,9 @@ export default {
         'tree',
         'tree-home',
       ].includes(this.$route.name);
+    },
+    isSponsorRoute() {
+      return this.$route.name === 'sponsor';
     },
   },
 
@@ -319,7 +324,7 @@ body {
   .logo {
     height: 3rem;
     padding: .5rem;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     display: flex;
     align-items: center;
     color: #FFF;
@@ -338,13 +343,22 @@ body {
     }
   }
 
+  hr {
+    height: 2rem;
+    margin: 0 1rem 0 .5rem;
+    border-color: $brand-color;
+  }
+
   .nav-message {
-    margin-left: 1rem;
-    opacity: .5;
     max-width: 25rem;
     font-size: .9rem;
     line-height: 1.2;
-    transition: opacity .2s;
+    color: rgba(255,255,255,.66);
+    transition: all .2s;
+
+    .new {
+      color: $brand-color;
+    }
 
     img {
       height: 2rem;
@@ -352,21 +366,15 @@ body {
     }
 
     a {
-      padding: .25rem;
       color: inherit;
       text-decoration: none;
       display: flex;
       align-items: center;
       font-size: .8rem;
-
-      code {
-        border: 1px solid rgba(255,255,255,.2);
-        padding: 0 .25em;
-      }
     }
 
     &:hover {
-      opacity: .75;
+      color: rgba(255,255,255,.8);
     }
   }
 
@@ -524,10 +532,6 @@ body {
 
           &.discord {
             color: #7289DA;
-          }
-
-          &.patreon {
-            color: #f96854;
           }
 
           span {

@@ -3,7 +3,7 @@
     <section class="hero">
       <div class="container">
         <div :class="{'logo': true, 'selfhosted': config.selfHosted }">
-          <img alt="LuckPerms logo" src="../assets/logo.png">
+          <img alt="LuckPerms logo" src="../assets/logo.svg">
           <div>
             <h1>LuckPerms</h1>
             <p>{{ $t('description') }}</p>
@@ -88,6 +88,14 @@
             </span>
             <small>{{ $t('home.discord', { count: discordUserCount }) }}</small>
           </a>
+          <router-link to="/sponsor" class="resource">
+            <span>
+              <font-awesome icon="server" />
+              Hosting Partner
+            </span>
+            <small>Find out how you can get a great deal on your server hosting and support
+              us at the same time</small>
+          </router-link>
           <a href="https://patreon.com/luckdev" class="resource">
             <span>
               <font-awesome :icon="['fab', 'patreon']" />

@@ -56,7 +56,7 @@
       <transition name="fade" mode="out-in">
         <div v-if="page === 4" class="page page-4">
           <template v-if="options.latest">
-            <img alt="LuckPerms logo" src="@/assets/logo.png">
+            <img alt="LuckPerms logo" src="@/assets/logo.svg">
             <h1>{{ $t('quiz.result', { serverType }) }}</h1>
             <div class="options">
               <a :href="downloads.bukkit" v-if="options.bukkit" download>
@@ -77,7 +77,7 @@
             </div>
           </template>
           <template v-if="options.legacy">
-            <img alt="LuckPerms logo" src="@/assets/logo.png">
+            <img alt="LuckPerms logo" src="@/assets/logo.svg">
             <h1>{{ $t('quiz.resultLegacy', { serverType }) }}</h1>
             <div class="options">
               <a :href="downloads['bukkit-legacy']" v-if="options.bukkit" download>

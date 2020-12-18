@@ -2,7 +2,7 @@
   <main class="editor">
     <div v-if="!sessionId" class="tool-intro">
       <div>
-        <img alt="LuckPerms logo" src="../assets/logo.png">
+        <img alt="LuckPerms logo" src="../assets/logo.svg">
         <div class="text">
           <h1>LuckPerms</h1>
           <p>{{ $t('editor.description') }}</p>
@@ -22,10 +22,9 @@
     </div>
 
     <div v-else class="editor-container">
-      <transition name="fade" mode="out-in">
         <div v-if="!sessions.length" class="tool-intro" key="loading">
           <div>
-            <img alt="LuckPerms logo" src="../assets/logo.png">
+            <img alt="LuckPerms logo" src="../assets/logo.svg">
             <div class="text">
               <h1>LuckPerms</h1>
               <p>{{ $t('editor.description') }}</p>
@@ -56,16 +55,15 @@
             :sessions="sessions"
             :current-session="currentSession"
             :class="{ active: menu }"
+            @clear-query="clearQuery"
           />
 
-          <transition name="fade">
             <div
               id="editor-menu-focus"
               class="overlay-focus"
               v-if="menu"
               @click="menu = !menu"
             ></div>
-          </transition>
 
           <button
             id="editor-menu-toggle"
@@ -80,6 +78,19 @@
                 {{ $t('editor.description') }}
               </div>
               <div class="buttons">
+                <div class="search">
+                  <input
+                    v-if="search.toggle"
+                    type="text"
+                    v-model="search.query"
+                    placeholder="Search"
+                    ref="searchInput"
+                  />
+                  <button @click="toggleSearch">
+                    <font-awesome v-if="search.query" icon="times" fixed-width />
+                    <font-awesome v-else icon="search" fixed-width />
+                  </button>
+                </div>
 <!--                <button>-->
 <!--                  <font-awesome icon="undo" />-->
 <!--                </button>-->
@@ -99,17 +110,15 @@
               </div>
             </nav>
 
-            <transition name="fade" mode="in-out">
-              <div class="editor-no-session" v-if="!currentSession">
+
+              <div class="editor-no-session" v-if="!currentSession && !search.debouncedQuery">
                 <font-awesome icon="arrow-left" />
                 <h1>{{ $t('editor.groups.choose') }}</h1>
               </div>
-            </transition>
 
-            <transition name="fade" mode="out-in">
               <div
                 class="editor-session"
-                v-if="currentSession"
+                v-if="currentSession && !search.debouncedQuery"
                 :key="`session_${currentSession.id}`"
               >
                 <div class="session-container">
@@ -118,15 +127,16 @@
                   <NodeList :nodes="currentNodes" />
                 </div>
               </div>
-            </transition>
 
-            <transition name="fade">
-              <AddNode v-if="currentSession" />
-            </transition>
+              <search-nodes
+                v-if="search.debouncedQuery"
+                :query="search.debouncedQuery"
+                @clear-query="clearQuery"
+              />
+
+              <AddNode v-if="(currentSession && !search.debouncedQuery) || selectedNodes.length" />
           </div>
         </div>
-      </transition>
-
     </div>
 
     <transition name="fade">
@@ -137,37 +147,40 @@
 </template>
 
 <script>
+import debounce from 'lodash.debounce';
 import EditorMenu from '@/components/Editor/EditorMenu.vue';
 import Header from '@/components/Editor/Header.vue';
 import Meta from '@/components/Editor/Meta.vue';
 import NodeList from '@/components/Editor/NodeList.vue';
 import AddNode from '@/components/Editor/AddNode.vue';
+import SearchNodes from '@/components/Editor/SearchNodes.vue';
 import Modal from '@/components/Editor/Modal.vue';
-import { checkVersion } from '@/util/version';
 import updateSession from '@/util/session';
 
 export default {
   name: 'Editor',
-
   metaInfo: {
     title: 'Editor',
   },
-
   components: {
     EditorMenu,
     Header,
     Meta,
     NodeList,
     AddNode,
+    SearchNodes,
     Modal,
   },
-
   data() {
     return {
       menu: false,
+      search: {
+        toggle: false,
+        query: '',
+        debouncedQuery: '',
+      },
     };
   },
-
   computed: {
     sessionId() {
       return this.$store.getters.editorSessionId;
@@ -220,37 +233,43 @@ export default {
     userVersion() {
       return this.$store.getters.metaData.pluginVersion;
     },
+    selectedNodes() {
+      return this.$store.getters.selectedNodeIds;
+    },
   },
-
   created() {
     const { $route } = this;
-
-    if (window.location.search && window.location.search.length === 11) {
-      const code = window.location.search.split('?')[1];
-      window.location = `https://legacy.luckperms.net/editor/?${code}`;
-    }
-
-    if ($route.hash && $route.hash.length === 11) {
-      window.location = `https://legacy.luckperms.net/editor/${$route.hash}`;
-    }
-
     if (this.sessions?.length) return;
-
     updateSession($route, 'getEditorData');
   },
-
   watch: {
     $route(route) {
       updateSession(route, 'getEditorData');
     },
+    // eslint-disable-next-line func-names
+    'search.query': debounce(function (value) {
+      this.search.debouncedQuery = String(value).toLowerCase();
+    }, 200),
   },
-
   methods: {
     saveData() {
       this.$store.dispatch('saveData');
     },
-    checkVersion(version) {
-      return checkVersion(version, this.userVersion);
+    async toggleSearch() {
+      const { search } = this;
+      if (search.toggle === true) {
+        search.query = '';
+        search.toggle = false;
+      } else {
+        search.toggle = true;
+        await this.$nextTick();
+        this.$refs.searchInput.focus();
+      }
+    },
+    clearQuery() {
+      this.search.query = '';
+      this.search.debouncedQuery = '';
+      this.search.toggle = false;
     },
   },
 };
@@ -318,9 +337,15 @@ main.editor {
             @include breakpoint($sm) {
               margin-left: 0;
             }
+
+            h1 {
+              font-size: 1.5rem;
+            }
           }
 
           .buttons {
+            display: flex;
+
             button {
               background: $brand-color;
               color: $navy;
@@ -335,6 +360,26 @@ main.editor {
               &:hover {
                 opacity: .8;
               }
+            }
+
+            .search {
+              display: flex;
+              position: relative;
+
+              button {
+                background: white;
+                margin: 0;
+              }
+            }
+
+            input {
+              padding: .5rem;
+              width: 20rem;
+              background: white;
+              border: 0;
+              background: rgba(255,255,255,.85);
+              border-right: 1px solid rgba(0,0,0,.25);
+              font-family: "Source Code Pro", monospace;
             }
           }
         }

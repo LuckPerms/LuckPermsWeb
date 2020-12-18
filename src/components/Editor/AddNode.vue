@@ -133,7 +133,7 @@
           </div>
         </div>
         <div>
-          <code v-for="entry in flattenedContexts">
+          <code v-for="entry in flattenedContexts" v-bind:key="entry">
             <span>{{ entry.key }}:</span>
             {{ entry.value }}
           </code>
@@ -173,7 +173,7 @@
           <font-awesome icon="times" />
         </div>
         <ul>
-          <li v-for="entry in flattenedContexts">
+          <li v-for="entry in flattenedContexts" v-bind:key="entry">
             <span v-html="entry.key"></span>
             <span v-html="entry.value"></span>
             <button @click="removeContext(entry.key, entry.value)">
@@ -199,6 +199,7 @@
                 <ul class="context-list" v-if="context.keyFocus">
                   <li
                     v-for="pContext in potentialContexts"
+                    v-bind:key="pContext"
                     @click="context.key = pContext.key"
                   >{{ pContext.key }}</li>
                 </ul>
@@ -217,6 +218,7 @@
                 <ul class="context-list" v-if="context.valueFocus">
                   <li
                     v-for="value in potentialContextValues"
+                    v-bind:key="value"
                     @click="context.value = value"
                   >{{ value }}</li>
                 </ul>
@@ -265,7 +267,7 @@ export default {
       bulk: {
         value: null,
         replaceContexts: false,
-      }
+      },
     };
   },
   computed: {
@@ -277,9 +279,11 @@ export default {
     },
     flattenedContexts() {
       const entries = [];
+      // eslint-disable-next-line no-restricted-syntax
       for (const [key, values] of Object.entries(this.context.contexts)) {
+        // eslint-disable-next-line no-restricted-syntax
         for (const value of values) {
-          entries.push({key: key, value: value});
+          entries.push({ key, value });
         }
       }
       return entries;
@@ -289,9 +293,7 @@ export default {
     },
     potentialContextValues() {
       if (!this.context.key) return null;
-      const context = this.potentialContexts.find(context => {
-        return context.key === this.context.key;
-      });
+      const context = this.potentialContexts.find(c => c.key === this.context.key);
       if (!context) return null;
       return context.values;
     },
@@ -300,7 +302,7 @@ export default {
     },
     canUpdateNode() {
       return (this.expiry || this.bulk.value !== null || Object.keys(this.context.contexts).length);
-    }
+    },
   },
   methods: {
     onTag(tag) {
@@ -348,8 +350,8 @@ export default {
         value: this.bulk.value,
         replace: this.bulk.replaceContexts,
         contexts: this.context.contexts,
-        expiry: this.expiry
-      }
+        expiry: this.expiry,
+      };
 
       this.$store.dispatch('updateNodes', payload);
       this.context.contexts = {};
@@ -364,10 +366,13 @@ export default {
     addContext() {
       if (this.context.key === '' || this.context.value === '') return;
 
-      const values = this.context.contexts[this.context.key] || [];
-      if (!values.find(value => value === this.context.value)) {
-        values.push(this.context.value);
-        this.$set(this.context.contexts, this.context.key, values);
+      const key = this.context.key.trim();
+      const value = this.context.value.trim();
+
+      const values = this.context.contexts[key] || [];
+      if (!values.find(val => val === value)) {
+        values.push(value.trim());
+        this.$set(this.context.contexts, key, values);
       }
 
       this.context.key = '';
@@ -402,7 +407,7 @@ export default {
       this.$store.commit('setModal', {
         type: 'deleteNodes',
       });
-    }
+    },
   },
 };
 </script>

@@ -1,5 +1,6 @@
 The MIT License.
 
+Copyright (c) Sam Goodger (Turbotailz) <sam@goodger.nz>
 Copyright (c) lucko (Luck) <luck@lucko.me>
 Copyright (c) contributors
 

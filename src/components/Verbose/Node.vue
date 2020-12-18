@@ -26,7 +26,7 @@
             <tr v-if="source.context.length">
               <td>{{ $t('verbose.context') }}</td>
               <td>
-                <code v-for="context in source.context">
+                <code v-for="context in source.context" v-bind:key="context">
                   {{ context.key }}: {{ context.value }}
                 </code>
               </td>
@@ -60,7 +60,7 @@
         <div class="col-2">
           {{ $t('verbose.trace') }}
           <ul>
-            <li v-for="trace in source.trace">
+            <li v-for="trace in source.trace" v-bind:key="trace">
               <code>{{ trace }}</code>
             </li>
           </ul>

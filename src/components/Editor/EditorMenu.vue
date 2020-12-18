@@ -70,7 +70,10 @@
               :key="`group_${group.id}`"
               :title="$t('editor.groups.edit')"
             >
-              <EditorMenuGroup :group="group" />
+              <EditorMenuGroup
+                :group="group"
+                @clear-query="emitClearQuery"
+              />
             </li>
           </ul>
         </transition>
@@ -113,9 +116,9 @@
 </template>
 
 <script>
+import { gte } from 'semver';
 import EditorMenuTrack from './EditorMenuTrack.vue';
 import EditorMenuGroup from './EditorMenuGroup.vue';
-import { checkVersion } from '@/util/version';
 
 export default {
   name: 'editor-menu',
@@ -172,13 +175,14 @@ export default {
       const supportedVersion = '5.1.105';
       const { pluginVersion } = this.$store.getters.metaData;
 
-      return checkVersion(supportedVersion, pluginVersion);
+      return gte(pluginVersion, supportedVersion);
     },
   },
 
   methods: {
     changeCurrentSession(sessionId) {
       this.$store.commit('setCurrentSession', sessionId);
+      this.emitClearQuery();
     },
     createTrack() {
       this.$store.commit('setModal', {
@@ -195,6 +199,9 @@ export default {
           userId,
         },
       });
+    },
+    emitClearQuery() {
+      this.$emit('clear-query');
     },
   },
 

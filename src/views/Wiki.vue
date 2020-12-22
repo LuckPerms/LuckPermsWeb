@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Sidebar from '../wiki/_Sidebar.md';
+import Sidebar from '../wiki/pages/_Sidebar.md';
 
 export default {
   metaInfo: {

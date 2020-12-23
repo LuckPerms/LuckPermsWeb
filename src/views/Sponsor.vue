@@ -3,12 +3,12 @@
     <section class="hero">
       <div class="container">
         <div>
-          <img alt="LuckPerms logo" src="@/assets/logo.svg">
+          <img src="@/assets/logo.svg" alt="LuckPerms">
           <font-awesome-layers>
             <font-awesome icon="heart" />
             <font-awesome icon="heart" />
           </font-awesome-layers>
-          <img src="@/assets/bisect.svg" alt="Bisect Hosting">
+          <img src="@/assets/bisect.svg" alt="BisectHosting">
         </div>
         <h1>LuckPerms has partnered with BisectHosting!</h1>
         <p>Offering our users great deals on server hosting, and supporting the development of

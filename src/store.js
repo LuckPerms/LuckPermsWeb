@@ -20,6 +20,7 @@ export default new Vuex.Store({
       nukkit: null,
       sponge: null,
       velocity: null,
+      fabric: null,
     },
     extensions: {
       'extension-legacy-api': null,

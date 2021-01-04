@@ -23,10 +23,10 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit
             </span>
-            <small>For CraftBukkit/Spigot/Paper etc, 1.8.8 or newer</small>
+            <small>Spigot, Paper etc. (1.8.8 to 1.16.4)</small>
           </a>
           <a
             :href="downloads.bungee"
@@ -34,10 +34,10 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/bungeecord.png" alt="BungeeCord">
               BungeeCord
             </span>
-            <small>For BungeeCord/Waterfall etc, use latest</small>
+            <small>BungeeCord, Waterfall etc. (latest only)</small>
           </a>
           <a
             :href="downloads.sponge"
@@ -45,10 +45,21 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/sponge.png" alt="Sponge">
               Sponge
             </span>
-            <small>For SpongeForge/SpongeVanilla API 5-8</small>
+            <small>SpongeForge &amp; SpongeVanilla (API 5 to 7)</small>
+          </a>
+          <a
+            :href="downloads.fabric"
+            v-on:click="logDownload('fabric')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/fabric.png" alt="Fabric">
+              Fabric
+            </span>
+            <small>Fabric (1.16.4)</small>
           </a>
           <a
             :href="downloads.nukkit"
@@ -56,10 +67,10 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/nukkit.png" alt="Nukkit">
               Nukkit
             </span>
-            <small>For NukkitX, b93 or newer</small>
+            <small>NukkitX (b93 or newer)</small>
           </a>
           <a
             :href="downloads.velocity"
@@ -67,10 +78,10 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/velocity.png" alt="Velocity">
               Velocity
             </span>
-            <small>For Velocity, 1.1.0 or newer</small>
+            <small>Velocity (1.1.0 or newer)</small>
           </a>
           <a
             :href="downloads['bukkit-legacy']"
@@ -78,10 +89,10 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit Legacy
             </span>
-            <small>For CraftBukkit/Spigot/Paper etc, 1.7.10 only</small>
+            <small>Spigot, Paper etc. (1.7.10 only)</small>
           </a>
           <button class="button" @click="openQuiz">
             <font-awesome icon="question-circle" />
@@ -176,9 +187,9 @@
             <small>LuckPerms 5.0 and above</small>
           </a>
           <div>
-            <p>Allows for other ways to make
-              <router-link to="/wiki/Default-Groups">Default Groups</router-link>
-              if the workarounds are not possible.
+            <p>Provides an alternate approach for assigning
+              <router-link to="/wiki/Default-Groups">default groups</router-link>
+              if the recommended way is impractical.
             </p>
             <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
               section</router-link> for more information. See also
@@ -297,6 +308,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      padding: 1.25rem 1.5rem;
 
       @include breakpoint($md) {
         flex-direction: row;
@@ -306,6 +318,9 @@ export default {
       span {
         margin: 0 1rem 0 0;
         white-space: nowrap;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
       }
 
       small {
@@ -314,6 +329,18 @@ export default {
         @include breakpoint($md) {
           margin: 0;
         }
+      }
+
+      img {
+        margin-right: .75rem;
+        width: 1.5em;
+        image-rendering: pixelated;
+        image-rendering: -webkit-optimize-contrast;
+        filter: saturate(20%);
+      }
+
+      &:hover img {
+        filter: none;
       }
     }
 

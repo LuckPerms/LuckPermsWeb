@@ -51,6 +51,17 @@
             <small>SpongeForge &amp; SpongeVanilla (API 5 to 7)</small>
           </a>
           <a
+            :href="downloads.fabric"
+            v-on:click="logDownload('fabric')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/fabric.png" alt="Fabric">
+              Fabric
+            </span>
+            <small>Fabric (1.16.4)</small>
+          </a>
+          <a
             :href="downloads.nukkit"
             v-on:click="logDownload('nukkit')"
             class="resource"
@@ -81,7 +92,7 @@
               <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit Legacy
             </span>
-            <small>For Spigot, Paper etc. (1.7.10 only)</small>
+            <small>Spigot, Paper etc. (1.7.10 only)</small>
           </a>
           <button class="button" @click="openQuiz">
             <font-awesome icon="question-circle" />

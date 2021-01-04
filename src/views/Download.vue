@@ -308,6 +308,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      padding: 1.25rem 1.5rem;
 
       @include breakpoint($md) {
         flex-direction: row;
@@ -317,6 +318,9 @@ export default {
       span {
         margin: 0 1rem 0 0;
         white-space: nowrap;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
       }
 
       small {
@@ -325,6 +329,14 @@ export default {
         @include breakpoint($md) {
           margin: 0;
         }
+      }
+
+      img {
+        margin-right: .75rem;
+        width: 1.5em;
+        image-rendering: pixelated;
+        image-rendering: -webkit-optimize-contrast;
+        filter: grayscale(1);
       }
     }
 

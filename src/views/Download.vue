@@ -336,7 +336,11 @@ export default {
         width: 1.5em;
         image-rendering: pixelated;
         image-rendering: -webkit-optimize-contrast;
-        filter: grayscale(1);
+        filter: saturate(20%);
+      }
+
+      &:hover img {
+        filter: none;
       }
     }
 

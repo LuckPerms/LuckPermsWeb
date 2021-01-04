@@ -424,6 +424,23 @@
     },
     {
       "type": "user",
+      "id": "c05b792e-2672-4450-83f5-82900bdc0292",
+      "displayName": "Benji_0224",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.default",
+          "value": true
+        },
+        {
+          "type": "inheritance",
+          "key": "group.helper",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
       "id": "ea3ff55d-f4bc-4fab-a6ae-d809d0849f95",
       "displayName": "powercas_gamer",
       "nodes": [

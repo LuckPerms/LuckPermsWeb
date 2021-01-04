@@ -36,7 +36,7 @@
               Download
             </router-link>
           </li>
-          <li>
+          <li class="overlap">
             <router-link to="/wiki">
               <font-awesome icon="book" fixed-width />
               Wiki
@@ -70,7 +70,7 @@
           </ul>
         </li>
         <template v-if="!config.selfHosted">
-          <li class="external">
+          <li class="external overlap">
             <a href="https://github.com/lucko/LuckPerms" target="_blank" class="github">
               <font-awesome :icon="['fab', 'github']" fixed-width />
               <span>Github</span>
@@ -419,6 +419,10 @@ body {
       display: flex;
       position: relative;
       flex-direction: column;
+      
+      &.overlap {
+        z-index: 110;
+      }
 
       @include breakpoint($sm) {
         flex-direction: row;

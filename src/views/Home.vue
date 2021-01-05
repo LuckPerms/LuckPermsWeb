@@ -22,7 +22,7 @@
             </small>
           </router-link>
           <small>
-            Supports Bukkit/Spigot/Paper, BungeeCord, Sponge, Nukkit and Velocity servers
+            Supports Bukkit/Spigot/Paper, BungeeCord, Sponge, Fabric, Nukkit and Velocity servers
           </small>
         </div>
       </div>

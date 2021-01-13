@@ -419,7 +419,7 @@ body {
       display: flex;
       position: relative;
       flex-direction: column;
-      
+
       &.overlap {
         z-index: 110;
       }

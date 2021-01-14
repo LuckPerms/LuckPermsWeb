@@ -59,9 +59,7 @@
         </div>
         <div class="col-2">
           Trace
-          <td>
-            <pre class="code">{{ source.trace.join("\n") }}</pre>
-          </td>
+          <pre class="code">{{ source.trace.join("\n") }}</pre>
         </div>
       </div>
     </transition>

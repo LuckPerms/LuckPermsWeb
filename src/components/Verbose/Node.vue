@@ -59,11 +59,7 @@
         </div>
         <div class="col-2">
           Trace
-          <ul>
-            <li v-for="trace in source.trace" v-bind:key="trace">
-              <code>{{ trace }}</code>
-            </li>
-          </ul>
+          <pre class="code">{{ source.trace.join("\n") }}</pre>
         </div>
       </div>
     </transition>
@@ -171,6 +167,8 @@ export default {
         }
 
         .col-2 {
+          display: flex;
+          flex-direction: column;
           flex: 2;
         }
 

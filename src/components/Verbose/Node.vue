@@ -59,11 +59,9 @@
         </div>
         <div class="col-2">
           Trace
-          <ul>
-            <li v-for="trace in source.trace" v-bind:key="trace">
-              <code>{{ trace }}</code>
-            </li>
-          </ul>
+          <td>
+            <pre class="code">{{ source.trace.join("\n") }}</pre>
+          </td>
         </div>
       </div>
     </transition>

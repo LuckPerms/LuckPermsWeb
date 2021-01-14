@@ -167,6 +167,8 @@ export default {
         }
 
         .col-2 {
+          display: flex;
+          flex-direction: column;
           flex: 2;
         }
 

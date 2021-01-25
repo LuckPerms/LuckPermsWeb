@@ -26,7 +26,7 @@
               <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit
             </span>
-            <small>Spigot, Paper etc. (1.8.8 to 1.16.4)</small>
+            <small>Spigot, Paper etc. (1.8.8 to 1.16.5)</small>
           </a>
           <a
             :href="downloads.bungee"

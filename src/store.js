@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import axiosCompress from './util/axios_compress';
 
 const uuid = require('uuid/v4');
 const config = require('../config');
@@ -689,7 +690,7 @@ export default new Vuex.Store({
         });
       });
 
-      axios.post(`${config.bytebin_url}post`, payload)
+      axios.post(`${config.bytebin_url}post`, payload, axiosCompress)
         .then((response) => {
           commit('setBytebinKey', response.data.key);
           commit('setSaveStatus', 'saved');

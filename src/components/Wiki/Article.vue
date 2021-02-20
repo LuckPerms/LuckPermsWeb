@@ -20,7 +20,6 @@
 
 <script>
 import NotFound from '@/views/NotFound.vue';
-import 'highlight.js/styles/atom-one-dark.css';
 
 export default {
   metaInfo() {

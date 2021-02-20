@@ -3,6 +3,22 @@ const config = require('./config.json');
 const {gitDescribe, gitDescribeSync} = require('git-describe');
 process.env.VUE_APP_GIT_HASH = gitDescribeSync().hash
 
+const hljsLanguages = [
+  'java', ['yaml', 'yml'], ['ini', 'toml'],
+  'json', 'sql', 'gradle', 'bash', 'xml',
+  'nginx', ['plaintext', 'hocon', 'conf']
+];
+
+function registerHljsLanguages(hljs) {
+  for (let lang of hljsLanguages) {
+    lang = [].concat(lang);
+    const mod = require('highlight.js/lib/languages/' + lang[0]);
+    for (const alias of lang) {
+      hljs.registerLanguage(alias, mod);
+    }
+  }
+}
+
 module.exports = {
   publicPath: config.base,
   css: {
@@ -16,6 +32,9 @@ module.exports = {
     },
   },
   chainWebpack: (webpackConfig) => {
+    const hljs = require('highlight.js/lib/core');
+    registerHljsLanguages(hljs);
+
     webpackConfig.module
       .rule('md')
       .test(/\.md$/)
@@ -37,7 +56,7 @@ module.exports = {
           // eslint-disable-next-line global-require
           require('markdown-it-emoji'),
           // eslint-disable-next-line global-require
-          require('markdown-it-highlightjs')
+          [require('markdown-it-highlightjs'), { hljs }],
         ],
       });
   },

@@ -194,6 +194,10 @@ export default {
         padding: 0 4rem;
       }
 
+      li > ul, li > ol {
+        padding: 0 2rem;
+      }
+
       pre {
         padding: 0 2rem;
         white-space: pre-wrap;

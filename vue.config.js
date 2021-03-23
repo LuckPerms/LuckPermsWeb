@@ -1,15 +1,16 @@
+const { gitDescribeSync } = require('git-describe');
+const hljs = require('highlight.js/lib/core');
 const config = require('./config.json');
 
-const {gitDescribe, gitDescribeSync} = require('git-describe');
-process.env.VUE_APP_GIT_HASH = gitDescribeSync().hash
+process.env.VUE_APP_GIT_HASH = gitDescribeSync().hash;
 
 const hljsLanguages = [
   'java', ['yaml', 'yml'], ['ini', 'toml'],
   'json', 'sql', 'gradle', 'bash', 'xml',
-  'nginx', ['plaintext', 'hocon', 'conf']
+  'nginx', ['plaintext', 'hocon', 'conf'],
 ];
 
-function registerHljsLanguages(hljs) {
+function registerHljsLanguages() {
   for (let lang of hljsLanguages) {
     lang = [].concat(lang);
     const mod = require('highlight.js/lib/languages/' + lang[0]);
@@ -32,9 +33,7 @@ module.exports = {
     },
   },
   chainWebpack: (webpackConfig) => {
-    const hljs = require('highlight.js/lib/core');
-    registerHljsLanguages(hljs);
-
+    registerHljsLanguages();
     webpackConfig.module
       .rule('md')
       .test(/\.md$/)
@@ -51,7 +50,7 @@ module.exports = {
           [require('markdown-it-anchor'), {
             permalink: true,
             permalinkSymbol: '🔗',
-            slugify: (s) => String(s).trim().toLowerCase().replace(/\s+/g, '-').replace(/([^\w\-]+)/g, ''),
+            slugify: s => String(s).trim().toLowerCase().replace(/\s+/g, '-').replace(/([^\w\-]+)/g, ''),
           }],
           // eslint-disable-next-line global-require
           require('markdown-it-emoji'),

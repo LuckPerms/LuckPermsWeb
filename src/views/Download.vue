@@ -57,7 +57,7 @@
               <img src="@/assets/logos/fabric.png" alt="Fabric">
               Fabric
             </span>
-            <small>Fabric (1.16.4)</small>
+            <small>{{ $t('download.fabric') }}</small>
           </a>
           <a
             :href="downloads.nukkit"

@@ -47,4 +47,4 @@ npm run build
 ### Self hosting
 There is a convenient installation script provided for self hosting the web apps.
 
-For more details, see [here](installer/README.md).
+For more details, see [here](https://github.com/LuckPerms/web-installer).

@@ -21,7 +21,7 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit
             </span>
             <small>{{ $t('download.bukkit') }}</small>
@@ -32,7 +32,7 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/bungeecord.png" alt="BungeeCord">
               BungeeCord
             </span>
             <small>{{ $t('download.bungee') }}</small>
@@ -43,10 +43,21 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/sponge.png" alt="Sponge">
               Sponge
             </span>
             <small>{{ $t('download.sponge') }}</small>
+          </a>
+          <a
+            :href="downloads.fabric"
+            v-on:click="logDownload('fabric')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/fabric.png" alt="Fabric">
+              Fabric
+            </span>
+            <small>Fabric (1.16.4)</small>
           </a>
           <a
             :href="downloads.nukkit"
@@ -54,7 +65,7 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/nukkit.png" alt="Nukkit">
               Nukkit
             </span>
             <small>{{ $t('download.nukkit') }}</small>
@@ -65,7 +76,7 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/velocity.png" alt="Velocity">
               Velocity
             </span>
             <small>{{ $t('download.velocity') }}</small>
@@ -76,7 +87,7 @@
             class="resource"
           >
             <span>
-              <font-awesome icon="arrow-alt-circle-down" />
+              <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit Legacy
             </span>
             <small>{{ $t('download.bukkitLegacy') }}</small>
@@ -311,6 +322,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      padding: 1.25rem 1.5rem;
 
       @include breakpoint($md) {
         flex-direction: row;
@@ -320,6 +332,9 @@ export default {
       span {
         margin: 0 1rem 0 0;
         white-space: nowrap;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
       }
 
       small {
@@ -328,6 +343,18 @@ export default {
         @include breakpoint($md) {
           margin: 0;
         }
+      }
+
+      img {
+        margin-right: .75rem;
+        width: 1.5em;
+        image-rendering: pixelated;
+        image-rendering: -webkit-optimize-contrast;
+        filter: saturate(20%);
+      }
+
+      &:hover img {
+        filter: none;
       }
     }
 

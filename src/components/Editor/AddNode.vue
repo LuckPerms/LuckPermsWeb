@@ -782,7 +782,7 @@ export default {
     }
 
     .context-ui {
-      bottom: 5rem;
+      bottom: 8rem;
       top: unset;
       right: 2rem;
 
@@ -791,6 +791,10 @@ export default {
         background: rgba(0,0,0,.2);
         color: #FFF;
         font-family: "Source Code Pro", monospace;
+      }
+
+      .context-list {
+        max-height: 10rem;
       }
     }
   }

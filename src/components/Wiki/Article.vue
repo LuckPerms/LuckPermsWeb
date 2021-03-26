@@ -20,7 +20,6 @@
 
 <script>
 import NotFound from '@/views/NotFound.vue';
-import 'highlight.js/styles/atom-one-dark.css';
 
 export default {
   metaInfo() {
@@ -54,7 +53,7 @@ export default {
     async getArticle() {
       try {
         // eslint-disable-next-line global-require,import/no-dynamic-require
-        this.article = require(`@/wiki/${this.route}.md`).default;
+        this.article = require(`@/wiki/pages/${this.route}.md`).default;
       } catch (e) {
         this.article = null;
         return;

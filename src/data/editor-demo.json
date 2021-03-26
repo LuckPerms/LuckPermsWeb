@@ -2,21 +2,36 @@
   "metadata": {
     "commandAlias": "lp",
     "uploader": {
-      "name": "Turbotailz",
-      "uuid": "c6894ffd-cffa-4d02-8f23-46734fc216b3"
+      "name": "Console",
+      "uuid": "00000000-0000-0000-0000-000000000000"
     },
-    "time": 1573279370104,
-    "pluginVersion": "5.0.44"
+    "time": 1609455433252,
+    "pluginVersion": "5.2.67"
   },
   "permissionHolders": [
     {
       "type": "group",
-      "id": "owner",
-      "displayName": "owner",
+      "id": "op",
+      "displayName": "Operator",
       "nodes": [
         {
           "type": "permission",
           "key": "luckperms.*",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "*",
+          "value": true
+        },
+        {
+          "type": "display_name",
+          "key": "displayname.Operator",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.god",
           "value": true
         },
         {
@@ -25,68 +40,8 @@
           "value": true
         },
         {
-          "type": "permission",
-          "key": "nucleus.kit.command.add.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.command.remove.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.info.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.rebuildusercache.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.resetuser.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.setupperms.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.update-messages.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.plainbroadcast.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.speed.exempt.max",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.clone.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.delete.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.rename.base",
-          "value": true
-        },
-        {
           "type": "weight",
-          "key": "weight.200",
+          "key": "weight.110",
           "value": true
         }
       ]
@@ -94,3176 +49,66 @@
     {
       "type": "group",
       "id": "admin",
-      "displayName": "admin",
+      "displayName": "Admin",
       "nodes": [
+        {
+          "type": "permission",
+          "key": "essentials.gamemode.*",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "worldedit.*",
+          "value": true
+        },
+        {
+          "type": "display_name",
+          "key": "displayname.Admin",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.ban",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.ban.exempt",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.banip",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.gc",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.invsee",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.unban",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.unbanip",
+          "value": true
+        },
         {
           "type": "inheritance",
           "key": "group.mod",
           "value": true
         },
         {
-          "type": "permission",
-          "key": "nucleus.afk.exempt.kick",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.afk.notify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.afkkick.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.afkrefresh.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.afkrefresh.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.afkrefresh.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.afkrefresh.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.anvil.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.anvil.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.anvil.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.anvil.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.back.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.back.exempt.bordercheck",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.back.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.back.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.back.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.blockinfo.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.blockinfo.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.blockinfo.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.blockinfo.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.blockinfo.extended",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.blockzap.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.blockzap.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.blockzap.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.blockzap.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.broadcast.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.<color>",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.aqua",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.black",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.blue",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.dark_aqua",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.dark_blue",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.dark_gray",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.dark_green",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.dark_purple",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.dark_red",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.gold",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.gray",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.green",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.light_purple",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.red",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.white",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.color.yellow",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.aqua",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.black",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.blue",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.dark_aqua",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.dark_blue",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.dark_gray",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.dark_green",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.dark_purple",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.dark_red",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.gold",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.gray",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.green",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.light_purple",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.red",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.white",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.colour.yellow",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.magic",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.style",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.style.<style>",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.style.bold",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.style.italic",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.style.reset",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.style.strikethrough",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.style.underline",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.chat.url",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.checkjailed.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.checkmuted.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.clear.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.clear.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.clearback.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.clearback.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.clearnotes.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.clearwarnings.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.commandinfo.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.commandspy.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.commandspy.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.commandspy.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.commandspy.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.commandspy.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enchant.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enchant.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enchant.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enchant.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enchant.unsafe",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enchantingtable.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enchantingtable.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enchantingtable.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enchantingtable.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enderchest.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enderchest.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enderchest.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enderchest.exempt.interact",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enderchest.exempt.modify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enderchest.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enderchest.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enderchest.modify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enderchest.offline",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.enderchest.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.entityinfo.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.entityinfo.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.entityinfo.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.entityinfo.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.entityinfo.extended",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.exp.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.exp.give.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.exp.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.exp.take.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.extinguish.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.extinguish.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.extinguish.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.extinguish.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.feed.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.feed.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.feed.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.feed.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.feed.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.firstspawn.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.firstspawn.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.firstspawn.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.firstspawn.remove.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.firstspawn.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.fly.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.fly.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.fly.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.fly.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.fly.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.freezeplayer.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.freezeplayer.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.freezeplayer.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.freezeplayer.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.freezeplayer.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.gamemode.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.gamemode.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.gamemode.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.gamemode.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.gamemode.modes.adventure",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.gamemode.modes.creative",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.gamemode.modes.spectator",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.gamemode.modes.survival",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.gamemode.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.getfromip.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.getfromip.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.getfromip.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.getfromip.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.getpos.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.getpos.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.getpos.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.globalmute.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.globalmute.voice.auto",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.globalmute.voice.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.globalmute.voice.notify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.god.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.god.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.god.pvp.override",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.hat.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.hat.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.heal.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.heal.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.heal.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.heal.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.heal.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.helpop.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.helpop.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.helpop.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.deleteother.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.exempt.samedimension",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.limit.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.list.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.other.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.other.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.other.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.other.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.set.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.set.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.set.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.set.unlimited",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ignite.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ignite.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ignite.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ignite.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ignite.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ignorelist.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.info.list",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.inventory.keepondeath",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.invsee.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.invsee.exempt.interact",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.invsee.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.invsee.modify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.invsee.offline",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.iteminfo.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.iteminfo.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.iteminfo.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.iteminfo.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.iteminfo.extended",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.clear.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.clear.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.clear.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.clear.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.set.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.set.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemname.set.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.delete.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.teleportjailed",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.teleporttojailed",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jump.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jump.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jump.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jump.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kickall.whitelist",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kill.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kill.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kill.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kill.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.killentity.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.killentity.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.killentity.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.killentity.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.add.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.autoredeem.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.command.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.cost.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.create.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.edit.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.exempt.onetime",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.give.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.give.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.give.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.give.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.give.overridecheck",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.hidden.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.info.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.onetime.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.permissionbypass.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.remove.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.rename.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.resetusage.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.setcooldown.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.setfirstjoin.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.showhidden",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.toggleredeemmessage.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.view.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kits",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kittycannon.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kittycannon.break",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kittycannon.damage",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kittycannon.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kittycannon.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kittycannon.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kittycannon.fire",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kittycannon.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lightning.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lightning.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lightning.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lightning.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lightning.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.list.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.list.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.list.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.list.seevanished",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lockweather.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lore.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lore.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lore.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lore.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lore.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lore.set.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lore.set.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.lore.set.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mail.other.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mail.send.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mail.send.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mail.send.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.me.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.me.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.me.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.message.color",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.message.colour",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.message.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.message.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.message.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.message.magic",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.message.style",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.message.url",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.more.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.more.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.more.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.more.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.msgtoggle.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.msgtoggle.bypass",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mute.exempt.length",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mute.seemutedchat",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nameban.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nameban.unban.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.near.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.near.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.near.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.near.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.<color>",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.aqua",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.black",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.blue",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.dark_aqua",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.dark_blue",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.dark_gray",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.dark_green",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.dark_purple",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.dark_red",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.gold",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.gray",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.green",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.light_purple",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.red",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.white",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.color.yellow",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.aqua",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.black",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.blue",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.dark_aqua",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.dark_blue",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.dark_gray",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.dark_green",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.dark_purple",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.dark_red",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.gold",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.gray",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.green",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.light_purple",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.red",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.white",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.colour.yellow",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.magic",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.style",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.style.<style>",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.style.bold",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.style.italic",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.style.reset",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.style.strikethrough",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nick.style.underline",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.clearcache.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.debug.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.debug.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.debug.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.debug.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.debug.getuuids.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.debug.refreshuniquevisitors.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.debug.setsession.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.debug.setsession.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.debug.setsession.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.debug.setsession.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.itemalias.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.itemalias.clear.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.itemalias.remove.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.itemalias.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.printperms.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.reload.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.nucleus.save.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ping.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ping.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.powertool.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.realname.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.realname.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.realname.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.removenote.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.removewarning.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.repair.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.repair.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.repair.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.repair.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.repair.flag.all",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.repair.flag.equip",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.repair.flag.hotbar",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.repair.flag.offhand",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.repair.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rocket.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rocket.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rocket.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rocket.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rocket.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rtp.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rtp.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rtp.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rtp.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rtp.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rtp.worlds",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.extended.firstplayed",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.extended.flying",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.extended.gamemode",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.extended.ip",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.extended.lastplayed",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.extended.location",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.extended.speed",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.seen.extended.uuid",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.serverlist.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.serverlist.message.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.serverlist.message.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.serverlist.message.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.serverlist.message.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.serverstat.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.servertime.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.setspawn.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.setworth.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.showitemattributes.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.showitemattributes.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.showitemattributes.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.showitemattributes.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.sign.formatting",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.skull.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.skull.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.skull.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.skull.exempt.limit",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.skull.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.skull.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawn.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawn.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawn.exempt.login",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawn.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawn.force",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawn.other.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawn.other.offline",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawn.otherworlds",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawn.worlds",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawnmob.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawnmob.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawnmob.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawnmob.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawnmob.mob",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawnmob.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.speed.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.speed.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.speed.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.speed.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.speed.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.stop.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.sudo.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.sudo.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.suicide.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.suicide.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.suicide.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.teleport.exempt.bordercheck",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.teleport.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.teleport.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.teleport.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.teleport.offline",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.teleport.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.teleport.quiet",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpa.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpa.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpa.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpa.force",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpaall.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpahere.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpahere.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpahere.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpahere.force",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpall.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tphere.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tphere.offline",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tppos.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tppos.exempt.bordercheck",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tppos.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tptoggle.exempt",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.tellplain.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.thru.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.thru.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.thru.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.thru.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.add.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.add.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.add.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.add.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.remove.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.remove.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.remove.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.remove.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.set.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.set.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.set.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.top.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.top.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.top.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.top.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.top.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.trash.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.trash.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.trash.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.unsignbook.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.unsignbook.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.unsignbook.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.unsignbook.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.unsignbook.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.unstuck.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.unstuck.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.unstuck.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.unstuck.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.userprefs.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.vanish.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.vanish.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.vanish.persist",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.vanish.see",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.vanishonlogin.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.category.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.category.description.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.category.displayname.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.category.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.category.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.category.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.category.list.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.cost.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.delete.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.delete.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.delete.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.delete.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.list.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.list.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.list.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.set.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.set.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.set.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.setcategory.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.setdescription.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warps",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.weather.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.weather.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.weather.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.weather.exempt.length",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.weather.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.workbench.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.workbench.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.workbench.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.workbench.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.border.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.border.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.border.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.border.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.border.gen.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.border.gen.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.border.gen.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.border.gen.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.border.gen.notify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.border.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.create.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.create.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.create.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.create.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.disable.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.enable.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.force-gamemode.override",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.gamerule.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.gamerule.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.list.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.list.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.list.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.list.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.list.seed",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.load.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setdifficulty.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setgamemode.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.sethardcore.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.sethardcore.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.sethardcore.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.sethardcore.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setkeepspawnloaded.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setkeepspawnloaded.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setkeepspawnloaded.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setkeepspawnloaded.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setloadonstartup.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setloadonstartup.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setloadonstartup.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setloadonstartup.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setpvpenabled.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setpvpenabled.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setpvpenabled.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setpvpenabled.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setspawn.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setspawn.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setspawn.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.setspawn.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.spawn.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.spawn.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.spawn.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.spawn.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.teleport.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.teleport.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.teleport.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.teleport.exempt.warmup",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.teleport.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.world.unload.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.worth.exempt.cooldown",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.worth.exempt.cost",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.worth.exempt.warmup",
+          "type": "prefix",
+          "key": "prefix.100.&c[ADMIN] ",
           "value": true
         },
         {
@@ -3276,251 +121,160 @@
     {
       "type": "group",
       "id": "mod",
-      "displayName": "mod",
+      "displayName": "Mod",
       "nodes": [
+        {
+          "type": "display_name",
+          "key": "displayname.Mod",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.kick",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.kick.exempt",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.mute",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.mute.exempt",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.tempban",
+          "value": true
+        },
+        {
+          "type": "inheritance",
+          "key": "group.helper",
+          "value": true
+        },
+        {
+          "type": "prefix",
+          "key": "prefix.80.&d[MOD] ",
+          "value": true
+        },
+        {
+          "type": "weight",
+          "key": "weight.80",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "id": "helper",
+      "displayName": "Helper",
+      "nodes": [
+        {
+          "type": "display_name",
+          "key": "displayname.Helper",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.mute",
+          "value": true
+        },
         {
           "type": "inheritance",
           "key": "group.default",
           "value": true
         },
         {
-          "type": "permission",
-          "key": "nucleus.back.exempt.samedimension",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ban.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ban.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ban.notify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ban.offline",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.checkban.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.checkmute.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.checknotes.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.checkwarnings.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.connection.joinfullserver",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.extinguish.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.getpos.others",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.helpop.receive",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.other.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ignore.exempt.chat",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.checkjail.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.list.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.notify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.offline",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.jail.unjail",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kick.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kick.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kick.notify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kickall.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mute.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mute.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mute.notify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mute.unmute",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.near.maxexempt",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.note.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.note.notify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.note.showonlogin",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.socialspy.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.staffchat.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.teleport.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpahere.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.tempban.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.tempban.exempt.length",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.tempban.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.tempban.offline",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.unban.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warn.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warn.exempt.length",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warn.exempt.target",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warn.notify",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warn.showonlogin",
+          "type": "prefix",
+          "key": "prefix.0.&e[HELPER] ",
           "value": true
         },
         {
           "type": "weight",
-          "key": "weight.50",
+          "key": "weight.70",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "id": "vipplus",
+      "displayName": "VIP+",
+      "nodes": [
+        {
+          "type": "display_name",
+          "key": "displayname.VIP+",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.hat",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.ptime",
+          "value": true
+        },
+        {
+          "type": "inheritance",
+          "key": "group.vip",
+          "value": true
+        },
+        {
+          "type": "prefix",
+          "key": "prefix.0.&b[VIP+] ",
+          "value": true
+        },
+        {
+          "type": "weight",
+          "key": "weight.40",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "id": "vip",
+      "displayName": "VIP",
+      "nodes": [
+        {
+          "type": "permission",
+          "key": "essentials.fly",
+          "value": true,
+          "context": {
+            "server": "hub"
+          }
+        },
+        {
+          "type": "display_name",
+          "key": "displayname.VIP",
+          "value": true
+        },
+        {
+          "type": "permission",
+          "key": "essentials.back",
+          "value": true
+        },
+        {
+          "type": "inheritance",
+          "key": "group.default",
+          "value": true
+        },
+        {
+          "type": "prefix",
+          "key": "prefix.0.&3[VIP] ",
+          "value": true
+        },
+        {
+          "type": "weight",
+          "key": "weight.30",
           "value": true
         }
       ]
@@ -3532,207 +286,54 @@
       "nodes": [
         {
           "type": "permission",
-          "key": "nucleus.afk.base",
+          "key": "bukkit.command.help",
+          "value": false
+        },
+        {
+          "type": "permission",
+          "key": "bukkit.command.plugins",
+          "value": false
+        },
+        {
+          "type": "permission",
+          "key": "essentials.bal",
           "value": true
         },
         {
           "type": "permission",
-          "key": "nucleus.back.targets.death",
+          "key": "essentials.balance",
           "value": true
         },
         {
           "type": "permission",
-          "key": "nucleus.back.targets.portal",
+          "key": "essentials.helpop",
           "value": true
         },
         {
           "type": "permission",
-          "key": "nucleus.back.targets.teleport",
+          "key": "essentials.home",
           "value": true
         },
         {
           "type": "permission",
-          "key": "nucleus.firstspawn.base",
+          "key": "essentials.sethome",
           "value": true
         },
         {
-          "type": "permission",
-          "key": "nucleus.getpos.base",
+          "type": "weight",
+          "key": "weight.10",
           "value": true
-        },
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "c1d60c50-70b5-4722-8057-87767557e50d",
+      "displayName": "Luck",
+      "nodes": [
         {
-          "type": "permission",
-          "key": "nucleus.helpop.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.limit.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.list.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.home.set.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ignore.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.ignorelist.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.info.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itembuy.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemsell.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.itemsellall.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.kit.list.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.list.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mail.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.mail.send.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.me.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.message.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.motd.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.motd.login",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.near.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.realname.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.rules.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.spawn.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.suicide.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpa.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpaccept.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tpdeny.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.teleport.tptoggle.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.time.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.trash.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.userprefs.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.warp.list.base",
-          "value": true
-        },
-        {
-          "type": "permission",
-          "key": "nucleus.worth.base",
+          "type": "inheritance",
+          "key": "group.op",
           "value": true
         }
       ]
@@ -3740,7 +341,91 @@
     {
       "type": "user",
       "id": "c6894ffd-cffa-4d02-8f23-46734fc216b3",
-      "displayName": "turbotailz",
+      "displayName": "Turbotailz",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.op",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "33ae6cd1-f352-45b1-8a98-39ede5284d5e",
+      "displayName": "Fehfo",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.mod",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "151d0aa2-097e-4030-99a7-aad3625d34b1",
+      "displayName": "Larryy_",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.mod",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "b28021fd-9e1c-4a2b-af90-2df4535b702a",
+      "displayName": "Merjio",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.mod",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "ad9fa674-80b7-4448-92e0-53996ae4124c",
+      "displayName": "OmegaWeaponDev",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.mod",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "b6687eee-a9a2-4ad1-b4e3-0ddaae9131f3",
+      "displayName": "Tobi406",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.mod",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "47cfa07b-2a47-4df7-84a6-19ddf012a17e",
+      "displayName": "VoidCrafted",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.mod",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "c05b792e-2672-4450-83f5-82900bdc0292",
+      "displayName": "Benji_0224",
       "nodes": [
         {
           "type": "inheritance",
@@ -3749,7 +434,75 @@
         },
         {
           "type": "inheritance",
-          "key": "group.owner",
+          "key": "group.helper",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "ea3ff55d-f4bc-4fab-a6ae-d809d0849f95",
+      "displayName": "powercas_gamer",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.default",
+          "value": true
+        },
+        {
+          "type": "inheritance",
+          "key": "group.helper",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "6b41bcdd-f307-413f-ae67-0f0e7479e946",
+      "displayName": "Rainbow__Dash",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.default",
+          "value": true
+        },
+        {
+          "type": "inheritance",
+          "key": "group.helper",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "f8cf9cd4-0547-4c55-bc3b-7b65ee176911",
+      "displayName": "Underscore11",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.default",
+          "value": true
+        },
+        {
+          "type": "inheritance",
+          "key": "group.helper",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "9b8b0cc0-bc9b-4c36-b9b1-237edda2bd9c",
+      "displayName": "usb_hub",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.default",
+          "value": true
+        },
+        {
+          "type": "inheritance",
+          "key": "group.helper",
           "value": true
         }
       ]
@@ -3758,11 +511,19 @@
   "tracks": [
     {
       "type": "track",
+      "id": "donors",
+      "groups": [
+        "vip",
+        "vipplus"
+      ]
+    },
+    {
+      "type": "track",
       "id": "staff",
       "groups": [
+        "helper",
         "mod",
-        "admin",
-        "owner"
+        "admin"
       ]
     }
   ],
@@ -3774,21 +535,571 @@
     "bukkit.broadcast.user",
     "bukkit.command",
     "bukkit.command.help",
-    "bukkit.command.paper",
     "bukkit.command.plugins",
     "bukkit.command.reload",
-    "bukkit.command.restart",
-    "bukkit.command.spigot",
-    "bukkit.command.timings",
-    "bukkit.command.tps",
     "bukkit.command.version",
+    "essentials",
+    "essentials.*",
+    "essentials.exempt",
+    "essentials.keepinv",
+    "essentials.keepxp",
+    "essentials.silentquit",
+    "essentials.afk",
+    "essentials.afk.auto",
+    "essentials.back",
+    "essentials.back.ondeath",
+    "essentials.back.onteleport",
+    "essentials.back.into",
+    "essentials.back.into.world",
+    "essentials.back.into.world_nether",
+    "essentials.back.into.world_the_end",
+    "essentials.balancetop",
+    "essentials.balancetop.exclude",
+    "essentials.ban",
+    "essentials.ban.exempt",
+    "essentials.chat",
+    "essentials.chat.ignoreexempt",
+    "essentials.gamemode",
+    "essentials.gamemode.*",
+    "essentials.hat",
+    "essentials.hat.prevent-type",
+    "essentials.hat.prevent-type.acacia_button",
+    "essentials.hat.prevent-type.acacia_fence",
+    "essentials.hat.prevent-type.acacia_fence_gate",
+    "essentials.hat.prevent-type.acacia_leaves",
+    "essentials.hat.prevent-type.acacia_log",
+    "essentials.hat.prevent-type.acacia_planks",
+    "essentials.hat.prevent-type.acacia_pressure_plate",
+    "essentials.hat.prevent-type.acacia_sapling",
+    "essentials.hat.prevent-type.acacia_slab",
+    "essentials.hat.prevent-type.acacia_stairs",
+    "essentials.hat.prevent-type.acacia_trapdoor",
+    "essentials.hat.prevent-type.acacia_wood",
+    "essentials.hat.prevent-type.activator_rail",
+    "essentials.hat.prevent-type.air",
+    "essentials.hat.prevent-type.allium",
+    "essentials.hat.prevent-type.andesite",
+    "essentials.hat.prevent-type.andesite_wall",
+    "essentials.hat.prevent-type.anvil",
+    "essentials.hat.prevent-type.azure_bluet",
+    "essentials.hat.prevent-type.bamboo",
+    "essentials.hat.prevent-type.barrier",
+    "essentials.hat.prevent-type.basalt",
+    "essentials.hat.prevent-type.beacon",
+    "essentials.hat.prevent-type.bedrock",
+    "essentials.hat.prevent-type.birch_button",
+    "essentials.hat.prevent-type.birch_fence",
+    "essentials.hat.prevent-type.birch_fence_gate",
+    "essentials.hat.prevent-type.birch_leaves",
+    "essentials.hat.prevent-type.birch_log",
+    "essentials.hat.prevent-type.birch_planks",
+    "essentials.hat.prevent-type.birch_pressure_plate",
+    "essentials.hat.prevent-type.birch_sapling",
+    "essentials.hat.prevent-type.birch_slab",
+    "essentials.hat.prevent-type.birch_stairs",
+    "essentials.hat.prevent-type.birch_trapdoor",
+    "essentials.hat.prevent-type.birch_wood",
+    "essentials.hat.prevent-type.black_carpet",
+    "essentials.hat.prevent-type.black_concrete",
+    "essentials.hat.prevent-type.black_concrete_powder",
+    "essentials.hat.prevent-type.black_glazed_terracotta",
+    "essentials.hat.prevent-type.black_shulker_box",
+    "essentials.hat.prevent-type.black_stained_glass",
+    "essentials.hat.prevent-type.black_stained_glass_pane",
+    "essentials.hat.prevent-type.black_terracotta",
+    "essentials.hat.prevent-type.black_wool",
+    "essentials.hat.prevent-type.blackstone_wall",
+    "essentials.hat.prevent-type.blue_carpet",
+    "essentials.hat.prevent-type.blue_concrete",
+    "essentials.hat.prevent-type.blue_concrete_powder",
+    "essentials.hat.prevent-type.blue_glazed_terracotta",
+    "essentials.hat.prevent-type.blue_orchid",
+    "essentials.hat.prevent-type.blue_shulker_box",
+    "essentials.hat.prevent-type.blue_stained_glass",
+    "essentials.hat.prevent-type.blue_stained_glass_pane",
+    "essentials.hat.prevent-type.blue_terracotta",
+    "essentials.hat.prevent-type.blue_wool",
+    "essentials.hat.prevent-type.bone_block",
+    "essentials.hat.prevent-type.bookshelf",
+    "essentials.hat.prevent-type.brick_slab",
+    "essentials.hat.prevent-type.brick_stairs",
+    "essentials.hat.prevent-type.brick_wall",
+    "essentials.hat.prevent-type.bricks",
+    "essentials.hat.prevent-type.brown_carpet",
+    "essentials.hat.prevent-type.brown_concrete",
+    "essentials.hat.prevent-type.brown_concrete_powder",
+    "essentials.hat.prevent-type.brown_glazed_terracotta",
+    "essentials.hat.prevent-type.brown_mushroom",
+    "essentials.hat.prevent-type.brown_mushroom_block",
+    "essentials.hat.prevent-type.brown_shulker_box",
+    "essentials.hat.prevent-type.brown_stained_glass",
+    "essentials.hat.prevent-type.brown_stained_glass_pane",
+    "essentials.hat.prevent-type.brown_terracotta",
+    "essentials.hat.prevent-type.brown_wool",
+    "essentials.hat.prevent-type.cactus",
+    "essentials.hat.prevent-type.carved_pumpkin",
+    "essentials.hat.prevent-type.chain",
+    "essentials.hat.prevent-type.chain_command_block",
+    "essentials.hat.prevent-type.chest",
+    "essentials.hat.prevent-type.chipped_anvil",
+    "essentials.hat.prevent-type.chiseled_nether_bricks",
+    "essentials.hat.prevent-type.chiseled_quartz_block",
+    "essentials.hat.prevent-type.chiseled_red_sandstone",
+    "essentials.hat.prevent-type.chiseled_sandstone",
+    "essentials.hat.prevent-type.chiseled_stone_bricks",
+    "essentials.hat.prevent-type.chorus_flower",
+    "essentials.hat.prevent-type.chorus_plant",
+    "essentials.hat.prevent-type.clay",
+    "essentials.hat.prevent-type.coal_block",
+    "essentials.hat.prevent-type.coal_ore",
+    "essentials.hat.prevent-type.coarse_dirt",
+    "essentials.hat.prevent-type.cobblestone",
+    "essentials.hat.prevent-type.cobblestone_slab",
+    "essentials.hat.prevent-type.cobblestone_stairs",
+    "essentials.hat.prevent-type.cobblestone_wall",
+    "essentials.hat.prevent-type.cobweb",
+    "essentials.hat.prevent-type.command_block",
+    "essentials.hat.prevent-type.cornflower",
+    "essentials.hat.prevent-type.cracked_nether_bricks",
+    "essentials.hat.prevent-type.cracked_stone_bricks",
+    "essentials.hat.prevent-type.crafting_table",
+    "essentials.hat.prevent-type.crimson_button",
+    "essentials.hat.prevent-type.crimson_fence",
+    "essentials.hat.prevent-type.crimson_fence_gate",
+    "essentials.hat.prevent-type.crimson_fungus",
+    "essentials.hat.prevent-type.crimson_hyphae",
+    "essentials.hat.prevent-type.crimson_nylium",
+    "essentials.hat.prevent-type.crimson_planks",
+    "essentials.hat.prevent-type.crimson_pressure_plate",
+    "essentials.hat.prevent-type.crimson_roots",
+    "essentials.hat.prevent-type.crimson_slab",
+    "essentials.hat.prevent-type.crimson_stairs",
+    "essentials.hat.prevent-type.crimson_stem",
+    "essentials.hat.prevent-type.crimson_trapdoor",
+    "essentials.hat.prevent-type.cut_red_sandstone",
+    "essentials.hat.prevent-type.cut_red_sandstone_slab",
+    "essentials.hat.prevent-type.cut_sandstone",
+    "essentials.hat.prevent-type.cut_sandstone_slab",
+    "essentials.hat.prevent-type.cyan_carpet",
+    "essentials.hat.prevent-type.cyan_concrete",
+    "essentials.hat.prevent-type.cyan_concrete_powder",
+    "essentials.hat.prevent-type.cyan_glazed_terracotta",
+    "essentials.hat.prevent-type.cyan_shulker_box",
+    "essentials.hat.prevent-type.cyan_stained_glass",
+    "essentials.hat.prevent-type.cyan_stained_glass_pane",
+    "essentials.hat.prevent-type.cyan_terracotta",
+    "essentials.hat.prevent-type.cyan_wool",
+    "essentials.hat.prevent-type.damaged_anvil",
+    "essentials.hat.prevent-type.dandelion",
+    "essentials.hat.prevent-type.dark_oak_button",
+    "essentials.hat.prevent-type.dark_oak_fence",
+    "essentials.hat.prevent-type.dark_oak_fence_gate",
+    "essentials.hat.prevent-type.dark_oak_leaves",
+    "essentials.hat.prevent-type.dark_oak_log",
+    "essentials.hat.prevent-type.dark_oak_planks",
+    "essentials.hat.prevent-type.dark_oak_pressure_plate",
+    "essentials.hat.prevent-type.dark_oak_sapling",
+    "essentials.hat.prevent-type.dark_oak_slab",
+    "essentials.hat.prevent-type.dark_oak_stairs",
+    "essentials.hat.prevent-type.dark_oak_trapdoor",
+    "essentials.hat.prevent-type.dark_oak_wood",
+    "essentials.hat.prevent-type.dark_prismarine",
+    "essentials.hat.prevent-type.dark_prismarine_slab",
+    "essentials.hat.prevent-type.dark_prismarine_stairs",
+    "essentials.hat.prevent-type.daylight_detector",
+    "essentials.hat.prevent-type.dead_brain_coral_block",
+    "essentials.hat.prevent-type.dead_bubble_coral_block",
+    "essentials.hat.prevent-type.dead_bush",
+    "essentials.hat.prevent-type.dead_tube_coral_block",
+    "essentials.hat.prevent-type.detector_rail",
+    "essentials.hat.prevent-type.diamond_block",
+    "essentials.hat.prevent-type.diamond_ore",
+    "essentials.hat.prevent-type.diorite",
+    "essentials.hat.prevent-type.diorite_wall",
+    "essentials.hat.prevent-type.dirt",
+    "essentials.hat.prevent-type.dispenser",
+    "essentials.hat.prevent-type.dragon_egg",
+    "essentials.hat.prevent-type.dropper",
+    "essentials.hat.prevent-type.emerald_block",
+    "essentials.hat.prevent-type.emerald_ore",
+    "essentials.hat.prevent-type.enchanting_table",
+    "essentials.hat.prevent-type.end_portal_frame",
+    "essentials.hat.prevent-type.end_rod",
+    "essentials.hat.prevent-type.end_stone",
+    "essentials.hat.prevent-type.end_stone_brick_wall",
+    "essentials.hat.prevent-type.end_stone_bricks",
+    "essentials.hat.prevent-type.ender_chest",
+    "essentials.hat.prevent-type.farmland",
+    "essentials.hat.prevent-type.fern",
+    "essentials.hat.prevent-type.furnace",
+    "essentials.hat.prevent-type.glass",
+    "essentials.hat.prevent-type.glass_pane",
+    "essentials.hat.prevent-type.glowstone",
+    "essentials.hat.prevent-type.gold_block",
+    "essentials.hat.prevent-type.gold_ore",
+    "essentials.hat.prevent-type.granite",
+    "essentials.hat.prevent-type.granite_wall",
+    "essentials.hat.prevent-type.grass",
+    "essentials.hat.prevent-type.grass_block",
+    "essentials.hat.prevent-type.grass_path",
+    "essentials.hat.prevent-type.gravel",
+    "essentials.hat.prevent-type.gray_carpet",
+    "essentials.hat.prevent-type.gray_concrete",
+    "essentials.hat.prevent-type.gray_concrete_powder",
+    "essentials.hat.prevent-type.gray_glazed_terracotta",
+    "essentials.hat.prevent-type.gray_shulker_box",
+    "essentials.hat.prevent-type.gray_stained_glass",
+    "essentials.hat.prevent-type.gray_stained_glass_pane",
+    "essentials.hat.prevent-type.gray_terracotta",
+    "essentials.hat.prevent-type.gray_wool",
+    "essentials.hat.prevent-type.green_carpet",
+    "essentials.hat.prevent-type.green_concrete",
+    "essentials.hat.prevent-type.green_concrete_powder",
+    "essentials.hat.prevent-type.green_glazed_terracotta",
+    "essentials.hat.prevent-type.green_shulker_box",
+    "essentials.hat.prevent-type.green_stained_glass",
+    "essentials.hat.prevent-type.green_stained_glass_pane",
+    "essentials.hat.prevent-type.green_terracotta",
+    "essentials.hat.prevent-type.green_wool",
+    "essentials.hat.prevent-type.hay_block",
+    "essentials.hat.prevent-type.heavy_weighted_pressure_plate",
+    "essentials.hat.prevent-type.hopper",
+    "essentials.hat.prevent-type.ice",
+    "essentials.hat.prevent-type.infested_chiseled_stone_bricks",
+    "essentials.hat.prevent-type.infested_cobblestone",
+    "essentials.hat.prevent-type.infested_cracked_stone_bricks",
+    "essentials.hat.prevent-type.infested_mossy_stone_bricks",
+    "essentials.hat.prevent-type.infested_stone",
+    "essentials.hat.prevent-type.infested_stone_bricks",
+    "essentials.hat.prevent-type.iron_bars",
+    "essentials.hat.prevent-type.iron_block",
+    "essentials.hat.prevent-type.iron_ore",
+    "essentials.hat.prevent-type.iron_trapdoor",
+    "essentials.hat.prevent-type.jack_o_lantern",
+    "essentials.hat.prevent-type.jukebox",
+    "essentials.hat.prevent-type.jungle_button",
+    "essentials.hat.prevent-type.jungle_fence",
+    "essentials.hat.prevent-type.jungle_fence_gate",
+    "essentials.hat.prevent-type.jungle_leaves",
+    "essentials.hat.prevent-type.jungle_log",
+    "essentials.hat.prevent-type.jungle_planks",
+    "essentials.hat.prevent-type.jungle_pressure_plate",
+    "essentials.hat.prevent-type.jungle_sapling",
+    "essentials.hat.prevent-type.jungle_slab",
+    "essentials.hat.prevent-type.jungle_stairs",
+    "essentials.hat.prevent-type.jungle_trapdoor",
+    "essentials.hat.prevent-type.jungle_wood",
+    "essentials.hat.prevent-type.kelp",
+    "essentials.hat.prevent-type.ladder",
+    "essentials.hat.prevent-type.lapis_block",
+    "essentials.hat.prevent-type.lapis_ore",
+    "essentials.hat.prevent-type.large_fern",
+    "essentials.hat.prevent-type.lever",
+    "essentials.hat.prevent-type.light_blue_carpet",
+    "essentials.hat.prevent-type.light_blue_concrete",
+    "essentials.hat.prevent-type.light_blue_concrete_powder",
+    "essentials.hat.prevent-type.light_blue_glazed_terracotta",
+    "essentials.hat.prevent-type.light_blue_shulker_box",
+    "essentials.hat.prevent-type.light_blue_stained_glass",
+    "essentials.hat.prevent-type.light_blue_stained_glass_pane",
+    "essentials.hat.prevent-type.light_blue_terracotta",
+    "essentials.hat.prevent-type.light_blue_wool",
+    "essentials.hat.prevent-type.light_gray_carpet",
+    "essentials.hat.prevent-type.light_gray_concrete",
+    "essentials.hat.prevent-type.light_gray_concrete_powder",
+    "essentials.hat.prevent-type.light_gray_glazed_terracotta",
+    "essentials.hat.prevent-type.light_gray_shulker_box",
+    "essentials.hat.prevent-type.light_gray_stained_glass",
+    "essentials.hat.prevent-type.light_gray_stained_glass_pane",
+    "essentials.hat.prevent-type.light_gray_terracotta",
+    "essentials.hat.prevent-type.light_gray_wool",
+    "essentials.hat.prevent-type.light_weighted_pressure_plate",
+    "essentials.hat.prevent-type.lilac",
+    "essentials.hat.prevent-type.lily_of_the_valley",
+    "essentials.hat.prevent-type.lily_pad",
+    "essentials.hat.prevent-type.lime_carpet",
+    "essentials.hat.prevent-type.lime_concrete",
+    "essentials.hat.prevent-type.lime_concrete_powder",
+    "essentials.hat.prevent-type.lime_glazed_terracotta",
+    "essentials.hat.prevent-type.lime_shulker_box",
+    "essentials.hat.prevent-type.lime_stained_glass",
+    "essentials.hat.prevent-type.lime_stained_glass_pane",
+    "essentials.hat.prevent-type.lime_terracotta",
+    "essentials.hat.prevent-type.lime_wool",
+    "essentials.hat.prevent-type.magenta_carpet",
+    "essentials.hat.prevent-type.magenta_concrete",
+    "essentials.hat.prevent-type.magenta_concrete_powder",
+    "essentials.hat.prevent-type.magenta_glazed_terracotta",
+    "essentials.hat.prevent-type.magenta_shulker_box",
+    "essentials.hat.prevent-type.magenta_stained_glass",
+    "essentials.hat.prevent-type.magenta_stained_glass_pane",
+    "essentials.hat.prevent-type.magenta_terracotta",
+    "essentials.hat.prevent-type.magenta_wool",
+    "essentials.hat.prevent-type.magma_block",
+    "essentials.hat.prevent-type.melon",
+    "essentials.hat.prevent-type.mossy_cobblestone",
+    "essentials.hat.prevent-type.mossy_cobblestone_wall",
+    "essentials.hat.prevent-type.mossy_stone_brick_wall",
+    "essentials.hat.prevent-type.mossy_stone_bricks",
+    "essentials.hat.prevent-type.mushroom_stem",
+    "essentials.hat.prevent-type.mycelium",
+    "essentials.hat.prevent-type.nether_brick_fence",
+    "essentials.hat.prevent-type.nether_brick_slab",
+    "essentials.hat.prevent-type.nether_brick_stairs",
+    "essentials.hat.prevent-type.nether_brick_wall",
+    "essentials.hat.prevent-type.nether_bricks",
+    "essentials.hat.prevent-type.nether_gold_ore",
+    "essentials.hat.prevent-type.nether_quartz_ore",
+    "essentials.hat.prevent-type.nether_sprouts",
+    "essentials.hat.prevent-type.nether_wart_block",
+    "essentials.hat.prevent-type.netherrack",
+    "essentials.hat.prevent-type.note_block",
+    "essentials.hat.prevent-type.oak_button",
+    "essentials.hat.prevent-type.oak_fence",
+    "essentials.hat.prevent-type.oak_fence_gate",
+    "essentials.hat.prevent-type.oak_leaves",
+    "essentials.hat.prevent-type.oak_log",
+    "essentials.hat.prevent-type.oak_planks",
+    "essentials.hat.prevent-type.oak_pressure_plate",
+    "essentials.hat.prevent-type.oak_sapling",
+    "essentials.hat.prevent-type.oak_slab",
+    "essentials.hat.prevent-type.oak_stairs",
+    "essentials.hat.prevent-type.oak_trapdoor",
+    "essentials.hat.prevent-type.oak_wood",
+    "essentials.hat.prevent-type.observer",
+    "essentials.hat.prevent-type.obsidian",
+    "essentials.hat.prevent-type.orange_carpet",
+    "essentials.hat.prevent-type.orange_concrete",
+    "essentials.hat.prevent-type.orange_concrete_powder",
+    "essentials.hat.prevent-type.orange_glazed_terracotta",
+    "essentials.hat.prevent-type.orange_shulker_box",
+    "essentials.hat.prevent-type.orange_stained_glass",
+    "essentials.hat.prevent-type.orange_stained_glass_pane",
+    "essentials.hat.prevent-type.orange_terracotta",
+    "essentials.hat.prevent-type.orange_tulip",
+    "essentials.hat.prevent-type.orange_wool",
+    "essentials.hat.prevent-type.oxeye_daisy",
+    "essentials.hat.prevent-type.packed_ice",
+    "essentials.hat.prevent-type.peony",
+    "essentials.hat.prevent-type.petrified_oak_slab",
+    "essentials.hat.prevent-type.pink_carpet",
+    "essentials.hat.prevent-type.pink_concrete",
+    "essentials.hat.prevent-type.pink_concrete_powder",
+    "essentials.hat.prevent-type.pink_glazed_terracotta",
+    "essentials.hat.prevent-type.pink_shulker_box",
+    "essentials.hat.prevent-type.pink_stained_glass",
+    "essentials.hat.prevent-type.pink_stained_glass_pane",
+    "essentials.hat.prevent-type.pink_terracotta",
+    "essentials.hat.prevent-type.pink_tulip",
+    "essentials.hat.prevent-type.pink_wool",
+    "essentials.hat.prevent-type.piston",
+    "essentials.hat.prevent-type.podzol",
+    "essentials.hat.prevent-type.polished_andesite",
+    "essentials.hat.prevent-type.polished_basalt",
+    "essentials.hat.prevent-type.polished_blackstone_brick_wall",
+    "essentials.hat.prevent-type.polished_blackstone_button",
+    "essentials.hat.prevent-type.polished_blackstone_pressure_plate",
+    "essentials.hat.prevent-type.polished_blackstone_wall",
+    "essentials.hat.prevent-type.polished_diorite",
+    "essentials.hat.prevent-type.polished_granite",
+    "essentials.hat.prevent-type.poppy",
+    "essentials.hat.prevent-type.powered_rail",
+    "essentials.hat.prevent-type.prismarine",
+    "essentials.hat.prevent-type.prismarine_brick_slab",
+    "essentials.hat.prevent-type.prismarine_brick_stairs",
+    "essentials.hat.prevent-type.prismarine_bricks",
+    "essentials.hat.prevent-type.prismarine_slab",
+    "essentials.hat.prevent-type.prismarine_stairs",
+    "essentials.hat.prevent-type.prismarine_wall",
+    "essentials.hat.prevent-type.pumpkin",
+    "essentials.hat.prevent-type.purple_carpet",
+    "essentials.hat.prevent-type.purple_concrete",
+    "essentials.hat.prevent-type.purple_concrete_powder",
+    "essentials.hat.prevent-type.purple_glazed_terracotta",
+    "essentials.hat.prevent-type.purple_shulker_box",
+    "essentials.hat.prevent-type.purple_stained_glass",
+    "essentials.hat.prevent-type.purple_stained_glass_pane",
+    "essentials.hat.prevent-type.purple_terracotta",
+    "essentials.hat.prevent-type.purple_wool",
+    "essentials.hat.prevent-type.purpur_block",
+    "essentials.hat.prevent-type.purpur_pillar",
+    "essentials.hat.prevent-type.purpur_slab",
+    "essentials.hat.prevent-type.purpur_stairs",
+    "essentials.hat.prevent-type.quartz_block",
+    "essentials.hat.prevent-type.quartz_bricks",
+    "essentials.hat.prevent-type.quartz_pillar",
+    "essentials.hat.prevent-type.quartz_slab",
+    "essentials.hat.prevent-type.quartz_stairs",
+    "essentials.hat.prevent-type.rail",
+    "essentials.hat.prevent-type.red_carpet",
+    "essentials.hat.prevent-type.red_concrete",
+    "essentials.hat.prevent-type.red_concrete_powder",
+    "essentials.hat.prevent-type.red_glazed_terracotta",
+    "essentials.hat.prevent-type.red_mushroom",
+    "essentials.hat.prevent-type.red_mushroom_block",
+    "essentials.hat.prevent-type.red_nether_brick_wall",
+    "essentials.hat.prevent-type.red_nether_bricks",
+    "essentials.hat.prevent-type.red_sand",
+    "essentials.hat.prevent-type.red_sandstone",
+    "essentials.hat.prevent-type.red_sandstone_slab",
+    "essentials.hat.prevent-type.red_sandstone_stairs",
+    "essentials.hat.prevent-type.red_sandstone_wall",
+    "essentials.hat.prevent-type.red_shulker_box",
+    "essentials.hat.prevent-type.red_stained_glass",
+    "essentials.hat.prevent-type.red_stained_glass_pane",
+    "essentials.hat.prevent-type.red_terracotta",
+    "essentials.hat.prevent-type.red_tulip",
+    "essentials.hat.prevent-type.red_wool",
+    "essentials.hat.prevent-type.redstone_block",
+    "essentials.hat.prevent-type.redstone_lamp",
+    "essentials.hat.prevent-type.redstone_ore",
+    "essentials.hat.prevent-type.redstone_torch",
+    "essentials.hat.prevent-type.repeating_command_block",
+    "essentials.hat.prevent-type.rose_bush",
+    "essentials.hat.prevent-type.sand",
+    "essentials.hat.prevent-type.sandstone",
+    "essentials.hat.prevent-type.sandstone_slab",
+    "essentials.hat.prevent-type.sandstone_stairs",
+    "essentials.hat.prevent-type.sandstone_wall",
+    "essentials.hat.prevent-type.sea_lantern",
+    "essentials.hat.prevent-type.sea_pickle",
+    "essentials.hat.prevent-type.seagrass",
+    "essentials.hat.prevent-type.shulker_box",
+    "essentials.hat.prevent-type.slime_block",
+    "essentials.hat.prevent-type.smooth_quartz",
+    "essentials.hat.prevent-type.smooth_red_sandstone",
+    "essentials.hat.prevent-type.smooth_sandstone",
+    "essentials.hat.prevent-type.smooth_stone",
+    "essentials.hat.prevent-type.smooth_stone_slab",
+    "essentials.hat.prevent-type.snow",
+    "essentials.hat.prevent-type.snow_block",
+    "essentials.hat.prevent-type.soul_sand",
+    "essentials.hat.prevent-type.soul_soil",
+    "essentials.hat.prevent-type.soul_torch",
+    "essentials.hat.prevent-type.spawner",
+    "essentials.hat.prevent-type.sponge",
+    "essentials.hat.prevent-type.spruce_button",
+    "essentials.hat.prevent-type.spruce_fence",
+    "essentials.hat.prevent-type.spruce_fence_gate",
+    "essentials.hat.prevent-type.spruce_leaves",
+    "essentials.hat.prevent-type.spruce_log",
+    "essentials.hat.prevent-type.spruce_planks",
+    "essentials.hat.prevent-type.spruce_pressure_plate",
+    "essentials.hat.prevent-type.spruce_sapling",
+    "essentials.hat.prevent-type.spruce_slab",
+    "essentials.hat.prevent-type.spruce_stairs",
+    "essentials.hat.prevent-type.spruce_trapdoor",
+    "essentials.hat.prevent-type.spruce_wood",
+    "essentials.hat.prevent-type.sticky_piston",
+    "essentials.hat.prevent-type.stone",
+    "essentials.hat.prevent-type.stone_brick_slab",
+    "essentials.hat.prevent-type.stone_brick_stairs",
+    "essentials.hat.prevent-type.stone_brick_wall",
+    "essentials.hat.prevent-type.stone_bricks",
+    "essentials.hat.prevent-type.stone_button",
+    "essentials.hat.prevent-type.stone_pressure_plate",
+    "essentials.hat.prevent-type.stone_slab",
+    "essentials.hat.prevent-type.stripped_acacia_log",
+    "essentials.hat.prevent-type.stripped_acacia_wood",
+    "essentials.hat.prevent-type.stripped_birch_log",
+    "essentials.hat.prevent-type.stripped_birch_wood",
+    "essentials.hat.prevent-type.stripped_crimson_hyphae",
+    "essentials.hat.prevent-type.stripped_crimson_stem",
+    "essentials.hat.prevent-type.stripped_dark_oak_log",
+    "essentials.hat.prevent-type.stripped_dark_oak_wood",
+    "essentials.hat.prevent-type.stripped_jungle_log",
+    "essentials.hat.prevent-type.stripped_jungle_wood",
+    "essentials.hat.prevent-type.stripped_oak_log",
+    "essentials.hat.prevent-type.stripped_oak_wood",
+    "essentials.hat.prevent-type.stripped_spruce_log",
+    "essentials.hat.prevent-type.stripped_spruce_wood",
+    "essentials.hat.prevent-type.stripped_warped_hyphae",
+    "essentials.hat.prevent-type.stripped_warped_stem",
+    "essentials.hat.prevent-type.structure_void",
+    "essentials.hat.prevent-type.sugar_cane",
+    "essentials.hat.prevent-type.sunflower",
+    "essentials.hat.prevent-type.tall_grass",
+    "essentials.hat.prevent-type.terracotta",
+    "essentials.hat.prevent-type.tnt",
+    "essentials.hat.prevent-type.torch",
+    "essentials.hat.prevent-type.trapped_chest",
+    "essentials.hat.prevent-type.tripwire_hook",
+    "essentials.hat.prevent-type.turtle_egg",
+    "essentials.hat.prevent-type.twisting_vines",
+    "essentials.hat.prevent-type.vine",
+    "essentials.hat.prevent-type.warped_button",
+    "essentials.hat.prevent-type.warped_fence",
+    "essentials.hat.prevent-type.warped_fence_gate",
+    "essentials.hat.prevent-type.warped_fungus",
+    "essentials.hat.prevent-type.warped_hyphae",
+    "essentials.hat.prevent-type.warped_nylium",
+    "essentials.hat.prevent-type.warped_planks",
+    "essentials.hat.prevent-type.warped_pressure_plate",
+    "essentials.hat.prevent-type.warped_roots",
+    "essentials.hat.prevent-type.warped_slab",
+    "essentials.hat.prevent-type.warped_stairs",
+    "essentials.hat.prevent-type.warped_stem",
+    "essentials.hat.prevent-type.warped_trapdoor",
+    "essentials.hat.prevent-type.warped_wart_block",
+    "essentials.hat.prevent-type.weeping_vines",
+    "essentials.hat.prevent-type.wet_sponge",
+    "essentials.hat.prevent-type.white_carpet",
+    "essentials.hat.prevent-type.white_concrete",
+    "essentials.hat.prevent-type.white_concrete_powder",
+    "essentials.hat.prevent-type.white_glazed_terracotta",
+    "essentials.hat.prevent-type.white_shulker_box",
+    "essentials.hat.prevent-type.white_stained_glass",
+    "essentials.hat.prevent-type.white_stained_glass_pane",
+    "essentials.hat.prevent-type.white_terracotta",
+    "essentials.hat.prevent-type.white_tulip",
+    "essentials.hat.prevent-type.white_wool",
+    "essentials.hat.prevent-type.wither_rose",
+    "essentials.hat.prevent-type.yellow_carpet",
+    "essentials.hat.prevent-type.yellow_concrete",
+    "essentials.hat.prevent-type.yellow_concrete_powder",
+    "essentials.hat.prevent-type.yellow_glazed_terracotta",
+    "essentials.hat.prevent-type.yellow_shulker_box",
+    "essentials.hat.prevent-type.yellow_stained_glass",
+    "essentials.hat.prevent-type.yellow_stained_glass_pane",
+    "essentials.hat.prevent-type.yellow_terracotta",
+    "essentials.hat.prevent-type.yellow_wool",
+    "essentials.home",
+    "essentials.home.compass",
+    "essentials.invsee",
+    "essentials.invsee.preventmodify",
+    "essentials.kick",
+    "essentials.kick.exempt",
+    "essentials.kit",
+    "essentials.kit.exemptdelay",
+    "essentials.mute",
+    "essentials.mute.exempt",
+    "essentials.near",
+    "essentials.near.exclude",
+    "essentials.nick",
+    "essentials.nick.allowunsafe",
+    "essentials.seen",
+    "essentials.seen.extra",
+    "essentials.sethome",
+    "essentials.sethome.bed",
+    "essentials.silentjoin",
+    "essentials.silentjoin.vanish",
+    "essentials.spawn-on-join",
+    "essentials.spawn-on-join.exempt",
+    "essentials.sudo",
+    "essentials.sudo.exempt",
+    "essentials.teleport",
+    "essentials.teleport.cooldown",
+    "essentials.teleport.cooldown.bypass",
+    "essentials.teleport.cooldown.bypass.back",
+    "essentials.teleport.cooldown.bypass.tpa",
+    "essentials.tempban",
+    "essentials.tempban.exempt",
     "luckperms",
     "luckperms.applyedits",
     "luckperms.bulkupdate",
     "luckperms.check",
     "luckperms.creategroup",
     "luckperms.createtrack",
-    "luckperms.debug",
     "luckperms.deletegroup",
     "luckperms.deletetrack",
     "luckperms.editor",
@@ -3797,12 +1108,11 @@
     "luckperms.info",
     "luckperms.listgroups",
     "luckperms.listtracks",
-    "luckperms.migration",
     "luckperms.reloadconfig",
     "luckperms.search",
     "luckperms.sync",
+    "luckperms.translations",
     "luckperms.tree",
-    "luckperms.verbose",
     "luckperms.group",
     "luckperms.group.clear",
     "luckperms.group.clone",
@@ -3928,12 +1238,16 @@
     "luckperms.user.permission.settemp",
     "luckperms.user.permission.unset",
     "luckperms.user.permission.unsettemp",
+    "luckperms.verbose",
+    "luckperms.verbose.command",
+    "luckperms.verbose.command.others",
     "minecraft",
-    "minecraft.debugstick",
+    "minecraft.commandblock",
     "minecraft.admin",
     "minecraft.admin.command_feedback",
     "minecraft.command",
     "minecraft.command.advancement",
+    "minecraft.command.attribute",
     "minecraft.command.ban",
     "minecraft.command.ban-ip",
     "minecraft.command.banlist",
@@ -3949,7 +1263,6 @@
     "minecraft.command.effect",
     "minecraft.command.enchant",
     "minecraft.command.execute",
-    "minecraft.command.experience",
     "minecraft.command.fill",
     "minecraft.command.forceload",
     "minecraft.command.function",
@@ -3961,71 +1274,12 @@
     "minecraft.command.kill",
     "minecraft.command.list",
     "minecraft.command.locate",
+    "minecraft.command.locatebiome",
     "minecraft.command.loot",
     "minecraft.command.me",
-    "minecraft.command.minecraft:advancement",
-    "minecraft.command.minecraft:ban",
-    "minecraft.command.minecraft:ban-ip",
-    "minecraft.command.minecraft:banlist",
-    "minecraft.command.minecraft:bossbar",
-    "minecraft.command.minecraft:clear",
-    "minecraft.command.minecraft:clone",
-    "minecraft.command.minecraft:data",
-    "minecraft.command.minecraft:datapack",
-    "minecraft.command.minecraft:debug",
-    "minecraft.command.minecraft:defaultgamemode",
-    "minecraft.command.minecraft:deop",
-    "minecraft.command.minecraft:difficulty",
-    "minecraft.command.minecraft:effect",
-    "minecraft.command.minecraft:enchant",
-    "minecraft.command.minecraft:execute",
-    "minecraft.command.minecraft:experience",
-    "minecraft.command.minecraft:fill",
-    "minecraft.command.minecraft:forceload",
-    "minecraft.command.minecraft:function",
-    "minecraft.command.minecraft:gamemode",
-    "minecraft.command.minecraft:gamerule",
-    "minecraft.command.minecraft:give",
-    "minecraft.command.minecraft:kick",
-    "minecraft.command.minecraft:kill",
-    "minecraft.command.minecraft:locate",
-    "minecraft.command.minecraft:loot",
-    "minecraft.command.minecraft:op",
-    "minecraft.command.minecraft:pardon",
-    "minecraft.command.minecraft:pardon-ip",
-    "minecraft.command.minecraft:particle",
-    "minecraft.command.minecraft:playsound",
-    "minecraft.command.minecraft:recipe",
-    "minecraft.command.minecraft:reload",
-    "minecraft.command.minecraft:replaceitem",
-    "minecraft.command.minecraft:save-all",
-    "minecraft.command.minecraft:save-off",
-    "minecraft.command.minecraft:save-on",
-    "minecraft.command.minecraft:say",
-    "minecraft.command.minecraft:schedule",
-    "minecraft.command.minecraft:scoreboard",
-    "minecraft.command.minecraft:seed",
-    "minecraft.command.minecraft:setblock",
-    "minecraft.command.minecraft:setidletimeout",
-    "minecraft.command.minecraft:setworldspawn",
-    "minecraft.command.minecraft:spawnpoint",
-    "minecraft.command.minecraft:spreadplayers",
-    "minecraft.command.minecraft:stop",
-    "minecraft.command.minecraft:stopsound",
-    "minecraft.command.minecraft:summon",
-    "minecraft.command.minecraft:tag",
-    "minecraft.command.minecraft:team",
-    "minecraft.command.minecraft:teleport",
-    "minecraft.command.minecraft:tellraw",
-    "minecraft.command.minecraft:time",
-    "minecraft.command.minecraft:title",
-    "minecraft.command.minecraft:weather",
-    "minecraft.command.minecraft:whitelist",
-    "minecraft.command.minecraft:worldborder",
     "minecraft.command.msg",
     "minecraft.command.op",
     "minecraft.command.pardon",
-    "minecraft.command.pardon-ip",
     "minecraft.command.particle",
     "minecraft.command.playsound",
     "minecraft.command.recipe",
@@ -4043,12 +1297,14 @@
     "minecraft.command.setidletimeout",
     "minecraft.command.setworldspawn",
     "minecraft.command.spawnpoint",
+    "minecraft.command.spectate",
     "minecraft.command.spreadplayers",
     "minecraft.command.stop",
     "minecraft.command.stopsound",
     "minecraft.command.summon",
     "minecraft.command.tag",
     "minecraft.command.team",
+    "minecraft.command.teammsg",
     "minecraft.command.teleport",
     "minecraft.command.tellraw",
     "minecraft.command.time",
@@ -4059,11 +1315,43 @@
     "minecraft.command.whitelist",
     "minecraft.command.worldborder",
     "minecraft.command.xp",
+    "minecraft.debugstick",
+    "minecraft.debugstick.always",
     "minecraft.nbt",
     "minecraft.nbt.copy",
-    "minecraft.nbt.place"
+    "minecraft.nbt.place",
+    "vault",
+    "vault.admin"
   ],
   "potentialContexts": {
+    "dimension-type": [
+      "overworld",
+      "the_end",
+      "the_nether"
+    ],
+    "essentials:afk": [
+      "false",
+      "true"
+    ],
+    "essentials:jailed": [
+      "false",
+      "true"
+    ],
+    "essentials:muted": [
+      "false",
+      "true"
+    ],
+    "essentials:vanished": [
+      "false",
+      "true"
+    ],
+    "gamemode": [
+      "adventure",
+      "creative",
+      "spectator",
+      "survival"
+    ],
+    "server": "hub",
     "world": [
       "world",
       "world_nether",

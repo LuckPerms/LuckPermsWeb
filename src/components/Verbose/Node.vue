@@ -3,7 +3,7 @@
     <div class="main" @click="open = !open">
       <span class="name">
         <avatar
-          v-if="source.who.identifier !== 'internal/console'"
+          v-if="!source.who.identifier.includes('/')"
           :id="source.who.identifier"
           :name="source.who.identifier"
           :size="16"

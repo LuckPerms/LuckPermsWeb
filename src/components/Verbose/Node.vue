@@ -3,10 +3,9 @@
     <div class="main" @click="open = !open">
       <span class="name">
         <avatar
-          v-if="!source.who.identifier.includes('/')"
-          :id="source.who.identifier"
+          v-if="source.who.uuid && source.who.uuid !== '00000000-0000-0000-0000-000000000000'"
+          :id="source.who.uuid"
           :name="source.who.identifier"
-          :size="16"
           :title="false"
         />
         {{ source.who.identifier }}
@@ -124,6 +123,8 @@ export default {
         img {
           width: 1rem;
           margin-right: .5rem;
+          image-rendering: pixelated;
+          image-rendering: -webkit-optimize-contrast;
         }
       }
 

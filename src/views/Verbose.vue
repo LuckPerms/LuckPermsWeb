@@ -9,10 +9,9 @@
               <td>Uploaded by</td>
               <td>
                 <avatar
-                  v-if="verboseData.metadata.uploader.name !== 'Console'"
+                  v-if="verboseData.metadata.uploader.uuid !==
+                    '00000000-0000-0000-0000-000000000000'"
                   :id="verboseData.metadata.uploader.uuid"
-                  :name="verboseData.metadata.uploader.name"
-                  :size="16"
                   :title="false"
                 />
                 {{ verboseData.metadata.uploader.name }}
@@ -191,6 +190,11 @@ export default {
         padding: 1rem;
         border-bottom-left-radius: 2px;
         border-bottom-right-radius: 2px;
+
+        img {
+          image-rendering: pixelated;
+          image-rendering: -webkit-optimize-contrast;
+        }
       }
 
       td:first-child {

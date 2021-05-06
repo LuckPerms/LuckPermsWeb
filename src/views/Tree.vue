@@ -9,10 +9,9 @@
               <td>Uploaded by</td>
               <td>
                 <avatar
-                  v-if="metaData.uploader.name !== 'Console'"
+                  v-if="metaData.uploader.uuid !== '00000000-0000-0000-0000-000000000000'"
                   :id="metaData.uploader.uuid"
-                  :name="metaData.uploader.name"
-                  :size="16"
+                  :title="false"
                 />
                 {{ metaData.uploader.name }}
               </td>
@@ -39,7 +38,6 @@
                 <avatar
                   :id="metaData.referenceUser.uuid"
                   :name="metaData.referenceUser.name"
-                  :size="16"
                 />
                 {{ metaData.referenceUser.name }}
               </td>
@@ -173,6 +171,11 @@ export default {
         padding: 1rem;
         border-bottom-left-radius: 2px;
         border-bottom-right-radius: 2px;
+
+        img {
+          image-rendering: pixelated;
+          image-rendering: -webkit-optimize-contrast;
+        }
       }
 
       td:first-child {

@@ -1,7 +1,7 @@
 <template>
   <img
-    :src="`https://minotar.net/helm/${id}/${size}.png`"
-    :title="title ? `${name}'s avatar` : ''"
+    :src="`https://crafthead.net/helm/${key}`"
+    :title="title && `${name}'s avatar`"
   />
 </template>
 
@@ -12,15 +12,16 @@ export default {
       required: true,
     },
     name: {
-      required: true,
-    },
-    size: {
-      type: Number,
-      default: 100,
+      required: false,
     },
     title: {
       type: Boolean,
       default: true,
+    },
+  },
+  computed: {
+    key() {
+      return this.id.replace(/-/g, '');
     },
   },
 };

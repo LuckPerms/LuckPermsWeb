@@ -101,7 +101,7 @@
               title="Edit user"
             >
               <span class="username">
-                <img :src="`https://minotar.net/helm/${user.id}/100.png`">
+                <avatar :id="user.id" :title="false" />
                 {{user.displayName}}
               </span>
               <button @click="deleteUser(user.id)" v-if="canDeleteUsers" title="Delete user">
@@ -117,6 +117,7 @@
 
 <script>
 import { gte } from 'semver';
+import Avatar from '../Avatar.vue';
 import EditorMenuTrack from './EditorMenuTrack.vue';
 import EditorMenuGroup from './EditorMenuGroup.vue';
 
@@ -124,6 +125,7 @@ export default {
   name: 'editor-menu',
 
   components: {
+    Avatar,
     EditorMenuTrack,
     EditorMenuGroup,
   },
@@ -446,6 +448,8 @@ export default {
         width: 1em;
         height: auto;
         margin-right: .5em;
+        image-rendering: pixelated;
+        image-rendering: -webkit-optimize-contrast;
       }
 
       li {

@@ -1,6 +1,6 @@
 <template>
   <img
-    :src="`https://crafthead.net/helm/${key}/8`"
+    :src="`https://crafthead.net/helm/${key}/32`"
     :title="title && `${name}'s avatar`"
     @error="replaceWithDefault"
   />

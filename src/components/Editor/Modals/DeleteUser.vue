@@ -69,8 +69,6 @@ export default {
       height: 1.5rem;
       width: auto;
       margin-right: .5rem;
-      image-rendering: pixelated;
-      image-rendering: -webkit-optimize-contrast;
     }
   }
 </style>

@@ -123,8 +123,6 @@ export default {
         img {
           width: 1rem;
           margin-right: .5rem;
-          image-rendering: pixelated;
-          image-rendering: -webkit-optimize-contrast;
         }
       }
 

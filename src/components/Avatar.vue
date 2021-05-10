@@ -1,5 +1,6 @@
 <template>
   <img
+    class="avatar"
     :src="`https://crafthead.net/helm/${key}/8`"
     :title="title && `${name}'s avatar`"
     @error="replaceWithDefault"
@@ -34,3 +35,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.avatar {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+}
+</style>

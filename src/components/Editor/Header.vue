@@ -74,8 +74,6 @@ export default {
       width: 1em;
       height: auto;
       margin-left: .5em;
-      image-rendering: pixelated;
-      image-rendering: -webkit-optimize-contrast;
     }
   }
 }

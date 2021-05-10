@@ -190,11 +190,6 @@ export default {
         padding: 1rem;
         border-bottom-left-radius: 2px;
         border-bottom-right-radius: 2px;
-
-        img {
-          image-rendering: pixelated;
-          image-rendering: -webkit-optimize-contrast;
-        }
       }
 
       td:first-child {

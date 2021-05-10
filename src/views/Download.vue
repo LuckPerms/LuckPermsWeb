@@ -334,8 +334,6 @@ export default {
       img {
         margin-right: .75rem;
         width: 1.5em;
-        image-rendering: pixelated;
-        image-rendering: -webkit-optimize-contrast;
         filter: saturate(20%);
       }
 

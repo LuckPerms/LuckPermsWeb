@@ -44,7 +44,7 @@
         </transition>
       </div>
 
-      <div class="groups" v-if="filteredGroups.length">
+      <div class="groups">
         <h2 @click="toggle.groups = !toggle.groups">
           <button title="Show/hide groups">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.groups ? 90 : null" />
@@ -79,7 +79,7 @@
         </transition>
       </div>
 
-      <div class="users" v-if="filteredUsers.length">
+      <div class="users">
         <h2 @click="toggle.users = !toggle.users">
           <button title="Show/hide users">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.users ? 90 : null" />

@@ -14,8 +14,7 @@ export default function updateSession(route, type) {
   } else if (route.query.id) {
     sessionId = route.query.id;
   } else if (route.hash) {
-    // eslint-disable-next-line prefer-destructuring
-    sessionId = route.hash.split('#')[1];
+    [sessionId] = route.hash.split('#');
   }
   if (sessionId) {
     store.dispatch(type, sessionId);

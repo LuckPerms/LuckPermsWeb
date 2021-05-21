@@ -20,117 +20,111 @@
     </div>
 
     <div v-else class="editor-container">
-        <div v-if="!sessions.length" class="tool-intro" key="loading">
-          <div>
-            <img alt="LuckPerms logo" src="../assets/logo.svg">
-            <div class="text">
-              <h1>LuckPerms</h1>
-              <p>Web Permissions Editor</p>
-              <div v-if="!errors.load">
-                <p>
-                  <font-awesome icon="asterisk" :spin="true" />
-                  Loading data...
-                </p>
-              </div>
+      <div v-if="loading && !loaded" class="tool-intro" key="loading">
+        <div>
+          <img alt="LuckPerms logo" src="../assets/logo.svg">
+          <div class="text">
+            <h1>LuckPerms</h1>
+            <p>Web Permissions Editor</p>
+            <div v-if="!errors.load">
+              <p>
+                <font-awesome icon="asterisk" :spin="true" />
+                Loading data...
+              </p>
+            </div>
 
-              <div v-else class="error">
-                <p>
-                  <strong>There was an error loading the data.</strong>
-                  Either the URL was copied wrong or the session has expired.
-                </p>
-                <p>Please generate another editor session with <code>/lp editor</code>.</p>
-              </div>
+            <div v-else class="error">
+              <p>
+                <strong>There was an error loading the data.</strong>
+                Either the URL was copied wrong or the session has expired.
+              </p>
+              <p>Please generate another editor session with <code>/lp editor</code>.</p>
             </div>
           </div>
         </div>
+      </div>
 
-        <div v-else class="editor-wrap" :key="sessionId">
-          <editor-menu
-            :sessions="sessions"
-            :current-session="currentSession"
-            :class="{ active: menu }"
-            @clear-query="clearQuery"
-          />
+      <div v-else class="editor-wrap" :key="sessionId">
+        <editor-menu
+          :sessions="sessions"
+          :current-session="currentSession"
+          :class="{ active: menu }"
+          @clear-query="clearQuery"
+        />
 
-            <div
-              id="editor-menu-focus"
-              class="overlay-focus"
-              v-if="menu"
-              @click="menu = !menu"
-            ></div>
-
-          <button
-            id="editor-menu-toggle"
+          <div
+            id="editor-menu-focus"
+            class="overlay-focus"
+            v-if="menu"
             @click="menu = !menu"
-          >
-            <font-awesome icon="bars" />
-          </button>
+          ></div>
 
-          <div class="editor-main">
-            <nav>
-              <div class="logo">
-                <h1>Web Permissions Editor</h1>
-              </div>
-              <div class="buttons">
-                <div class="search">
-                  <input
-                    v-if="search.toggle"
-                    type="text"
-                    v-model="search.query"
-                    placeholder="Search"
-                    ref="searchInput"
-                  />
-                  <button @click="toggleSearch">
-                    <font-awesome v-if="search.query" icon="times" fixed-width />
-                    <font-awesome v-else icon="search" fixed-width />
-                  </button>
-                </div>
-<!--                <button>-->
-<!--                  <font-awesome icon="undo" />-->
-<!--                </button>-->
-<!--                <button>-->
-<!--                  <font-awesome icon="redo" />-->
-<!--                </button>-->
-                <button @click="saveData" title="Save and generate code">
-                  <span v-if="saveStatus !== 'saving'">
-                    <font-awesome icon="save" fixed-width />
-                    Save
-                  </span>
-                  <span v-else>
-                    <font-awesome icon="sync-alt" fixed-width :spin="true" />
-                    Saving...
-                  </span>
+        <button
+          id="editor-menu-toggle"
+          @click="menu = !menu"
+        >
+          <font-awesome icon="bars" />
+        </button>
+
+        <div class="editor-main">
+          <nav>
+            <div class="logo">
+              <h1>Web Permissions Editor</h1>
+            </div>
+            <div class="buttons">
+              <div class="search">
+                <input
+                  v-if="search.toggle"
+                  type="text"
+                  v-model="search.query"
+                  placeholder="Search"
+                  ref="searchInput"
+                />
+                <button @click="toggleSearch">
+                  <font-awesome v-if="search.query" icon="times" fixed-width />
+                  <font-awesome v-else icon="search" fixed-width />
                 </button>
               </div>
-            </nav>
+              <button @click="saveData" title="Save and generate code">
+                <span v-if="saveStatus !== 'saving'">
+                  <font-awesome icon="save" fixed-width />
+                  Save
+                </span>
+                <span v-else>
+                  <font-awesome icon="sync-alt" fixed-width :spin="true" />
+                  Saving...
+                </span>
+              </button>
+            </div>
+          </nav>
 
 
-              <div class="editor-no-session" v-if="!currentSession && !search.debouncedQuery">
-                <font-awesome icon="arrow-left" />
-                <h1>Choose a group or user from the side bar</h1>
+            <div class="editor-no-session" v-if="!currentSession && !search.debouncedQuery">
+              <font-awesome icon="arrow-left" />
+              <h1>Choose a group or user from the side bar</h1>
+            </div>
+
+            <div
+              class="editor-session"
+              v-if="currentSession && !search.debouncedQuery"
+              :key="`session_${currentSession.id}`"
+            >
+              <div class="session-container">
+                <Header :session="currentSession" :sessionData="currentSessionData" />
+                <Meta :session="currentSession" :sessionData="currentSessionData" />
+                <NodeList :nodes="currentNodes" />
               </div>
+            </div>
 
-              <div
-                class="editor-session"
-                v-if="currentSession && !search.debouncedQuery"
-                :key="`session_${currentSession.id}`"
-              >
-                <div class="session-container">
-                  <Header :session="currentSession" :sessionData="currentSessionData" />
-                  <Meta :session="currentSession" :sessionData="currentSessionData" />
-                  <NodeList :nodes="currentNodes" />
-                </div>
-              </div>
+            <search-nodes
+              v-if="search.debouncedQuery"
+              :query="search.debouncedQuery"
+              @clear-query="clearQuery"
+            />
 
-              <search-nodes
-                v-if="search.debouncedQuery"
-                :query="search.debouncedQuery"
-                @clear-query="clearQuery"
-              />
-
-              <AddNode v-if="(currentSession && !search.debouncedQuery) || selectedNodes.length" />
-          </div>
+            <AddNode v-if="(currentSession && !search.debouncedQuery) || selectedNodes.length" />
         </div>
+      </div>
     </div>
 
     <transition name="fade">
@@ -173,6 +167,8 @@ export default {
         query: '',
         debouncedQuery: '',
       },
+      loading: false,
+      loaded: false,
     };
   },
   computed: {
@@ -231,10 +227,8 @@ export default {
       return this.$store.getters.selectedNodeIds;
     },
   },
-  created() {
-    const { $route } = this;
-    if (this.sessions?.length) return;
-    updateSession($route, 'getEditorData');
+  async created() {
+    this.updateSession();
   },
   watch: {
     $route(route) {
@@ -246,6 +240,19 @@ export default {
     }, 200),
   },
   methods: {
+    updateSession() {
+      if (this.loaded) return;
+
+      try {
+        this.loading = true;
+        updateSession(this.$route, 'getEditorData');
+        this.loaded = true;
+      } catch (error) {
+        this.loaded = false;
+      } finally {
+        this.loading = false;
+      }
+    },
     saveData() {
       this.$store.dispatch('saveData');
     },

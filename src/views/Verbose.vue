@@ -86,9 +86,16 @@
           <h1>LuckPerms</h1>
           <p>Verbose Viewer</p>
           <div v-if="verboseData.status === 3" class="error">
-            <p><strong>There was an error loading the data.</strong> Either the URL was copied wrong
-              or the session has expired.</p>
-            <p>Please generate another editor session with <code>/lp editor</code>.</p>
+            <template v-if="errors.load">
+              <h3>Loading error</h3>
+              <p>Either the URL was copied wrong or the session has expired.</p>
+              <p>Please generate another verbose viewer with <code>/lp verbose</code></p>
+            </template>
+
+            <template v-if="errors.unsupported">
+              <h3>Unsupported version</h3>
+              <p>Please <router-link to="/download">download</router-link> the latest version of LuckPerms to use the Verbose Viewer</p>
+            </template>
           </div>
           <template v-if="verboseData.status === 1">
             <p>

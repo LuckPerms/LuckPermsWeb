@@ -36,10 +36,8 @@
             <div v-else class="error">
               <template v-if="errors.load">
                 <h3>Loading error</h3>
-                <p>
-                  Either the URL was copied wrong or the session has expired.
-                </p>
-                <p>Please generate another editor session with <code>/lp editor</code>.</p>
+                <p>Either the URL was copied wrong or the session has expired.</p>
+                <p>Please generate another editor session with <code>/lp editor</code></p>
               </template>
 
               <template v-if="errors.unsupported">

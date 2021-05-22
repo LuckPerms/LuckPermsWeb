@@ -11,7 +11,7 @@ export default async function updateSession(route, type) {
   const queryKeys = Object.keys(query);
   let sessionId;
 
-  if (id && id.length === 10) {
+  if (id) {
     sessionId = route.params.id;
   } else if (queryKeys.length > 0) {
     const [queryKey] = queryKeys;
@@ -20,7 +20,7 @@ export default async function updateSession(route, type) {
     sessionId = hash;
   }
 
-  console.log(sessionId);
-
-  await store.dispatch(type, sessionId);
+  if (sessionId) {
+    await store.dispatch(type, sessionId);
+  }
 }

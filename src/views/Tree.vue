@@ -70,7 +70,7 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>Permission Tree Viewer</p>
-          <template v-if="!errors.load">
+          <template v-if="!errors.load && !errors.unsupported">
             <router-link to="/treeview/demo">
               <button class="button demo-button">View Demo</button>
             </router-link>
@@ -81,11 +81,16 @@
             </ul>
           </template>
           <div v-else class="error">
-            <p>
-              <strong>There was an error loading the data.</strong>
-              Either the URL was copied wrong or the session has expired.
-            </p>
-            <p>Please generate another editor session with <code>/lp editor</code>.</p>
+            <template v-if="errors.load">
+              <h3>Loading error</h3>
+              <p>Either the URL was copied wrong or the session has expired.</p>
+              <p>Please generate another tree viewer with <code>/lp tree</code></p>
+            </template>
+
+            <template v-if="errors.unsupported">
+              <h3>Unsupported version</h3>
+              <p>Please <router-link to="/download">download</router-link> the latest version of LuckPerms to use the Tree Viewer</p>
+            </template>
           </div>
         </div>
       </div>

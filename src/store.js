@@ -43,6 +43,7 @@ export default new Vuex.Store({
       data: null,
       errors: {
         load: false,
+        unsupported: false,
       },
     },
     tree: {
@@ -51,6 +52,7 @@ export default new Vuex.Store({
       data: null,
       errors: {
         load: false,
+        unsupported: false,
       },
     },
   },
@@ -412,7 +414,15 @@ export default new Vuex.Store({
 
     setVerboseData(state, { data, status }) {
       state.verbose.status = status;
-      if (!data) return;
+
+      if (!data) {
+        return;
+      }
+
+      if (!data.data) {
+        throw new Error('Invalid verbose data');
+      }
+
       state.verbose.data = data.data.map(node => ({
         ...node,
         id: uuid(),
@@ -421,8 +431,12 @@ export default new Vuex.Store({
       state.verbose.sessionId = data.sessionId;
     },
 
-    setVerboseLoadError(state) {
-      state.verbose.errors.load = true;
+    setVerboseLoadError(state, value = true) {
+      state.verbose.errors.load = value;
+    },
+
+    setVerboseUnsupportedError(state, value = true) {
+      state.verbose.errors.unsupported = value;
     },
 
     setTreeData(state, data) {
@@ -431,8 +445,12 @@ export default new Vuex.Store({
       state.tree.sessionId = data.sessionId;
     },
 
-    setTreeLoadError(state) {
-      state.tree.errors.load = true;
+    setTreeLoadError(state, value = true) {
+      state.tree.errors.load = value;
+    },
+
+    setTreeUnsupportedError(state, value = true) {
+      state.tree.errors.unsupported = value;
     },
   },
 
@@ -720,50 +738,79 @@ export default new Vuex.Store({
         .catch(console.error);
     },
 
-    getVerboseData({ commit }, sessionId) {
-      commit('setVerboseData', { data: null, status: 0 });
-      if (sessionId === 'demo') {
-        commit('setVerboseData', { data: null, status: 1 });
-        import('./data/verbose-demo.json').then((json) => {
-          commit('setVerboseData', { data: json.default, status: 2 });
-        });
-      } else {
-        commit('setVerboseData', { data: null, status: 1 });
-        axios.get(`${config.bytebin_url}${sessionId}`)
-          .then((response) => {
-            const data = {
-              ...response.data,
-              sessionId,
-            };
-            commit('setVerboseData', { data, status: 2 });
-          })
-          .catch(() => {
-            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-            commit('setVerboseLoadError');
-            commit('setVerboseData', { data: null, status: 3 });
-          });
+    async getVerboseData({ commit }, sessionId) {
+      commit('setVerboseLoadError', false);
+      commit('setVerboseUnsupportedError', false);
+
+      if (!sessionId) {
+        commit('setVerboseLoadError');
+        throw new Error('Invalid session ID');
+      }
+
+      const [firstChar] = sessionId;
+
+      if (['?', '#'].includes(firstChar)) {
+        commit('setVerboseUnsupportedError');
+        commit('setVerboseData', { data: null, status: 3 });
+        throw new Error('Unsupported version');
+      }
+
+      try {
+        commit('setVerboseData', { data: null, status: 0 });
+        if (sessionId === 'demo') {
+          commit('setVerboseData', { data: null, status: 1 });
+          const { default: data } = await import('./data/verbose-demo.json');
+          commit('setVerboseData', { data, status: 2 });
+        } else {
+          commit('setVerboseData', { data: null, status: 1 });
+          const response = await axios.get(`${config.bytebin_url}${sessionId}`);
+          const data = {
+            ...response.data,
+            sessionId,
+          };
+          commit('setVerboseData', { data, status: 2 });
+        }
+      } catch (error) {
+        console.error(`${error.message} - session ID: ${sessionId}`);
+        commit('setVerboseLoadError');
+        commit('setVerboseData', { data: null, status: 3 });
+        throw new Error('Loading error');
       }
     },
 
-    getTreeData({ commit }, sessionId) {
-      if (sessionId === 'demo') {
-        import('./data/tree-demo.json').then((json) => {
-          commit('setTreeData', json.default);
-        });
-      } else {
-        axios.get(`${config.bytebin_url}${sessionId}`)
-          .then((response) => {
-            const data = {
-              ...response.data,
-              sessionId,
-            };
-            commit('setTreeData', data);
-          })
-          .catch((error) => {
-            console.error(error);
-            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-            commit('setTreeLoadError');
-          });
+    async getTreeData({ commit }, sessionId) {
+      commit('setTreeLoadError', false);
+      commit('setTreeUnsupportedError', false);
+
+      if (!sessionId) {
+        commit('setTreeLoadError');
+        throw new Error('Invalid session ID');
+      }
+
+      const [firstChar] = sessionId;
+
+      if (['?', '#'].includes(firstChar)) {
+        commit('setTreeUnsupportedError');
+        throw new Error('Unsupported version');
+      }
+
+      try {
+        if (sessionId === 'demo') {
+          const { default: data } = await import('./data/tree-demo.json');
+          commit('setTreeData', data);
+          return;
+        }
+        const response = await axios.get(`${config.bytebin_url}${sessionId}`);
+
+        const data = {
+          ...response.data,
+          sessionId,
+        };
+        commit('setTreeData', data);
+      } catch {
+        console.error(`${error.message} - session ID: ${sessionId}`);
+        commit('setTreeLoadError');
+        throw new Error('Loading error');
       }
     },
   },

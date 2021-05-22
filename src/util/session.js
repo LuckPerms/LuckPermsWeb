@@ -6,7 +6,7 @@ import store from '../store';
  * @param {Object} route
  * @param {('getEditorData'|'getVerboseData'|'getTreeData')} type
  */
-export default function updateSession(route, type) {
+export default async function updateSession(route, type) {
   let sessionId;
 
   if (route.params.id) {
@@ -17,6 +17,6 @@ export default function updateSession(route, type) {
     [sessionId] = route.hash.split('#');
   }
   if (sessionId) {
-    store.dispatch(type, sessionId);
+    await store.dispatch(type, sessionId);
   }
 }

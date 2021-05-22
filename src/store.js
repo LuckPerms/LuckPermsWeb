@@ -448,24 +448,21 @@ export default new Vuex.Store({
       }
     },
 
-    getEditorData({ commit, dispatch }, sessionId) {
+    async getEditorData({ commit, dispatch }, sessionId) {
       commit('initEditorData', sessionId);
 
-      if (sessionId === 'demo') {
-        import('./data/editor-demo.json').then((json) => {
-          dispatch('setEditorData', json.default);
-        });
-      } else {
-        axios.get(`${config.bytebin_url}${sessionId}`)
-          .then((response) => {
-            const { data } = response;
-            dispatch('setEditorData', data, sessionId);
-          })
-          .catch((error) => {
-            console.error(error);
-            console.error(`Error loading data from bytebin - session ID: ${sessionId}`);
-            commit('setLoadError');
-          });
+      try {
+        if (sessionId === 'demo') {
+          const { default: data } = await import('./data/editor-demo.json');
+          await dispatch('setEditorData', data);
+          return;
+        }
+
+        const { data } = await axios.get(`${config.bytebin_url}${sessionId}`);
+        await dispatch('setEditorData', data, sessionId);
+      } catch {
+        commit('setLoadError');
+        throw new Error(`Error loading data from bytebin - session ID: ${sessionId}`);
       }
     },
 

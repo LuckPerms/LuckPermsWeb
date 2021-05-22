@@ -20,7 +20,7 @@
     </div>
 
     <div v-else class="editor-container">
-      <div v-if="loading && !loaded" class="tool-intro" key="loading">
+      <div v-if="!loaded" class="tool-intro" key="loading">
         <div>
           <img alt="LuckPerms logo" src="../assets/logo.svg">
           <div class="text">
@@ -167,7 +167,7 @@ export default {
         query: '',
         debouncedQuery: '',
       },
-      loading: false,
+      loading: true,
       loaded: false,
     };
   },
@@ -227,7 +227,7 @@ export default {
       return this.$store.getters.selectedNodeIds;
     },
   },
-  async created() {
+  created() {
     this.updateSession();
   },
   watch: {
@@ -240,15 +240,16 @@ export default {
     }, 200),
   },
   methods: {
-    updateSession() {
+    async updateSession() {
       if (this.loaded) return;
 
       try {
         this.loading = true;
-        updateSession(this.$route, 'getEditorData');
+        await updateSession(this.$route, 'getEditorData');
         this.loaded = true;
       } catch (error) {
         this.loaded = false;
+        console.error(error);
       } finally {
         this.loading = false;
       }

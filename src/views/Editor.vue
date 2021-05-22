@@ -26,7 +26,7 @@
           <div class="text">
             <h1>LuckPerms</h1>
             <p>Web Permissions Editor</p>
-            <div v-if="!errors.load">
+            <div v-if="!errors.load && !errors.unsupported">
               <p>
                 <font-awesome icon="asterisk" :spin="true" />
                 Loading data...
@@ -34,11 +34,18 @@
             </div>
 
             <div v-else class="error">
-              <p>
-                <strong>There was an error loading the data.</strong>
-                Either the URL was copied wrong or the session has expired.
-              </p>
-              <p>Please generate another editor session with <code>/lp editor</code>.</p>
+              <template v-if="errors.load">
+                <h3>Loading error</h3>
+                <p>
+                  Either the URL was copied wrong or the session has expired.
+                </p>
+                <p>Please generate another editor session with <code>/lp editor</code>.</p>
+              </template>
+
+              <template v-if="errors.unsupported">
+                <h3>Unsupported version</h3>
+                <p>Please <router-link to="/download">download</router-link> the latest version of LuckPerms to use the Web Editor</p>
+              </template>
             </div>
           </div>
         </div>

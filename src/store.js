@@ -31,6 +31,10 @@ export default new Vuex.Store({
     patreonCount: null,
     editor: {
       sessionId: null,
+      errors: {
+        load: false,
+        unsupported: false,
+      },
     },
     verbose: {
       status: 0,
@@ -162,6 +166,7 @@ export default new Vuex.Store({
         },
         errors: {
           load: false,
+          unsupported: false,
         },
         save: {
           status: null,
@@ -389,8 +394,12 @@ export default new Vuex.Store({
       state.editor.knownPermissions.push(permission);
     },
 
-    setLoadError(state) {
-      state.editor.errors.load = true;
+    setLoadError(state, value = true) {
+      state.editor.errors.load = value;
+    },
+
+    setUnsupportedError(state, value = true) {
+      state.editor.errors.unsupported = value;
     },
 
     setSaveStatus(state, status) {
@@ -449,7 +458,22 @@ export default new Vuex.Store({
     },
 
     async getEditorData({ commit, dispatch }, sessionId) {
+      commit('setLoadError', false);
+      commit('setUnsupportedError', false);
+
+      if (!sessionId) {
+        commit('setLoadError');
+        throw new Error('Invalid session ID');
+      }
+
       commit('initEditorData', sessionId);
+
+      const [firstChar] = sessionId;
+
+      if (['?', '#'].includes(firstChar)) {
+        commit('setUnsupportedError');
+        throw new Error('Unsupported version');
+      }
 
       try {
         if (sessionId === 'demo') {

@@ -81,7 +81,7 @@
               <img src="@/assets/logos/velocity.png" alt="Velocity">
               Velocity
             </span>
-            <small>Velocity (1.1.0 or newer)</small>
+            <small>Velocity (3.0.0 or newer)</small>
           </a>
           <a
             :href="downloads['bukkit-legacy']"

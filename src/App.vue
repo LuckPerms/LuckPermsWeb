@@ -230,6 +230,7 @@ input:focus {
 html {
   height: 100%;
   font-size: 12px;
+  scrollbar-color: hsla(0, 0%, 100%, .4) rgba(0, 0, 0, 0%);
 
   @include breakpoint($md) {
     font-size: 14px;

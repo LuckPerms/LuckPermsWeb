@@ -78,7 +78,7 @@
             </span>
             <small>Learn how to install, setup, configure and effectively use LuckPerms</small>
           </a>
-          <a href="https://github.com/lucko/LuckPerms" class="resource">
+          <a href="https://github.com/LuckPerms/LuckPerms" class="resource">
             <span>
               <font-awesome :icon="['fab', 'github']" />
               GitHub

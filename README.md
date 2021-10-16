@@ -3,7 +3,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/da5df752-4c7d-4a2b-8634-3eb376fd80d8/deploy-status)](https://app.netlify.com/sites/luckperms/deploys)
 [![Discord](https://img.shields.io/discord/241667244927483904.svg?logo=discord&label=)](https://discord.gg/luckperms)
 
-[LuckPerms](https://github.com/lucko/LuckPerms) is a permission plugin for Minecraft servers, written in Java.
+[LuckPerms](https://github.com/LuckPerms/LuckPerms) is a permission plugin for Minecraft servers, written in Java.
 
 LuckPermsWeb (this repository) contains the website for the project and a number of web apps which supplement the plugin, all written in HTML/JavaScript using the [Vue](https://vuejs.org/) framework.
 
@@ -20,7 +20,7 @@ Contributions are greatly appreciated! Just make a pull request with your change
 #### Cloning
 Use the following command to clone (and include the wiki submodule):
 ```sh
-git clone --recursive https://github.com/lucko/LuckPermsWeb.git
+git clone --recursive https://github.com/LuckPerms/LuckPermsWeb.git
 ```
 
 #### Setup

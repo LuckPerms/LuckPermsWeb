@@ -146,9 +146,12 @@ export default {
     filteredNodes() {
       const { data } = this.verboseData;
       if (!this.filter) return data;
-      return data.filter(node => (node.permission?.includes(this.filter)
-        || node.key?.includes(this.filter)
-        || node.who?.identifier.includes(this.filter)));
+      const filter = this.filter.toLowerCase();
+      return data.filter(node => (
+        node.permission?.toLowerCase().includes(filter)
+        || node.key?.toLowerCase().includes(filter)
+        || node.who?.identifier.toLowerCase().includes(filter)
+      ));
     },
     errors() { return this.$store.state.verbose.errors; },
     filteredNodeCount() { return this.filteredNodes.length; },

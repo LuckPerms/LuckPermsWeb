@@ -9,6 +9,7 @@
           :options="knownPermissions"
           :multiple="true"
           :taggable="true"
+          :clearOnSelect="false"
           @tag="onTag"
           tag-placeholder="Press enter to select"
           placeholder="Enter permissions or paste many"

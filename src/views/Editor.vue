@@ -27,19 +27,23 @@
           <img alt="LuckPerms logo" src="../assets/logo.svg">
           <div class="text">
             <h1>LuckPerms</h1>
-            <p>Web Permissions Editor</p>
+            <p>{{ $t('editor.description') }}</p>
             <div v-if="!errors.load && !errors.unsupported">
               <p>
                 <font-awesome icon="asterisk" :spin="true" />
-                Loading data...
+                {{ $('editor.loading' )}}
               </p>
             </div>
 
             <div v-else class="error">
               <template v-if="errors.load">
-                <h3>Loading error</h3>
-                <p>Either the URL was copied wrong or the session has expired.</p>
-                <p>Please generate another editor session with <code>/lp editor</code></p>
+                <h3>{{ $t('editor.error.title') }}</h3>
+                <p>{{ $t('editor.error.info') }}</p>
+                <i18n path="editor.error.new" tag="p">
+                  <template #command>
+                    <code>/lp editor</code>
+                  </template>
+                </i18n>
               </template>
 
               <template v-if="errors.unsupported">
@@ -76,7 +80,7 @@
         <div class="editor-main">
           <nav>
             <div class="logo">
-              <h1>Web Permissions Editor</h1>
+              <p>{{ $t('editor.description') }}</p>
             </div>
             <div class="buttons">
               <div class="search">
@@ -95,11 +99,11 @@
               <button @click="saveData" title="Save and generate code">
                 <span v-if="saveStatus !== 'saving'">
                   <font-awesome icon="save" fixed-width />
-                  Save
+                  {{ $t('editor.save') }}
                 </span>
                 <span v-else>
                   <font-awesome icon="sync-alt" fixed-width :spin="true" />
-                  Saving...
+                  {{ $t('editor.saving') }}
                 </span>
               </button>
             </div>

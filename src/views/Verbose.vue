@@ -87,9 +87,13 @@
           <p>{{ $t('verbose.title') }}</p>
           <div v-if="verboseData.status === 3" class="error">
             <template v-if="errors.load">
-              <h3>Loading error</h3>
-              <p>Either the URL was copied wrong or the session has expired.</p>
-              <p>Please generate another verbose viewer with <code>/lp verbose</code></p>
+              <h3>{{ $t('editor.error.title') }}</h3>
+              <p>{{ $t('editor.error.info') }}</p>
+              <i18n path="editor.error.new" tag="p">
+                <template #command>
+                  <code>/lp editor</code>
+                </template>
+              </i18n>
             </template>
 
             <template v-if="errors.unsupported">

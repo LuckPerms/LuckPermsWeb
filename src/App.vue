@@ -66,7 +66,7 @@
         </li>
         <template v-if="!config.selfHosted">
           <li class="external overlap">
-            <a href="https://github.com/lucko/LuckPerms" target="_blank" class="github">
+            <a href="https://github.com/LuckPerms/LuckPerms" target="_blank" class="github">
               <font-awesome :icon="['fab', 'github']" fixed-width />
               <span>GitHub</span>
             </a>
@@ -106,12 +106,12 @@
         <ul>
           <li>
             <font-awesome icon="code-branch" fixed-width />
-            <a href="https://github.com/lucko/LuckPermsWeb" target="_blank">LuckPermsWeb</a>
+            <a href="https://github.com/LuckPerms/LuckPermsWeb" target="_blank">LuckPermsWeb</a>
             @
-            <a :href="'https://github.com/lucko/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
+            <a :href="'https://github.com/LuckPerms/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
           </li>
           <li>
-            <router-link to="/wiki/Credits">
+            <router-link to="/wiki/Credits" target="_blank">
               Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
             </router-link>
           </li>
@@ -225,6 +225,7 @@ input:focus {
 html {
   height: 100%;
   font-size: 12px;
+  scrollbar-color: hsla(0, 0%, 100%, .4) rgba(0, 0, 0, 0%);
 
   @include breakpoint($md) {
     font-size: 14px;

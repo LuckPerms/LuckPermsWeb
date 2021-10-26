@@ -9,10 +9,9 @@
               <td>{{ $t('verbose.uploaded') }}</td>
               <td>
                 <avatar
-                  v-if="verboseData.metadata.uploader.name !== 'Console'"
+                  v-if="verboseData.metadata.uploader.uuid !==
+                    '00000000-0000-0000-0000-000000000000'"
                   :id="verboseData.metadata.uploader.uuid"
-                  :name="verboseData.metadata.uploader.name"
-                  :size="16"
                   :title="false"
                 />
                 {{ verboseData.metadata.uploader.name }}
@@ -87,15 +86,16 @@
           <h1>LuckPerms</h1>
           <p>{{ $t('verbose.title') }}</p>
           <div v-if="verboseData.status === 3" class="error">
-            <p>
-              <strong>{{ $t('editor.error.new') }}</strong>
-              {{ $t('editor.error.info') }}
-            </p>
-            <i18n path="editor.error.new" tag="p">
-              <template #path>
-                <code>/lp editor</code>
-              </template>
-            </i18n>
+            <template v-if="errors.load">
+              <h3>Loading error</h3>
+              <p>Either the URL was copied wrong or the session has expired.</p>
+              <p>Please generate another verbose viewer with <code>/lp verbose</code></p>
+            </template>
+
+            <template v-if="errors.unsupported">
+              <h3>Unsupported version</h3>
+              <p>Please <router-link to="/download">download</router-link> the latest version of LuckPerms to use the Verbose Viewer</p>
+            </template>
           </div>
           <template v-if="verboseData.status === 1">
             <p>
@@ -148,9 +148,12 @@ export default {
     filteredNodes() {
       const { data } = this.verboseData;
       if (!this.filter) return data;
-      return data.filter(node => (node.permission?.includes(this.filter)
-        || node.key?.includes(this.filter)
-        || node.who?.identifier.includes(this.filter)));
+      const filter = this.filter.toLowerCase();
+      return data.filter(node => (
+        node.permission?.toLowerCase().includes(filter)
+        || node.key?.toLowerCase().includes(filter)
+        || node.who?.identifier.toLowerCase().includes(filter)
+      ));
     },
     errors() { return this.$store.state.verbose.errors; },
     filteredNodeCount() { return this.filteredNodes.length; },

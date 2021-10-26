@@ -104,7 +104,7 @@
             <li v-for="entry in changeLog" :key="entry.version">
               <span>
                 <a
-                  :href="`https://github.com/lucko/LuckPerms/commit/${entry.commit}`"
+                  :href="`https://github.com/LuckPerms/LuckPerms/commit/${entry.commit}`"
                   target="_blank"
                 >
                   <code>v{{ entry.version }}</code>
@@ -348,8 +348,6 @@ export default {
       img {
         margin-right: .75rem;
         width: 1.5em;
-        image-rendering: pixelated;
-        image-rendering: -webkit-optimize-contrast;
         filter: saturate(20%);
       }
 

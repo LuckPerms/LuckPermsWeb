@@ -6,18 +6,21 @@ import store from '../store';
  * @param {Object} route
  * @param {('getEditorData'|'getVerboseData'|'getTreeData')} type
  */
-export default function updateSession(route, type) {
+export default async function updateSession(route, type) {
+  const { params: { id }, query, hash } = route;
+  const queryKeys = Object.keys(query);
   let sessionId;
 
-  if (route.params.id) {
+  if (id) {
     sessionId = route.params.id;
-  } else if (route.query.id) {
-    sessionId = route.query.id;
-  } else if (route.hash) {
-    // eslint-disable-next-line prefer-destructuring
-    sessionId = route.hash.split('#')[1];
+  } else if (queryKeys.length > 0) {
+    const [queryKey] = queryKeys;
+    sessionId = `?${queryKey}`;
+  } else if (hash) {
+    sessionId = hash;
   }
+
   if (sessionId) {
-    store.dispatch(type, sessionId);
+    await store.dispatch(type, sessionId);
   }
 }

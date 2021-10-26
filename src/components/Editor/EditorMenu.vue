@@ -44,7 +44,7 @@
         </transition>
       </div>
 
-      <div class="groups" v-if="filteredGroups.length">
+      <div class="groups">
         <h2 @click="toggle.groups = !toggle.groups">
           <button :title="$t('editor.groups.toggle')">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.groups ? 90 : null" />
@@ -79,7 +79,7 @@
         </transition>
       </div>
 
-      <div class="users" v-if="filteredUsers.length">
+      <div class="users">
         <h2 @click="toggle.users = !toggle.users">
           <button :title="$t('editor.users.toggle')">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.users ? 90 : null" />
@@ -101,7 +101,7 @@
               :title="$t('editor.users.edit')"
             >
               <span class="username">
-                <img :src="`https://minotar.net/helm/${user.id}/100.png`" :alt="$t('avatar', { name })">
+                <avatar :id="user.id" :title="false" />
                 {{user.displayName}}
               </span>
               <button @click="deleteUser(user.id)" v-if="canDeleteUsers" title="Delete user">
@@ -117,6 +117,7 @@
 
 <script>
 import { gte } from 'semver';
+import Avatar from '../Avatar.vue';
 import EditorMenuTrack from './EditorMenuTrack.vue';
 import EditorMenuGroup from './EditorMenuGroup.vue';
 
@@ -124,6 +125,7 @@ export default {
   name: 'editor-menu',
 
   components: {
+    Avatar,
     EditorMenuTrack,
     EditorMenuGroup,
   },

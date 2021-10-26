@@ -9,10 +9,9 @@
               <td>{{ $t('tree.uploaded') }}</td>
               <td>
                 <avatar
-                  v-if="metaData.uploader.name !== 'Console'"
+                  v-if="metaData.uploader.uuid !== '00000000-0000-0000-0000-000000000000'"
                   :id="metaData.uploader.uuid"
-                  :name="metaData.uploader.name"
-                  :size="16"
+                  :title="false"
                 />
                 {{ metaData.uploader.name }}
               </td>
@@ -39,7 +38,6 @@
                 <avatar
                   :id="metaData.referenceUser.uuid"
                   :name="metaData.referenceUser.name"
-                  :size="16"
                 />
                 {{ metaData.referenceUser.name }}
               </td>
@@ -72,7 +70,7 @@
         <div class="text">
           <h1>LuckPerms</h1>
           <p>{{ $t('tree.title') }}</p>
-          <template v-if="!errors.load">
+          <template v-if="!errors.load && !errors.unsupported">
             <router-link to="/treeview/demo">
               <button class="button demo-button">
                 {{ $t('tools.demo') }}
@@ -87,15 +85,16 @@
             </ul>
           </template>
           <div v-else class="error">
-            <p>
-              <strong>{{ $t('editor.error.new') }}</strong>
-              {{ $t('editor.error.info') }}
-            </p>
-            <i18n path="editor.error.new" tag="p">
-              <template #path>
-                <code>/lp editor</code>
-              </template>
-            </i18n>
+            <template v-if="errors.load">
+              <h3>Loading error</h3>
+              <p>Either the URL was copied wrong or the session has expired.</p>
+              <p>Please generate another tree viewer with <code>/lp tree</code></p>
+            </template>
+
+            <template v-if="errors.unsupported">
+              <h3>Unsupported version</h3>
+              <p>Please <router-link to="/download">download</router-link> the latest version of LuckPerms to use the Tree Viewer</p>
+            </template>
           </div>
         </div>
       </div>

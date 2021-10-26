@@ -9,6 +9,7 @@
           :options="knownPermissions"
           :multiple="true"
           :taggable="true"
+          :clearOnSelect="false"
           @tag="onTag"
           :tag-placeholder="$t('editor.nodes.enterToSelect')"
           :placeholder="$t('editor.nodes.enter')"

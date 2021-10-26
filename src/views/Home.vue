@@ -74,7 +74,7 @@
             </span>
             <small>{{ $t('home.wiki') }}</small>
           </router-link>
-          <a href="https://github.com/lucko/LuckPerms" class="resource">
+          <a href="https://github.com/LuckPerms/LuckPerms" class="resource">
             <span>
               <font-awesome :icon="['fab', 'github']" />
               GitHub

@@ -116,9 +116,12 @@
             <a :href="'https://github.com/LuckPerms/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
           </li>
           <li>
-            <router-link to="/wiki/Credits" target="_blank">
+            <router-link v-if="!config.selfHosted" to="/wiki/Credits" target="_blank">
               Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
             </router-link>
+            <a v-else href="https://luckperms.net/wiki/Credits" target="_blank">
+              Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
+            </a>
           </li>
         </ul>
       </div>

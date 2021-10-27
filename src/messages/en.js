@@ -208,6 +208,11 @@ export default {
       info: 'Either the URL was copied wrong or the session has expired.',
       new: 'Please generate another editor session with {command}.',
     },
+    unsupported: {
+      title: 'Unsupported version',
+      info: 'Please {download} the latest version of LuckPerms to use the Web Editor',
+      download: 'download',
+    },
   },
   tree: {
     title: 'Permission Tree Viewer',

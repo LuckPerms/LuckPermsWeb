@@ -531,7 +531,7 @@ body {
           }
 
           &.discord {
-            color: #7289DA;
+            color: #5865F2;
           }
 
           span {

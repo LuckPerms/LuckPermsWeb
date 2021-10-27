@@ -96,8 +96,14 @@
             </template>
 
             <template v-if="errors.unsupported">
-              <h3>Unsupported version</h3>
-              <p>Please <router-link to="/download">download</router-link> the latest version of LuckPerms to use the Tree Viewer</p>
+              <h3>{{ $t('editor.unsupported.title') }}</h3>
+              <i18n path="editor.unsupported.info" tag="p">
+                <template #download>
+                  <router-link to="/download">
+                    {{ $t('editor.unsupported.download') }}
+                  </router-link>
+                </template>
+              </i18n>
             </template>
           </div>
         </div>

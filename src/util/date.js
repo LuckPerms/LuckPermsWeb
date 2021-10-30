@@ -2,7 +2,7 @@
  * Compares dates and returns the relative
  *
  * @param {number} date - The timestamp being compared
- * @param {string} language - The language in which the time should be returned
+ * @param {string} language - The language in which the date/time should be returned
  * @param {number} [baseDate] - The timestamp being compared from (defaults to now)
  * @param {boolean} [includeTime=false] - Whether to include return the time
  * @returns {String}

@@ -43,8 +43,12 @@
             <li @click="proceed(4, 'unsupported')">{{ $t('quiz.older', { version: '1.7.9' }) }}</li>
           </ul>
           <ul class="options" v-if="options.sponge">
-            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: 'SpongeAPI 5' }) }}</li>
-            <li @click="proceed(4, 'unsupported')">{{ $t('quiz.older', { version: 'SpongeAPI 4' }) }}</li>
+            <li @click="proceed(4, 'latest')">
+              {{ $t('quiz.newer', { version: 'SpongeAPI 5' }) }}
+            </li>
+            <li @click="proceed(4, 'unsupported')">
+              {{ $t('quiz.older', { version: 'SpongeAPI 4' }) }}
+            </li>
           </ul>
           <ul class="options" v-if="options.nukkit">
             <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: 'b93' }) }}</li>

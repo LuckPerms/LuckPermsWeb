@@ -6,7 +6,7 @@
           <img alt="LuckPerms logo" src="../assets/logo.svg">
           <div>
             <h1>LuckPerms</h1>
-            <p>A permissions plugin for Minecraft servers.</p>
+            <p>{{ $t('description') }}</p>
           </div>
         </div>
 
@@ -14,7 +14,7 @@
           <router-link to="/download">
           <span>
             <font-awesome icon="arrow-alt-circle-down" />
-            Download
+            {{ $t('links.download') }}
           </span>
             <small>
               v{{ version }}
@@ -22,7 +22,7 @@
             </small>
           </router-link>
           <small>
-            Supports Bukkit/Spigot/Paper, BungeeCord, Sponge, Fabric, Nukkit and Velocity servers
+            {{ $t('home.supported') }}
           </small>
         </div>
       </div>
@@ -31,82 +31,76 @@
     <div class="container" v-if="!config.selfHosted">
       <section class="resources">
         <div>
-          <h2>Why LuckPerms?</h2>
-          <p>LuckPerms is a permissions plugin for Minecraft servers. It allows server admins to
-            control what features players can use by creating groups and assigning permissions.</p>
-          <p>It is:</p>
+          <h2>{{ $t('home.why.title') }}</h2>
+          <p>{{ $t('home.why.description') }}</p>
+          <p>{{ $t('home.why.its') }}</p>
           <ul>
-            <li><b>fast</b> - written with performance and scalability in mind.</li>
-            <li><b>reliable</b> - trusted by thousands of server admins, and the largest of server
-              networks.</li>
-            <li><b>easy to use</b> - setup permissions using commands, directly in config files, or
-              using the web editor.</li>
-            <li><b>flexible</b> - supports a variety of data storage options, and works on lots of
-              different server types.</li>
-            <li><b>extensive</b> - a plethora of customization options and settings which can be
-              changed to suit your server.</li>
-            <li><b>free</b> - available for download and usage at no cost, and permissively licensed
-              so it can remain free forever.</li>
+            <li v-html="$t('home.why.fast')"/>
+            <li v-html="$t('home.why.reliable')"/>
+            <li v-html="$t('home.why.easy')"/>
+            <li v-html="$t('home.why.flexible')"/>
+            <li v-html="$t('home.why.extensive')"/>
+            <li v-html="$t('home.why.free')"/>
           </ul>
-          <p>For more information, see the wiki article on
-            <router-link to="/wiki/Why-LuckPerms">Why LuckPerms?</router-link></p>
+          <i18n path="home.why.more" tag="p">
+            <template #wiki>
+              <router-link to="/wiki/Why-LuckPerms">{{ $t('home.why.why') }}</router-link>
+            </template>
+          </i18n>
 
-          <h2>Web Apps</h2>
-          <p>This site hosts a number of extra web applications which work with the plugin.</p>
-          <p>These applications are designed to work for all users, even those without the ability
-            to install/host an application on their own web server.</p>
+          <h2>{{ $t('home.apps.title') }}</h2>
+          <p>{{ $t('home.apps.description1') }}</p>
+          <p>{{ $t('home.apps.description2') }}</p>
           <div class="tools">
             <router-link to="/editor" alt="Web Editor">
               <font-awesome icon="edit" />
-              Web Editor
+              {{ $t('links.editor') }}
             </router-link>
             <router-link to="/verbose" alt="Verbose Viewer">
               <font-awesome icon="comment-alt" />
-              Verbose Viewer
+              {{ $t('links.verbose') }}
             </router-link>
             <router-link to="/treeview" alt="Tree Viewer">
               <font-awesome icon="sitemap" />
-              Tree Viewer
+              {{ $t('links.tree') }}
             </router-link>
           </div>
         </div>
         <div>
-          <a href="/wiki" class="resource">
+          <router-link to="/wiki" class="resource">
             <span>
               <font-awesome icon="book" />
-              Wiki
+              {{ $t('links.wiki') }}
             </span>
-            <small>Learn how to install, setup, configure and effectively use LuckPerms</small>
-          </a>
+            <small>{{ $t('home.wiki') }}</small>
+          </router-link>
           <a href="https://github.com/LuckPerms/LuckPerms" class="resource">
             <span>
               <font-awesome :icon="['fab', 'github']" />
               GitHub
             </span>
-            <small>Browse the source code, report issues and contribute to the project</small>
+            <small>{{ $t('home.github') }}</small>
           </a>
           <a href="https://discord.gg/luckperms" class="resource">
             <span>
               <font-awesome :icon="['fab', 'discord']" />
               Discord
             </span>
-            <small>Join {{ discordUserCount }} others to discuss the project and ask/answer
-              questions</small>
+            <small>{{ $t('home.discord', { count: discordUserCount }) }}</small>
           </a>
           <router-link to="/sponsor" class="resource">
             <span>
               <font-awesome icon="server" />
-              Hosting Partner
+              {{ $t('home.partner.title') }}
             </span>
-            <small>Find out how you can get a great deal on your server hosting and support
-              us at the same time</small>
+            <small>{{ $t('home.partner.description') }}</small>
           </router-link>
           <a href="https://patreon.com/luckdev" class="resource">
             <span>
               <font-awesome :icon="['fab', 'patreon']" />
               Patreon
             </span>
-            <small>Join {{ patreonCount }} others supporting the project on Patreon</small>
+            <small>{{ $t('home.patreon', { count: patreonCount }) }}</small>
           </a>
         </div>
       </section>
@@ -118,15 +112,15 @@
           <div class="tools">
             <router-link to="/editor" alt="Web Editor">
               <font-awesome icon="edit" />
-              Web Editor
+              {{ $t('links.editor') }}
             </router-link>
             <router-link to="/verbose" alt="Verbose Viewer">
               <font-awesome icon="comment-alt" />
-              Verbose Viewer
+              {{ $t('links.verbose') }}
             </router-link>
             <router-link to="/treeview" alt="Tree Viewer">
               <font-awesome icon="sitemap" />
-              Tree Viewer
+              {{ $t('links.tree') }}
             </router-link>
           </div>
         </div>

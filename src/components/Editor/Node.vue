@@ -3,7 +3,7 @@
     <div
       :class="{ 'node-select': true, 'selected': isSelected }"
       @click="toggleNodeSelect()"
-      title="Select node for mass operations"
+      :title="$t('editor.nodes.select')"
     >
       <span></span>
     </div>
@@ -12,7 +12,7 @@
       v-if="!permission.edit"
       class="permission"
       @click="permission.edit = true"
-      title="Click to edit the permission"
+      :title="$t('editor.nodes.edit')"
     >
       <code>{{ source.key }}</code>
     </div>
@@ -30,7 +30,7 @@
     <div
       class="value"
       @click="toggleValue()"
-      title="Click to toggle true/false"
+      :title="$t('editor.nodes.toggle')"
     >
       <code :class="{'true': source.value}">{{ source.value }}</code>
     </div>
@@ -39,16 +39,16 @@
       v-if="!expiry.edit"
       class="expiry"
       @click="expiry.edit = true"
-      title="Click to choose an expiry"
+      :title="$t('editor.nodes.expiry')"
     >
       <code v-if="source.expiry">{{ relativeExpiry }}</code>
-      <code v-else disabled>never</code>
+      <code v-else disabled>{{ $t('editor.nodes.never') }}</code>
 
       <button
         v-if="source.expiry"
         class="delete"
         @click.stop="deleteExpiry()"
-        title="Delete expiry"
+        :title="$t('editor.nodes.deleteExpiry')"
       >
         <font-awesome icon="times" />
       </button>
@@ -65,7 +65,7 @@
     <div
       class="contexts"
       @click="context.ui = true"
-      title="Click to edit the contexts for this node"
+      :title="$t('editor.nodes.contexts')"
     >
       <span v-if="flattenedContexts.length">
         <code v-for="entry in flattenedContexts" v-bind:key="entry">
@@ -104,7 +104,7 @@
               <input
                 type="text"
                 v-model="context.key"
-                placeholder="key"
+                :placeholder="$t('editor.key')"
                 @focus="context.keyFocus = true"
                 @blur="blurField('keyFocus')"
               >
@@ -124,7 +124,7 @@
               <input
                 type="text"
                 v-model="context.value"
-                placeholder="value"
+                :placeholder="$t('editor.value')"
                 @focus="context.valueFocus = true"
                 @blur="blurField('valueFocus')"
                 @keydown.enter="addContext"
@@ -145,7 +145,7 @@
         </ul>
         <button @click="addContext">
           <font-awesome icon="plus" />
-          Add context
+          {{ $t('editor.nodes.addContext') }}
         </button>
       </div>
     </transition>

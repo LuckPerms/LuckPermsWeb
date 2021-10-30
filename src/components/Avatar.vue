@@ -2,7 +2,8 @@
   <img
     class="avatar"
     :src="`https://crafthead.net/helm/${key}/8`"
-    :title="title && `${name}'s avatar`"
+    :alt="$t('avatar', { name })"
+    :title="title ? $t('avatar', { name }) : ''"
     @error="replaceWithDefault"
   />
 </template>

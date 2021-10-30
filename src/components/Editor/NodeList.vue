@@ -1,13 +1,13 @@
 <template>
 <div class="node-list">
-  <h2>Permission nodes <span>({{ nodes.length }})</span></h2>
+  <h2 v-html="$tc('editor.nodes.permissionsCount', nodes.length)" />
 
   <div class="node-list-header">
     <div class="sorting-tabs">
       <div
         :class="{ 'node-select-all': true, 'selected': allSelected }"
         @click="selectAll"
-        title="Select all nodes for mass operations"
+        :title="$t('editor.nodes.selectAll')"
       >
         <span></span>
       </div>
@@ -16,9 +16,9 @@
         class="permission"
         :class="{'active': sort.method === 'key'}"
         @click="changeSort('key')"
-        title="Sort nodes by permission"
+        :title="$t('editor.nodes.sort.permission')"
       >
-        Permissions
+        {{ $t('editor.permissions') }}
         <font-awesome
           v-if="sort.method === 'key'"
           :class="{'reverse': !sort.desc}"
@@ -30,9 +30,9 @@
         class="value"
         :class="{'active': sort.method === 'value'}"
         @click="changeSort('value')"
-        title="Sort nodes by true/false"
+        :title="$t('editor.nodes.sort.value')"
       >
-        Value
+        {{ $t('editor.value') }}
         <font-awesome
           v-if="sort.method === 'value'"
           :class="{'reverse': !sort.desc}"
@@ -44,9 +44,9 @@
         class="expiry"
         :class="{'active': sort.method === 'expiry'}"
         @click="changeSort('expiry')"
-        title="Sort nodes by expiry"
+        :title="$t('editor.nodes.sort.expiry')"
       >
-        Expiry
+        {{ $t('editor.expiry') }}
         <font-awesome
           v-if="sort.method === 'expiry'"
           :class="{'reverse': !sort.desc}"
@@ -57,9 +57,9 @@
         class="context"
         :class="{'active': sort.method === 'contexts'}"
         @click="changeSort('contexts')"
-        title="Sort nodes by contexts"
+        :title="$t('editor.nodes.sort.contexts')"
       >
-        Contexts
+        {{ $t('editor.contexts') }}
         <font-awesome
           v-if="sort.method === 'contexts'"
           :class="{'reverse': !sort.desc}"

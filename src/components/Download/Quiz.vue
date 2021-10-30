@@ -3,28 +3,28 @@
     <div class="modal" @click.stop>
       <button class="close-button" @click="closeModal">
         <font-awesome icon="times"/>
-        Close
+        {{ $t('close') }}
       </button>
       <transition name="fade" mode="out-in">
         <div v-if="page === 1" class="page page-1">
-          <h1>Do you run a single server, or a network?</h1>
+          <h1>{{ $t('quiz.choose') }}</h1>
           <ul class="options">
-            <li @click="proceed(2, 'single')">Single server</li>
-            <li @click="proceed(2, 'network')">Network of servers</li>
+            <li @click="proceed(2, 'single')">{{ $t('quiz.single') }}</li>
+            <li @click="proceed(2, 'network')">{{ $t('quiz.network') }}</li>
           </ul>
         </div>
       </transition>
 
       <transition name="fade" mode="out-in">
         <div v-if="page === 2" class="page page-2">
-          <h1>What type of server are you running?</h1>
+          <h1>{{ $t('quiz.type') }}</h1>
           <ul class="options" v-if="options.single">
             <li @click="proceed(3, 'bukkit')">CraftBukkit / Spigot / Paper</li>
             <li @click="proceed(3, 'sponge')">SpongeForge / SpongeVanilla</li>
             <li @click="proceed(3, 'nukkit')">NukkitX</li>
           </ul>
           <p class="lighter" v-if="options.network">
-            Note: LuckPerms is still required on all backend servers.
+            {{ $t('quiz.note') }}
           </p>
           <ul class="options" v-if="options.network">
             <li @click="proceed(5, 'bungee')">BungeeCord / Waterfall / Travertine</li>
@@ -35,20 +35,20 @@
 
       <transition name="fade" mode="out-in">
         <div v-if="page === 3" class="page page-3">
-          <h1>What version of {{ serverType }} are you running?</h1>
+          <h1>{{ $t('quiz.version', { serverType }) }}</h1>
           <ul class="options" v-if="options.bukkit">
-            <li @click="proceed(4, 'latest')">1.8.8 or newer</li>
+            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: '1.8.8' }) }}</li>
             <li @click="proceed(4, 'unsupported')">1.8 - 1.8.7</li>
             <li @click="proceed(4, 'legacy')">1.7.10</li>
-            <li @click="proceed(4, 'unsupported')">1.7.9 or older</li>
+            <li @click="proceed(4, 'unsupported')">{{ $t('quiz.older', { version: '1.7.9' }) }}</li>
           </ul>
           <ul class="options" v-if="options.sponge">
-            <li @click="proceed(4, 'latest')">SpongeAPI 5 or newer</li>
-            <li @click="proceed(4, 'unsupported')">SpongeAPI 4 or older</li>
+            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: 'SpongeAPI 5' }) }}</li>
+            <li @click="proceed(4, 'unsupported')">{{ $t('quiz.older', { version: 'SpongeAPI 4' }) }}</li>
           </ul>
           <ul class="options" v-if="options.nukkit">
-            <li @click="proceed(4, 'latest')">b93 or newer</li>
-            <li @click="proceed(4, 'unsupported')">b92 or older</li>
+            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: 'b93' }) }}</li>
+            <li @click="proceed(4, 'unsupported')">{{ $t('quiz.newer', { version: 'b92' }) }}</li>
           </ul>
         </div>
       </transition>
@@ -57,52 +57,50 @@
         <div v-if="page === 4" class="page page-4">
           <template v-if="options.latest">
             <img alt="LuckPerms logo" src="@/assets/logo.svg">
-            <h1>You need LuckPerms for {{ serverType }}</h1>
+            <h1>{{ $t('quiz.result', { serverType }) }}</h1>
             <div class="options">
               <a :href="downloads.bukkit" v-if="options.bukkit" download>
-                Download
+                {{ $t('links.download') }}
               </a>
               <a :href="downloads.sponge" v-if="options.sponge" download>
-                Download
+                {{ $t('links.download') }}
               </a>
               <a :href="downloads.nukkit" v-if="options.nukkit" download>
-                Download
+                {{ $t('links.download') }}
               </a>
               <a :href="downloads.bungee" v-if="options.bungee" download>
-                Download
+                {{ $t('links.download') }}
               </a>
               <a :href="downloads.velocity" v-if="options.velocity" download>
-                Download
+                {{ $t('links.download') }}
               </a>
             </div>
           </template>
           <template v-if="options.legacy">
             <img alt="LuckPerms logo" src="@/assets/logo.svg">
-            <h1>You need LuckPerms{{ legacy }} for {{ serverType }}</h1>
+            <h1>{{ $t('quiz.resultLegacy', { serverType }) }}</h1>
             <div class="options">
               <a :href="downloads['bukkit-legacy']" v-if="options.bukkit" download>
-                Download
+                {{ $t('links.download') }}
               </a>
             </div>
           </template>
           <template v-if="options.unsupported">
-            <h1 v-if="options.bungee">Your version of BungeeCord is not supported, consider
-              switching to Travertine if you want to use LuckPerms.</h1>
-            <h1 v-if="!options.bungee">Your version of {{ serverType }} is not supported, you must
-              upgrade if you want to use LuckPerms</h1>
+            <h1 v-if="options.bungee">{{ $t('quiz.outdated', { serverType }) }}</h1>
+            <h1 v-if="!options.bungee">{{ $t('quiz.travertine') }}</h1>
           </template>
         </div>
       </transition>
 
       <transition name="fade" mode="out-in">
         <div v-if="page === 5" class="page page-5">
-          <h1>What version of {{ serverType }} are you running?</h1>
+          <h1>{{ $t('quiz.version', { serverType }) }}</h1>
           <ul class="options" v-if="options.bungee">
-            <li @click="proceed(4, 'latest')">1.8.8 or newer</li>
-            <li @click="proceed(4, 'unsupported')">1.8.7 or older</li>
+            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: '1.8.8' }) }}</li>
+            <li @click="proceed(4, 'unsupported')">{{ $t('quiz.older', { version: '1.8.7' }) }}</li>
           </ul>
           <ul class="options" v-if="options.velocity">
-            <li @click="proceed(4, 'latest')">1.0 or newer</li>
+            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: '1.0' }) }}</li>
           </ul>
         </div>
       </transition>
@@ -139,10 +137,6 @@ export default {
       if (this.options.nukkit) return 'Nukkit';
       if (this.options.bungee) return 'BungeeCord';
       if (this.options.velocity) return 'Velocity';
-      return null;
-    },
-    legacy() {
-      if (this.options.legacy) return ' Legacy';
       return null;
     },
   },

@@ -23,7 +23,7 @@
         <div class="col-1">
           <table>
             <tr v-if="source.context.length">
-              <td>Context</td>
+              <td>{{ $t('verbose.context') }}</td>
               <td>
                 <code v-for="context in source.context" v-bind:key="context">
                   {{ context.key }}: {{ context.value }}
@@ -31,25 +31,25 @@
               </td>
             </tr>
             <tr>
-              <td>Origin</td>
+              <td>{{ $t('verbose.origin') }}</td>
               <td>
                 <code>{{ source.origin }}</code>
               </td>
             </tr>
             <tr v-if="source.resultInfo">
-              <td>Processor</td>
+              <td>{{ $t('verbose.processor') }}</td>
               <td>
                 <code>{{ source.resultInfo.processorClass }}</code>
               </td>
             </tr>
             <tr v-if="source.resultInfo">
-              <td>Cause</td>
+              <td>{{ $t('verbose.cause') }}</td>
               <td>
                 <code>{{ source.resultInfo.cause }}</code>
               </td>
             </tr>
             <tr>
-              <td>Thread</td>
+              <td>{{ $t('verbose.thread') }}</td>
               <td>
                 <code>{{ source.thread }}</code>
               </td>
@@ -57,7 +57,7 @@
           </table>
         </div>
         <div class="col-2">
-          Trace
+          {{ $t('verbose.trace') }}
           <pre class="code">{{ source.trace.join("\n") }}</pre>
         </div>
       </div>

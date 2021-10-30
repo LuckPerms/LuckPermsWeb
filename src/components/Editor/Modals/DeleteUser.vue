@@ -1,24 +1,24 @@
 <template>
 <div class="delete-user">
-  <h2>
-    Are you sure you want to delete user:
-    <code class="username">
-      <avatar :id="user.id" :name="user.displayName" />
-      {{ user.displayName }}
-    </code>
-  </h2>
+  <i18n path="editor.users.delete" tag="h2">
+    <template #user>
+      <code class="username">
+        <avatar :id="user.id" :name="user.displayName" />
+        {{ user.displayName }}
+      </code>
+    </template>
+  </i18n>
   <p class="lighter">
-    All {{ permissions.length }} of their permissions will be deleted.
-    This currently can not be undone.
+    {{ $t('editor.users.deleteConfirm', { count: permissions.length }) }}
   </p>
   <div>
     <button type="button" @click="deleteUser">
       <font-awesome icon="check" />
-      Delete user
+      {{ $t('editor.delete') }}
     </button>
     <button type="button" class="red" @click="$emit('close')">
       <font-awesome icon="times" />
-      Cancel
+      {{ $t('editor.cancel') }}
     </button>
   </div>
 </div>

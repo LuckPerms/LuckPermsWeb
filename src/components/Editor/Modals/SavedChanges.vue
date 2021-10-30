@@ -1,24 +1,21 @@
 <template>
 <div class="saved-changes">
-  <h2>Data was saved!</h2>
+  <h2>{{ $t('editor.saved') }}</h2>
 
   <p>
-    Run this command on your server to apply the changes:
+    {{ $t('editor.command') }}
   </p>
 
   <div class="command">
-    <code class="apply-edits" @click="copyCommand" title="Copy to clipboard">
+    <code class="apply-edits" @click="copyCommand" :title="$t('editor.clipboardCopy')">
       /{{ metaData.commandAlias }} applyedits {{ props }}
     </code>
     <span class="command-copied" v-if="commandCopied">
-    Command copied to clipboard
+      {{ $t('editor.copied') }}
     </span>
   </div>
 
-  <p>
-    <strong>Note:</strong> after running the <code>applyedits</code> command, you should generate
-    another editor URL to continue editing your server's permissions.
-  </p>
+  <p v-html="$t('editor.applyNote')" />
 </div>
 </template>
 

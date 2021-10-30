@@ -1,21 +1,17 @@
 <template>
 <div class="delete-group">
-  <h2>
-    Are you sure you want to delete group:
-    <code>{{ props.groupId }}</code>
-  </h2>
+  <h2 v-html="$t('editor.groups.delete', { group: props.groupId })" />
   <p class="lighter">
-    All {{ permissions.length }} of its permissions will be deleted.
-    This currently can not be undone.
+    {{ $t('editor.groups.deleteConfirm', { count: permissions.length }) }}
   </p>
   <div>
     <button type="button" @click="deleteGroup">
       <font-awesome icon="check" />
-      Delete group
+      {{ $t('editor.delete') }}
     </button>
     <button type="button" class="red" @click="$emit('close')">
       <font-awesome icon="times" />
-      Cancel
+      {{ $t('editor.cancel') }}
     </button>
   </div>
 </div>

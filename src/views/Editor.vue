@@ -5,11 +5,13 @@
         <img alt="LuckPerms logo" src="../assets/logo.svg">
         <div class="text">
           <h1>LuckPerms</h1>
-          <p>Web Permissions Editor</p>
+          <p>{{ $t('editor.description') }}</p>
           <router-link to="/editor/demo">
-            <button class="button demo-button">View Demo</button>
+            <button class="button demo-button">
+              {{ $t('tools.demo') }}
+            </button>
           </router-link>
-          <p>To start a new editor session, use one of the following commands:</p>
+          <p>{{ $t('editor.start') }}</p>
           <ul>
             <li><code>/lp editor</code></li>
             <li><code>/lp user &lt;user&gt; editor</code></li>
@@ -25,24 +27,34 @@
           <img alt="LuckPerms logo" src="../assets/logo.svg">
           <div class="text">
             <h1>LuckPerms</h1>
-            <p>Web Permissions Editor</p>
+            <p>{{ $t('editor.description') }}</p>
             <div v-if="!errors.load && !errors.unsupported">
               <p>
                 <font-awesome icon="asterisk" :spin="true" />
-                Loading data...
+                {{ $('editor.loading' )}}
               </p>
             </div>
 
             <div v-else class="error">
               <template v-if="errors.load">
-                <h3>Loading error</h3>
-                <p>Either the URL was copied wrong or the session has expired.</p>
-                <p>Please generate another editor session with <code>/lp editor</code></p>
+                <h3>{{ $t('editor.error.title') }}</h3>
+                <p>{{ $t('editor.error.info') }}</p>
+                <i18n path="editor.error.new" tag="p">
+                  <template #command>
+                    <code>/lp editor</code>
+                  </template>
+                </i18n>
               </template>
 
               <template v-if="errors.unsupported">
-                <h3>Unsupported version</h3>
-                <p>Please <router-link to="/download">download</router-link> the latest version of LuckPerms to use the Web Editor</p>
+                <h3>{{ $t('editor.unsupported.title') }}</h3>
+                <i18n path="editor.unsupported.info" tag="p">
+                  <template #download>
+                    <router-link to="/download">
+                      {{ $t('editor.unsupported.download') }}
+                    </router-link>
+                  </template>
+                </i18n>
               </template>
             </div>
           </div>
@@ -74,7 +86,7 @@
         <div class="editor-main">
           <nav>
             <div class="logo">
-              <h1>Web Permissions Editor</h1>
+              <p>{{ $t('editor.description') }}</p>
             </div>
             <div class="buttons">
               <div class="search">
@@ -93,11 +105,11 @@
               <button @click="saveData" title="Save and generate code">
                 <span v-if="saveStatus !== 'saving'">
                   <font-awesome icon="save" fixed-width />
-                  Save
+                  {{ $t('editor.save') }}
                 </span>
                 <span v-else>
                   <font-awesome icon="sync-alt" fixed-width :spin="true" />
-                  Saving...
+                  {{ $t('editor.saving') }}
                 </span>
               </button>
             </div>
@@ -106,7 +118,7 @@
 
             <div class="editor-no-session" v-if="!currentSession && !search.debouncedQuery">
               <font-awesome icon="arrow-left" />
-              <h1>Choose a group or user from the side bar</h1>
+              <h1>{{ $t('editor.groups.choose') }}</h1>
             </div>
 
             <div

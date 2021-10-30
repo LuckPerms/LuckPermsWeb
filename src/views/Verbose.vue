@@ -2,11 +2,11 @@
   <main class="verbose container">
     <div class="verbose-viewer" v-if="verboseData.status === 2">
       <div class="col-1">
-        <h1>Verbose viewer</h1>
+        <h1>{{ $t('verbose.title') }}</h1>
         <div class="meta-info">
           <table>
             <tr>
-              <td>Uploaded by</td>
+              <td>{{ $t('verbose.uploaded') }}</td>
               <td>
                 <avatar
                   v-if="verboseData.metadata.uploader.uuid !==
@@ -18,42 +18,42 @@
               </td>
             </tr>
             <tr>
-              <td title="When the recording started">
-                Start time
+              <td :title="$t('verbose.started')">
+                {{ $t('verbose.start') }}
               </td>
               <td>{{ verboseData.metadata.startTime }}</td>
             </tr>
             <tr>
-              <td title="When the recording ended">
-                End time
+              <td :title="$t('verbose.ended')">
+                {{ $t('verbose.end') }}
               </td>
               <td>{{ verboseData.metadata.endTime }}</td>
             </tr>
             <tr>
-              <td title="How long the plugin was recording for">
-                Duration
+              <td :title="$t('verbose.recording')">
+                {{ $t('verbose.duration') }}
               </td>
               <td>{{ verboseData.metadata.duration }}</td>
             </tr>
             <tr>
-              <td title="How many values matched and how many checks were made in total">
-                Count
+              <td :title="$t('verbose.values')">
+                {{ $t('verbose.count') }}
               </td>
               <td>
                 {{ verboseData.metadata.count.matched }} / {{ verboseData.metadata.count.total }}
               </td>
             </tr>
             <tr>
-              <td title="The string used to filter the output">
-                Filter
+              <td :title="$t('verbose.filterDesc')">
+                {{ $t('verbose.filter') }}
               </td>
               <td>
                 <code>{{ verboseData.metadata.filter }}</code>
               </td>
             </tr>
             <tr>
-              <td title="If the data was truncated (limited in size) when uploaded">
-                Truncated
+              <td :title="$t('verbose.truncatedDesc')">
+                {{ $t('verbose.truncated') }}
               </td>
               <td>
                 <code :class="verboseData.metadata.truncated ? 'true' : 'false'">
@@ -64,8 +64,8 @@
           </table>
         </div>
         <div class="filter">
-          Filter nodes by username or permission:
-          <input type="text" v-model="filter" placeholder="Enter filter here">
+          <label for="filter">{{ $t('verbose.filter') }}</label>
+          <input type="text" id="filter" v-model="filter" :placeholder="$t('verbose.filterPlaceholder')">
         </div>
       </div>
       <div class="col-2">
@@ -84,35 +84,47 @@
         <img alt="LuckPerms logo" src="../assets/logo.svg">
         <div class="text">
           <h1>LuckPerms</h1>
-          <p>Verbose Viewer</p>
+          <p>{{ $t('verbose.title') }}</p>
           <div v-if="verboseData.status === 3" class="error">
             <template v-if="errors.load">
-              <h3>Loading error</h3>
-              <p>Either the URL was copied wrong or the session has expired.</p>
-              <p>Please generate another verbose viewer with <code>/lp verbose</code></p>
+              <h3>{{ $t('editor.error.title') }}</h3>
+              <p>{{ $t('editor.error.info') }}</p>
+              <i18n path="editor.error.new" tag="p">
+                <template #command>
+                  <code>/lp editor</code>
+                </template>
+              </i18n>
             </template>
 
             <template v-if="errors.unsupported">
-              <h3>Unsupported version</h3>
-              <p>Please <router-link to="/download">download</router-link> the latest version of LuckPerms to use the Verbose Viewer</p>
+              <h3>{{ $t('editor.unsupported.title') }}</h3>
+              <i18n path="editor.unsupported.info" tag="p">
+                <template #download>
+                  <router-link to="/download">
+                    {{ $t('editor.unsupported.download') }}
+                  </router-link>
+                </template>
+              </i18n>
             </template>
           </div>
           <template v-if="verboseData.status === 1">
             <p>
               <font-awesome icon="asterisk" :spin="true" />
-              Loading data...
+              {{ $t('editor.loading') }}
             </p>
           </template>
           <template v-if="verboseData.status === 0">
             <router-link to="/verbose/demo">
-              <button class="button demo-button">View Demo</button>
+              <button class="button demo-button">
+                {{ $t('tools.demo') }}
+              </button>
             </router-link>
-            <p>To generate a verbose report, do the following in game or from the console:</p>
+            <p>{{ $t('verbose.home.generate') }}</p>
             <ul>
-              <li><code>/lp verbose record [filter]</code></li>
-              <li>Perform a series of actions that require permissions</li>
+              <li><code>/lp verbose record [{{ $t('verbose.home.filter') }}]</code></li>
+              <li>{{ $t('verbose.home.performActions') }}</li>
               <li><code>/lp verbose paste</code></li>
-              <li>Follow the URL that is generated</li>
+              <li>{{ $t('verbose.home.url') }}</li>
             </ul>
           </template>
         </div>

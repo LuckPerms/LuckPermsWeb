@@ -2,11 +2,11 @@
   <main class="tree container">
     <div class="tree-viewer" v-if="metaData">
       <div class="col-1">
-        <h1>Permission Tree Viewer</h1>
+        <h1>{{ $t('tree.title') }}</h1>
         <div class="meta-info">
           <table>
             <tr>
-              <td>Uploaded by</td>
+              <td>{{ $t('tree.uploaded') }}</td>
               <td>
                 <avatar
                   v-if="metaData.uploader.uuid !== '00000000-0000-0000-0000-000000000000'"
@@ -17,8 +17,8 @@
               </td>
             </tr>
             <tr>
-              <td title="When the recording started">
-                Time
+              <td :title="$t('tree.started')">
+                {{ $t('tree.time') }}
               </td>
               <td>{{ metaData.time }}</td>
             </tr>
@@ -31,8 +31,8 @@
               </td>
             </tr>
             <tr v-if="metaData.referenceUser">
-              <td title="Reference user">
-                Reference user
+              <td :title="$t('tree.user')">
+                {{ $t('tree.user') }}
               </td>
               <td>
                 <avatar
@@ -46,11 +46,11 @@
         </div>
         <button @click="expandTree">
           <font-awesome icon="plus-square" />
-          Expand
+          {{ $t('tree.expand') }}
         </button>
         <button @click="collapseTree">
           <font-awesome icon="minus-square" />
-          Collapse
+          {{ $t('tree.collapse') }}
         </button>
       </div>
       <div class="col-2">
@@ -69,27 +69,41 @@
         <img alt="LuckPerms logo" src="../assets/logo.svg">
         <div class="text">
           <h1>LuckPerms</h1>
-          <p>Permission Tree Viewer</p>
+          <p>{{ $t('tree.title') }}</p>
           <template v-if="!errors.load && !errors.unsupported">
             <router-link to="/treeview/demo">
-              <button class="button demo-button">View Demo</button>
+              <button class="button demo-button">
+                {{ $t('tools.demo') }}
+              </button>
             </router-link>
-            <p>To generate a permission tree, do the following in game or from the console:</p>
+            <p>{{ $t('tree.home.generate') }}</p>
             <ul>
-              <li><code>/lp tree [scope] [player]</code></li>
-              <li>Follow the URL that is generated</li>
+              <li>
+                <code>/lp tree [{{ $t('tree.home.scope') }}] [{{ $t('tree.home.player') }}]</code>
+              </li>
+              <li>{{ $t('tree.home.url') }}</li>
             </ul>
           </template>
           <div v-else class="error">
             <template v-if="errors.load">
-              <h3>Loading error</h3>
-              <p>Either the URL was copied wrong or the session has expired.</p>
-              <p>Please generate another tree viewer with <code>/lp tree</code></p>
+              <h3>{{ $t('editor.error.title') }}</h3>
+              <p>{{ $t('editor.error.info') }}</p>
+              <i18n path="editor.error.new" tag="p">
+                <template #command>
+                  <code>/lp editor</code>
+                </template>
+              </i18n>
             </template>
 
             <template v-if="errors.unsupported">
-              <h3>Unsupported version</h3>
-              <p>Please <router-link to="/download">download</router-link> the latest version of LuckPerms to use the Tree Viewer</p>
+              <h3>{{ $t('editor.unsupported.title') }}</h3>
+              <i18n path="editor.unsupported.info" tag="p">
+                <template #download>
+                  <router-link to="/download">
+                    {{ $t('editor.unsupported.download') }}
+                  </router-link>
+                </template>
+              </i18n>
             </template>
           </div>
         </div>

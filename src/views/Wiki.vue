@@ -4,7 +4,7 @@
       <router-view />
     </article>
     <aside>
-      <h1>Wiki</h1>
+      <h1>{{ $t('wiki') }}</h1>
       <sidebar />
     </aside>
   </main>
@@ -174,7 +174,7 @@ export default {
       }
 
       p, ol, ul {
-        // Prioritse the system font for wiki content
+        // Prioritise the system font for wiki content
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu,
           Cantarell, 'Helvetica Neue', sans-serif;
         color: rgba(255,255,255,.76);

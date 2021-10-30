@@ -1,6 +1,6 @@
 <template>
   <div class="move-nodes-modal">
-    <h2>Move {{ selectedNodes.length }} node{{ selectedNodes.length === 1 ? '' : 's' }} to...</h2>
+    <h2>{{ $tc('editor.nodes.move', selectedNodes.length) }}</h2>
     <div class="col-2">
       <ul>
         <li
@@ -16,7 +16,7 @@
       <div>
         <button :disabled="!selectedSession" @click="moveNodes">
           <font-awesome icon="sign-in-alt" />
-          Move
+          {{ $t('editor.move') }}
         </button>
       </div>
     </div>

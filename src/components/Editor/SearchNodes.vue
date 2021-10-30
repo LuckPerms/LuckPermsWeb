@@ -21,7 +21,7 @@
       </li>
     </ul>
     <div v-else class="no-results">
-      No results found
+      {{ $t('editor.noResults') }}
     </div>
   </div>
 </template>

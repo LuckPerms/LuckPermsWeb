@@ -1,15 +1,15 @@
 <template>
 <div class="add-track">
-  <h2>{{ isAddingTrack ? 'Create a' : 'Edit' }} track</h2>
+  <h2>{{ $t(`editor.tracks.${isAddingTrack ? 'create' : 'edit'}`) }}</h2>
   <div class="row">
     <div class="col">
       <div class="form-group">
-        <label for="trackName">Track name</label>
+        <label for="trackName">{{ $t('editor.tracks.name') }}</label>
         <input type="text" id="trackName" :value="track.id" @input="updateTrackName($event)">
       </div>
 
-      <h3>Groups</h3>
-      <p>Tip: click and drag to re-order the track</p>
+      <h3>{{ $t('editor.tracks.groups') }}</h3>
+      <p>{{ $t('editor.tracks.tip') }}</p>
       <draggable tag="ol" class="track-groups" v-model="track.groups">
         <li v-for="(group, index) in track.groups" :key="`track_group_${group}`">
           <span><span>{{ index+1 }}</span> {{ group }}</span>
@@ -20,7 +20,7 @@
       </draggable>
     </div>
     <div class="col">
-      <h3>Add groups</h3>
+      <h3>{{ $t('editor.tracks.addGroups') }}</h3>
       <ul class="available-groups">
         <li
           v-for="group in availableGroups"
@@ -34,8 +34,8 @@
     </div>
   </div>
   <button type="button" @click="addTrack" :disabled="buttonDisabled" class="save-button">
-    <font-awesome icon="plus-circle" />
-    {{ isAddingTrack ? 'Add' : 'Save' }} track
+    <font-awesome :icon="isAddingTrack ? 'plus-circle' : 'save'" />
+    {{ $t(`editor.tracks.${isAddingTrack ? 'add' : 'save'}`) }}
   </button>
 </div>
 </template>

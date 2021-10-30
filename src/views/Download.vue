@@ -2,12 +2,10 @@
   <main class="download">
     <section class="hero">
       <div class="container">
-        <div>
-          <h1>Download LuckPerms</h1>
-        </div>
+          <h1>{{ $t('download.title') }}</h1>
         <div class="version">
           <p><span>v{{ version }}</span></p>
-          <p>Latest, built {{ relativeTimestamp }}</p>
+          <p>{{ $t('download.build', { time: relativeTimestamp }) }}</p>
           <font-awesome icon="asterisk" :spin="true" v-if="!version" />
         </div>
       </div>
@@ -16,7 +14,7 @@
     <div class="container">
       <section class="resources">
         <div>
-          <h2>Choose your server type</h2>
+          <h2>{{ $t('download.typeChoose') }}</h2>
           <a
             :href="downloads.bukkit"
             v-on:click="logDownload('bukkit')"
@@ -26,7 +24,7 @@
               <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit
             </span>
-            <small>Spigot, Paper etc. (1.8.8 to 1.17)</small>
+            <small>{{ $t('download.bukkit') }}</small>
           </a>
           <a
             :href="downloads.bungee"
@@ -37,7 +35,7 @@
               <img src="@/assets/logos/bungeecord.png" alt="BungeeCord">
               BungeeCord
             </span>
-            <small>BungeeCord, Waterfall etc. (latest only)</small>
+            <small>{{ $t('download.bungee') }}</small>
           </a>
           <a
             :href="downloads.sponge"
@@ -48,7 +46,7 @@
               <img src="@/assets/logos/sponge.png" alt="Sponge">
               Sponge
             </span>
-            <small>SpongeForge &amp; SpongeVanilla (API 5 to 7)</small>
+            <small>{{ $t('download.sponge') }}</small>
           </a>
           <a
             :href="downloads.fabric"
@@ -59,7 +57,7 @@
               <img src="@/assets/logos/fabric.png" alt="Fabric">
               Fabric
             </span>
-            <small>Fabric (1.17)</small>
+            <small>{{ $t('download.fabric') }}</small>
           </a>
           <a
             :href="downloads.nukkit"
@@ -70,7 +68,7 @@
               <img src="@/assets/logos/nukkit.png" alt="Nukkit">
               Nukkit
             </span>
-            <small>NukkitX (b93 or newer)</small>
+            <small>{{ $t('download.nukkit') }}</small>
           </a>
           <a
             :href="downloads.velocity"
@@ -81,7 +79,7 @@
               <img src="@/assets/logos/velocity.png" alt="Velocity">
               Velocity
             </span>
-            <small>Velocity (3.0.0 or newer)</small>
+            <small>{{ $t('download.velocity') }}</small>
           </a>
           <a
             :href="downloads['bukkit-legacy']"
@@ -92,16 +90,16 @@
               <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit Legacy
             </span>
-            <small>Spigot, Paper etc. (1.7.10 only)</small>
+            <small>{{ $t('download.bukkitLegacy') }}</small>
           </a>
           <button class="button" @click="openQuiz">
             <font-awesome icon="question-circle" />
-            Not sure which type?
+            {{ $t('download.typeHelp') }}
           </button>
         </div>
 
         <div>
-          <h2>Recent Changelog</h2>
+          <h2>{{ $t('download.changelog') }}</h2>
           <ul class="changelog">
             <li v-for="entry in changeLog" :key="entry.version">
               <span>
@@ -116,26 +114,34 @@
               <span class="time lighter">{{ relativeDate(entry.timestamp) }}</span>
             </li>
           </ul>
-          <h2>How to install</h2>
+          <h2>{{ $t('download.install.title') }}</h2>
           <ol>
-            <li>Add the downloaded plugin <code>.jar</code> file into your server's
-              <code>plugins</code> or <code>mods</code> folder.</li>
-            <li>Start or restart your server - <strong>do not reload!</strong></li>
-            <li>Locate the plugin's configuration file (usually found within
-              <code>/plugins/LuckPerms/</code>) and adjust any settings to your liking.</li>
-            <li>Start setting up your permissions! Check out the
-              <router-link to="wiki/Usage">Getting Started</router-link> guide for more info.</li>
+            <li v-html="$t('download.install.add')" />
+            <li v-html="$t('download.install.restart')" />
+            <li v-html="$t('download.install.config')" />
+            <i18n path="download.install.setup" tag="li">
+              <template #wiki>
+                <router-link to="wiki/Usage">
+                  {{ $t('download.install.wiki') }}
+                </router-link>
+              </template>
+            </i18n>
           </ol>
-          <h2>Having trouble installing?</h2>
+          <h2>{{ $t('download.trouble.title') }}</h2>
           <ul>
-            <li>Make sure to check your console for any error messages - especially during start
-              up</li>
-            <li>Check the more detailed
-              <router-link to="wiki/Installation">Installation</router-link> wiki page to see if you
-              need to perform any additional steps.</li>
-            <li>If all else fails, get in touch with us on
-              <a href="https://discord.gg/luckperms" target="_blank">Discord</a>
-              and we'll be happy to help.</li>
+            <li v-html="$t('download.trouble.console')" />
+            <i18n path="download.trouble.read" tag="li">
+              <template #wiki>
+                <router-link to="wiki/Installation">
+                  {{ $t('download.trouble.wiki') }}
+                </router-link>
+              </template>
+            </i18n>
+            <i18n path="download.trouble.support" tag="li">
+              <template #discord>
+                  <a href="https://discord.gg/luckperms" target="_blank">Discord</a>
+              </template>
+            </i18n>
           </ul>
         </div>
       </section>
@@ -143,10 +149,14 @@
     <section class="hero extensions">
       <div class="container">
         <div>
-          <h1>Extensions</h1>
-          <p>Extensions can modify the behaviour of LuckPerms, you can read more about them
-            <router-link to="/wiki/Extensions">on the wiki</router-link>.
-          </p>
+          <h1>{{ $t('download.extensions.title') }}</h1>
+          <i18n path="download.extensions.description" tag="p">
+            <template #wiki>
+              <router-link to="/wiki/Extensions">
+                {{ $t('download.extensions.descriptionWiki') }}
+              </router-link>
+            </template>
+          </i18n>
         </div>
       </div>
     </section>
@@ -160,18 +170,19 @@
           >
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
-              Legacy API Extension
+              {{ $t('download.extensions.legacy') }}
             </span>
-            <small>LuckPerms 5.0 and above</small>
+            <small>{{ $t('download.extensions.version') }}</small>
           </a>
           <div>
-            <p>Allows some common API methods to be used by plugins that haven't upgraded to v5
-              version of the API yet.
-            </p>
-            <p>Check out the
-              <router-link to="/wiki/Extensions#extension-legacy-api">wiki section</router-link>
-              for more information.
-            </p>
+            <p>{{ $t('download.extensions.legacyInfo') }}</p>
+            <i18n path="download.extensions.more" tag="p">
+              <template #wiki>
+                <router-link to="/wiki/Extensions#extension-legacy-api">
+                  {{ $t('download.extensions.wiki') }}
+                </router-link>
+              </template>
+            </i18n>
           </div>
         </div>
         <div>
@@ -182,15 +193,18 @@
           >
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
-              Default Assignments Extension
+              {{ $t('download.extensions.defaultAssignments') }}
             </span>
-            <small>LuckPerms 5.0 and above</small>
+            <small>{{ $t('download.extensions.version') }}</small>
           </a>
           <div>
-            <p>Provides an alternate approach for assigning
-              <router-link to="/wiki/Default-Groups">default groups</router-link>
-              if the recommended way is impractical.
-            </p>
+            <i18n path="download.extensions.defaultAssignmentsInfo" tag="p">
+              <template #wiki>
+                <router-link to="/wiki/Default-Groups">
+                  {{ $t('download.extensions.groups') }}
+                </router-link>
+              </template>
+            </i18n>
             <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
               section</router-link> for more information. See also
               <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about

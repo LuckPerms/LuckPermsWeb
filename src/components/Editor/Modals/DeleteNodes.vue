@@ -1,17 +1,16 @@
 <template>
   <div class="delete-nodes-modal">
-    <h2>Delete {{ selectedNodes.length }} node{{ selectedNodes.length === 1 ? '' : 's' }}?</h2>
+    <h2>{{ $tc('editor.nodes.delete', selectedNodes.length) }}</h2>
     <div class="col-2">
       <div>
         <p>
-          Are you sure you want to delete {{ selectedNodes.length }}
-          permission node{{ selectedNodes.length === 1 ? '' : 's' }}?
+          {{ $tc('editor.nodes.deleteConfirm', selectedNodes.length) }}
         </p>
       </div>
       <div>
         <button @click="deleteNodes">
           <font-awesome icon="times" />
-          Delete
+          {{ $t('editor.delete') }}
         </button>
       </div>
     </div>

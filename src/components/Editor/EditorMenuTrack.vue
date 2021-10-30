@@ -2,16 +2,16 @@
   <div class="editor-menu-track">
     <h3 @click="toggle = !toggle">
       <span>
-        <button title="Show/hide track groups">
+        <button :title="$t('editor.tracks.toggleGroup')">
           <font-awesome icon="caret-right" fixed-width :rotation="toggle ? 90 : null" />
         </button>
         <span>{{ track.id }}</span>
       </span>
       <span class="actions">
-        <button @click.stop="editTrack" title="Edit track">
+        <button @click.stop="editTrack" :title="$t('editor.tracks.edit')">
           <font-awesome icon="edit" fixed-width />
         </button>
-        <button @click.stop="deleteTrack" title="Delete track">
+        <button @click.stop="deleteTrack" :title="$t('editor.tracks.delete')">
           <font-awesome icon="times" fixed-width />
         </button>
       </span>
@@ -26,7 +26,7 @@
             'modified': modifiedSessions.includes(group)
           }"
           :key="`${track.id}_${group}`"
-          title="Edit group"
+          :title="$t('editor.groups.edit')"
         >
           {{ group }}
         </li>

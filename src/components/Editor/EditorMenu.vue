@@ -3,11 +3,11 @@
     <div class="filter">
       <input
         type="text"
-        placeholder="Filter groups/users"
+        :placeholder="$t('editor.search')"
         v-model="filter"
-        title="Filter tracks, groups and users"
+        :title="$t('editor.tracks.filter')"
       >
-      <button class="delete" @click="filter = ''" v-if="filter !== ''" title="Clear filter">
+      <button class="delete" @click="filter = ''" v-if="filter !== ''" :title="$t('editor.clearFilters')">
         <font-awesome icon="times" fixed-width />
       </button>
     </div>
@@ -15,14 +15,14 @@
     <div class="sessions">
       <div class="tracks">
         <h2 @click="toggle.tracks = !toggle.tracks">
-          <button title="Show/hide tracks">
+          <button :title="$t('editor.tracks.toggle')">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.tracks ? 90 : null" />
           </button>
           <span>
-            Tracks
+            {{ $t('editor.nav.tracks') }}
             <small>({{ filteredTracks.length }})</small>
           </span>
-          <button @click.stop="createTrack" title="Add a track">
+          <button @click.stop="createTrack" :title="$t('editor.tracks.add')">
             <font-awesome icon="plus-circle" fixed-width />
           </button>
         </h2>
@@ -46,11 +46,11 @@
 
       <div class="groups">
         <h2 @click="toggle.groups = !toggle.groups">
-          <button title="Show/hide groups">
+          <button :title="$t('editor.groups.toggle')">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.groups ? 90 : null" />
           </button>
           <span>
-          Groups
+          {{ $t('editor.nav.groups') }}
           <small>({{ filteredGroups.length }})</small>
         </span>
           <button @click.stop="createGroup" title="Add a group">
@@ -68,7 +68,7 @@
                 'new': group.new
               }"
               :key="`group_${group.id}`"
-              title="Edit group"
+              :title="$t('editor.groups.edit')"
             >
               <EditorMenuGroup
                 :group="group"
@@ -81,11 +81,11 @@
 
       <div class="users">
         <h2 @click="toggle.users = !toggle.users">
-          <button title="Show/hide users">
+          <button :title="$t('editor.users.toggle')">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.users ? 90 : null" />
           </button>
           <span>
-          Users
+          {{ $t('editor.nav.users') }}
           <small>({{ filteredUsers.length }})</small>
         </span>
 <!--      Add a fake button to force the flex layout-->
@@ -98,7 +98,7 @@
               @click="changeCurrentSession(user.id)"
               :class="{'active': currentSession && currentSession === user}"
               :key="user.id"
-              title="Edit user"
+              :title="$t('editor.users.edit')"
             >
               <span class="username">
                 <avatar :id="user.id" :title="false" />

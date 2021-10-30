@@ -49,8 +49,9 @@ import VueClipboard from 'vue-clipboard2';
 import VueMeta from 'vue-meta';
 
 import store from './store';
-import App from './App.vue';
 import router from './router';
+import i18n from './i18n';
+import App from './App.vue';
 
 require('@/scss/_index.scss');
 
@@ -110,5 +111,6 @@ Vue.use(VueMeta);
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App),
 }).$mount('#app');

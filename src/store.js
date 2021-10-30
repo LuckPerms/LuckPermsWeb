@@ -27,6 +27,13 @@ export default new Vuex.Store({
       'extension-legacy-api': null,
       'extension-default-assignments': null,
     },
+    additionalPlugins: {
+      extracontexts: null,
+    },
+    placeholderExpansions: {
+      'luckperms-mvdw-hook': null,
+      'luckperms-papi-expansion': null,
+    },
     discordUserCount: null,
     patreonCount: null,
     editor: {
@@ -70,6 +77,10 @@ export default new Vuex.Store({
     downloads: state => state.downloads,
 
     extensions: state => state.extensions,
+
+    additionalPlugins: state => state.additionalPlugins,
+
+    placeholderExpansions: state => state.placeholderExpansions,
 
     discordUserCount: state => state.discordUserCount,
 
@@ -137,6 +148,14 @@ export default new Vuex.Store({
 
     setExtensions: (state, extensions) => {
       state.extensions = extensions;
+    },
+
+    setAdditionalPlugins: (state, additionalPlugins) => {
+      state.additionalPlugins = additionalPlugins;
+    },
+
+    setPlaceholderExpansions: (state, placeholderExpansions) => {
+      state.placeholderExpansions = placeholderExpansions;
     },
 
     setDiscordUserCount: (state, discordUserCount) => {
@@ -474,6 +493,8 @@ export default new Vuex.Store({
         commit('setChangeLog', appData.data.changeLog);
         commit('setDownloads', appData.data.downloads);
         commit('setExtensions', appData.data.extensions);
+        commit('setAdditionalPlugins', appData.data.additionalPlugins);
+        commit('setPlaceholderExpansions', appData.data.placeholderExpansions);
         commit('setDiscordUserCount', appData.data.discordUserCount);
         commit('setPatreonCount', appData.data.patreonCount);
       } catch (error) {

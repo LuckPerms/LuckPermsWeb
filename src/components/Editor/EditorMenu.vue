@@ -81,7 +81,7 @@
 
       <div class="users">
         <h2 @click="toggle.users = !toggle.users">
-          <button :title="$t('editor.users.toggle')">
+          <button :title="$t('editor.users.toggleUsers')">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.users ? 90 : null" />
           </button>
           <span>

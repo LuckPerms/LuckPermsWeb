@@ -85,6 +85,7 @@ export default {
       legacyInfo: 'Allows some common API methods to be used by plugins that haven\'t upgraded to v5 version of the API yet.',
       more: 'Check out the {wiki} for more information!',
       wiki: 'wiki section',
+      wikiThis: 'this section',
       defaultAssignments: 'Default Assignments Extension',
       defaultAssignmentsInfo: 'Provides an alternate approach for assigning {wiki} if the recommended way is impractical.',
       defaultAssignmentsInfoMore: 'Check out the {wikiSection} for more information. See also {thisSection} about configuring default assignments.',

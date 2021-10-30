@@ -210,10 +210,10 @@
               tag="p"
             >
               <template #wikiSection>
-                <router-link to="/wiki/Extensions#extension-default-assignments">wiki section</router-link>
+                <router-link to="/wiki/Extensions#extension-default-assignments">{{ $t('download.extensions.wiki') }}</router-link>
               </template>
               <template #thisSection>
-                <router-link to="/wiki/Default-Groups#configure-default-assignments">this section</router-link>
+                <router-link to="/wiki/Default-Groups#configure-default-assignments">{{ $t('download.extensions.wikiThis') }}</router-link>
               </template>
             </i18n>
           </div>

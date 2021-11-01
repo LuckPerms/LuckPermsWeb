@@ -52,7 +52,7 @@ export default {
   download: {
     title: 'Download LuckPerms',
     build: 'Latest, built {time}',
-    typeHelp: 'Not sure wich type?',
+    typeHelp: 'Not sure which type?',
     typeChoose: 'Choose your server type',
     bukkit: 'Spigot, Paper etc. (1.8.8 to 1.17)',
     bungee: 'BungeeCord, Waterfall etc. (latest only)',

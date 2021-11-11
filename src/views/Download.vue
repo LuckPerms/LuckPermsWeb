@@ -253,7 +253,7 @@
             tag="p"
           >
             <template #placeholders>
-              <router-link to="/wiki/Placeholders#placeholders">placeholders</router-link>
+              <router-link to="/wiki/Placeholders#placeholders">{{ $t('download.placeholderExpansions.placeholders') }}</router-link>
             </template>
           </i18n>
         </div>

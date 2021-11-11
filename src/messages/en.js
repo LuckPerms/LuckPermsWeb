@@ -103,6 +103,7 @@ export default {
       title: 'Placeholder Expansions',
       description: 'LuckPerms adds {placeholders} to PlaceholderAPI and MVdWPlaceholderAPI',
       placeholderApi: 'PlaceholderAPI',
+      placeholders: 'Placeholders',
       placeholderApiInfo: 'Install using either {command} or by {installingManually}.',
       placeholderApiInstallingManually: 'installing manually',
       mvdwPlaceholderApi: 'MVdWPlaceholderAPI',

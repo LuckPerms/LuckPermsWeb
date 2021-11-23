@@ -64,6 +64,17 @@
             </li>
           </ul>
         </li>
+        <li>
+          <span :class="{ 'router-link-active': isToolsRoute, tools: true }">
+            <font-awesome icon="language" fixed-width />
+            {{ $t('languages') }}
+          </span>
+          <ul>
+            <li v-for="language in languages" @click="$i18n.locale=language.lang">
+            <span>{{ language.name }}</span>
+            </li>
+          </ul>
+        </li>
         <template v-if="!config.selfHosted">
           <li class="external overlap">
             <a href="https://github.com/LuckPerms/LuckPerms" target="_blank" class="github">
@@ -159,6 +170,10 @@ export default {
   data() {
     return {
       menu: false,
+      languages: [
+        { name: 'ENGLISH', lang: 'en' },
+        { name: '中文(简体)', lang: 'zh_cn' },
+      ],
     };
   },
 

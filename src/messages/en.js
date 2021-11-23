@@ -1,4 +1,6 @@
 export default {
+  languages: 'Languages',
+
   description: 'A permissions plugin for Minecraft servers.',
   close: 'Close',
   copy: 'Copy',

@@ -723,6 +723,7 @@ export default new Vuex.Store({
       commit('setSaveStatus', 'saving');
 
       const payload = {
+        sessionId: state.editor.sessionId,
         changes: [],
         groupDeletions: state.editor.deletedGroups,
         trackDeletions: state.editor.deletedTracks,

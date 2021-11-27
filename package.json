@@ -13,7 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "@turbotailz/vuejs-datepicker": "^1.6.3",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "core-js": "^2.6.5",
     "git-describe": "^4.0.4",
     "highlight.js": "^10.2.0",

@@ -511,6 +511,23 @@
           "value": true
         }
       ]
+    },
+    {
+      "type": "user",
+      "id": "7f0c11f3-920c-4c04-bde5-2cf45485d485",
+      "displayName": "ANutley",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.default",
+          "value": true
+        },
+        {
+          "type": "inheritance",
+          "key": "group.helper",
+          "value": true
+        }
+      ]
     }
   ],
   "tracks": [

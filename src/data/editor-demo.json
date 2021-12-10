@@ -506,7 +506,24 @@
           "value": true
         }
       ]
-    }
+    },
+    {
+      "type": "user",
+      "id": "9490b898-856a-4aae-8de3-2986d007269b",
+      "displayName": "Aberdeener",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.default",
+          "value": true
+        },
+        {
+          "type": "inheritance",
+          "key": "group.helper",
+          "value": true
+        }
+      ]
+    },
   ],
   "tracks": [
     {

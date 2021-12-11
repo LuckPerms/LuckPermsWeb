@@ -65,7 +65,12 @@
         </div>
         <div class="filter">
           <label for="filter">{{ $t('verbose.filter') }}</label>
-          <input type="text" id="filter" v-model="filter" :placeholder="$t('verbose.filterPlaceholder')">
+          <input
+            type="text"
+            id="filter"
+            v-model="filter"
+            :placeholder="$t('verbose.filterPlaceholder')"
+          >
         </div>
       </div>
       <div class="col-2">

@@ -71,6 +71,41 @@
             v-model="filter"
             :placeholder="$t('verbose.filterPlaceholder')"
           >
+          <table>
+            <tr>
+              <td>
+                <div
+                  :class="{ 'exclude-result': true, 'selected': isExcluded('true') }"
+                  @click="excludeResult('true')"
+                >
+                  <span></span>
+                </div>
+              </td>
+              <td>Exclude <code :class="'true'">true</code></td>
+            </tr>
+            <tr>
+              <td>
+                <div
+                  :class="{ 'exclude-result': true, 'selected': isExcluded('false') }"
+                  @click="excludeResult('false')"
+                >
+                  <span></span>
+                </div>
+              </td>
+              <td>Exclude <code :class="'false'">false</code></td>
+            </tr>
+            <tr>
+              <td>
+                <div
+                  :class="{ 'exclude-result': true, 'selected': isExcluded('undefined') }"
+                  @click="excludeResult('undefined')"
+                >
+                  <span></span>
+                </div>
+              </td>
+              <td>Exclude <code :class="'undefined'">undefined</code></td>
+            </tr>
+          </table>
         </div>
       </div>
       <div class="col-2">
@@ -155,6 +190,7 @@ export default {
   data() {
     return {
       filter: '',
+      excludedResults: [],
     };
   },
   computed: {
@@ -162,16 +198,29 @@ export default {
     verboseData() { return this.$store.getters.verbose; },
     filteredNodes() {
       const { data } = this.verboseData;
-      if (!this.filter) return data;
+      if (!this.filter && this.excludedResults.length === 0) return data;
       const filter = this.filter.toLowerCase();
       return data.filter(node => (
-        node.permission?.toLowerCase().includes(filter)
+        !this.excludedResults.includes(node.result)
+        && (node.permission?.toLowerCase().includes(filter)
         || node.key?.toLowerCase().includes(filter)
-        || node.who?.identifier.toLowerCase().includes(filter)
+        || node.who?.identifier.toLowerCase().includes(filter))
       ));
     },
     errors() { return this.$store.state.verbose.errors; },
     filteredNodeCount() { return this.filteredNodes.length; },
+  },
+  methods: {
+    isExcluded(value) {
+      return this.excludedResults.includes(value);
+    },
+    excludeResult(value) {
+      if (this.isExcluded(value)) {
+        this.excludedResults = this.excludedResults.filter(result => result !== value);
+      } else {
+        this.excludedResults.push(value);
+      }
+    },
   },
   created() {
     if (this.verboseData?.sessionId) return;
@@ -234,6 +283,35 @@ export default {
           padding: .5rem 1rem;
           border: 0;
           margin-top: .5rem;
+        }
+
+        .exclude-result {
+          padding-top: 1rem;
+          flex: 0 0 auto;
+
+          span {
+            display: block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid $grey;
+            position: relative;
+          }
+
+          &.selected {
+            span {
+              &:after {
+                position: absolute;
+                display: block;
+                content: '';
+                width: 1rem;
+                height: .5rem;
+                border: 4px solid $brand-color;
+                border-top: 0;
+                border-right: 0;
+                transform: rotate(-45deg);
+              }
+            }
+          }
         }
       }
     }

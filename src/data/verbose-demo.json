@@ -65,7 +65,7 @@
       "thread": "pool-8-thread-1",
       "type": "permission",
       "permission": "luckperms.user.info",
-      "result": "true",
+      "result": "false",
       "origin": "platform_permission_check"
     },
     {
@@ -120,7 +120,7 @@
       "thread": "pool-8-thread-1",
       "type": "permission",
       "permission": "luckperms.user.info",
-      "result": "true",
+      "result": "undefined",
       "origin": "platform_permission_check"
     },
     {

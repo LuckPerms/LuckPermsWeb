@@ -81,7 +81,7 @@
                   <span></span>
                 </div>
               </td>
-              <td>Exclude <code :class="'true'">true</code></td>
+              <td>{{ $t('verbose.exclude') }} <code :class="'true'">true</code></td>
             </tr>
             <tr>
               <td>
@@ -92,7 +92,7 @@
                   <span></span>
                 </div>
               </td>
-              <td>Exclude <code :class="'false'">false</code></td>
+              <td>{{ $t('verbose.exclude') }} <code :class="'false'">false</code></td>
             </tr>
             <tr>
               <td>
@@ -103,7 +103,7 @@
                   <span></span>
                 </div>
               </td>
-              <td>Exclude <code :class="'undefined'">undefined</code></td>
+              <td>{{ $t('verbose.exclude') }} <code :class="'undefined'">undefined</code></td>
             </tr>
           </table>
         </div>

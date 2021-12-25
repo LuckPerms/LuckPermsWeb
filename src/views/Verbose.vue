@@ -211,14 +211,14 @@ export default {
     filteredNodeCount() { return this.filteredNodes.length; },
   },
   methods: {
-    isExcluded(value) {
-      return this.excludedResults.includes(value);
+    isExcluded(result) {
+      return this.excludedResults.includes(result);
     },
-    excludeResult(value) {
-      if (this.isExcluded(value)) {
-        this.excludedResults = this.excludedResults.filter(result => result !== value);
+    excludeResult(result) {
+      if (this.isExcluded(result)) {
+        this.excludedResults = this.excludedResults.filter(r => r !== result);
       } else {
-        this.excludedResults.push(value);
+        this.excludedResults.push(result);
       }
     },
   },
@@ -312,6 +312,14 @@ export default {
               }
             }
           }
+        }
+
+        td:first-child {
+          width: 20%;
+        }
+
+        td:nth-child(2) {
+          padding-top: 15px;
         }
       }
     }

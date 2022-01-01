@@ -121,9 +121,7 @@
             <li v-html="$t('download.install.config')" />
             <i18n path="download.install.setup" tag="li">
               <template #wiki>
-                <router-link to="wiki/Usage">
-                  {{ $t('download.install.wiki') }}
-                </router-link>
+                <router-link to="wiki/Usage">{{ $t('download.install.wiki') }}</router-link>
               </template>
             </i18n>
           </ol>
@@ -132,9 +130,7 @@
             <li v-html="$t('download.trouble.console')" />
             <i18n path="download.trouble.read" tag="li">
               <template #wiki>
-                <router-link to="wiki/Installation">
-                  {{ $t('download.trouble.wiki') }}
-                </router-link>
+                <router-link to="wiki/Installation">{{ $t('download.trouble.wiki') }}</router-link>
               </template>
             </i18n>
             <i18n path="download.trouble.support" tag="li">
@@ -152,9 +148,7 @@
           <h1>{{ $t('download.extensions.title') }}</h1>
           <i18n path="download.extensions.description" tag="p">
             <template #wiki>
-              <router-link to="/wiki/Extensions">
-                {{ $t('download.extensions.descriptionWiki') }}
-              </router-link>
+              <router-link to="/wiki/Extensions">{{ $t('download.extensions.descriptionWiki') }}</router-link>
             </template>
           </i18n>
         </div>

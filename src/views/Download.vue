@@ -177,10 +177,8 @@
           <div>
             <p>{{ $t('download.extensions.legacyInfo') }}</p>
             <i18n path="download.extensions.more" tag="p">
-              <template #wiki>
-                <router-link to="/wiki/Extensions#extension-legacy-api">
-                  {{ $t('download.extensions.wiki') }}
-                </router-link>
+              <template #wikiSection>
+                <router-link to="/wiki/Extensions#extension-legacy-api">{{ $t('download.extensions.wikiSection') }}</router-link>
               </template>
             </i18n>
           </div>
@@ -199,21 +197,16 @@
           </a>
           <div>
             <i18n path="download.extensions.defaultAssignmentsInfo" tag="p">
-              <template #wiki>
-                <router-link to="/wiki/Default-Groups">
-                  {{ $t('download.extensions.groups') }}
-                </router-link>
+              <template #defaultGroups>
+                <router-link to="/wiki/Default-Groups">{{ $t('download.extensions.defaultGroups') }}</router-link>
               </template>
             </i18n>
             <i18n
-              path="download.extensions.defaultAssignmentsInfoMore"
+              path="download.extensions.more"
               tag="p"
             >
               <template #wikiSection>
-                <router-link to="/wiki/Extensions#extension-default-assignments">{{ $t('download.extensions.wiki') }}</router-link>
-              </template>
-              <template #thisSection>
-                <router-link to="/wiki/Default-Groups#configure-default-assignments">{{ $t('download.extensions.wikiThis') }}</router-link>
+                <router-link to="/wiki/Extensions#extension-default-assignments">{{ $t('download.extensions.wikiSection') }}</router-link>
               </template>
             </i18n>
           </div>

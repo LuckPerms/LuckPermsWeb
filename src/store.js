@@ -240,14 +240,12 @@ export default new Vuex.Store({
       if (type === 'group') {
         state.editor.deletedGroups.push(sessionId);
 
-        state.editor.tracks = state.editor.tracks.map(track =>
-          track.groups.includes(sessionId)
+        state.editor.tracks = state.editor.tracks.map(track => (track.groups.includes(sessionId)
           ? {
             ...track,
             groups: track.groups.filter(group => group !== sessionId),
           }
-          : track
-        );
+          : track));
       } else if (type === 'user') {
         state.editor.deletedUsers.push(sessionId);
       }
@@ -725,6 +723,7 @@ export default new Vuex.Store({
       commit('setSaveStatus', 'saving');
 
       const payload = {
+        sessionId: state.editor.sessionId,
         changes: [],
         groupDeletions: state.editor.deletedGroups,
         trackDeletions: state.editor.deletedTracks,
@@ -837,7 +836,7 @@ export default new Vuex.Store({
           sessionId,
         };
         commit('setTreeData', data);
-      } catch {
+      } catch (error) {
         console.error(`${error.message} - session ID: ${sessionId}`);
         commit('setTreeLoadError');
         throw new Error('Loading error');

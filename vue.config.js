@@ -10,15 +10,17 @@ const hljsLanguages = [
   'nginx', ['plaintext', 'hocon', 'conf'],
 ];
 
+/* eslint-disable no-restricted-syntax, import/no-dynamic-require, global-require */
 function registerHljsLanguages() {
   for (let lang of hljsLanguages) {
     lang = [].concat(lang);
-    const mod = require('highlight.js/lib/languages/' + lang[0]);
+    const mod = require(`highlight.js/lib/languages/${lang[0]}`);
     for (const alias of lang) {
       hljs.registerLanguage(alias, mod);
     }
   }
 }
+/* eslint-enable no-restricted-syntax, import/no-dynamic-require, global-require */
 
 module.exports = {
   publicPath: config.base,
@@ -50,7 +52,8 @@ module.exports = {
           [require('markdown-it-anchor'), {
             permalink: true,
             permalinkSymbol: '🔗',
-            slugify: s => String(s).trim().toLowerCase().replace(/\s+/g, '-').replace(/([^\w\-]+)/g, ''),
+            slugify: s => String(s).trim().toLowerCase().replace(/\s+/g, '-')
+              .replace(/([^\w-]+)/g, ''),
           }],
           // eslint-disable-next-line global-require
           require('markdown-it-emoji'),

@@ -7,7 +7,12 @@
         v-model="filter"
         :title="$t('editor.tracks.filter')"
       >
-      <button class="delete" @click="filter = ''" v-if="filter !== ''" :title="$t('editor.clearFilters')">
+      <button
+        class="delete"
+        @click="filter = ''"
+        v-if="filter !== ''"
+        :title="$t('editor.clearFilters')"
+      >
         <font-awesome icon="times" fixed-width />
       </button>
     </div>
@@ -81,7 +86,7 @@
 
       <div class="users">
         <h2 @click="toggle.users = !toggle.users">
-          <button :title="$t('editor.users.toggle')">
+          <button :title="$t('editor.users.toggleUsers')">
             <font-awesome icon="caret-right" fixed-width :rotation="toggle.users ? 90 : null" />
           </button>
           <span>

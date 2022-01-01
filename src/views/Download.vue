@@ -220,7 +220,8 @@
           <h1>Additional Plugins</h1>
           <p>
             Additional plugins can provide more complex features,
-            but may not be available on all platforms.
+            but may not be available on all platforms
+          .
           </p>
         </div>
       </div>
@@ -248,7 +249,8 @@
           <p>
             LuckPerms adds
             <router-link to="/wiki/Placeholders#placeholders">placeholders</router-link>
-            to PlaceholderAPI and MVdWPlaceholderAPI.
+            to PlaceholderAPI and MVdWPlaceholderAPI
+          .
           </p>
         </div>
       </div>
@@ -264,8 +266,12 @@
             <small>LuckPerms 5.0 and above, Bukkit only</small>
           </a>
           <div>
-            <p>Install using either <code>/papi ecloud download LuckPerms</code> or by
-            <router-link to="/wiki/Placeholders#manual-install">installing manually</router-link>.
+            <p>
+              Install using either
+              <code>/papi ecloud download LuckPerms</code>
+              or by
+              <router-link to="/wiki/Placeholders#manual-install">installing manually</router-link>
+              .
             </p>
           </div>
         </div>

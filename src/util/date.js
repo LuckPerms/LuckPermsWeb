@@ -2,13 +2,14 @@
  * Compares dates and returns the relative
  *
  * @param {number} date - The timestamp being compared
+ * @param {string} language - The language in which the date/time should be returned
  * @param {number} [baseDate] - The timestamp being compared from (defaults to now)
  * @param {boolean} [includeTime=false] - Whether to include return the time
  * @returns {String}
  */
 // eslint-disable-next-line import/prefer-default-export
-export function relativeDate(date, baseDate, includeTime) {
-  const rtf = new Intl.RelativeTimeFormat(navigator.language, {
+export function relativeDate(date, language, baseDate, includeTime) {
+  const rtf = new Intl.RelativeTimeFormat(language, {
     numeric: 'auto',
   });
   const now = baseDate || new Date().getTime();
@@ -47,7 +48,7 @@ export function relativeDate(date, baseDate, includeTime) {
   const dateFormat = rtf.format(value, unit);
 
   if (includeTime) {
-    const dateTime = new Intl.DateTimeFormat(navigator.language, {
+    const dateTime = new Intl.DateTimeFormat(language, {
       hour: 'numeric',
       minute: 'numeric',
       second: 'numeric',

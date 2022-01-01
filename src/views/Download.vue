@@ -317,7 +317,7 @@ export default {
     versionTimestamp() { return this.$store.getters.versionTimestamp; },
     relativeTimestamp() {
       if (this.versionTimestamp) {
-        return relativeDate(this.versionTimestamp, new Date().getTime(), true);
+        return relativeDate(this.versionTimestamp, this.$i18n.locale, new Date().getTime(), true);
       }
       return null;
     },
@@ -335,7 +335,7 @@ export default {
       this.quiz.open = false;
     },
     relativeDate(value) {
-      return relativeDate(value);
+      return relativeDate(value, this.$i18n.locale);
     },
   },
 };

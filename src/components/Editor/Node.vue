@@ -222,7 +222,7 @@ export default {
       return context.values;
     },
     relativeExpiry() {
-      return relativeDate(this.source.expiry);
+      return relativeDate(this.source.expiry, this.$i18n.locale);
     },
   },
   methods: {

@@ -221,6 +221,7 @@
           <p>
             Additional plugins can provide more complex features,
             but may not be available on all platforms
+          .
           </p>
         </div>
       </div>
@@ -249,6 +250,7 @@
             LuckPerms adds
             <router-link to="/wiki/Placeholders#placeholders">placeholders</router-link>
             to PlaceholderAPI and MVdWPlaceholderAPI
+          .
           </p>
         </div>
       </div>
@@ -321,7 +323,7 @@ export default {
     versionTimestamp() { return this.$store.getters.versionTimestamp; },
     relativeTimestamp() {
       if (this.versionTimestamp) {
-        return relativeDate(this.versionTimestamp, new Date().getTime(), true);
+        return relativeDate(this.versionTimestamp, this.$i18n.locale, new Date().getTime(), true);
       }
       return null;
     },
@@ -339,7 +341,7 @@ export default {
       this.quiz.open = false;
     },
     relativeDate(value) {
-      return relativeDate(value);
+      return relativeDate(value, this.$i18n.locale);
     },
   },
 };

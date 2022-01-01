@@ -86,7 +86,7 @@
         <div class="editor-main">
           <nav>
             <div class="logo">
-              <p>{{ $t('editor.description') }}</p>
+              <h1>{{ $t('editor.description') }}</h1>
             </div>
             <div class="buttons">
               <div class="search">

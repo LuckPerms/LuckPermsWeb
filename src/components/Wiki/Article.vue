@@ -92,9 +92,11 @@ export default {
       await this.$nextTick();
       const element = document.getElementById(hash.split('#')[1]);
       if (!element) return;
-      element.scrollIntoView({
-        behavior: 'smooth',
-      });
+      setTimeout(() => {
+        element.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }, 500);
     },
   },
   watch: {

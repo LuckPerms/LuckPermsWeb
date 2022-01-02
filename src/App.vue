@@ -78,6 +78,18 @@
             </a>
           </li>
         </template>
+        <li>
+          <span class="locale">
+            <img :src="locale.flagUrl" :alt="locale.name">
+          </span>
+          <ul>
+            <li v-for="locale in locales" :key="locale.code" @click="setLocale(locale.code)">
+              <span>
+                <img :src="locale.flagUrl" :alt="locale.name"> {{ locale.name }}
+              </span>
+            </li>
+          </ul>
+        </li>
       </ul>
 
       <button
@@ -166,6 +178,12 @@ export default {
     commitHash() {
       return process.env.VUE_APP_GIT_HASH;
     },
+    locale() {
+      return this.$store.getters.userLocale;
+    },
+    locales() {
+      return this.$store.getters.supportedLanguages;
+    },
     version() {
       return this.$store.getters.version;
     },
@@ -189,6 +207,12 @@ export default {
 
   created() {
     this.$store.dispatch('getAppData');
+  },
+
+  methods: {
+    setLocale(locale) {
+      this.$store.dispatch('setUserLocale', locale);
+    },
   },
 
   watch: {
@@ -457,6 +481,18 @@ body {
 
           @include breakpoint($sm) {
             display: flex;
+          }
+        }
+
+        &.locale {
+          + ul {
+            width: 24rem;
+            max-height: 50vh;
+            overflow-y: scroll;
+
+            img {
+              margin-right: .5rem;
+            }
           }
         }
 

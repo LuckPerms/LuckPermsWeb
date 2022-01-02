@@ -31,7 +31,7 @@
             <div v-if="!errors.load && !errors.unsupported">
               <p>
                 <font-awesome icon="asterisk" :spin="true" />
-                {{ $('editor.loading' )}}
+                {{ $t('editor.loading' )}}
               </p>
             </div>
 

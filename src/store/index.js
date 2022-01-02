@@ -1,14 +1,24 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import axiosCompress from './util/axios_compress';
+import createPersistedState from 'vuex-persistedstate';
+import language from './language';
+import axiosCompress from '@/util/axios_compress';
 
 const uuid = require('uuid/v4');
-const config = require('../config');
+const config = require('../../config.json');
 
 Vue.use(Vuex);
 
+const persistedState = createPersistedState({
+  paths: ['language'],
+});
+
 export default new Vuex.Store({
+  modules: {
+    language,
+  },
+  plugins: [persistedState],
   state: {
     version: null,
     versionTimestamp: null,
@@ -523,7 +533,7 @@ export default new Vuex.Store({
 
       try {
         if (sessionId === 'demo') {
-          const { default: data } = await import('./data/editor-demo.json');
+          const { default: data } = await import('../data/editor-demo.json');
           await dispatch('setEditorData', data);
           return;
         }
@@ -788,7 +798,7 @@ export default new Vuex.Store({
         commit('setVerboseData', { data: null, status: 0 });
         if (sessionId === 'demo') {
           commit('setVerboseData', { data: null, status: 1 });
-          const { default: data } = await import('./data/verbose-demo.json');
+          const { default: data } = await import('../data/verbose-demo.json');
           commit('setVerboseData', { data, status: 2 });
         } else {
           commit('setVerboseData', { data: null, status: 1 });
@@ -825,7 +835,7 @@ export default new Vuex.Store({
 
       try {
         if (sessionId === 'demo') {
-          const { default: data } = await import('./data/tree-demo.json');
+          const { default: data } = await import('../data/tree-demo.json');
           commit('setTreeData', data);
           return;
         }

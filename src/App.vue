@@ -78,7 +78,7 @@
             </a>
           </li>
         </template>
-        <li>
+        <li v-if="locale">
           <span class="locale">
             <img :src="locale.flagUrl" :alt="locale.name">
           </span>

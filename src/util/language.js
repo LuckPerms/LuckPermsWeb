@@ -5,7 +5,6 @@ import en from '../messages/en.json';
 
 Vue.use(VueI18n);
 
-store.dispatch('setUserLocale');
 store.dispatch('fetchLanguages');
 
 const i18n = new VueI18n({

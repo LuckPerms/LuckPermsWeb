@@ -44,13 +44,13 @@ export default {
       }
 
       const navigatorLanguages = [navigator.language, ...(navigator.languages || [])];
-      const { supportedLanguages } = state;
+      const { supportedLanguages = [] } = state;
+      const { code: language } = supportedLanguages.find(({ code }) => navigatorLanguages.includes(code));
 
-      const language = supportedLanguages.find(lang => navigatorLanguages.includes(lang)) || 'en';
       dispatch('fetchLanguage', language);
       commit('setUserLocale', language);
     },
-    async fetchLanguages({ commit }) {
+    async fetchLanguages({ commit, dispatch }) {
       const { data: { languages } } = await axios.get('https://metadata.luckperms.net/data/translations');
 
       languages.en = {
@@ -94,6 +94,7 @@ export default {
       const supportedLanguages = langToArray.filter(languageFilter).map(languageMap);
 
       commit('setSupportedLanguages', supportedLanguages);
+      dispatch('setUserLocale');
     },
     async fetchLanguage(_, locale) {
       const VueI18n = (await i18n).default;

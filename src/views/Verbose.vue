@@ -71,41 +71,37 @@
             v-model="filter"
             :placeholder="$t('verbose.filterPlaceholder')"
           >
-          <table>
-            <tr>
-              <td>
-                <div
-                  :class="{ 'exclude-result': true, 'selected': isExcluded('true') }"
-                  @click="excludeResult('true')"
-                >
-                  <span></span>
-                </div>
-              </td>
-              <td>{{ $t('verbose.exclude') }} <code :class="'true'">true</code></td>
-            </tr>
-            <tr>
-              <td>
-                <div
-                  :class="{ 'exclude-result': true, 'selected': isExcluded('false') }"
-                  @click="excludeResult('false')"
-                >
-                  <span></span>
-                </div>
-              </td>
-              <td>{{ $t('verbose.exclude') }} <code :class="'false'">false</code></td>
-            </tr>
-            <tr>
-              <td>
-                <div
-                  :class="{ 'exclude-result': true, 'selected': isExcluded('undefined') }"
-                  @click="excludeResult('undefined')"
-                >
-                  <span></span>
-                </div>
-              </td>
-              <td>{{ $t('verbose.exclude') }} <code :class="'undefined'">undefined</code></td>
-            </tr>
-          </table>
+          <div>
+            <div
+              :class="['exclude-result', { selected: isExcluded('true') }]"
+              @click="excludeResult('true')"
+            >
+              <span></span>
+              <p>
+                {{ $t('verbose.exclude') }} <code class="true">true</code>
+              </p>
+            </div>
+
+            <div
+              :class="['exclude-result', { selected: isExcluded('false') }]"
+              @click="excludeResult('false')"
+            >
+              <span></span>
+              <p>
+                {{ $t('verbose.exclude') }} <code class="false">false</code>
+              </p>
+            </div>
+
+            <div
+              :class="['exclude-result', { selected: isExcluded('undefined') }]"
+              @click="excludeResult('undefined')"
+            >
+              <span></span>
+              <p>
+                {{ $t('verbose.exclude') }} <code class="undefined">undefined</code>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-2">
@@ -290,10 +286,17 @@ export default {
           flex: 0 0 auto;
 
           span {
-            display: block;
+            display: inline-block;
             width: 1.5rem;
             height: 1.5rem;
             border: 2px solid $grey;
+            position: relative;
+          }
+
+          p {
+            display: inline;
+            bottom: 7px;
+            padding-left: 0.5rem;
             position: relative;
           }
 
@@ -312,14 +315,6 @@ export default {
               }
             }
           }
-        }
-
-        td:first-child {
-          width: 20%;
-        }
-
-        td:nth-child(2) {
-          padding-top: 15px;
         }
       }
     }

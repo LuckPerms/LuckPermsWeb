@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import axiosCompress from './util/axios_compress';
+import { socketConnect } from './util/ws';
 
 const uuid = require('uuid/v4');
 const config = require('../config');
@@ -38,6 +39,7 @@ export default new Vuex.Store({
     patreonCount: null,
     editor: {
       sessionId: null,
+      socket: null,
       errors: {
         load: false,
         unsupported: false,
@@ -91,6 +93,8 @@ export default new Vuex.Store({
     verbose: state => state.verbose,
 
     tree: state => state.tree,
+
+    editorSocket: state => state.editor.socket,
 
     metaData: state => state.editor.metaData,
 
@@ -169,6 +173,7 @@ export default new Vuex.Store({
     initEditorData(state, sessionId) {
       state.editor = {
         sessionId,
+        socket: null,
         sessions: {},
         sessionList: [],
         nodes: [],
@@ -194,6 +199,10 @@ export default new Vuex.Store({
           key: null,
         },
       };
+    },
+
+    setEditorSocket(state, object) {
+      state.editor.socket = object;
     },
 
     setMetaData(state, object) {
@@ -529,6 +538,13 @@ export default new Vuex.Store({
         }
 
         const { data } = await axios.get(`${config.bytebin_url}${sessionId}`);
+
+        if (data.socketUrl) {
+          socketConnect(data.socketUrl, data.publicKey, ({ socket }) => {
+            commit('setEditorSocket', socket);
+          });
+        }
+
         await dispatch('setEditorData', data, sessionId);
       } catch {
         commit('setLoadError');

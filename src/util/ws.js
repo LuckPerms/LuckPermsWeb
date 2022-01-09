@@ -6,6 +6,7 @@ const KEEP_LISTENING = true;
 const STOP_LISTENING = false;
 
 export async function socketConnect(urlMaybeHttp, pluginPublicKey, connectCallback) {
+  // generate public/private keypair for the editor
   const keys = await crypto.subtle.generateKey({
     name: 'RSASSA-PKCS1-v1_5',
     modulusLength: 4096,
@@ -13,58 +14,103 @@ export async function socketConnect(urlMaybeHttp, pluginPublicKey, connectCallba
     hash: 'SHA-256',
   }, true, ['sign']);
 
+  // export and encode the editor public key
+  const publicKey = encode(await crypto.subtle.exportKey('spki', keys.publicKey));
+
+  // decode and import the plugin public key
   const pluginKey = await crypto.subtle.importKey('spki', decode(pluginPublicKey), {
     name: 'RSASSA-PKCS1-v1_5',
     hash: 'SHA-256',
   }, false, ['verify']);
 
-  const publicKey = encode(await crypto.subtle.exportKey('spki', keys.publicKey));
-  console.log('generated keys');
+  console.log('[WS] Generated keys and decoded plugin public key');
 
-  let url;
-  if (urlMaybeHttp.startsWith('https')) { // todo fix this in LP wtf
-    url = `wss${urlMaybeHttp.substring(5)}`;
-  } else {
-    url = urlMaybeHttp;
-  }
-  const socket = new WebSocket(url);
-  console.log('setup socket');
+  // create a websocket
+  // important that no async/await occurs after this point
+  const socket = new WebSocket(
+    urlMaybeHttp.startsWith('https')
+      ? `wss${urlMaybeHttp.substring(5)}`
+      : urlMaybeHttp,
+  );
 
+  // the socket interface that is exported to other parts of the code
   const socketInterface = {
     socket,
+    listeners: [],
+
+    // sends a raw (unsigned) message to the socket
     sendRaw: (msg) => {
       socket.send(JSON.stringify(msg));
-      console.log('sent msg');
     },
+
+    // sends a signed message to the socket
     send: (msg) => {
       const encoded = JSON.stringify(msg);
-      console.log('sending signed');
 
-      crypto.subtle.sign('RSASSA-PKCS1-v1_5', keys.privateKey, new TextEncoder().encode(encoded)).then((sign) => {
-        socket.send(JSON.stringify({ type: 'msg', msg: encoded, signature: encode(sign) }));
-        console.log('sent signed msg');
+      // sign the message with the editor private key
+      const signPromise = crypto.subtle.sign(
+        'RSASSA-PKCS1-v1_5',
+        keys.privateKey,
+        new TextEncoder().encode(encoded),
+      );
+
+      // send the signed+encoded message to the socket
+      signPromise.then((signature) => {
+        socket.send(JSON.stringify({
+          type: 'msg',
+          msg: encoded,
+          signature: encode(signature),
+        }));
       });
     },
-    listeners: [],
   };
 
+  // Listen to messages from the socket.
+  socket.onmessage = (event) => {
+    const frame = JSON.parse(event.data);
+    if (frame.type !== 'msg') {
+      return;
+    }
+
+    const { msg: innerMsg, signature } = frame;
+    if (!innerMsg || !signature) {
+      return;
+    }
+
+    // verify that the message was sent by the plugin
+    // (check it was signed with the plugin public key)
+    const verifyPromise = crypto.subtle.verify(
+      'RSASSA-PKCS1-v1_5',
+      pluginKey,
+      decode(signature),
+      new TextEncoder().encode(innerMsg),
+    );
+
+    // if verification passes, forward the inner message onto listeners
+    verifyPromise.then((verified) => {
+      if (verified) {
+        const msg = JSON.parse(innerMsg);
+        socketInterface.listeners = socketInterface.listeners.filter(listener => listener(msg));
+      }
+    });
+  };
+
+  // Wait for the socket to open, then initialise a connection
   socket.onopen = () => {
+    console.log('[WS] Socket open, initialising connection...');
+
     const nonce = uuid();
 
-    console.log('socket open');
-
     function onMessage(msg) {
-      console.log('listener got it');
       if (msg.type === 'hello-reply' && msg.nonce === nonce) {
-        console.log('listener 2');
         if (msg.accepted) {
-          console.log('listener YESSS');
-          // yay, we're connected and communicating with the plugin
+          // we're connected and communicating with the plugin
           // run the connect callback to store the socket in the vuex store
+          console.log('[WS] Established connection with plugin!');
           connectCallback({ socket: socketInterface });
         } else {
-          console.log('listener 3');
-          // this is a secondary session - disconnect.
+          // this is a secondary session - disconnect
+          console.log('[WS] Rejected by plugin, disconnecting.');
           socket.close();
         }
         return STOP_LISTENING;
@@ -77,7 +123,6 @@ export async function socketConnect(urlMaybeHttp, pluginPublicKey, connectCallba
 
     // todo: move this
     const secret = new URLSearchParams(window.location.search).get('authSecret');
-    console.log('using secret ', secret);
 
     // send our public key once the socket is connected
     socketInterface.sendRaw({
@@ -85,33 +130,6 @@ export async function socketConnect(urlMaybeHttp, pluginPublicKey, connectCallba
       publicKey,
       auth: secret,
       nonce,
-    });
-
-    console.log('sent initial');
-  };
-
-  socket.onmessage = (event) => {
-    console.log('got msg');
-    const frame = JSON.parse(event.data);
-    if (frame.type !== 'msg') {
-      console.log('discarding frame not msg');
-      return;
-    }
-
-    const { msg: innerMsg, signature } = frame;
-    if (!innerMsg || !signature) {
-      console.log('discarding frame no sig');
-      return;
-    }
-
-    crypto.subtle.verify('RSASSA-PKCS1-v1_5', pluginKey, decode(signature), new TextEncoder().encode(innerMsg)).then((verified) => {
-      if (verified) {
-        const msg = JSON.parse(innerMsg);
-        console.log('passing to listeners');
-        socketInterface.listeners = socketInterface.listeners.filter(listener => listener(msg));
-      } else {
-        console.log('no veorfy');
-      }
     });
   };
 }

@@ -542,12 +542,13 @@ export default new Vuex.Store({
         if (data.socketUrl) {
           socketConnect(data.socketUrl, data.publicKey, ({ socket }) => {
             commit('setEditorSocket', socket);
-          });
+          }).catch(e => console.log(e));
         }
 
         await dispatch('setEditorData', data, sessionId);
-      } catch {
+      } catch (e) {
         commit('setLoadError');
+        console.log(e);
         throw new Error(`Error loading data from bytebin - session ID: ${sessionId}`);
       }
     },

@@ -121,7 +121,7 @@ export async function socketConnect(urlMaybeHttp, pluginPublicKey, connectCallba
     // add a listener to await a reply
     socketInterface.listeners.push(onMessage);
 
-    // todo: move this
+    // todo: move this and remove authSecret from url
     const secret = new URLSearchParams(window.location.search).get('authSecret');
 
     // send our public key once the socket is connected
@@ -134,44 +134,46 @@ export async function socketConnect(urlMaybeHttp, pluginPublicKey, connectCallba
   };
 }
 
-export function sendChangesViaSocket(socket, bytebinCode, callback) {
-  // is the socket isn't open, don't bother
-  if (socket.socket.readyState !== 1) {
-    callback(null);
-    return;
-  }
+export function sendChangesViaSocket(socket, bytebinCode) {
+  return new Promise((resolve, reject) => {
+    // is the socket isn't open, don't bother
+    if (!socket || socket.socket.readyState !== 1) {
+      reject(new Error('Socket closed'));
+      return;
+    }
 
-  // wait 2 seconds for the plugin to accept the change
-  let timeout = setTimeout(() => {
-    callback(null);
-  }, 2000);
+    // wait 2 seconds for the plugin to accept the change
+    let timeout = setTimeout(() => {
+      reject(new Error('Timeout waiting for plugin to ack change'));
+    }, 2000);
 
-  // await a response
-  function onMessage(msg) {
-    if (msg.type === 'change-accepted') {
-      clearTimeout(timeout);
+    // await a response
+    function onMessage(msg) {
+      if (msg.type === 'change-accepted') {
+        clearTimeout(timeout);
 
-      // wait a further 10 seconds for the plugin to apply the change
-      timeout = setTimeout(() => {
-        callback(null);
-      }, 10000);
+        // wait a further 10 seconds for the plugin to apply the change
+        timeout = setTimeout(() => {
+          reject(new Error('Timeout waiting for plugin to reply with new code'));
+        }, 10000);
 
+        return KEEP_LISTENING;
+      }
+      if (msg.type === 'new-session-data') {
+        clearTimeout(timeout);
+        resolve(msg.newSessionCode);
+        return STOP_LISTENING;
+      }
       return KEEP_LISTENING;
     }
-    if (msg.time === 'new-session-data') {
-      clearTimeout(timeout);
-      callback(msg.newSessionCode);
-      return STOP_LISTENING;
-    }
-    return KEEP_LISTENING;
-  }
 
-  // register reply listener
-  socket.listeners.push(onMessage);
+    // register reply listener
+    socket.listeners.push(onMessage);
 
-  // send the apply change request
-  socket.send({
-    type: 'apply-change',
-    code: bytebinCode,
+    // send the apply change request
+    socket.send({
+      type: 'apply-change',
+      code: bytebinCode,
+    });
   });
 }

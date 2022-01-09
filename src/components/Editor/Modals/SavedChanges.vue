@@ -2,20 +2,26 @@
 <div class="saved-changes">
   <h2>{{ $t('editor.saved') }}</h2>
 
-  <p>
-    {{ $t('editor.command') }}
-  </p>
+  <div v-if="!this.props.autoSave">
+    <p>
+      {{ $t('editor.command') }}
+    </p>
 
-  <div class="command">
-    <code class="apply-edits" @click="copyCommand" :title="$t('editor.clipboardCopy')">
-      /{{ metaData.commandAlias }} applyedits {{ props }}
-    </code>
-    <span class="command-copied" v-if="commandCopied">
-      {{ $t('editor.copied') }}
-    </span>
+    <div class="command">
+      <code class="apply-edits" @click="copyCommand" :title="$t('editor.clipboardCopy')">
+        /{{ metaData.commandAlias }} applyedits {{ this.props.saveKey }}
+      </code>
+      <span class="command-copied" v-if="commandCopied">
+        {{ $t('editor.copied') }}
+      </span>
+    </div>
+
+    <p v-html="$t('editor.applyNote')" />
   </div>
-
-  <p v-html="$t('editor.applyNote')" />
+  <div v-else>
+    <p>Your changes have been automatically applied to the server!</p>
+    <p>No further actions are needed - you can close this window and continue editing.</p>
+  </div>
 </div>
 </template>
 
@@ -30,7 +36,7 @@ export default {
   },
 
   props: {
-    props: String,
+    props: Object,
   },
 
   computed: {
@@ -41,7 +47,7 @@ export default {
 
   methods: {
     async copyCommand() {
-      await this.$copyText(`/${this.metaData.commandAlias} applyedits ${this.props}`);
+      await this.$copyText(`/${this.metaData.commandAlias} applyedits ${this.props.saveKey}`);
       this.commandCopied = true;
     },
   },

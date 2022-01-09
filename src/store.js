@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import axiosCompress from './util/axios_compress';
-import { socketConnect } from './util/ws';
+import { sendChangesViaSocket, socketConnect } from './util/ws';
 
 const uuid = require('uuid/v4');
 const config = require('../config');
@@ -777,9 +777,33 @@ export default new Vuex.Store({
 
       axios.post(`${config.bytebin_url}post`, payload, axiosCompress)
         .then((response) => {
-          commit('setBytebinKey', response.data.key);
-          commit('setSaveStatus', 'saved');
-          commit('setModal', { type: 'savedChanges', object: getters.saveKey });
+          const { key } = response.data;
+          const { socket } = state.editor;
+
+          sendChangesViaSocket(socket, key)
+            .then(() => {
+              // todo: load new data...?
+              commit('setBytebinKey', key);
+              commit('setSaveStatus', 'saved');
+              commit('setModal', {
+                type: 'savedChanges',
+                object: {
+                  autoSave: true,
+                },
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              commit('setBytebinKey', key);
+              commit('setSaveStatus', 'saved');
+              commit('setModal', {
+                type: 'savedChanges',
+                object: {
+                  autoSave: false,
+                  saveKey: getters.saveKey,
+                },
+              });
+            });
         })
         .catch(console.error);
     },

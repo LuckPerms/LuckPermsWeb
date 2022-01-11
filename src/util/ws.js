@@ -6,39 +6,76 @@ const config = require('../../config');
 const KEEP_LISTENING = true;
 const STOP_LISTENING = false;
 
-export async function socketConnect(channelId, pluginPublicKey, connectCallback) {
-  // generate public/private keypair for the editor
-  const keys = await crypto.subtle.generateKey({
+function importKey(format, encoded, keyUsages) {
+  return crypto.subtle.importKey(format, decode(encoded), {
+    name: 'RSASSA-PKCS1-v1_5',
+    hash: 'SHA-256',
+  }, false, keyUsages);
+}
+
+async function exportKey(format, key, storageKey) {
+  const exported = await crypto.subtle.exportKey(format, key);
+  const encoded = encode(exported);
+  localStorage.setItem(storageKey, encoded);
+  return encoded;
+}
+
+async function loadKeys() {
+  const encodedPublicKey = localStorage.getItem('editor-public-key');
+  const encodedPrivateKey = localStorage.getItem('editor-private-key');
+
+  if (encodedPublicKey && encodedPrivateKey) {
+    const publicKey = await importKey('spki', encodedPublicKey, []);
+    const privateKey = await importKey('pkcs8', encodedPrivateKey, ['sign']);
+    return {
+      publicKey,
+      privateKey,
+      encodedPublicKey,
+      encodedPrivateKey,
+    };
+  }
+
+  return null;
+}
+
+async function generateKeys() {
+  const { publicKey, privateKey } = await crypto.subtle.generateKey({
     name: 'RSASSA-PKCS1-v1_5',
     modulusLength: 4096,
     publicExponent: new Uint8Array([1, 0, 1]),
     hash: 'SHA-256',
   }, true, ['sign']);
 
-  // export and encode the editor public key
-  const publicKey = encode(await crypto.subtle.exportKey('spki', keys.publicKey));
+  const encodedPublicKey = await exportKey('spki', publicKey, 'editor-public-key');
+  const encodedPrivateKey = await exportKey('pkcs8', privateKey, 'editor-private-key');
+
+  console.log('Generated fresh keys');
+
+  return {
+    publicKey,
+    privateKey,
+    encodedPublicKey,
+    encodedPrivateKey,
+  };
+}
+
+export async function socketConnect(channelId, pluginPublicKey, connectCallback) {
+  // generate public/private keypair for the editor
+  const keys = await loadKeys() || await generateKeys();
 
   // decode and import the plugin public key
-  const pluginKey = await crypto.subtle.importKey('spki', decode(pluginPublicKey), {
-    name: 'RSASSA-PKCS1-v1_5',
-    hash: 'SHA-256',
-  }, false, ['verify']);
+  const pluginKey = await importKey('spki', pluginPublicKey, ['verify']);
 
   console.log('[WS] Generated keys and decoded plugin public key');
 
   // create a websocket
   // important that no async/await occurs after this point
-  const socket = new WebSocket(`wss://${config.bytesocksHost}/${channelId}`);
+  const socket = new WebSocket(`wss://${config.bytesocks_host}/${channelId}`);
 
   // the socket interface that is exported to other parts of the code
   const socketInterface = {
     socket,
     listeners: [],
-
-    // sends a raw (unsigned) message to the socket
-    sendRaw: (msg) => {
-      socket.send(JSON.stringify(msg));
-    },
 
     // sends a signed message to the socket
     send: (msg) => {
@@ -54,7 +91,6 @@ export async function socketConnect(channelId, pluginPublicKey, connectCallback)
       // send the signed+encoded message to the socket
       signPromise.then((signature) => {
         socket.send(JSON.stringify({
-          type: 'msg',
           msg: encoded,
           signature: encode(signature),
         }));
@@ -122,9 +158,9 @@ export async function socketConnect(channelId, pluginPublicKey, connectCallback)
     const secret = new URLSearchParams(window.location.search).get('secret');
 
     // send our public key once the socket is connected
-    socketInterface.sendRaw({
+    socketInterface.send({
       type: 'hello',
-      publicKey,
+      publicKey: keys.encodedPublicKey,
       auth: secret,
       nonce,
     });

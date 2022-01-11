@@ -173,7 +173,7 @@ export default new Vuex.Store({
     initEditorData(state, sessionId) {
       state.editor = {
         sessionId,
-        socket: null,
+        socket: state?.editor?.socket,
         sessions: {},
         sessionList: [],
         nodes: [],
@@ -539,8 +539,8 @@ export default new Vuex.Store({
 
         const { data } = await axios.get(`${config.bytebin_url}${sessionId}`);
 
-        if (data.socketUrl) {
-          socketConnect(data.socketUrl, data.publicKey, ({ socket }) => {
+        if (data.socketChannelId) {
+          socketConnect(data.socketChannelId, data.publicKey, ({ socket }) => {
             commit('setEditorSocket', socket);
           }).catch(e => console.log(e));
         }
@@ -736,7 +736,8 @@ export default new Vuex.Store({
       });
     },
 
-    saveData({ state, getters, commit }) {
+    // eslint-disable-next-line
+    saveData({ state, getters, dispatch, commit }) {
       commit('setSaveStatus', 'saving');
 
       const payload = {
@@ -781,16 +782,9 @@ export default new Vuex.Store({
           const { socket } = state.editor;
 
           sendChangesViaSocket(socket, key)
-            .then(() => {
-              // todo: load new data...?
-              commit('setBytebinKey', key);
+            .then((newSessionId) => {
               commit('setSaveStatus', 'saved');
-              commit('setModal', {
-                type: 'savedChanges',
-                object: {
-                  autoSave: true,
-                },
-              });
+              dispatch('getEditorData', newSessionId);
             })
             .catch((err) => {
               console.log(err);
@@ -799,7 +793,6 @@ export default new Vuex.Store({
               commit('setModal', {
                 type: 'savedChanges',
                 object: {
-                  autoSave: false,
                   saveKey: getters.saveKey,
                 },
               });

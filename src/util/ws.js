@@ -1,11 +1,12 @@
 import { decode, encode } from 'base64-arraybuffer';
 
 const uuid = require('uuid/v4');
+const config = require('../../config');
 
 const KEEP_LISTENING = true;
 const STOP_LISTENING = false;
 
-export async function socketConnect(urlMaybeHttp, pluginPublicKey, connectCallback) {
+export async function socketConnect(channelId, pluginPublicKey, connectCallback) {
   // generate public/private keypair for the editor
   const keys = await crypto.subtle.generateKey({
     name: 'RSASSA-PKCS1-v1_5',
@@ -27,11 +28,7 @@ export async function socketConnect(urlMaybeHttp, pluginPublicKey, connectCallba
 
   // create a websocket
   // important that no async/await occurs after this point
-  const socket = new WebSocket(
-    urlMaybeHttp.startsWith('https')
-      ? `wss${urlMaybeHttp.substring(5)}`
-      : urlMaybeHttp,
-  );
+  const socket = new WebSocket(`wss://${config.bytesocksHost}/${channelId}`);
 
   // the socket interface that is exported to other parts of the code
   const socketInterface = {
@@ -122,7 +119,7 @@ export async function socketConnect(urlMaybeHttp, pluginPublicKey, connectCallba
     socketInterface.listeners.push(onMessage);
 
     // todo: move this and remove authSecret from url
-    const secret = new URLSearchParams(window.location.search).get('authSecret');
+    const secret = new URLSearchParams(window.location.search).get('secret');
 
     // send our public key once the socket is connected
     socketInterface.sendRaw({

@@ -71,36 +71,15 @@
             v-model="filter"
             :placeholder="$t('verbose.filterPlaceholder')"
           >
-          <div>
-            <div
-              :class="['exclude-result', { selected: isExcluded('true') }]"
-              @click="excludeResult('true')"
-            >
-              <span></span>
-              <p>
-                {{ $t('verbose.exclude') }} <code class="true">true</code>
-              </p>
-            </div>
-
-            <div
-              :class="['exclude-result', { selected: isExcluded('false') }]"
-              @click="excludeResult('false')"
-            >
-              <span></span>
-              <p>
-                {{ $t('verbose.exclude') }} <code class="false">false</code>
-              </p>
-            </div>
-
-            <div
-              :class="['exclude-result', { selected: isExcluded('undefined') }]"
-              @click="excludeResult('undefined')"
-            >
-              <span></span>
-              <p>
-                {{ $t('verbose.exclude') }} <code class="undefined">undefined</code>
-              </p>
-            </div>
+          <div
+            v-for="value in ['true', 'false', 'undefined']" :key="value"
+            :class="['exclude-result', { selected: isExcluded(value) }]"
+            @click="excludeResult(value)"
+          >
+            <span></span>
+            <p>
+              {{ $t('verbose.exclude') }} <code :class="value">{{ value }}</code>
+            </p>
           </div>
         </div>
       </div>

@@ -49,8 +49,6 @@ async function generateKeys() {
   const encodedPublicKey = await exportKey('spki', publicKey, 'editor-public-key');
   const encodedPrivateKey = await exportKey('pkcs8', privateKey, 'editor-private-key');
 
-  console.log('Generated fresh keys');
-
   return {
     publicKey,
     privateKey,
@@ -101,9 +99,6 @@ export async function socketConnect(channelId, pluginPublicKey, connectCallback)
   // Listen to messages from the socket.
   socket.onmessage = (event) => {
     const frame = JSON.parse(event.data);
-    if (frame.type !== 'msg') {
-      return;
-    }
 
     const { msg: innerMsg, signature } = frame;
     if (!innerMsg || !signature) {
@@ -136,33 +131,50 @@ export async function socketConnect(channelId, pluginPublicKey, connectCallback)
 
     function onMessage(msg) {
       if (msg.type === 'hello-reply' && msg.nonce === nonce) {
-        if (msg.accepted) {
+        if (msg.state === 'accepted' || msg.state === 'trusted') {
           // we're connected and communicating with the plugin
           // run the connect callback to store the socket in the vuex store
           console.log('[WS] Established connection with plugin!');
+
+          if (msg.state === 'trusted') {
+            socket.send({
+              type: 'trusted-reply',
+            });
+          }
+
           connectCallback({ socket: socketInterface });
-        } else {
+          return STOP_LISTENING;
+        }
+
+        if (msg.state === 'untrusted') {
+          // TODO: prompt user to trust us!
+          // maybe use a modal? quote the nonce value as a ref so they can line
+          // it up with the prompt in-game
+          return KEEP_LISTENING;
+        }
+
+        if (msg.state === 'rejected') {
           // this is a secondary session - disconnect
           console.log('[WS] Rejected by plugin, disconnecting.');
           socket.close();
+          return STOP_LISTENING;
         }
-        return STOP_LISTENING;
+
+        throw new Error(`unknown state: ${msg.state}`);
       }
+
       return KEEP_LISTENING;
     }
 
     // add a listener to await a reply
     socketInterface.listeners.push(onMessage);
 
-    // todo: move this and remove authSecret from url
-    const secret = new URLSearchParams(window.location.search).get('secret');
-
     // send our public key once the socket is connected
     socketInterface.send({
       type: 'hello',
       publicKey: keys.encodedPublicKey,
-      auth: secret,
       nonce,
+      browser: window.navigator.userAgent,
     });
   };
 }

@@ -57,6 +57,96 @@ async function generateKeys() {
   };
 }
 
+function startKeepalive(socket) {
+  /* eslint-disable no-param-reassign */
+  function onMessage(msg) {
+    if (msg.type === 'pong') {
+      if (!msg.ok) {
+        console.log('[WS] Plugin closed the connection, disconnecting...');
+        socket.socket.close();
+        return STOP_LISTENING;
+      }
+
+      socket.lastPong = Date.now();
+    }
+    return KEEP_LISTENING;
+  }
+
+  socket.listeners.push(onMessage);
+
+  socket.keepaliveTask = setInterval(() => {
+    if (socket.socket.readyState !== 1) {
+      clearInterval(socket.keepaliveTask);
+      return;
+    }
+
+    if (socket.lastPing !== 0 && Date.now() - socket.lastPong > 11000) {
+      console.log('[WS] Plugin stopped responding to keepalive, disconnecting');
+      socket.socket.close();
+      return;
+    }
+
+    socket.lastPing = Date.now();
+    socket.send({
+      type: 'ping',
+    });
+  }, 10000);
+  /* eslint-enable no-param-reassign */
+}
+
+function initConnection(socket, encodedPublicKey, connectCallback) {
+  const nonce = uuid();
+
+  function onMessage(msg) {
+    if (msg.type === 'hello-reply' && msg.nonce === nonce) {
+      if (msg.state === 'accepted' || msg.state === 'trusted') {
+        // we're connected and communicating with the plugin
+        // run the connect callback to store the socket in the vuex store
+        console.log('[WS] Established connection with plugin!');
+
+        if (msg.state === 'trusted') {
+          socket.send({
+            type: 'trusted-reply',
+          });
+        }
+
+        startKeepalive(socket);
+        connectCallback({ socket });
+        return STOP_LISTENING;
+      }
+
+      if (msg.state === 'untrusted') {
+        // TODO: prompt user to trust us!
+        // maybe use a modal? quote the nonce value as a ref so they can line
+        // it up with the prompt in-game
+        return KEEP_LISTENING;
+      }
+
+      if (msg.state === 'rejected') {
+        // this is a secondary session - disconnect
+        console.log('[WS] Rejected by plugin, disconnecting.');
+        socket.socket.close();
+        return STOP_LISTENING;
+      }
+
+      throw new Error(`unknown state: ${msg.state}`);
+    }
+
+    return KEEP_LISTENING;
+  }
+
+  // add a listener to await a reply
+  socket.listeners.push(onMessage);
+
+  // send our public key once the socket is connected
+  socket.send({
+    type: 'hello',
+    publicKey: encodedPublicKey,
+    nonce,
+    browser: window.navigator.userAgent,
+  });
+}
+
 export async function socketConnect(channelId, pluginPublicKey, connectCallback) {
   // generate public/private keypair for the editor
   const keys = await loadKeys() || await generateKeys();
@@ -74,6 +164,9 @@ export async function socketConnect(channelId, pluginPublicKey, connectCallback)
   const socketInterface = {
     socket,
     listeners: [],
+    lastPing: 0,
+    lastPong: 0,
+    keepaliveTask: null,
 
     // sends a signed message to the socket
     send: (msg) => {
@@ -118,7 +211,15 @@ export async function socketConnect(channelId, pluginPublicKey, connectCallback)
     verifyPromise.then((verified) => {
       if (verified) {
         const msg = JSON.parse(innerMsg);
-        socketInterface.listeners = socketInterface.listeners.filter(listener => listener(msg));
+
+        const toRemove = [];
+        socketInterface.listeners.forEach((listener, i) => {
+          const resp = listener(msg);
+          if (resp === STOP_LISTENING) {
+            toRemove.unshift(i);
+          }
+        });
+        toRemove.forEach(i => socketInterface.listeners.splice(i, 1));
       }
     });
   };
@@ -126,56 +227,7 @@ export async function socketConnect(channelId, pluginPublicKey, connectCallback)
   // Wait for the socket to open, then initialise a connection
   socket.onopen = () => {
     console.log('[WS] Socket open, initialising connection...');
-
-    const nonce = uuid();
-
-    function onMessage(msg) {
-      if (msg.type === 'hello-reply' && msg.nonce === nonce) {
-        if (msg.state === 'accepted' || msg.state === 'trusted') {
-          // we're connected and communicating with the plugin
-          // run the connect callback to store the socket in the vuex store
-          console.log('[WS] Established connection with plugin!');
-
-          if (msg.state === 'trusted') {
-            socket.send({
-              type: 'trusted-reply',
-            });
-          }
-
-          connectCallback({ socket: socketInterface });
-          return STOP_LISTENING;
-        }
-
-        if (msg.state === 'untrusted') {
-          // TODO: prompt user to trust us!
-          // maybe use a modal? quote the nonce value as a ref so they can line
-          // it up with the prompt in-game
-          return KEEP_LISTENING;
-        }
-
-        if (msg.state === 'rejected') {
-          // this is a secondary session - disconnect
-          console.log('[WS] Rejected by plugin, disconnecting.');
-          socket.close();
-          return STOP_LISTENING;
-        }
-
-        throw new Error(`unknown state: ${msg.state}`);
-      }
-
-      return KEEP_LISTENING;
-    }
-
-    // add a listener to await a reply
-    socketInterface.listeners.push(onMessage);
-
-    // send our public key once the socket is connected
-    socketInterface.send({
-      type: 'hello',
-      publicKey: keys.encodedPublicKey,
-      nonce,
-      browser: window.navigator.userAgent,
-    });
+    initConnection(socketInterface, keys.encodedPublicKey, connectCallback);
   };
 }
 

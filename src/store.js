@@ -543,8 +543,8 @@ export default new Vuex.Store({
 
         const { data } = await axios.get(`${config.bytebin_url}${sessionId}`);
 
-        if (data.socketChannelId) {
-          socketConnect(data.socketChannelId, data.publicKey, ({ socket }) => {
+        if (data.socket?.channelId) {
+          socketConnect(data.socket.channelId, sessionId, data.socket.publicKey, ({ socket }) => {
             commit('setEditorSocket', socket);
           }).catch(e => console.log(e));
         }

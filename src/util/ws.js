@@ -94,7 +94,7 @@ function startKeepalive(socket) {
   /* eslint-enable no-param-reassign */
 }
 
-function initConnection(socket, encodedPublicKey, connectCallback) {
+function initConnection(socket, sessionId, encodedPublicKey, connectCallback) {
   const nonce = uuid();
 
   function onMessage(msg) {
@@ -106,7 +106,7 @@ function initConnection(socket, encodedPublicKey, connectCallback) {
 
         if (msg.state === 'trusted') {
           socket.send({
-            type: 'trusted-reply',
+            type: 'connected',
           });
         }
 
@@ -120,6 +120,14 @@ function initConnection(socket, encodedPublicKey, connectCallback) {
         // maybe use a modal? quote the nonce value as a ref so they can line
         // it up with the prompt in-game
         return KEEP_LISTENING;
+      }
+
+      if (msg.state === 'invalid') {
+        // the session is has already been completed!
+        // TODO: warn user?
+        console.log('[WS] Session data has expired, disconnecting.');
+        socket.socket.close();
+        return STOP_LISTENING;
       }
 
       if (msg.state === 'rejected') {
@@ -141,13 +149,14 @@ function initConnection(socket, encodedPublicKey, connectCallback) {
   // send our public key once the socket is connected
   socket.send({
     type: 'hello',
-    publicKey: encodedPublicKey,
     nonce,
+    sessionId,
     browser: window.navigator.userAgent,
+    publicKey: encodedPublicKey,
   });
 }
 
-export async function socketConnect(channelId, pluginPublicKey, connectCallback) {
+export async function socketConnect(channelId, sessionId, pluginPublicKey, connectCallback) {
   // generate public/private keypair for the editor
   const keys = await loadKeys() || await generateKeys();
 
@@ -227,7 +236,7 @@ export async function socketConnect(channelId, pluginPublicKey, connectCallback)
   // Wait for the socket to open, then initialise a connection
   socket.onopen = () => {
     console.log('[WS] Socket open, initialising connection...');
-    initConnection(socketInterface, keys.encodedPublicKey, connectCallback);
+    initConnection(socketInterface, sessionId, keys.encodedPublicKey, connectCallback);
   };
 }
 
@@ -246,20 +255,22 @@ export function sendChangesViaSocket(socket, bytebinCode) {
 
     // await a response
     function onMessage(msg) {
-      if (msg.type === 'change-accepted') {
-        clearTimeout(timeout);
+      if (msg.type === 'change-response') {
+        if (msg.state === 'accepted') {
+          clearTimeout(timeout);
 
-        // wait a further 10 seconds for the plugin to apply the change
-        timeout = setTimeout(() => {
-          reject(new Error('Timeout waiting for plugin to reply with new code'));
-        }, 10000);
+          // wait a further 10 seconds for the plugin to apply the change
+          timeout = setTimeout(() => {
+            reject(new Error('Timeout waiting for plugin to reply with new code'));
+          }, 10000);
 
-        return KEEP_LISTENING;
-      }
-      if (msg.type === 'new-session-data') {
-        clearTimeout(timeout);
-        resolve(msg.newSessionCode);
-        return STOP_LISTENING;
+          return KEEP_LISTENING;
+        }
+        if (msg.state === 'applied') {
+          clearTimeout(timeout);
+          resolve(msg.newSessionCode);
+          return STOP_LISTENING;
+        }
       }
       return KEEP_LISTENING;
     }
@@ -269,7 +280,7 @@ export function sendChangesViaSocket(socket, bytebinCode) {
 
     // send the apply change request
     socket.send({
-      type: 'apply-change',
+      type: 'change-request',
       code: bytebinCode,
     });
   });

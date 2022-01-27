@@ -21,6 +21,7 @@ import SavedChanges from './Modals/SavedChanges.vue';
 import CopyNodes from './Modals/CopyNodes.vue';
 import MoveNodes from './Modals/MoveNodes.vue';
 import DeleteNodes from './Modals/DeleteNodes.vue';
+import TrustPrompt from './Modals/TrustPrompt.vue';
 
 export default {
   name: 'Modal',
@@ -33,6 +34,7 @@ export default {
     CopyNodes,
     MoveNodes,
     DeleteNodes,
+    TrustPrompt,
   },
   props: {
     modal: Object,

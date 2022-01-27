@@ -1,6 +1,5 @@
 import { decode, encode } from 'base64-arraybuffer';
 
-const uuid = require('uuid/v4');
 const config = require('../../config');
 
 const KEEP_LISTENING = true;
@@ -94,8 +93,18 @@ function startKeepalive(socket) {
   /* eslint-enable no-param-reassign */
 }
 
-function initConnection(socket, sessionId, encodedPublicKey, connectCallback) {
-  const nonce = uuid();
+function randomString(len) {
+  function dec2hex(dec) {
+    return dec.toString(16).padStart(2, '0');
+  }
+
+  const arr = new Uint8Array((len || 40) / 2);
+  crypto.getRandomValues(arr);
+  return Array.from(arr, dec2hex).join('');
+}
+
+function initConnection(socket, sessionId, encodedPublicKey, callbacks) {
+  const nonce = `${randomString(4)}-${randomString(4)}`;
 
   function onMessage(msg) {
     if (msg.type === 'hello-reply' && msg.nonce === nonce) {
@@ -108,17 +117,16 @@ function initConnection(socket, sessionId, encodedPublicKey, connectCallback) {
           socket.send({
             type: 'connected',
           });
+          callbacks.trusted();
         }
 
         startKeepalive(socket);
-        connectCallback({ socket });
+        callbacks.connect({ socket });
         return STOP_LISTENING;
       }
 
       if (msg.state === 'untrusted') {
-        // TODO: prompt user to trust us!
-        // maybe use a modal? quote the nonce value as a ref so they can line
-        // it up with the prompt in-game
+        callbacks.trust({ nonce });
         return KEEP_LISTENING;
       }
 
@@ -156,7 +164,8 @@ function initConnection(socket, sessionId, encodedPublicKey, connectCallback) {
   });
 }
 
-export async function socketConnect(channelId, sessionId, pluginPublicKey, connectCallback) {
+// eslint-disable-next-line max-len
+export async function socketConnect(channelId, sessionId, pluginPublicKey, callbacks) {
   // generate public/private keypair for the editor
   const keys = await loadKeys() || await generateKeys();
 
@@ -236,7 +245,12 @@ export async function socketConnect(channelId, sessionId, pluginPublicKey, conne
   // Wait for the socket to open, then initialise a connection
   socket.onopen = () => {
     console.log('[WS] Socket open, initialising connection...');
-    initConnection(socketInterface, sessionId, keys.encodedPublicKey, connectCallback);
+    initConnection(socketInterface, sessionId, keys.encodedPublicKey, callbacks);
+  };
+
+  // Call the close callback if the socket closes
+  socket.onclose = () => {
+    callbacks.close();
   };
 }
 

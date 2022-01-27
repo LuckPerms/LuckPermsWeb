@@ -96,6 +96,8 @@ export default new Vuex.Store({
 
     editorSocket: state => state.editor.socket,
 
+    editorSocketStatus: state => state.editor.socketStatus,
+
     metaData: state => state.editor.metaData,
 
     sessionList: state => state.editor.sessionList,
@@ -176,6 +178,7 @@ export default new Vuex.Store({
       state.editor = {
         sessionId,
         socket: state?.editor?.socket,
+        socketStatus: state?.editor?.socketStatus,
         sessions: {},
         sessionList: [],
         nodes: [],
@@ -205,6 +208,10 @@ export default new Vuex.Store({
 
     setEditorSocket(state, object) {
       state.editor.socket = object;
+    },
+
+    setEditorSocketStatus(state, object) {
+      state.editor.socketStatus = object;
     },
 
     setMetaData(state, object) {
@@ -544,9 +551,29 @@ export default new Vuex.Store({
         const { data } = await axios.get(`${config.bytebin_url}${sessionId}`);
 
         if (data.socket?.channelId) {
-          socketConnect(data.socket.channelId, sessionId, data.socket.publicKey, ({ socket }) => {
-            commit('setEditorSocket', socket);
-          }).catch(e => console.log(e));
+          socketConnect(
+            data.socket.channelId,
+            sessionId,
+            data.socket.publicKey,
+            {
+              connect: ({ socket }) => {
+                commit('setEditorSocket', socket);
+                commit('setEditorSocketStatus', true);
+              },
+              trust: ({ nonce }) => {
+                commit('setModal', {
+                  type: 'trustPrompt',
+                  object: { nonce },
+                });
+              },
+              trusted: () => {
+                commit('closeModal');
+              },
+              close: () => {
+                commit('setEditorSocketStatus', false);
+              },
+            },
+          ).catch(e => console.log(e));
         }
 
         await dispatch('setEditorData', data, sessionId);

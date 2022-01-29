@@ -1,4 +1,5 @@
 import { decode, encode } from 'base64-arraybuffer';
+import Bowser from 'bowser';
 
 const config = require('../../config');
 
@@ -132,8 +133,8 @@ function initConnection(socket, sessionId, encodedPublicKey, callbacks) {
 
       if (msg.state === 'invalid') {
         // the session is has already been completed!
-        // TODO: warn user?
         console.log('[WS] Session data has expired, disconnecting.');
+        callbacks.reused();
         socket.socket.close();
         return STOP_LISTENING;
       }
@@ -154,12 +155,14 @@ function initConnection(socket, sessionId, encodedPublicKey, callbacks) {
   // add a listener to await a reply
   socket.listeners.push(onMessage);
 
+  const { browser, os } = Bowser.parse(window.navigator.userAgent);
+
   // send our public key once the socket is connected
   socket.send({
     type: 'hello',
     nonce,
     sessionId,
-    browser: window.navigator.userAgent,
+    browser: `${browser.name} on ${os.name}`,
     publicKey: encodedPublicKey,
   });
 }
@@ -172,7 +175,7 @@ export async function socketConnect(channelId, sessionId, pluginPublicKey, callb
   // decode and import the plugin public key
   const pluginKey = await importKey('spki', pluginPublicKey, ['verify']);
 
-  console.log('[WS] Generated keys and decoded plugin public key');
+  console.log('[WS] Loaded editor keys and decoded plugin public key');
 
   // create a websocket
   // important that no async/await occurs after this point
@@ -283,6 +286,7 @@ export function sendChangesViaSocket(socket, bytebinCode) {
         if (msg.state === 'applied') {
           clearTimeout(timeout);
           resolve(msg.newSessionCode);
+          console.log(`[WS] Applying new session data: ${msg.newSessionCode}`);
           return STOP_LISTENING;
         }
       }

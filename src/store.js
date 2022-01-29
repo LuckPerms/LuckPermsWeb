@@ -569,6 +569,11 @@ export default new Vuex.Store({
               trusted: () => {
                 commit('closeModal');
               },
+              reused: () => {
+                commit('setModal', {
+                  type: 'reusedSessionWarning',
+                });
+              },
               close: () => {
                 commit('setEditorSocketStatus', false);
               },

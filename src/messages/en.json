@@ -124,6 +124,11 @@
       "groups": "Groups",
       "users": "Users"
     },
+    "reusedsession": {
+      "title": "Reused Session",
+      "desc": "This session has been used (opened & saved) already!",
+      "desc2": "Therefore, it may contain outdated data that no longer reflects the plugin storage. The recommended course of action is to create a new editor session and start afresh."
+    },
     "trust": {
       "title": "Editor Connection",
       "prompt": "In order to trust this web browser and allow it to apply changes directly to your server, please run the following command in-game:",

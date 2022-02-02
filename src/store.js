@@ -107,6 +107,8 @@ export default new Vuex.Store({
 
     currentSession: state => state.editor.sessions[state.editor.currentSession],
 
+    currentSessionId: state => state.editor.currentSession,
+
     // eslint-disable-next-line max-len
     currentNodes: state => state.editor.nodes?.filter(node => node.sessionId === state.editor.currentSession),
 
@@ -522,7 +524,7 @@ export default new Vuex.Store({
     },
 
     // eslint-disable-next-line object-curly-newline
-    async getEditorData({ commit, state, getters, dispatch }, sessionId) {
+    async getEditorData({ commit, getters, dispatch }, sessionId) {
       commit('setLoadError', false);
       commit('setUnsupportedError', false);
 
@@ -531,8 +533,10 @@ export default new Vuex.Store({
         throw new Error('Invalid session ID');
       }
 
-      const previousOpenSession = state.editor.currentSession; // todo use getter
-      commit('initEditorData', sessionId);
+      const previousOpenSession = getters.currentSessionId;
+      if (!previousOpenSession) {
+        commit('initEditorData', sessionId);
+      }
 
       const [firstChar] = sessionId;
 
@@ -579,6 +583,10 @@ export default new Vuex.Store({
               },
             },
           ).catch(e => console.log(e));
+        }
+
+        if (previousOpenSession) {
+          commit('initEditorData', sessionId);
         }
 
         await dispatch('setEditorData', data, sessionId);

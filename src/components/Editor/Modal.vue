@@ -21,6 +21,8 @@ import SavedChanges from './Modals/SavedChanges.vue';
 import CopyNodes from './Modals/CopyNodes.vue';
 import MoveNodes from './Modals/MoveNodes.vue';
 import DeleteNodes from './Modals/DeleteNodes.vue';
+import ReusedSessionWarning from './Modals/ReusedSessionWarning.vue';
+import TrustPrompt from './Modals/TrustPrompt.vue';
 
 export default {
   name: 'Modal',
@@ -33,6 +35,8 @@ export default {
     CopyNodes,
     MoveNodes,
     DeleteNodes,
+    ReusedSessionWarning,
+    TrustPrompt,
   },
   props: {
     modal: Object,

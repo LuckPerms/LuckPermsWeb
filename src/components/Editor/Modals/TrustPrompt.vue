@@ -1,26 +1,26 @@
 <template>
-<div class="saved-changes">
-  <h2>{{ $t('editor.saved') }}</h2>
+<div class="trust-prompt">
+  <h2><font-awesome icon="network-wired" /> {{ $t('editor.trust.title') }}</h2>
   <p>
-    {{ $t('editor.command') }}
+    {{ $t('editor.trust.prompt') }}
   </p>
 
   <div class="command">
-    <code class="apply-edits" @click="copyCommand" :title="$t('editor.clipboardCopy')">
-      /{{ metaData.commandAlias }} applyedits {{ this.props.saveKey }}
+    <code class="command-area" @click="copyCommand" :title="$t('editor.clipboardCopy')">
+      /{{ metaData.commandAlias }} trusteditor {{ this.props.nonce }}
     </code>
     <span class="command-copied" v-if="commandCopied">
       {{ $t('editor.copied') }}
     </span>
   </div>
 
-  <p v-html="$t('editor.applyNote')" />
+  <p v-html="$t('editor.trust.note')" />
 </div>
 </template>
 
 <script>
 export default {
-  name: 'SavedChanges',
+  name: 'TrustPrompt',
 
   data() {
     return {
@@ -40,7 +40,7 @@ export default {
 
   methods: {
     async copyCommand() {
-      await this.$copyText(`/${this.metaData.commandAlias} applyedits ${this.props.saveKey}`);
+      await this.$copyText(`/${this.metaData.commandAlias} trusteditor ${this.props.nonce}`);
       this.commandCopied = true;
     },
   },
@@ -48,8 +48,8 @@ export default {
 </script>
 
 <style lang="scss">
-  .saved-changes {
-    .apply-edits {
+  .trust-prompt {
+    .command-area {
       font-size: 1.5rem;
       cursor: pointer;
 

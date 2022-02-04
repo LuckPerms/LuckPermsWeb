@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import axiosCompress from './util/axios_compress';
+import { sendChangesViaSocket, socketConnect } from './util/ws';
 
 const uuid = require('uuid/v4');
 const config = require('../config');
@@ -38,6 +39,7 @@ export default new Vuex.Store({
     patreonCount: null,
     editor: {
       sessionId: null,
+      socket: null,
       errors: {
         load: false,
         unsupported: false,
@@ -92,12 +94,20 @@ export default new Vuex.Store({
 
     tree: state => state.tree,
 
+    editorSocket: state => state.editor.socket,
+
+    editorSocketStatus: state => state.editor.socketStatus,
+
     metaData: state => state.editor.metaData,
+
+    sessionList: state => state.editor.sessionList,
 
     // eslint-disable-next-line max-len
     sessionSet: state => state.editor.sessionList?.map(sessionId => state.editor.sessions[sessionId]),
 
     currentSession: state => state.editor.sessions[state.editor.currentSession],
+
+    currentSessionId: state => state.editor.currentSession,
 
     // eslint-disable-next-line max-len
     currentNodes: state => state.editor.nodes?.filter(node => node.sessionId === state.editor.currentSession),
@@ -169,6 +179,8 @@ export default new Vuex.Store({
     initEditorData(state, sessionId) {
       state.editor = {
         sessionId,
+        socket: state?.editor?.socket,
+        socketStatus: state?.editor?.socketStatus,
         sessions: {},
         sessionList: [],
         nodes: [],
@@ -194,6 +206,14 @@ export default new Vuex.Store({
           key: null,
         },
       };
+    },
+
+    setEditorSocket(state, object) {
+      state.editor.socket = object;
+    },
+
+    setEditorSocketStatus(state, object) {
+      state.editor.socketStatus = object;
     },
 
     setMetaData(state, object) {
@@ -503,7 +523,8 @@ export default new Vuex.Store({
       }
     },
 
-    async getEditorData({ commit, dispatch }, sessionId) {
+    // eslint-disable-next-line object-curly-newline
+    async getEditorData({ commit, getters, dispatch }, sessionId) {
       commit('setLoadError', false);
       commit('setUnsupportedError', false);
 
@@ -512,7 +533,10 @@ export default new Vuex.Store({
         throw new Error('Invalid session ID');
       }
 
-      commit('initEditorData', sessionId);
+      const previousOpenSession = getters.currentSessionId;
+      if (!previousOpenSession) {
+        commit('initEditorData', sessionId);
+      }
 
       const [firstChar] = sessionId;
 
@@ -529,9 +553,51 @@ export default new Vuex.Store({
         }
 
         const { data } = await axios.get(`${config.bytebin_url}${sessionId}`);
+
+        if (data.socket?.channelId) {
+          socketConnect(
+            data.socket.channelId,
+            sessionId,
+            data.socket.publicKey,
+            {
+              connect: ({ socket }) => {
+                commit('setEditorSocket', socket);
+                commit('setEditorSocketStatus', true);
+              },
+              trust: ({ nonce }) => {
+                commit('setModal', {
+                  type: 'trustPrompt',
+                  object: { nonce },
+                });
+              },
+              trusted: () => {
+                commit('closeModal');
+              },
+              reused: () => {
+                commit('setModal', {
+                  type: 'reusedSessionWarning',
+                });
+              },
+              close: () => {
+                commit('setEditorSocketStatus', false);
+              },
+            },
+          ).catch(e => console.log(e));
+        }
+
+        if (previousOpenSession) {
+          commit('initEditorData', sessionId);
+        }
+
         await dispatch('setEditorData', data, sessionId);
-      } catch {
+
+        // restore previous open "window" if exists
+        if (previousOpenSession && getters.sessionList.includes(previousOpenSession)) {
+          commit('setCurrentSession', previousOpenSession);
+        }
+      } catch (e) {
         commit('setLoadError');
+        console.log(e);
         throw new Error(`Error loading data from bytebin - session ID: ${sessionId}`);
       }
     },
@@ -719,7 +785,8 @@ export default new Vuex.Store({
       });
     },
 
-    saveData({ state, getters, commit }) {
+    // eslint-disable-next-line
+    saveData({ state, getters, dispatch, commit }) {
       commit('setSaveStatus', 'saving');
 
       const payload = {
@@ -760,9 +827,25 @@ export default new Vuex.Store({
 
       axios.post(`${config.bytebin_url}post`, payload, axiosCompress)
         .then((response) => {
-          commit('setBytebinKey', response.data.key);
-          commit('setSaveStatus', 'saved');
-          commit('setModal', { type: 'savedChanges', object: getters.saveKey });
+          const { key } = response.data;
+          const { socket } = state.editor;
+
+          sendChangesViaSocket(socket, key)
+            .then((newSessionId) => {
+              commit('setSaveStatus', 'saved');
+              dispatch('getEditorData', newSessionId);
+            })
+            .catch((err) => {
+              console.log(err);
+              commit('setBytebinKey', key);
+              commit('setSaveStatus', 'saved');
+              commit('setModal', {
+                type: 'savedChanges',
+                object: {
+                  saveKey: getters.saveKey,
+                },
+              });
+            });
         })
         .catch(console.error);
     },

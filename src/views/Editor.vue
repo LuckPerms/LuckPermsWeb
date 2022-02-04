@@ -31,7 +31,7 @@
             <div v-if="!errors.load && !errors.unsupported">
               <p>
                 <font-awesome icon="asterisk" :spin="true" />
-                {{ $('editor.loading' )}}
+                {{ $t('editor.loading' )}}
               </p>
             </div>
 
@@ -89,6 +89,9 @@
               <h1>{{ $t('editor.description') }}</h1>
             </div>
             <div class="buttons">
+              <div v-if="socketStatus" class="socket" title="Connected via socket">
+                <font-awesome icon="network-wired" />
+              </div>
               <div class="search">
                 <input
                   v-if="search.toggle"
@@ -102,10 +105,10 @@
                   <font-awesome v-else icon="search" fixed-width />
                 </button>
               </div>
-              <button @click="saveData" title="Save and generate code">
+              <button @click="saveData" title="Save changes">
                 <span v-if="saveStatus !== 'saving'">
                   <font-awesome icon="save" fixed-width />
-                  {{ $t('editor.save') }}
+                  {{ $t(socketStatus ? 'editor.apply' : 'editor.save') }}
                 </span>
                 <span v-else>
                   <font-awesome icon="sync-alt" fixed-width :spin="true" />
@@ -242,6 +245,9 @@ export default {
     },
     selectedNodes() {
       return this.$store.getters.selectedNodeIds;
+    },
+    socketStatus() {
+      return this.$store.getters.editorSocketStatus;
     },
   },
   created() {
@@ -389,6 +395,14 @@ main.editor {
                 background: white;
                 margin: 0;
               }
+            }
+
+            .socket {
+              color: $brand-color;
+              font-size: 1rem;
+              padding: .25rem .25rem;
+              border: 0;
+              margin-right: .5rem;
             }
 
             input {

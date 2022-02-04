@@ -6,102 +6,119 @@ const config = require('../../config');
 const KEEP_LISTENING = true;
 const STOP_LISTENING = false;
 
-function importKey(format, encoded, keyUsages) {
-  return crypto.subtle.importKey(format, decode(encoded), {
-    name: 'RSASSA-PKCS1-v1_5',
-    hash: 'SHA-256',
-  }, false, keyUsages);
-}
+/* eslint-disable no-use-before-define */
 
-async function exportKey(format, key, storageKey) {
-  const exported = await crypto.subtle.exportKey(format, key);
-  const encoded = encode(exported);
-  localStorage.setItem(storageKey, encoded);
-  return encoded;
-}
+class SocketInterface {
+  constructor(socket, keys, pluginKey) {
+    this.socket = socket;
+    this.keys = keys;
+    this.pluginKey = pluginKey;
 
-async function loadKeys() {
-  const encodedPublicKey = localStorage.getItem('editor-public-key');
-  const encodedPrivateKey = localStorage.getItem('editor-private-key');
-
-  if (encodedPublicKey && encodedPrivateKey) {
-    const publicKey = await importKey('spki', encodedPublicKey, []);
-    const privateKey = await importKey('pkcs8', encodedPrivateKey, ['sign']);
-    return {
-      publicKey,
-      privateKey,
-      encodedPublicKey,
-      encodedPrivateKey,
-    };
+    this.listeners = [];
+    this.lastPing = 0;
+    this.lastPong = 0;
+    this.keepaliveTask = null;
   }
 
-  return null;
-}
+  /**
+   * Sends a message to the socket
+   * @param msg the message to send
+   */
+  async send(msg) {
+    const encoded = JSON.stringify(msg);
 
-async function generateKeys() {
-  const { publicKey, privateKey } = await crypto.subtle.generateKey({
-    name: 'RSASSA-PKCS1-v1_5',
-    modulusLength: 4096,
-    publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256',
-  }, true, ['sign']);
+    // sign the message with the editor private key
+    const signature = await crypto.subtle.sign(
+      'RSASSA-PKCS1-v1_5',
+      this.keys.privateKey,
+      new TextEncoder().encode(encoded),
+    );
 
-  const encodedPublicKey = await exportKey('spki', publicKey, 'editor-public-key');
-  const encodedPrivateKey = await exportKey('pkcs8', privateKey, 'editor-private-key');
+    // send the original message along with the signature
+    this.socket.send(JSON.stringify({
+      msg: encoded,
+      signature: encode(signature),
+    }));
+  }
 
-  return {
-    publicKey,
-    privateKey,
-    encodedPublicKey,
-    encodedPrivateKey,
-  };
-}
+  /**
+   * Register a listener with the socket.
+   *
+   * Listeners must return a boolean indicating if the
+   * subscription should continue.
+   *
+   * @param listener the listener
+   */
+  registerListener(listener) {
+    this.listeners.push(listener);
+  }
 
-function startKeepalive(socket) {
-  /* eslint-disable no-param-reassign */
-  function onMessage(msg) {
-    if (msg.type === 'pong') {
-      if (!msg.ok) {
-        console.log('[WS] Plugin closed the connection, disconnecting...');
-        socket.socket.close();
-        return STOP_LISTENING;
+  /**
+   * Handles an incoming message from the socket.
+   *
+   * @param frame the message frame
+   */
+  async onReceive(frame) {
+    const { msg: encodedMessage, signature } = frame;
+    if (!encodedMessage || !signature) {
+      return;
+    }
+
+    // verify that the message was sent by the plugin
+    // (check it was signed with the plugin public key)
+    const verified = await crypto.subtle.verify(
+      'RSASSA-PKCS1-v1_5',
+      this.pluginKey,
+      decode(signature),
+      new TextEncoder().encode(encodedMessage),
+    );
+
+    if (!verified) {
+      return;
+    }
+
+    const msg = JSON.parse(encodedMessage);
+
+    // if verification passes, forward the inner message onto listeners
+    const toRemove = [];
+    this.listeners.forEach((listener, i) => {
+      const resp = listener(msg);
+      if (resp === STOP_LISTENING) {
+        toRemove.unshift(i);
       }
-
-      socket.lastPong = Date.now();
-    }
-    return KEEP_LISTENING;
-  }
-
-  socket.listeners.push(onMessage);
-
-  socket.keepaliveTask = setInterval(() => {
-    if (socket.socket.readyState !== 1) {
-      clearInterval(socket.keepaliveTask);
-      return;
-    }
-
-    if (socket.lastPing !== 0 && Date.now() - socket.lastPong > 11000) {
-      console.log('[WS] Plugin stopped responding to keepalive, disconnecting');
-      socket.socket.close();
-      return;
-    }
-
-    socket.lastPing = Date.now();
-    socket.send({
-      type: 'ping',
     });
-  }, 10000);
-  /* eslint-enable no-param-reassign */
+    toRemove.forEach(i => this.listeners.splice(i, 1));
+  }
 }
 
-function randomString(len) {
-  function dec2hex(dec) {
-    return dec.toString(16).padStart(2, '0');
-  }
+// eslint-disable-next-line max-len
+export async function socketConnect(channelId, sessionId, pluginPublicKey, callbacks) {
+  // generate public/private keypair for the editor
+  const keys = await loadKeys() || await generateKeys();
 
-  const arr = new Uint8Array((len || 40) / 2);
-  crypto.getRandomValues(arr);
-  return Array.from(arr, dec2hex).join('');
+  // decode and import the plugin public key
+  const pluginKey = await importKey('spki', pluginPublicKey, ['verify']);
+
+  console.log('[WS] Loaded editor keys and decoded plugin public key');
+
+  // create a websocket
+  // important that no async/await occurs between here and the listener registrations
+  const socket = new WebSocket(`wss://${config.bytesocks_host}/${channelId}`);
+  const socketInterface = new SocketInterface(socket, keys, pluginKey);
+
+  socket.onmessage = (event) => {
+    const frame = JSON.parse(event.data);
+    socketInterface.onReceive(frame);
+  };
+
+  socket.onopen = () => {
+    console.log('[WS] Socket open, initialising connection...');
+    initConnection(socketInterface, sessionId, keys.encodedPublicKey, callbacks);
+  };
+
+  socket.onclose = () => {
+    callbacks.close();
+  };
 }
 
 function initConnection(socket, sessionId, encodedPublicKey, callbacks) {
@@ -153,7 +170,7 @@ function initConnection(socket, sessionId, encodedPublicKey, callbacks) {
   }
 
   // add a listener to await a reply
-  socket.listeners.push(onMessage);
+  socket.registerListener(onMessage);
 
   const { browser, os } = Bowser.parse(window.navigator.userAgent);
 
@@ -165,96 +182,6 @@ function initConnection(socket, sessionId, encodedPublicKey, callbacks) {
     browser: `${browser.name} on ${os.name}`,
     publicKey: encodedPublicKey,
   });
-}
-
-// eslint-disable-next-line max-len
-export async function socketConnect(channelId, sessionId, pluginPublicKey, callbacks) {
-  // generate public/private keypair for the editor
-  const keys = await loadKeys() || await generateKeys();
-
-  // decode and import the plugin public key
-  const pluginKey = await importKey('spki', pluginPublicKey, ['verify']);
-
-  console.log('[WS] Loaded editor keys and decoded plugin public key');
-
-  // create a websocket
-  // important that no async/await occurs after this point
-  const socket = new WebSocket(`wss://${config.bytesocks_host}/${channelId}`);
-
-  // the socket interface that is exported to other parts of the code
-  const socketInterface = {
-    socket,
-    listeners: [],
-    lastPing: 0,
-    lastPong: 0,
-    keepaliveTask: null,
-
-    // sends a signed message to the socket
-    send: (msg) => {
-      const encoded = JSON.stringify(msg);
-
-      // sign the message with the editor private key
-      const signPromise = crypto.subtle.sign(
-        'RSASSA-PKCS1-v1_5',
-        keys.privateKey,
-        new TextEncoder().encode(encoded),
-      );
-
-      // send the signed+encoded message to the socket
-      signPromise.then((signature) => {
-        socket.send(JSON.stringify({
-          msg: encoded,
-          signature: encode(signature),
-        }));
-      });
-    },
-  };
-
-  // Listen to messages from the socket.
-  socket.onmessage = (event) => {
-    const frame = JSON.parse(event.data);
-
-    const { msg: innerMsg, signature } = frame;
-    if (!innerMsg || !signature) {
-      return;
-    }
-
-    // verify that the message was sent by the plugin
-    // (check it was signed with the plugin public key)
-    const verifyPromise = crypto.subtle.verify(
-      'RSASSA-PKCS1-v1_5',
-      pluginKey,
-      decode(signature),
-      new TextEncoder().encode(innerMsg),
-    );
-
-    // if verification passes, forward the inner message onto listeners
-    verifyPromise.then((verified) => {
-      if (verified) {
-        const msg = JSON.parse(innerMsg);
-
-        const toRemove = [];
-        socketInterface.listeners.forEach((listener, i) => {
-          const resp = listener(msg);
-          if (resp === STOP_LISTENING) {
-            toRemove.unshift(i);
-          }
-        });
-        toRemove.forEach(i => socketInterface.listeners.splice(i, 1));
-      }
-    });
-  };
-
-  // Wait for the socket to open, then initialise a connection
-  socket.onopen = () => {
-    console.log('[WS] Socket open, initialising connection...');
-    initConnection(socketInterface, sessionId, keys.encodedPublicKey, callbacks);
-  };
-
-  // Call the close callback if the socket closes
-  socket.onclose = () => {
-    callbacks.close();
-  };
 }
 
 export function sendChangesViaSocket(socket, bytebinCode) {
@@ -294,7 +221,7 @@ export function sendChangesViaSocket(socket, bytebinCode) {
     }
 
     // register reply listener
-    socket.listeners.push(onMessage);
+    socket.registerListener(onMessage);
 
     // send the apply change request
     socket.send({
@@ -302,4 +229,102 @@ export function sendChangesViaSocket(socket, bytebinCode) {
       code: bytebinCode,
     });
   });
+}
+
+function startKeepalive(socket) {
+  /* eslint-disable no-param-reassign */
+  function onMessage(msg) {
+    if (msg.type === 'pong') {
+      if (!msg.ok) {
+        console.log('[WS] Plugin closed the connection, disconnecting...');
+        socket.socket.close();
+        return STOP_LISTENING;
+      }
+
+      socket.lastPong = Date.now();
+    }
+    return KEEP_LISTENING;
+  }
+
+  socket.registerListener(onMessage);
+
+  socket.keepaliveTask = setInterval(() => {
+    if (socket.socket.readyState !== 1) {
+      clearInterval(socket.keepaliveTask);
+      return;
+    }
+
+    if (socket.lastPing !== 0 && Date.now() - socket.lastPong > 11000) {
+      console.log('[WS] Plugin stopped responding to keepalive, disconnecting');
+      socket.socket.close();
+      return;
+    }
+
+    socket.lastPing = Date.now();
+    socket.send({
+      type: 'ping',
+    });
+  }, 10000);
+  /* eslint-enable no-param-reassign */
+}
+
+async function loadKeys() {
+  const encodedPublicKey = localStorage.getItem('editor-public-key');
+  const encodedPrivateKey = localStorage.getItem('editor-private-key');
+
+  if (encodedPublicKey && encodedPrivateKey) {
+    const publicKey = await importKey('spki', encodedPublicKey, []);
+    const privateKey = await importKey('pkcs8', encodedPrivateKey, ['sign']);
+    return {
+      publicKey,
+      privateKey,
+      encodedPublicKey,
+      encodedPrivateKey,
+    };
+  }
+
+  return null;
+}
+
+function importKey(format, encoded, keyUsages) {
+  return crypto.subtle.importKey(format, decode(encoded), {
+    name: 'RSASSA-PKCS1-v1_5',
+    hash: 'SHA-256',
+  }, false, keyUsages);
+}
+
+async function exportKey(format, key, storageKey) {
+  const exported = await crypto.subtle.exportKey(format, key);
+  const encoded = encode(exported);
+  localStorage.setItem(storageKey, encoded);
+  return encoded;
+}
+
+async function generateKeys() {
+  const { publicKey, privateKey } = await crypto.subtle.generateKey({
+    name: 'RSASSA-PKCS1-v1_5',
+    modulusLength: 4096,
+    publicExponent: new Uint8Array([1, 0, 1]),
+    hash: 'SHA-256',
+  }, true, ['sign']);
+
+  const encodedPublicKey = await exportKey('spki', publicKey, 'editor-public-key');
+  const encodedPrivateKey = await exportKey('pkcs8', privateKey, 'editor-private-key');
+
+  return {
+    publicKey,
+    privateKey,
+    encodedPublicKey,
+    encodedPrivateKey,
+  };
+}
+
+function randomString(len) {
+  function dec2hex(dec) {
+    return dec.toString(16).padStart(2, '0');
+  }
+
+  const arr = new Uint8Array((len || 40) / 2);
+  crypto.getRandomValues(arr);
+  return Array.from(arr, dec2hex).join('');
 }

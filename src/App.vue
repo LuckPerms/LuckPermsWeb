@@ -485,6 +485,10 @@ body {
         }
 
         &.locale {
+          img {
+            width: 1.5rem;
+          }
+
           + ul {
             width: 24rem;
             max-height: 50vh;
@@ -492,6 +496,7 @@ body {
 
             img {
               margin-right: .5rem;
+              width: 1.5rem;
             }
           }
         }

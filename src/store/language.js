@@ -80,8 +80,8 @@ export default {
         }
 
         const flagUrl = localeTag === 'en_PT'
-          ? 'rawr im a pirate'
-          : `https://flagcdn.com/w20/${locale}.png`;
+          ? '/twemoji-pirate-flag.png'
+          : `https://flagcdn.com/w40/${locale}.png`;
 
         return {
           code,

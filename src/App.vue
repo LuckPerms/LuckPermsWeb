@@ -78,11 +78,12 @@
             </a>
           </li>
         </template>
-        <li v-if="locale">
+        <li v-if="locale" @click="localeMenu = !localeMenu">
           <span class="locale">
             <img :src="locale.flagUrl" :alt="locale.name">
+            <span class="locale-label">Language</span>
           </span>
-          <ul>
+          <ul :class="['locale-menu', { open: !!localeMenu }]">
             <li v-for="locale in locales" :key="locale.code" @click="setLocale(locale.code)">
               <span>
                 <img :src="locale.flagUrl" :alt="locale.name"> {{ locale.name }}
@@ -171,6 +172,7 @@ export default {
   data() {
     return {
       menu: false,
+      localeMenu: false,
     };
   },
 
@@ -416,6 +418,8 @@ body {
     max-width: 20rem;
     bottom: 0;
     z-index: 100;
+    overflow: hidden;
+    overflow-y: scroll;
 
     @include breakpoint($sm) {
       flex-direction: row;
@@ -425,6 +429,8 @@ body {
       top: unset;
       right: unset;
       background: transparent;
+      overflow: initial;
+      overflow-y: initial;
     }
 
     &.active {
@@ -442,6 +448,10 @@ body {
       display: flex;
       position: relative;
       flex-direction: column;
+
+      img {
+        width: 1.5rem;
+      }
 
       &.overlap {
         z-index: 110;
@@ -484,26 +494,55 @@ body {
           }
         }
 
-        &.locale {
-          img {
-            width: 1.5rem;
+        svg {
+          margin-right: .5rem;
+          opacity: .5;
+        }
+      }
+
+      .locale {
+        + ul {
+          display: none;
+
+          &.open {
+            display: flex;
           }
 
-          + ul {
-            width: 24rem;
+          img {
+            margin-right: .5rem;
+          }
+
+          li {
+            span {
+              padding: .75rem 2rem;
+              line-height: 1;
+            }
+          }
+
+          @include breakpoint($sm) {
+            width: 28rem;
             max-height: 50vh;
             overflow-y: scroll;
 
-            img {
-              margin-right: .5rem;
-              width: 1.5rem;
+            &.open {
+              display: none;
+            }
+
+            li {
+              span {
+                padding: .5rem 1rem;
+                line-height: 1;
+              }
             }
           }
         }
 
-        svg {
-          margin-right: .5rem;
-          opacity: .5;
+        .locale-label {
+          padding: 0rem .75rem;
+
+          @include breakpoint($sm) {
+            display: none;
+          }
         }
       }
 

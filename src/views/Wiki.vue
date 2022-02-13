@@ -1,6 +1,12 @@
 <template>
   <main id="wiki" class="wiki container">
     <article id="article">
+      <div id="wiki-locale-notification" v-if="!wikiWarningAcknowledged && locale.code !== 'en'">
+        {{ $t('wikiLocaleWarning') }}
+        <button @click="acknowledgeWikiWarning">
+          <font-awesome icon="check" />
+        </button>
+      </div>
       <router-view />
     </article>
     <aside>
@@ -21,6 +27,16 @@ export default {
   components: {
     Sidebar,
   },
+  data() {
+    return {
+      wikiWarningAcknowledged: !!JSON.parse(localStorage.getItem('wikiWarningAcknowledged')),
+    };
+  },
+  computed: {
+    locale() {
+      return this.$store.getters.userLocale;
+    },
+  },
   mounted() {
     if (window.innerWidth >= 922) return;
     const wiki = document.getElementById('wiki');
@@ -32,6 +48,12 @@ export default {
         });
       });
     });
+  },
+  methods: {
+    acknowledgeWikiWarning() {
+      this.wikiWarningAcknowledged = true;
+      localStorage.setItem('wikiWarningAcknowledged', JSON.stringify(true));
+    },
   },
 };
 </script>
@@ -347,5 +369,21 @@ export default {
 
   .hljs-link {
     text-decoration: underline;
+  }
+
+  #wiki-locale-notification {
+    font-weight: bold;
+    background: $brand-color;
+    color: black;
+    padding: .5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 .5rem;
+    }
   }
 </style>

@@ -78,6 +78,19 @@
             </a>
           </li>
         </template>
+        <li v-if="locale" @click="localeMenu = !localeMenu">
+          <span class="locale">
+            <img :src="locale.flagUrl" :alt="locale.name">
+            <span class="locale-label">{{ $t('links.language') }}</span>
+          </span>
+          <ul :class="['locale-menu', { open: !!localeMenu }]">
+            <li v-for="locale in locales" :key="locale.code" @click="setLocale(locale.code)">
+              <span>
+                <img :src="locale.flagUrl" :alt="locale.name"> {{ locale.name }}
+              </span>
+            </li>
+          </ul>
+        </li>
       </ul>
 
       <button
@@ -95,6 +108,13 @@
           @click="menu = !menu"
         ></div>
       </transition>
+
+      <div id="locale-update" v-if="!localeUpdateAcknowledged">
+        {{ $t('localeUpdate') }}
+        <button @click="acknowledgeLocaleUpdate">
+          <font-awesome icon="check" />
+        </button>
+      </div>
     </nav>
 
     <transition name="fade" mode="out-in">
@@ -159,12 +179,20 @@ export default {
   data() {
     return {
       menu: false,
+      localeMenu: false,
+      localeUpdateAcknowledged: !!JSON.parse(localStorage.getItem('localeUpdateAcknowledged')),
     };
   },
 
   computed: {
     commitHash() {
       return process.env.VUE_APP_GIT_HASH;
+    },
+    locale() {
+      return this.$store.getters.userLocale;
+    },
+    locales() {
+      return this.$store.getters.supportedLanguages;
     },
     version() {
       return this.$store.getters.version;
@@ -189,6 +217,16 @@ export default {
 
   created() {
     this.$store.dispatch('getAppData');
+  },
+
+  methods: {
+    setLocale(locale) {
+      this.$store.dispatch('setUserLocale', locale);
+    },
+    acknowledgeLocaleUpdate() {
+      this.localeUpdateAcknowledged = true;
+      localStorage.setItem('localeUpdateAcknowledged', JSON.stringify(true));
+    },
   },
 
   watch: {
@@ -309,6 +347,7 @@ body {
   box-shadow: 0 0 0.5rem rgba(0,0,0,.25);
   display: flex;
   justify-content: space-between;
+  position: relative;
 
   > div {
     display: flex;
@@ -390,8 +429,9 @@ body {
     right: -100%;
     width: 100%;
     max-width: 20rem;
-    bottom: 0;
     z-index: 100;
+    overflow: hidden;
+    overflow-y: scroll;
 
     @include breakpoint($sm) {
       flex-direction: row;
@@ -401,11 +441,14 @@ body {
       top: unset;
       right: unset;
       background: transparent;
+      overflow: initial;
+      overflow-y: initial;
     }
 
     &.active {
       right: 0;
       display: initial;
+      max-height: calc(100vh - 8rem);
     }
 
     &.top-level:not(.active) {
@@ -418,6 +461,10 @@ body {
       display: flex;
       position: relative;
       flex-direction: column;
+
+      img {
+        width: 1.5rem;
+      }
 
       &.overlap {
         z-index: 110;
@@ -463,6 +510,52 @@ body {
         svg {
           margin-right: .5rem;
           opacity: .5;
+        }
+      }
+
+      .locale {
+        + ul {
+          display: none;
+
+          &.open {
+            display: flex;
+          }
+
+          img {
+            margin-right: .5rem;
+          }
+
+          li {
+            span {
+              padding: .75rem 2rem;
+              line-height: 1;
+            }
+          }
+
+          @include breakpoint($sm) {
+            width: 28rem;
+            max-height: 50vh;
+            overflow-y: scroll;
+
+            &.open {
+              display: none;
+            }
+
+            li {
+              span {
+                padding: .5rem 1rem;
+                line-height: 1;
+              }
+            }
+          }
+        }
+
+        .locale-label {
+          padding: 0rem .75rem;
+
+          @include breakpoint($sm) {
+            display: none;
+          }
         }
       }
 
@@ -594,6 +687,39 @@ body {
     .disabled {
       opacity: .3;
     }
+  }
+}
+
+#locale-update {
+  position: absolute;
+  background: $brand-color;
+  color: black;
+  right: 1rem;
+  top: calc(100%);
+  pointer-events: none;
+  width: 25rem;
+  max-width: 90%;
+  padding: .5rem .5rem;
+  display: flex;
+  line-height: 1.2;
+
+  &:after {
+    content: '';
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    background: $brand-color;
+    transform: rotate(45deg);
+    top: -.5rem;
+    right: .75rem;
+  }
+
+  button {
+    background: none;
+    border: none;
+    pointer-events: auto;
+    cursor: pointer;
+    padding: .5rem;
   }
 }
 </style>

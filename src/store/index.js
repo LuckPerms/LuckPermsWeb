@@ -4,7 +4,7 @@ import axios from 'axios';
 import createPersistedState from 'vuex-persistedstate';
 import language from './language';
 import axiosCompress from '@/util/axios_compress';
-import { sendChangesViaSocket, socketConnect } from './util/ws';
+import { sendChangesViaSocket, socketConnect } from '@/util/ws';
 
 const uuid = require('uuid/v4');
 const config = require('../../config.json');

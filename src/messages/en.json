@@ -3,6 +3,8 @@
   "close": "Close",
   "copy": "Copy",
   "wiki": "Wiki",
+  "wikiLocaleWarning": "Note: the wiki is only available in English.",
+  "localeUpdate": "New! Use the LuckPerms website in your preferred language. See our Discord for more info.",
   "avatar": "{name}'s avatar",
   "sponsor": "Proudly sponsored by <strong>BisectHosting</strong><br/><span class=\"new\">NEW:</span> Special offer for LuckPerms users!",
   "links": {

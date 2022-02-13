@@ -57,12 +57,12 @@
     "build": "Latest, built {time}",
     "typeHelp": "Not sure which type?",
     "typeChoose": "Choose your server type",
-    "bukkit": "Spigot, Paper etc. (1.8.8 to 1.18)",
+    "bukkit": "Spigot, Paper etc. (1.8.8 to 1.18.x)",
     "bungee": "BungeeCord, Waterfall etc. (latest only)",
-    "sponge": "SpongeForge & SpongeVanilla (API 5 to 7)",
-    "fabric": "Fabric (1.18)",
+    "sponge": "Sponge (API 8)",
+    "fabric": "Fabric (1.18.x)",
     "nukkit": "NukkitX (b93 or newer)",
-    "velocity": "Velocity (3.0.0 or newer)",
+    "velocity": "Velocity (3.x)",
     "bukkitLegacy": "Spigot, Paper etc. (1.7.10 only)",
     "changelog": "Recent Changelog",
     "install": {
@@ -112,6 +112,7 @@
     "cancel": "Cancel",
     "update": "Update",
     "save": "Save",
+    "apply": "Apply",
     "saveAndGenerate": "Save and generate code",
     "saving": "Saving...",
     "saved": "Data was saved!",
@@ -125,6 +126,16 @@
       "tracks": "Tracks",
       "groups": "Groups",
       "users": "Users"
+    },
+    "reusedsession": {
+      "title": "Reused Session",
+      "desc": "This session has been used (opened & saved) already!",
+      "desc2": "Therefore, it may contain outdated data that no longer reflects the plugin storage. The recommended course of action is to create a new editor session and start afresh."
+    },
+    "trust": {
+      "title": "Editor Connection",
+      "prompt": "In order to trust this web browser and allow it to apply changes directly to your server, please run the following command in-game:",
+      "note": "<strong>Note:</strong> You only have to do this once! The server will remember this browser for future sessions."
     },
     "groups": {
       "create": "Create a group",

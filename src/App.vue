@@ -81,7 +81,7 @@
         <li v-if="locale" @click="localeMenu = !localeMenu">
           <span class="locale">
             <img :src="locale.flagUrl" :alt="locale.name">
-            <span class="locale-label">Language</span>
+            <span class="locale-label">{{ $t('links.language') }}</span>
           </span>
           <ul :class="['locale-menu', { open: !!localeMenu }]">
             <li v-for="locale in locales" :key="locale.code" @click="setLocale(locale.code)">

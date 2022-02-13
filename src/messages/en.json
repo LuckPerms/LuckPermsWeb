@@ -17,7 +17,8 @@
       "editor": "Editor",
       "verbose": "Verbose",
       "tree": "Tree"
-    }
+    },
+    "language": "Language"
   },
   "home": {
     "name": "Home",

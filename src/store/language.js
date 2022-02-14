@@ -45,7 +45,14 @@ export default {
 
       const navigatorLanguages = [navigator.language, ...(navigator.languages || [])];
       const { supportedLanguages = [] } = state;
-      const { code: language } = supportedLanguages.find(({ code }) => navigatorLanguages.includes(code));
+
+      let language = 'en';
+
+      const userDefaultLanguage = supportedLanguages.find(({ code }) => navigatorLanguages.includes(code));
+
+      if (userDefaultLanguage) {
+        language = userDefaultLanguage.code;
+      }
 
       dispatch('fetchLanguage', language);
       commit('setUserLocale', language);

@@ -1,7 +1,7 @@
 <template>
   <main id="wiki" class="wiki container">
     <article id="article">
-      <div id="wiki-locale-notification" v-if="!wikiWarningAcknowledged && locale.code !== 'en'">
+      <div id="wiki-locale-notification" v-if="showLocaleWarning">
         {{ $t('wikiLocaleWarning') }}
         <button @click="acknowledgeWikiWarning">
           <font-awesome icon="check" />
@@ -35,6 +35,13 @@ export default {
   computed: {
     locale() {
       return this.$store.getters.userLocale;
+    },
+    showLocaleWarning() {
+      if (!this.locale || this.locale.code === 'en') {
+        return false;
+      }
+
+      return !this.wikiWarningAcknowledged;
     },
   },
   mounted() {

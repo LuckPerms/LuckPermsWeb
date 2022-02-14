@@ -40,18 +40,18 @@ export default {
         return;
       }
 
-      if (state.userLocale && state.userLocale !== 'en') {
+      if (state.userLocale) {
         dispatch('fetchLanguage', state.userLocale);
         return;
       }
 
       const navigatorLanguages = [navigator.language, ...(navigator.languages || [])];
-
       const { supportedLanguages = [] } = state;
 
       let language = 'en';
 
-      const userDefaultLanguage = supportedLanguages.find(({ code }) => navigatorLanguages.includes(code));
+      const userDefaultLanguage = supportedLanguages
+        .find(({ code }) => navigatorLanguages.includes(code));
 
       if (userDefaultLanguage) {
         language = userDefaultLanguage.code;

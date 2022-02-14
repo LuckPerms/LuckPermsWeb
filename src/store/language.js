@@ -36,6 +36,8 @@ export default {
       if (locale) {
         dispatch('fetchLanguage', locale);
         commit('setUserLocale', locale);
+
+        return;
       }
 
       if (state.userLocale && state.userLocale !== 'en') {
@@ -44,6 +46,7 @@ export default {
       }
 
       const navigatorLanguages = [navigator.language, ...(navigator.languages || [])];
+
       const { supportedLanguages = [] } = state;
 
       let language = 'en';

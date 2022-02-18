@@ -80,13 +80,17 @@
         </template>
         <li v-if="locale" @click="localeMenu = !localeMenu">
           <span class="locale">
-            <img :src="locale.flagUrl" :alt="locale.name">
+            <font-awesome icon="language" fixed-width />
             <span class="locale-label">{{ $t('links.language') }}</span>
           </span>
           <ul :class="['locale-menu', { open: !!localeMenu }]">
-            <li v-for="locale in locales" :key="locale.code" @click="setLocale(locale.code)">
+            <li
+              v-for="l in locales"
+              :key="l.code" @click="setLocale(l.code)"
+              :class="[{selected: l === locale}]"
+            >
               <span>
-                <img :src="locale.flagUrl" :alt="locale.name"> {{ locale.name }}
+                <img :src="l.flagUrl" :alt="l.name"> {{ l.name }}
               </span>
             </li>
           </ul>
@@ -108,13 +112,6 @@
           @click="menu = !menu"
         ></div>
       </transition>
-
-      <div id="locale-update" v-if="!localeUpdateAcknowledged">
-        {{ $t('localeUpdate') }}
-        <button @click="acknowledgeLocaleUpdate">
-          <font-awesome icon="check" />
-        </button>
-      </div>
     </nav>
 
     <transition name="fade" mode="out-in">
@@ -180,7 +177,6 @@ export default {
     return {
       menu: false,
       localeMenu: false,
-      localeUpdateAcknowledged: !!JSON.parse(localStorage.getItem('localeUpdateAcknowledged')),
     };
   },
 
@@ -222,10 +218,6 @@ export default {
   methods: {
     setLocale(locale) {
       this.$store.dispatch('setUserLocale', locale);
-    },
-    acknowledgeLocaleUpdate() {
-      this.localeUpdateAcknowledged = true;
-      localStorage.setItem('localeUpdateAcknowledged', JSON.stringify(true));
     },
   },
 
@@ -514,6 +506,10 @@ body {
       }
 
       .locale {
+        & svg {
+          margin-right: 0;
+        }
+
         + ul {
           display: none;
 
@@ -529,6 +525,10 @@ body {
             span {
               padding: .75rem 2rem;
               line-height: 1;
+            }
+
+            &.selected {
+              background: rgba(255,255,255,.1);;
             }
           }
 
@@ -687,39 +687,6 @@ body {
     .disabled {
       opacity: .3;
     }
-  }
-}
-
-#locale-update {
-  position: absolute;
-  background: $brand-color;
-  color: black;
-  right: 1rem;
-  top: calc(100%);
-  pointer-events: none;
-  width: 25rem;
-  max-width: 90%;
-  padding: .5rem .5rem;
-  display: flex;
-  line-height: 1.2;
-
-  &:after {
-    content: '';
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    background: $brand-color;
-    transform: rotate(45deg);
-    top: -.5rem;
-    right: .75rem;
-  }
-
-  button {
-    background: none;
-    border: none;
-    pointer-events: auto;
-    cursor: pointer;
-    padding: .5rem;
   }
 }
 </style>

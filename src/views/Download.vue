@@ -258,7 +258,7 @@
     <div class="container placeholder-expansions">
       <section class="resources">
         <div>
-          <a :href="placeholderExpansions['luckperms-papi-expansion']" class="resource">
+          <a :href="placeholderExpansions['bukkit-placeholderapi']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               PlaceholderAPI
@@ -276,7 +276,7 @@
           </div>
         </div>
         <div>
-          <a :href="placeholderExpansions['luckperms-mvdw-hook']" class="resource">
+          <a :href="placeholderExpansions['bukkit-mvdw']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
               MVdWPlaceholderAPI
@@ -285,6 +285,18 @@
           </a>
           <div>
             <p>Place the JAR file in your <code>/plugins/</code> folder.</p>
+          </div>
+        </div>
+        <div>
+          <a :href="placeholderExpansions['fabric-placeholderapi']" class="resource">
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              Fabric PlaceholderAPI
+            </span>
+            <small>LuckPerms 5.0 and above, Fabric only</small>
+          </a>
+          <div>
+            <p>Place the JAR file in your <code>/mods/</code> folder.</p>
           </div>
         </div>
       </section>

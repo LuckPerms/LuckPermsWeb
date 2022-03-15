@@ -6,11 +6,6 @@
           <img alt="LuckPerms logo" src="@/assets/logo.svg">
           <span>LuckPerms</span>
         </router-link>
-        <transition name="fade">
-          <div v-if="!config.selfHosted && !isSponsorRoute" class="nav-message">
-
-          </div>
-        </transition>
       </div>
 
       <ul :class="{ active: menu, 'top-level': true }">

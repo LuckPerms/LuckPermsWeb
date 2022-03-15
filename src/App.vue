@@ -8,11 +8,7 @@
         </router-link>
         <transition name="fade">
           <div v-if="!config.selfHosted && !isSponsorRoute" class="nav-message">
-            <router-link to="/sponsor">
-              <hr />
-              <img src="@/assets/bisect.svg" alt="Bisect Hosting">
-              <span v-html="$t('sponsor')" />
-            </router-link>
+
           </div>
         </transition>
       </div>

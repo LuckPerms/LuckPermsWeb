@@ -58,11 +58,6 @@ if (!config.selfHosted) {
       component: () => import(/* webpackChunkName: "download" */ './views/Download'),
     },
     {
-      path: '/sponsor',
-      name: 'sponsor',
-      component: () => import(/* webpackChunkName: "sponsor" */ './views/Sponsor'),
-    },
-    {
       path: '/wiki',
       name: 'wiki',
       component: () => import(/* webpackChunkName: "wiki" */ './views/Wiki'),

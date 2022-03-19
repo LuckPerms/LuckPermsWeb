@@ -88,20 +88,6 @@
             </span>
             <small>{{ $t('home.discord', { count: discordUserCount }) }}</small>
           </a>
-          <router-link to="/sponsor" class="resource">
-            <span>
-              <font-awesome icon="server" />
-              {{ $t('home.partner.title') }}
-            </span>
-            <small>{{ $t('home.partner.description') }}</small>
-          </router-link>
-          <a href="https://patreon.com/luckdev" class="resource">
-            <span>
-              <font-awesome :icon="['fab', 'patreon']" />
-              Patreon
-            </span>
-            <small>{{ $t('home.patreon', { count: patreonCount }) }}</small>
-          </a>
         </div>
       </section>
     </div>

@@ -277,20 +277,6 @@
   "tools": {
     "demo": "View Demo"
   },
-  "quiz": {
-    "choose": "Do you run a single server, or a network?",
-    "single": "Single server",
-    "network": "Network of servers",
-    "type": "What type of server are you running?",
-    "note": "Note: LuckPerms is still required on all backend servers.",
-    "version": "What version of {serverType} are you running?",
-    "older": "{version} or older",
-    "newer": "{version} or newer",
-    "result": "You need LuckPerms for {serverType}",
-    "resultLegacy": "You need LuckPerms Legacy for {serverType}",
-    "travertine": "Your version of BungeeCord is not supported, consider switching to Travertine if you want to use LuckPerms.",
-    "outdated": "Your version of {serverType} is not supported, you must upgrade if you want to use LuckPerms."
-  },
   "notFound": {
     "title": "Not found!",
     "message": "The page {path} doesn't exist"

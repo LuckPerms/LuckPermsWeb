@@ -4,13 +4,8 @@
       <div>
         <router-link to="/" class="logo">
           <img alt="LuckPerms logo" src="@/assets/logo.svg">
-          <span>LuckPerms</span>
+          <span>HerrErdePerms</span>
         </router-link>
-        <transition name="fade">
-          <div v-if="!config.selfHosted && !isSponsorRoute" class="nav-message">
-
-          </div>
-        </transition>
       </div>
 
       <ul :class="{ active: menu, 'top-level': true }">
@@ -62,7 +57,7 @@
         </li>
         <template v-if="!config.selfHosted">
           <li class="external overlap">
-            <a href="https://github.com/LuckPerms/LuckPerms" target="_blank" class="github">
+            <a href="https://github.com/HerrErde/LuckPerms" target="_blank" class="github">
               <font-awesome :icon="['fab', 'github']" fixed-width />
               <span>GitHub</span>
             </a>
@@ -119,15 +114,15 @@
         <ul>
           <li>
             <font-awesome icon="code-branch" fixed-width />
-            <a href="https://github.com/LuckPerms/LuckPermsWeb" target="_blank">LuckPermsWeb</a>
+            <a href="https://github.com/HerrErde/LuckPermsWeb" target="_blank">LuckPermsWeb</a>
             @
-            <a :href="'https://github.com/LuckPerms/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
+            <a :href="'https://github.com/HerrErde/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
           </li>
           <li>
             <router-link v-if="!config.selfHosted" to="/wiki/Credits" target="_blank">
               Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
             </router-link>
-            <a v-else href="https://luckperms.net/wiki/Credits" target="_blank">
+            <a v-else href="https://perms.herrerde.cf/wiki/Credits" target="_blank">
               Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
             </a>
           </li>
@@ -156,11 +151,11 @@ export default {
       },
       {
         property: 'og:image',
-        content: 'https://luckperms.net/logo.png',
+        content: 'https://perms.herrerde.cf/logo.png',
       },
       {
         property: 'og:url',
-        content: 'https://luckperms.net/',
+        content: 'https://perms.herrerde.cf/',
       },
       {
         property: 'og:site_name',

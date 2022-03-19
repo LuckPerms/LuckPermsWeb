@@ -29,32 +29,6 @@
             </router-link>
           </li>
         </template>
-        <li>
-          <span :class="{ 'router-link-active': isToolsRoute, tools: true }">
-            <font-awesome icon="tools" fixed-width />
-            {{ $t('links.tools.name') }}
-          </span>
-          <ul>
-            <li>
-              <router-link to="/editor">
-                <font-awesome icon="edit" fixed-width />
-                {{ $t('links.tools.editor') }}
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/verbose">
-                <font-awesome icon="comment-alt" fixed-width />
-                {{ $t('links.tools.verbose') }}
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/treeview">
-                <font-awesome icon="sitemap" fixed-width />
-                {{ $t('links.tools.tree') }}
-              </router-link>
-            </li>
-          </ul>
-        </li>
         <template v-if="!config.selfHosted">
           <li class="external overlap">
             <a href="https://github.com/HerrErde/LuckPerms" target="_blank" class="github">
@@ -139,11 +113,7 @@ export default {
     meta: [
       {
         property: 'og:title',
-        content: 'LuckPerms',
-      },
-      {
-        property: 'og:description',
-        content: 'Website & online apps for the LuckPerms plugin.',
+        content: 'HerrErdePerms',
       },
       {
         property: 'og:type',
@@ -156,11 +126,7 @@ export default {
       {
         property: 'og:url',
         content: 'https://perms.herrerde.cf/',
-      },
-      {
-        property: 'og:site_name',
-        content: 'LuckPerms - A permissions plugin for Minecraft servers.',
-      },
+      }
     ],
   },
 

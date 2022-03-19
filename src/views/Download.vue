@@ -258,6 +258,9 @@
       </section>
     </div>
 
+    <transition name="fade">
+      <Quiz v-if="quiz.open" :downloads="downloads" @close="quiz.open = false" />
+    </transition>
   </main>
 </template>
 
@@ -268,6 +271,16 @@ export default {
   name: 'Download',
   metaInfo: {
     title: 'Download',
+  },
+  components: {
+    Quiz: () => import('../components/Download/Quiz'),
+  },
+  data() {
+    return {
+      quiz: {
+        open: false,
+      },
+    };
   },
   computed: {
     extensions() { return this.$store.getters.extensions; },

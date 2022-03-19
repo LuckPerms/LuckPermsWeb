@@ -48,6 +48,10 @@
             </span>
             <small>{{ $t('download.velocity') }}</small>
           </a>
+          <button class="button" @click="openQuiz">
+            <font-awesome icon="question-circle" />
+            {{ $t('download.typeHelp') }}
+          </button>
         </div>
 
         <div>
@@ -254,8 +258,62 @@
       </section>
     </div>
 
+    <transition name="fade">
+      <Quiz v-if="quiz.open" :downloads="downloads" @close="quiz.open = false" />
+    </transition>
   </main>
 </template>
+
+<script>
+import { relativeDate } from '@/util/date';
+
+export default {
+  name: 'Download',
+  metaInfo: {
+    title: 'Download',
+  },
+  components: {
+    Quiz: () => import('../components/Download/Quiz'),
+  },
+  data() {
+    return {
+      quiz: {
+        open: false,
+      },
+    };
+  },
+  computed: {
+    extensions() { return this.$store.getters.extensions; },
+    additionalPlugins() { return this.$store.getters.additionalPlugins; },
+    placeholderExpansions() { return this.$store.getters.placeholderExpansions; },
+    downloads() { return this.$store.getters.downloads; },
+    version() { return this.$store.getters.version; },
+    versionTimestamp() { return this.$store.getters.versionTimestamp; },
+    relativeTimestamp() {
+      if (this.versionTimestamp) {
+        return relativeDate(this.versionTimestamp, this.$i18n.locale, new Date().getTime(), true);
+      }
+      return null;
+    },
+    changeLog() { return this.$store.getters.changeLog; },
+  },
+  methods: {
+    logDownload(platform) {
+      // eslint-disable-next-line no-undef
+      plausible('Download', { props: { type: platform } });
+    },
+    openQuiz() {
+      this.quiz.open = true;
+    },
+    closeQuiz() {
+      this.quiz.open = false;
+    },
+    relativeDate(value) {
+      return relativeDate(value, this.$i18n.locale);
+    },
+  },
+};
+</script>
 
 <style lang="scss">
   main.download {

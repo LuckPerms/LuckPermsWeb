@@ -61,7 +61,7 @@ export default {
 
       await this.$nextTick();
 
-      document.querySelectorAll('.wiki a').forEach((link) => {
+      document.querySelectorAll('#article a').forEach((link) => {
         link.addEventListener('click', (event) => {
           event.preventDefault();
 

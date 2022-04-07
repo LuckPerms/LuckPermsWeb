@@ -1,7 +1,7 @@
 ![](https://i.imgur.com/ToguFkQ.png "Banner")
 # LuckPermsWeb
 [![Netlify Status](https://api.netlify.com/api/v1/badges/da5df752-4c7d-4a2b-8634-3eb376fd80d8/deploy-status)](https://app.netlify.com/sites/luckperms/deploys)
-[![Discord](https://img.shields.io/discord/241667244927483904.svg?logo=discord&label=)](https://discord.gg/luckperms)
+[![Discord](https://img.shields.io/discord/241667244927483904.svg?logo=discord&label=)](https://discord.herrerde.cf)
 
 [LuckPerms](https://github.com/LuckPerms/LuckPerms) is a permission plugin for Minecraft servers, written in Java.
 

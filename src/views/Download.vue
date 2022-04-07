@@ -95,7 +95,7 @@
             </i18n>
             <i18n path="download.trouble.support" tag="li">
               <template #discord>
-                  <a href="https://discord.gg/luckperms" target="_blank">Discord</a>
+                  <a href="https://discord.herrerde.cf" target="_blank">Discord</a>
               </template>
             </i18n>
           </ul>

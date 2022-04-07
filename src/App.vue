@@ -37,7 +37,7 @@
             </a>
           </li>
           <li class="external">
-            <a href="https://discord.gg/luckperms" target="_blank" class="discord">
+            <a href="https://discord.herrerdecf" target="_blank" class="discord">
               <font-awesome :icon="['fab', 'discord']" fixed-width />
               <span>Discord</span>
             </a>

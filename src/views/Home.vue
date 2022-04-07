@@ -42,15 +42,6 @@
             <li v-html="$t('home.why.extensive')"/>
             <li v-html="$t('home.why.free')"/>
           </ul>
-          <i18n path="home.why.more" tag="p">
-            <template #wiki>
-              <router-link to="/wiki/Why-LuckPerms">{{ $t('home.why.why') }}</router-link>
-            </template>
-          </i18n>
-
-          <h2>{{ $t('home.apps.title') }}</h2>
-          <p>{{ $t('home.apps.description1') }}</p>
-          <p>{{ $t('home.apps.description2') }}</p>
           <div class="tools">
             <router-link to="/editor" alt="Web Editor">
               <font-awesome icon="edit" />
@@ -74,33 +65,12 @@
             </span>
             <small>{{ $t('home.wiki') }}</small>
           </router-link>
-          <a href="https://github.com/LuckPerms/LuckPerms" class="resource">
-            <span>
-              <font-awesome :icon="['fab', 'github']" />
-              GitHub
-            </span>
-            <small>{{ $t('home.github') }}</small>
-          </a>
-          <a href="https://discord.gg/luckperms" class="resource">
+          <a href="https://discord.herrerde.cf" class="resource">
             <span>
               <font-awesome :icon="['fab', 'discord']" />
               Discord
             </span>
             <small>{{ $t('home.discord', { count: discordUserCount }) }}</small>
-          </a>
-          <router-link to="/sponsor" class="resource">
-            <span>
-              <font-awesome icon="server" />
-              {{ $t('home.partner.title') }}
-            </span>
-            <small>{{ $t('home.partner.description') }}</small>
-          </router-link>
-          <a href="https://patreon.com/luckdev" class="resource">
-            <span>
-              <font-awesome :icon="['fab', 'patreon']" />
-              Patreon
-            </span>
-            <small>{{ $t('home.patreon', { count: patreonCount }) }}</small>
           </a>
         </div>
       </section>

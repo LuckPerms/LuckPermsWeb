@@ -38,11 +38,6 @@
       "more": "For more information, see the wiki article on {wiki}",
       "why": "Why LuckPerms?"
     },
-    "apps": {
-      "title": "Web Apps",
-      "description1": "This site hosts a number of extra web applications which work with the plugin.",
-      "description2": "These applications are designed to work for all users, even those without the ability to install/host an application on their own web server."
-    },
     "wiki": "Learn how to install, setup, configure and effectively use LuckPerms",
     "github": "Browse the source code, report issues and contribute to the project",
     "discord": "Join {count} others to discuss the project and ask/answer questions",

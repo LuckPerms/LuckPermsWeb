@@ -31,13 +31,13 @@
         </template>
         <template v-if="!config.selfHosted">
           <li class="external overlap">
-            <a href="https://github.com/HerrErde/LuckPerms" target="_blank" class="github">
+            <a href="https://github.com/HerrErde/LuckPermsWeb" target="_blank" class="github">
               <font-awesome :icon="['fab', 'github']" fixed-width />
               <span>GitHub</span>
             </a>
           </li>
           <li class="external">
-            <a href="https://discord.herrerdecf" target="_blank" class="discord">
+            <a href="https://discord.herrerde.cf" target="_blank" class="discord">
               <font-awesome :icon="['fab', 'discord']" fixed-width />
               <span>Discord</span>
             </a>

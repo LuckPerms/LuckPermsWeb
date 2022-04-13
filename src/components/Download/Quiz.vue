@@ -90,8 +90,8 @@
             </div>
           </template>
           <template v-if="options.unsupported">
-            <h1 v-if="options.bungee">{{ $t('quiz.outdated', { serverType }) }}</h1>
-            <h1 v-if="!options.bungee">{{ $t('quiz.travertine') }}</h1>
+            <h1 v-if="!options.bungee">{{ $t('quiz.outdated', { serverType }) }}</h1>
+            <h1 v-if="options.bungee">{{ $t('quiz.travertine') }}</h1>
           </template>
         </div>
       </transition>

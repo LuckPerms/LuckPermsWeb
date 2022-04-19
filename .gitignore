@@ -25,3 +25,4 @@ installer/logs
 *.sln
 *.sw*
 
+src/wiki

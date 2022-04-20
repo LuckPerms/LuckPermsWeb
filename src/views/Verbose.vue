@@ -2,15 +2,16 @@
   <main class="verbose container">
     <div class="verbose-viewer" v-if="verboseData.status === 2">
       <div class="col-1">
-        <h1>{{ $t('verbose.title') }}</h1>
+        <h1>{{ $t("verbose.title") }}</h1>
         <div class="meta-info">
           <table>
             <tr>
-              <td>{{ $t('verbose.uploaded') }}</td>
+              <td>{{ $t("verbose.uploaded") }}</td>
               <td>
                 <avatar
-                  v-if="verboseData.metadata.uploader.uuid !==
-                    '00000000-0000-0000-0000-000000000000'"
+                  v-if="
+                    verboseData.metadata.uploader.uuid !== '00000000-0000-0000-0000-000000000000'
+                  "
                   :id="verboseData.metadata.uploader.uuid"
                   :title="false"
                 />
@@ -19,25 +20,25 @@
             </tr>
             <tr>
               <td :title="$t('verbose.started')">
-                {{ $t('verbose.start') }}
+                {{ $t("verbose.start") }}
               </td>
               <td>{{ verboseData.metadata.startTime }}</td>
             </tr>
             <tr>
               <td :title="$t('verbose.ended')">
-                {{ $t('verbose.end') }}
+                {{ $t("verbose.end") }}
               </td>
               <td>{{ verboseData.metadata.endTime }}</td>
             </tr>
             <tr>
               <td :title="$t('verbose.recording')">
-                {{ $t('verbose.duration') }}
+                {{ $t("verbose.duration") }}
               </td>
               <td>{{ verboseData.metadata.duration }}</td>
             </tr>
             <tr>
               <td :title="$t('verbose.values')">
-                {{ $t('verbose.count') }}
+                {{ $t("verbose.count") }}
               </td>
               <td>
                 {{ verboseData.metadata.count.matched }} / {{ verboseData.metadata.count.total }}
@@ -45,7 +46,7 @@
             </tr>
             <tr>
               <td :title="$t('verbose.filterDesc')">
-                {{ $t('verbose.filter') }}
+                {{ $t("verbose.filter") }}
               </td>
               <td>
                 <code>{{ verboseData.metadata.filter }}</code>
@@ -53,7 +54,7 @@
             </tr>
             <tr>
               <td :title="$t('verbose.truncatedDesc')">
-                {{ $t('verbose.truncated') }}
+                {{ $t("verbose.truncated") }}
               </td>
               <td>
                 <code :class="verboseData.metadata.truncated ? 'true' : 'false'">
@@ -64,13 +65,13 @@
           </table>
         </div>
         <div class="filter">
-          <label for="filter">{{ $t('verbose.filter') }}</label>
+          <label for="filter">{{ $t("verbose.filter") }}</label>
           <input
             type="text"
             id="filter"
             v-model="filter"
             :placeholder="$t('verbose.filterPlaceholder')"
-          >
+          />
         </div>
       </div>
       <div class="col-2">
@@ -86,14 +87,14 @@
     </div>
     <div v-else class="tool-intro">
       <div>
-        <img alt="LuckPerms logo" src="../assets/logo.svg">
+        <img alt="LuckPerms logo" src="../assets/logo.svg" />
         <div class="text">
           <h1>LuckPerms</h1>
-          <p>{{ $t('verbose.title') }}</p>
+          <p>{{ $t("verbose.title") }}</p>
           <div v-if="verboseData.status === 3" class="error">
             <template v-if="errors.load">
-              <h3>{{ $t('editor.error.title') }}</h3>
-              <p>{{ $t('editor.error.info') }}</p>
+              <h3>{{ $t("editor.error.title") }}</h3>
+              <p>{{ $t("editor.error.info") }}</p>
               <i18n path="editor.error.new" tag="p">
                 <template #command>
                   <code>/lp editor</code>
@@ -102,11 +103,11 @@
             </template>
 
             <template v-if="errors.unsupported">
-              <h3>{{ $t('editor.unsupported.title') }}</h3>
+              <h3>{{ $t("editor.unsupported.title") }}</h3>
               <i18n path="editor.unsupported.info" tag="p">
                 <template #download>
                   <router-link to="/download">
-                    {{ $t('editor.unsupported.download') }}
+                    {{ $t("editor.unsupported.download") }}
                   </router-link>
                 </template>
               </i18n>
@@ -115,21 +116,23 @@
           <template v-if="verboseData.status === 1">
             <p>
               <font-awesome icon="asterisk" :spin="true" />
-              {{ $t('editor.loading') }}
+              {{ $t("editor.loading") }}
             </p>
           </template>
           <template v-if="verboseData.status === 0">
             <router-link to="/verbose/demo">
               <button class="button demo-button">
-                {{ $t('tools.demo') }}
+                {{ $t("tools.demo") }}
               </button>
             </router-link>
-            <p>{{ $t('verbose.home.generate') }}</p>
+            <p>{{ $t("verbose.home.generate") }}</p>
             <ul>
-              <li><code>/lp verbose record [{{ $t('verbose.home.filter') }}]</code></li>
-              <li>{{ $t('verbose.home.performActions') }}</li>
+              <li>
+                <code>/lp verbose record [{{ $t("verbose.home.filter") }}]</code>
+              </li>
+              <li>{{ $t("verbose.home.performActions") }}</li>
               <li><code>/lp verbose paste</code></li>
-              <li>{{ $t('verbose.home.url') }}</li>
+              <li>{{ $t("verbose.home.url") }}</li>
             </ul>
           </template>
         </div>
@@ -139,14 +142,14 @@
 </template>
 
 <script>
-import VirtualList from 'vue-virtual-scroll-list';
-import Node from '../components/Verbose/Node.vue';
-import Avatar from '../components/Avatar.vue';
-import updateSession from '@/util/session';
+import VirtualList from "vue-virtual-scroll-list";
+import Node from "../components/Verbose/Node.vue";
+import Avatar from "../components/Avatar.vue";
+import updateSession from "@/util/session";
 
 export default {
   metaInfo: {
-    title: 'Verbose',
+    title: "Verbose",
   },
   components: {
     Avatar,
@@ -154,108 +157,117 @@ export default {
   },
   data() {
     return {
-      filter: '',
+      filter: "",
     };
   },
   computed: {
-    Node() { return Node; },
-    verboseData() { return this.$store.getters.verbose; },
+    Node() {
+      return Node;
+    },
+    verboseData() {
+      return this.$store.getters.verbose;
+    },
     filteredNodes() {
       const { data } = this.verboseData;
       if (!this.filter) return data;
       const filter = this.filter.toLowerCase();
-      return data.filter(node => (
-        node.permission?.toLowerCase().includes(filter)
-        || node.key?.toLowerCase().includes(filter)
-        || node.who?.identifier.toLowerCase().includes(filter)
-      ));
+      return data.filter(
+        (node) =>
+          node.permission?.toLowerCase().includes(filter) ||
+          node.key?.toLowerCase().includes(filter) ||
+          node.who?.identifier.toLowerCase().includes(filter)
+      );
     },
-    errors() { return this.$store.state.verbose.errors; },
-    filteredNodeCount() { return this.filteredNodes.length; },
+    errors() {
+      return this.$store.state.verbose.errors;
+    },
+    filteredNodeCount() {
+      return this.filteredNodes.length;
+    },
   },
   created() {
     if (this.verboseData?.sessionId) return;
 
-    updateSession(this.$route, 'getVerboseData');
+    updateSession(this.$route, "getVerboseData");
   },
   watch: {
     $route(route) {
-      updateSession(route, 'getVerboseData');
+      updateSession(route, "getVerboseData");
     },
   },
 };
 </script>
 
 <style lang="scss">
-  main.verbose {
-    display: flex;
-    overflow-y: hidden;
-  }
+main.verbose {
+  display: flex;
+  overflow-y: hidden;
+}
 
-  .verbose-viewer {
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
-    display: flex;
+.verbose-viewer {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
 
-    > .col-1 {
-      flex: 0 0 30%;
-      background: transparent;
+  > .col-1 {
+    flex: 0 0 30%;
+    background: transparent;
+    padding: 1rem;
+
+    h1 {
+      margin: 0;
       padding: 1rem;
-
-      h1 {
-        margin: 0;
-        padding: 1rem;
-        line-height: 1;
-        background: rgba(255,255,255,.05);
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-      }
-
-      .meta-info {
-        background: $grey;
-        padding: 1rem;
-        border-bottom-left-radius: 2px;
-        border-bottom-right-radius: 2px;
-      }
-
-      td:first-child {
-        width: 40%;
-      }
-
-      .filter {
-        margin-top: 1rem;
-
-        input {
-          font: inherit;
-          width: 100%;
-          background: rgba(255, 255, 255, .05);
-          color: #FFF;
-          padding: .5rem 1rem;
-          border: 0;
-          margin-top: .5rem;
-        }
-      }
+      line-height: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
     }
 
-    > .col-2 {
-      flex: 0 0 70%;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem 1rem 1rem 0;
+    .meta-info {
+      background: $grey;
+      padding: 1rem;
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
 
-      .data {
-        flex: 1;
-        overflow: auto;
-        list-style: none;
-        margin: 0;
-        padding: 0 1rem 0 0;
+    td:first-child {
+      width: 40%;
+    }
 
-        [role="listitem"] {
-          background: $grey;
-          border-radius: 2px;
-        }
+    .filter {
+      margin-top: 1rem;
+
+      input {
+        font: inherit;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border: 0;
+        margin-top: 0.5rem;
       }
     }
   }
+
+  > .col-2 {
+    flex: 0 0 70%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem 1rem 0;
+
+    .data {
+      flex: 1;
+      overflow: auto;
+      list-style: none;
+      margin: 0;
+      padding: 0 1rem 0 0;
+
+      [role="listitem"] {
+        background: $grey;
+        border-radius: 2px;
+      }
+    }
+  }
+}
 </style>

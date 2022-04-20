@@ -2,16 +2,16 @@
   <main class="editor">
     <div v-if="!sessionId" class="tool-intro">
       <div>
-        <img alt="LuckPerms logo" src="../assets/logo.svg">
+        <img alt="LuckPerms logo" src="../assets/logo.svg" />
         <div class="text">
           <h1>LuckPerms</h1>
-          <p>{{ $t('editor.description') }}</p>
+          <p>{{ $t("editor.description") }}</p>
           <router-link to="/editor/demo">
             <button class="button demo-button">
-              {{ $t('tools.demo') }}
+              {{ $t("tools.demo") }}
             </button>
           </router-link>
-          <p>{{ $t('editor.start') }}</p>
+          <p>{{ $t("editor.start") }}</p>
           <ul>
             <li><code>/lp editor</code></li>
             <li><code>/lp user &lt;user&gt; editor</code></li>
@@ -24,21 +24,21 @@
     <div v-else class="editor-container">
       <div v-if="!loaded" class="tool-intro" key="loading">
         <div>
-          <img alt="LuckPerms logo" src="../assets/logo.svg">
+          <img alt="LuckPerms logo" src="../assets/logo.svg" />
           <div class="text">
             <h1>LuckPerms</h1>
-            <p>{{ $t('editor.description') }}</p>
+            <p>{{ $t("editor.description") }}</p>
             <div v-if="!errors.load && !errors.unsupported">
               <p>
                 <font-awesome icon="asterisk" :spin="true" />
-                {{ $t('editor.loading' )}}
+                {{ $t("editor.loading") }}
               </p>
             </div>
 
             <div v-else class="error">
               <template v-if="errors.load">
-                <h3>{{ $t('editor.error.title') }}</h3>
-                <p>{{ $t('editor.error.info') }}</p>
+                <h3>{{ $t("editor.error.title") }}</h3>
+                <p>{{ $t("editor.error.info") }}</p>
                 <i18n path="editor.error.new" tag="p">
                   <template #command>
                     <code>/lp editor</code>
@@ -47,11 +47,11 @@
               </template>
 
               <template v-if="errors.unsupported">
-                <h3>{{ $t('editor.unsupported.title') }}</h3>
+                <h3>{{ $t("editor.unsupported.title") }}</h3>
                 <i18n path="editor.unsupported.info" tag="p">
                   <template #download>
                     <router-link to="/download">
-                      {{ $t('editor.unsupported.download') }}
+                      {{ $t("editor.unsupported.download") }}
                     </router-link>
                   </template>
                 </i18n>
@@ -69,24 +69,16 @@
           @clear-query="clearQuery"
         />
 
-          <div
-            id="editor-menu-focus"
-            class="overlay-focus"
-            v-if="menu"
-            @click="menu = !menu"
-          ></div>
+        <div id="editor-menu-focus" class="overlay-focus" v-if="menu" @click="menu = !menu"></div>
 
-        <button
-          id="editor-menu-toggle"
-          @click="menu = !menu"
-        >
+        <button id="editor-menu-toggle" @click="menu = !menu">
           <font-awesome icon="bars" />
         </button>
 
         <div class="editor-main">
           <nav>
             <div class="logo">
-              <h1>{{ $t('editor.description') }}</h1>
+              <h1>{{ $t("editor.description") }}</h1>
             </div>
             <div class="buttons">
               <div v-if="socketStatus" class="socket" title="Connected via socket">
@@ -108,41 +100,40 @@
               <button @click="saveData" title="Save changes">
                 <span v-if="saveStatus !== 'saving'">
                   <font-awesome icon="save" fixed-width />
-                  {{ $t(socketStatus ? 'editor.apply' : 'editor.save') }}
+                  {{ $t(socketStatus ? "editor.apply" : "editor.save") }}
                 </span>
                 <span v-else>
                   <font-awesome icon="sync-alt" fixed-width :spin="true" />
-                  {{ $t('editor.saving') }}
+                  {{ $t("editor.saving") }}
                 </span>
               </button>
             </div>
           </nav>
 
+          <div class="editor-no-session" v-if="!currentSession && !search.debouncedQuery">
+            <font-awesome icon="arrow-left" />
+            <h1>{{ $t("editor.groups.choose") }}</h1>
+          </div>
 
-            <div class="editor-no-session" v-if="!currentSession && !search.debouncedQuery">
-              <font-awesome icon="arrow-left" />
-              <h1>{{ $t('editor.groups.choose') }}</h1>
+          <div
+            class="editor-session"
+            v-if="currentSession && !search.debouncedQuery"
+            :key="`session_${currentSession.id}`"
+          >
+            <div class="session-container">
+              <Header :session="currentSession" :sessionData="currentSessionData" />
+              <Meta :session="currentSession" :sessionData="currentSessionData" />
+              <NodeList :nodes="currentNodes" />
             </div>
+          </div>
 
-            <div
-              class="editor-session"
-              v-if="currentSession && !search.debouncedQuery"
-              :key="`session_${currentSession.id}`"
-            >
-              <div class="session-container">
-                <Header :session="currentSession" :sessionData="currentSessionData" />
-                <Meta :session="currentSession" :sessionData="currentSessionData" />
-                <NodeList :nodes="currentNodes" />
-              </div>
-            </div>
+          <search-nodes
+            v-if="search.debouncedQuery"
+            :query="search.debouncedQuery"
+            @clear-query="clearQuery"
+          />
 
-            <search-nodes
-              v-if="search.debouncedQuery"
-              :query="search.debouncedQuery"
-              @clear-query="clearQuery"
-            />
-
-            <AddNode v-if="(currentSession && !search.debouncedQuery) || selectedNodes.length" />
+          <AddNode v-if="(currentSession && !search.debouncedQuery) || selectedNodes.length" />
         </div>
       </div>
     </div>
@@ -150,25 +141,24 @@
     <transition name="fade">
       <Modal v-if="modal && modal.type" :modal="modal" />
     </transition>
-
   </main>
 </template>
 
 <script>
-import debounce from 'lodash.debounce';
-import EditorMenu from '@/components/Editor/EditorMenu.vue';
-import Header from '@/components/Editor/Header.vue';
-import Meta from '@/components/Editor/Meta.vue';
-import NodeList from '@/components/Editor/NodeList.vue';
-import AddNode from '@/components/Editor/AddNode.vue';
-import SearchNodes from '@/components/Editor/SearchNodes.vue';
-import Modal from '@/components/Editor/Modal.vue';
-import updateSession from '@/util/session';
+import debounce from "lodash.debounce";
+import EditorMenu from "@/components/Editor/EditorMenu.vue";
+import Header from "@/components/Editor/Header.vue";
+import Meta from "@/components/Editor/Meta.vue";
+import NodeList from "@/components/Editor/NodeList.vue";
+import AddNode from "@/components/Editor/AddNode.vue";
+import SearchNodes from "@/components/Editor/SearchNodes.vue";
+import Modal from "@/components/Editor/Modal.vue";
+import updateSession from "@/util/session";
 
 export default {
-  name: 'Editor',
+  name: "Editor",
   metaInfo: {
-    title: 'Editor',
+    title: "Editor",
   },
   components: {
     EditorMenu,
@@ -184,8 +174,8 @@ export default {
       menu: false,
       search: {
         toggle: false,
-        query: '',
-        debouncedQuery: '',
+        query: "",
+        debouncedQuery: "",
       },
       loading: true,
       loaded: false,
@@ -208,20 +198,20 @@ export default {
       if (this.currentSession) {
         const data = {};
 
-        if (this.currentSession.type === 'group') {
-          data.type = 'group';
-        } else if (this.currentSession.type === 'user') {
-          data.type = 'user';
+        if (this.currentSession.type === "group") {
+          data.type = "group";
+        } else if (this.currentSession.type === "user") {
+          data.type = "user";
         } else {
           data.type = null;
         }
 
-        data.parents = this.currentNodes.filter(node => node.key.startsWith('group.'));
-        data.displayname = this.currentNodes.filter(node => node.key.startsWith('displayname.'));
-        data.weight = this.currentNodes.filter(node => node.key.startsWith('weight.'));
-        data.prefixes = this.currentNodes.filter(node => node.key.startsWith('prefix.'));
-        data.suffixes = this.currentNodes.filter(node => node.key.startsWith('suffix.'));
-        data.meta = this.currentNodes.filter(node => node.key.startsWith('meta.'));
+        data.parents = this.currentNodes.filter((node) => node.key.startsWith("group."));
+        data.displayname = this.currentNodes.filter((node) => node.key.startsWith("displayname."));
+        data.weight = this.currentNodes.filter((node) => node.key.startsWith("weight."));
+        data.prefixes = this.currentNodes.filter((node) => node.key.startsWith("prefix."));
+        data.suffixes = this.currentNodes.filter((node) => node.key.startsWith("suffix."));
+        data.meta = this.currentNodes.filter((node) => node.key.startsWith("meta."));
 
         return data;
       }
@@ -255,10 +245,10 @@ export default {
   },
   watch: {
     $route(route) {
-      updateSession(route, 'getEditorData');
+      updateSession(route, "getEditorData");
     },
     // eslint-disable-next-line func-names
-    'search.query': debounce(function (value) {
+    "search.query": debounce(function (value) {
       this.search.debouncedQuery = String(value).toLowerCase();
     }, 200),
   },
@@ -268,7 +258,7 @@ export default {
 
       try {
         this.loading = true;
-        await updateSession(this.$route, 'getEditorData');
+        await updateSession(this.$route, "getEditorData");
         this.loaded = true;
       } catch (error) {
         this.loaded = false;
@@ -278,12 +268,12 @@ export default {
       }
     },
     saveData() {
-      this.$store.dispatch('saveData');
+      this.$store.dispatch("saveData");
     },
     async toggleSearch() {
       const { search } = this;
       if (search.toggle === true) {
-        search.query = '';
+        search.query = "";
         search.toggle = false;
       } else {
         search.toggle = true;
@@ -292,8 +282,8 @@ export default {
       }
     },
     clearQuery() {
-      this.search.query = '';
-      this.search.debouncedQuery = '';
+      this.search.query = "";
+      this.search.debouncedQuery = "";
       this.search.toggle = false;
     },
   },
@@ -377,13 +367,13 @@ main.editor {
               font: inherit;
               font-size: 1rem;
               font-weight: bold;
-              padding: .25rem .5rem;
-              border:0;
-              margin-left: .5rem;
+              padding: 0.25rem 0.5rem;
+              border: 0;
+              margin-left: 0.5rem;
               cursor: pointer;
 
               &:hover {
-                opacity: .8;
+                opacity: 0.8;
               }
             }
 
@@ -400,18 +390,18 @@ main.editor {
             .socket {
               color: $brand-color;
               font-size: 1rem;
-              padding: .25rem .25rem;
+              padding: 0.25rem 0.25rem;
               border: 0;
-              margin-right: .5rem;
+              margin-right: 0.5rem;
             }
 
             input {
-              padding: .5rem;
+              padding: 0.5rem;
               width: 20rem;
               background: white;
               border: 0;
-              background: rgba(255,255,255,.85);
-              border-right: 1px solid rgba(0,0,0,.25);
+              background: rgba(255, 255, 255, 0.85);
+              border-right: 1px solid rgba(0, 0, 0, 0.25);
               font-family: "Source Code Pro", monospace;
             }
           }
@@ -445,7 +435,7 @@ main.editor {
 
           svg {
             font-size: 2rem;
-            opacity: .33;
+            opacity: 0.33;
             margin-right: 1rem;
           }
         }

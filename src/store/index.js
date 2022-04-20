@@ -27,23 +27,7 @@ export default new Vuex.Store({
     config: null,
     downloads: {
       bukkit: null,
-      'bukkit-legacy': null,
-      bungee: null,
-      nukkit: null,
-      sponge: null,
       velocity: null,
-      fabric: null,
-    },
-    extensions: {
-      'extension-legacy-api': null,
-      'extension-default-assignments': null,
-    },
-    additionalPlugins: {
-      extracontexts: null,
-    },
-    placeholderExpansions: {
-      'luckperms-mvdw-hook': null,
-      'luckperms-papi-expansion': null,
     },
     discordUserCount: null,
     patreonCount: null,

@@ -27,17 +27,6 @@
             <small>{{ $t('download.bukkit') }}</small>
           </a>
           <a
-            :href="downloads.bungee"
-            v-on:click="logDownload('bungee')"
-            class="resource"
-          >
-            <span>
-              <img src="@/assets/logos/bungeecord.png" alt="BungeeCord">
-              BungeeCord
-            </span>
-            <small>{{ $t('download.bungee') }}</small>
-          </a>
-          <a
             :href="downloads.sponge"
             v-on:click="logDownload('sponge')"
             class="resource"
@@ -60,6 +49,17 @@
             <small>{{ $t('download.fabric') }}</small>
           </a>
           <a
+            :href="downloads.forge"
+            v-on:click="logDownload('forge')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/forge.png" alt="Forge">
+              Forge
+            </span>
+            <small>{{ $t('download.forge') }}</small>
+          </a>
+          <a
             :href="downloads.nukkit"
             v-on:click="logDownload('nukkit')"
             class="resource"
@@ -80,6 +80,17 @@
               Velocity
             </span>
             <small>{{ $t('download.velocity') }}</small>
+          </a>
+          <a
+            :href="downloads.bungee"
+            v-on:click="logDownload('bungee')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/bungeecord.png" alt="BungeeCord">
+              BungeeCord
+            </span>
+            <small>{{ $t('download.bungee') }}</small>
           </a>
           <a
             :href="downloads['bukkit-legacy']"

@@ -11,8 +11,31 @@
           <img src="@/assets/bisect.svg" alt="BisectHosting">
         </div>
         <h1>LuckPerms has partnered with BisectHosting!</h1>
-        <p>Offering our users great deals on server hosting, and supporting the development of
-          LuckPerms at the same time!</p>
+        <p>BisectHosting are Minecraft server hosting experts, ready to help you create and host
+          your very own server! They also have special discounts available for LuckPerms
+          users - read on to find out more!</p>
+      </div>
+    </section>
+
+    <section class="hero resources cta">
+      <div>
+        <a href="https://bisecthosting.com/luck" target="_blank" v-on:click="logClick">
+          Create your server now!
+        </a>
+        <p>Click the link above to go to the BisectHosting website to use their panel to create
+          your new server!</p>
+      </div>
+      <div>
+        <a
+          href="https://www.bisecthosting.com/clients/submitticket.php?step=2&deptid=1"
+          target="_blank"
+          v-on:click="logClick"
+        >
+          Chat to BisectHosting support
+        </a>
+        <p>If you have any questions, use the button above to get in touch with the friendly
+          BisectHosting support team!
+        </p>
       </div>
     </section>
 
@@ -43,7 +66,7 @@
           </p>
         </div>
         <div>
-          <h2>So, what's the deal?!</h2>
+          <h2>Special Offer for LuckPerms users (that's you!)</h2>
           <p>
             BisectHosting are generously giving LuckPerms users a massive <strong>25% off</strong>
             the first month of any of their game server hosting plans.
@@ -66,24 +89,6 @@
             in touch with their support team and let them know you've come via us!
           </p>
         </div>
-      </section>
-      <section class="hero cta">
-        <h1>Sound good?</h1>
-        <p>Click the link below to go to the BisectHosting website and check out their plans!</p>
-        <a href="https://bisecthosting.com/luck" target="_blank" v-on:click="logClick">
-          Go to BisectHosting plans
-        </a>
-        <p>
-          If you have any questions or want to take advantage of the price-match offer, get in
-          touch with their support team!
-        </p>
-        <a
-          href="https://www.bisecthosting.com/clients/submitticket.php?step=2&deptid=1"
-          target="_blank"
-          v-on:click="logClick"
-        >
-          Chat with BisectHosting support
-        </a>
       </section>
     </div>
   </main>
@@ -135,7 +140,7 @@ export default {
           + p {
             font-size: 1.5rem;
             width: 100%;
-            max-width: 44rem;
+            max-width: 60rem;
             text-align: center;
             margin-bottom: 4rem;
             padding: 0 2rem;
@@ -188,9 +193,9 @@ export default {
 
     .cta {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 4rem;
+      //flex-direction: column;
+      //align-items: center;
+      //padding: 4rem;
 
       a {
         background: $brand-color;
@@ -200,6 +205,7 @@ export default {
         font-size: 2rem;
         font-weight: bold;
         margin: 2rem 0;
+        text-align: center;
       }
 
       p {

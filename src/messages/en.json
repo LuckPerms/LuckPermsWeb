@@ -6,7 +6,7 @@
   "wikiLocaleWarning": "Note: the wiki is only available in English.",
   "localeUpdate": "New! Use the LuckPerms website in your preferred language. See our Discord for more info.",
   "avatar": "{name}'s avatar",
-  "sponsor": "Proudly sponsored by <strong>BisectHosting</strong><br/><span class=\"new\">NEW:</span> Special offer for LuckPerms users!",
+  "sponsor": "Proudly sponsored by <strong>BisectHosting</strong>.<br/>Create your own Minecraft server today!",
   "links": {
     "home": "Home",
     "download": "Download",
@@ -48,8 +48,8 @@
     "discord": "Join {count} others to discuss the project and ask/answer questions",
     "patreon": "Join {count} others supporting the project on Patreon",
     "partner": {
-      "title": "Hosting Partner",
-      "description": "Find out how you can get a great deal on your server hosting and support us at the same time"
+      "title": "Create your own Minecraft Server",
+      "description": "Easily create your very own Minecraft Server with our hosting partner, Bisect Hosting!"
     }
   },
   "download": {

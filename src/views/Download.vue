@@ -27,22 +27,6 @@
           <a :href="downloads.velocity" v-on:click="logDownload('velocity')" class="resource">
             <span>
               <img src="@/assets/logos/velocity.png" alt="Velocity" />
-          <a
-            :href="downloads.velocity"
-            v-on:click="logDownload('velocity')"
-            class="resource"
-          >
-            <span>
-              <img src="@/assets/logos/velocity.png" alt="Velocity">
-              Velocity
-            </span>
-            <small>{{ $t("download.velocity") }}</small>
-          </a>
-          <a
-            :href="downloads['bukkit-legacy']"
-            v-on:click="logDownload('bukkit-legacy')"
-            class="resource"
-          >
             <span>
               <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit Legacy
@@ -54,7 +38,6 @@
             {{ $t('download.typeHelp') }}
           </button>
         </div>
-
         <div>
           <h2>{{ $t("download.changelog") }}</h2>
           <ul class="changelog">

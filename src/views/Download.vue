@@ -55,18 +55,7 @@
               <span class="time lighter">{{ relativeDate(entry.timestamp) }}</span>
             </li>
           </ul>
-          <ol>
-          </ol>
-          <h2>{{ $t('download.trouble.title') }}</h2>
           <ul>
-            <li v-html="$t('download.trouble.console')" />
-            <i18n path="download.trouble.read" tag="li">
-              <template #wiki>
-                <router-link to="wiki/Installation">
-                  {{ $t('download.trouble.wiki') }}
-                </router-link>
-              </template>
-            </i18n>
           </ul>
         </div>
       </section>

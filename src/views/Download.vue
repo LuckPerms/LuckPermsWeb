@@ -27,10 +27,87 @@
           <a :href="downloads.velocity" v-on:click="logDownload('velocity')" class="resource">
             <span>
               <img src="@/assets/logos/velocity.png" alt="Velocity" />
+          <a
+            :href="downloads.sponge"
+            v-on:click="logDownload('sponge')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/sponge.png" alt="Sponge">
+              Sponge
+            </span>
+            <small>{{ $t('download.sponge') }}</small>
+          </a>
+          <a
+            :href="downloads.fabric"
+            v-on:click="logDownload('fabric')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/fabric.png" alt="Fabric">
+              Fabric
+            </span>
+            <small>{{ $t('download.fabric') }}</small>
+          </a>
+          <a
+            :href="downloads.forge"
+            v-on:click="logDownload('forge')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/forge.png" alt="Forge">
+              Forge
+            </span>
+            <small>{{ $t('download.forge') }}</small>
+          </a>
+          <a
+            :href="downloads.nukkit"
+            v-on:click="logDownload('nukkit')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/nukkit.png" alt="Nukkit">
+              Nukkit
+            </span>
+            <small>{{ $t('download.nukkit') }}</small>
+          </a>
+          <a
+            :href="downloads.velocity"
+            v-on:click="logDownload('velocity')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/velocity.png" alt="Velocity">
               Velocity
             </span>
             <small>{{ $t("download.velocity") }}</small>
           </a>
+          <a
+            :href="downloads.bungee"
+            v-on:click="logDownload('bungee')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/bungeecord.png" alt="BungeeCord">
+              BungeeCord
+            </span>
+            <small>{{ $t('download.bungee') }}</small>
+          </a>
+          <a
+            :href="downloads['bukkit-legacy']"
+            v-on:click="logDownload('bukkit-legacy')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/bukkit.png" alt="Bukkit">
+              Bukkit Legacy
+            </span>
+            <small>{{ $t('download.bukkitLegacy') }}</small>
+          </a>
+          <button class="button" @click="openQuiz">
+            <font-awesome icon="question-circle" />
+            {{ $t('download.typeHelp') }}
+          </button>
         </div>
 
         <div>

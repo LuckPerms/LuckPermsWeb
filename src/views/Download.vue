@@ -41,7 +41,7 @@
 
         <div>
           <h2>{{ $t('download.changelog') }}</h2>
-          <u class="changelog">
+          <ul class="changelog">
             <li v-for="entry in changeLog" :key="entry.version">
               <span>
                 <a
@@ -54,10 +54,96 @@
               </span>
               <span class="time lighter">{{ relativeDate(entry.timestamp) }}</span>
             </li>
+          </ul>
+          <h2>{{ $t('download.install.title') }}</h2>
+          <ol>
+            <li v-html="$t('download.install.add')" />
+            <li v-html="$t('download.install.restart')" />
+            <li v-html="$t('download.install.config')" />
+            <i18n path="download.install.setup" tag="li">
+              <template #wiki>
+                <router-link to="wiki/Usage">
+                  {{ $t('download.install.wiki') }}
+                </router-link>
+              </template>
+            </i18n>
+          </ol>
+          <h2>{{ $t('download.trouble.title') }}</h2>
+          <ul>
+            <li v-html="$t('download.trouble.console')" />
+            <i18n path="download.trouble.read" tag="li">
+              <template #wiki>
+                <router-link to="wiki/Installation">
+                  {{ $t('download.trouble.wiki') }}
+                </router-link>
+              </template>
+            </i18n>
+            <i18n path="download.trouble.support" tag="li">
+              <template #discord>
+                  <a href="https://discord.herrerde.cf" target="_blank">Discord</a>
+              </template>
+            </i18n>
+          </ul>
+        </div>
+      </section>
     </div>
+
+    <transition name="fade">
+      <Quiz v-if="quiz.open" :downloads="downloads" @close="quiz.open = false" />
+    </transition>
   </main>
 </template>
 
+<script>
+import { relativeDate } from '@/util/date';
+
+export default {
+  name: 'Download',
+  metaInfo: {
+    title: 'Download',
+  },
+  components: {
+    Quiz: () => import('../components/Download/Quiz'),
+  },
+  data() {
+    return {
+      quiz: {
+        open: false,
+      },
+    };
+  },
+  computed: {
+    extensions() { return this.$store.getters.extensions; },
+    additionalPlugins() { return this.$store.getters.additionalPlugins; },
+    placeholderExpansions() { return this.$store.getters.placeholderExpansions; },
+    downloads() { return this.$store.getters.downloads; },
+    version() { return this.$store.getters.version; },
+    versionTimestamp() { return this.$store.getters.versionTimestamp; },
+    relativeTimestamp() {
+      if (this.versionTimestamp) {
+        return relativeDate(this.versionTimestamp, this.$i18n.locale, new Date().getTime(), true);
+      }
+      return null;
+    },
+    changeLog() { return this.$store.getters.changeLog; },
+  },
+  methods: {
+    logDownload(platform) {
+      // eslint-disable-next-line no-undef
+      plausible('Download', { props: { type: platform } });
+    },
+    openQuiz() {
+      this.quiz.open = true;
+    },
+    closeQuiz() {
+      this.quiz.open = false;
+    },
+    relativeDate(value) {
+      return relativeDate(value, this.$i18n.locale);
+    },
+  },
+};
+</script>
 
 <style lang="scss">
   main.download {

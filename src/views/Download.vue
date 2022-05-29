@@ -55,18 +55,7 @@
               <span class="time lighter">{{ relativeDate(entry.timestamp) }}</span>
             </li>
           </ul>
-          <h2>{{ $t('download.install.title') }}</h2>
           <ol>
-            <li v-html="$t('download.install.add')" />
-            <li v-html="$t('download.install.restart')" />
-            <li v-html="$t('download.install.config')" />
-            <i18n path="download.install.setup" tag="li">
-              <template #wiki>
-                <router-link to="wiki/Usage">
-                  {{ $t('download.install.wiki') }}
-                </router-link>
-              </template>
-            </i18n>
           </ol>
           <h2>{{ $t('download.trouble.title') }}</h2>
           <ul>
@@ -76,11 +65,6 @@
                 <router-link to="wiki/Installation">
                   {{ $t('download.trouble.wiki') }}
                 </router-link>
-              </template>
-            </i18n>
-            <i18n path="download.trouble.support" tag="li">
-              <template #discord>
-                  <a href="https://discord.herrerde.cf" target="_blank">Discord</a>
               </template>
             </i18n>
           </ul>

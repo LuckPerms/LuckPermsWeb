@@ -1,6 +1,6 @@
 <template>
   <div class="node">
-    <div class="main" @click="open = !open">
+    <div class="main" @click="onChange">
       <span class="name">
         <avatar
           v-if="source.who.uuid && source.who.uuid !== '00000000-0000-0000-0000-000000000000'"
@@ -25,7 +25,7 @@
             <tr v-if="source.context.length">
               <td>{{ $t('verbose.context') }}</td>
               <td>
-                <code v-for="context in source.context" v-bind:key="context">
+                <code v-for="context in source.context" v-bind:key="context.key">
                   {{ context.key }}: {{ context.value }}
                 </code>
               </td>
@@ -68,6 +68,7 @@
 <script>
 import Avatar from '../Avatar.vue';
 
+
 export default {
   components: {
     Avatar,
@@ -77,8 +78,14 @@ export default {
   },
   data() {
     return {
-      open: false,
+      open: this.source._isOpen,
     };
+  },
+  methods: {
+    onChange() {
+      this.source._isOpen = !this.source._isOpen;
+      this.open = this.source._isOpen;
+    }
   },
   computed: {
     valueIcon() {

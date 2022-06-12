@@ -78,8 +78,8 @@
           :data-sources="filteredNodes"
           data-key="id"
           :data-component="Node"
-          :keeps="50"
           class="data"
+          :keeps="50"
           :estimate-size="38"
         />
       </div>
@@ -144,7 +144,14 @@ import Node from '../components/Verbose/Node.vue';
 import Avatar from '../components/Avatar.vue';
 import updateSession from '@/util/session';
 
-export default {
+function injectOpenStateProperty(sourceData){
+  for(let i=0; i<sourceData.data?.length || 0; i++){
+    sourceData.data[i]._isOpen = false;
+  }
+  return sourceData;
+}
+
+export default {  
   metaInfo: {
     title: 'Verbose',
   },
@@ -159,7 +166,7 @@ export default {
   },
   computed: {
     Node() { return Node; },
-    verboseData() { return this.$store.getters.verbose; },
+    verboseData() { return injectOpenStateProperty( this.$store.getters.verbose ); },
     filteredNodes() {
       const { data } = this.verboseData;
       if (!this.filter) return data;
@@ -175,7 +182,6 @@ export default {
   },
   created() {
     if (this.verboseData?.sessionId) return;
-
     updateSession(this.$route, 'getVerboseData');
   },
   watch: {

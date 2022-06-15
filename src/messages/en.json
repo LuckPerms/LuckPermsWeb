@@ -52,7 +52,7 @@
     "build": "Latest, built {time}",
     "typeHelp": "Not sure which type?",
     "typeChoose": "Choose your server type",
-    "bukkit": "Spigot, Paper etc. (1.8.8 to 1.18.x)",
+    "bukkit": "Spigot, Paper etc. (1.8.8 to 1.19.x)",
     "velocity": "Velocity (3.x)",
     "changelog": "Recent Changelog",
     "install": {

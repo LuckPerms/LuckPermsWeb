@@ -65,7 +65,7 @@
       "thread": "pool-8-thread-1",
       "type": "permission",
       "permission": "luckperms.user.info",
-      "result": "true",
+      "result": "false",
       "origin": "platform_permission_check"
     },
     {
@@ -120,7 +120,7 @@
       "thread": "pool-8-thread-1",
       "type": "permission",
       "permission": "luckperms.user.info",
-      "result": "true",
+      "result": "undefined",
       "origin": "platform_permission_check"
     },
     {
@@ -230,7 +230,7 @@
       "thread": "pool-8-thread-1",
       "type": "permission",
       "permission": "luckperms.track.info",
-      "result": "true",
+      "result": "undefined",
       "origin": "platform_permission_check"
     },
     {
@@ -461,7 +461,7 @@
       "thread": "pool-8-thread-1",
       "type": "permission",
       "permission": "luckperms.verbose",
-      "result": "true",
+      "result": "false",
       "origin": "platform_permission_check"
     },
     {
@@ -593,7 +593,7 @@
       "thread": "pool-8-thread-1",
       "type": "permission",
       "permission": "luckperms.check",
-      "result": "true",
+      "result": "false",
       "origin": "platform_permission_check"
     },
     {
@@ -725,7 +725,7 @@
       "thread": "pool-8-thread-1",
       "type": "permission",
       "permission": "luckperms.export",
-      "result": "true",
+      "result": "undefined",
       "origin": "platform_permission_check"
     },
     {
@@ -945,7 +945,7 @@
       "thread": "pool-8-thread-1",
       "type": "permission",
       "permission": "luckperms.listgroups",
-      "result": "true",
+      "result": "undefined",
       "origin": "platform_permission_check"
     },
     {
@@ -1077,7 +1077,7 @@
       "thread": "pool-8-thread-1",
       "type": "permission",
       "permission": "luckperms.listtracks",
-      "result": "true",
+      "result": "false",
       "origin": "platform_permission_check"
     },
     {

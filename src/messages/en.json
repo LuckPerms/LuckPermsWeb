@@ -268,6 +268,7 @@
     "cause": "Cause",
     "thread": "Thread",
     "trace": "Trace",
+    "exclude": "Exclude",
     "home": {
       "generate": "To generate a verbose report, do the following in game or from the console:",
       "performActions": "Perform a series of actions that require permissions",

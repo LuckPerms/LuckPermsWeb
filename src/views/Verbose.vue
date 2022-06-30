@@ -71,7 +71,17 @@
             id="filter"
             v-model="filter"
             :placeholder="$t('verbose.filterPlaceholder')"
-          />
+          >
+          <div
+            v-for="value in ['true', 'false', 'undefined']" :key="value"
+            :class="['exclude-result', { selected: isExcluded(value) }]"
+            @click="excludeResult(value)"
+          >
+            <span></span>
+            <p>
+              {{ $t('verbose.exclude') }} <code :class="value">{{ value }}</code>
+            </p>
+          </div>
         </div>
       </div>
       <div class="col-2">
@@ -157,7 +167,8 @@ export default {
   },
   data() {
     return {
-      filter: "",
+      filter: '',
+      excludedResults: [],
     };
   },
   computed: {
@@ -169,20 +180,26 @@ export default {
     },
     filteredNodes() {
       const { data } = this.verboseData;
-      if (!this.filter) return data;
+      if (!this.filter && this.excludedResults.length === 0) return data;
       const filter = this.filter.toLowerCase();
-      return data.filter(
-        (node) =>
-          node.permission?.toLowerCase().includes(filter) ||
-          node.key?.toLowerCase().includes(filter) ||
-          node.who?.identifier.toLowerCase().includes(filter)
-      );
+      return data.filter(node => (
+        !this.excludedResults.includes(node.result)
+        && (node.permission?.toLowerCase().includes(filter)
+        || node.key?.toLowerCase().includes(filter)
+        || node.who?.identifier.toLowerCase().includes(filter))
+      ));
     },
-    errors() {
-      return this.$store.state.verbose.errors;
+  },
+  methods: {
+    isExcluded(result) {
+      return this.excludedResults.includes(result);
     },
-    filteredNodeCount() {
-      return this.filteredNodes.length;
+    excludeResult(result) {
+      if (this.isExcluded(result)) {
+        this.excludedResults = this.excludedResults.filter(r => r !== result);
+      } else {
+        this.excludedResults.push(result);
+      }
     },
   },
   created() {
@@ -218,10 +235,76 @@ main.verbose {
     h1 {
       margin: 0;
       padding: 1rem;
-      line-height: 1;
-      background: rgba(255, 255, 255, 0.05);
-      border-top-left-radius: 2px;
-      border-top-right-radius: 2px;
+
+      h1 {
+        margin: 0;
+        padding: 1rem;
+        line-height: 1;
+        background: rgba(255,255,255,.05);
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+      }
+
+      .meta-info {
+        background: $grey;
+        padding: 1rem;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+
+      td:first-child {
+        width: 40%;
+      }
+
+      .filter {
+        margin-top: 1rem;
+
+        input {
+          font: inherit;
+          width: 100%;
+          background: rgba(255, 255, 255, .05);
+          color: #FFF;
+          padding: .5rem 1rem;
+          border: 0;
+          margin-top: .5rem;
+        }
+
+        .exclude-result {
+          padding-top: 1rem;
+          flex: 0 0 auto;
+
+          span {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid $grey;
+            position: relative;
+          }
+
+          p {
+            display: inline;
+            bottom: 7px;
+            padding-left: 0.5rem;
+            position: relative;
+          }
+
+          &.selected {
+            span {
+              &:after {
+                position: absolute;
+                display: block;
+                content: '';
+                width: 1rem;
+                height: .5rem;
+                border: 4px solid $brand-color;
+                border-top: 0;
+                border-right: 0;
+                transform: rotate(-45deg);
+              }
+            }
+          }
+        }
+      }
     }
 
     .meta-info {

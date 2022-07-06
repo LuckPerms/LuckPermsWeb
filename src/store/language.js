@@ -80,23 +80,24 @@ export default {
       const languageMap = (code) => {
         const { name, localeTag } = languages[code];
 
-        let [, locale] = localeTag.split('_');
-
-        locale = locale.toLowerCase();
+        let [, countryCode] = localeTag.split('_');
+        countryCode = countryCode.toLowerCase();
 
         // Serbia doesn't get the right ISO code
-        if (locale === 'cs') {
-          locale = 'rs';
+        if (countryCode === 'cs') {
+          countryCode = 'rs';
         }
 
+        /*
         const flagUrl = localeTag === 'en_PT'
           ? '/twemoji-pirate-flag.png'
           : `https://flagcdn.com/w40/${locale}.png`;
+        */
 
         return {
           code,
           name,
-          flagUrl,
+          countryCode,
         };
       };
 

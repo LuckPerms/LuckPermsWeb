@@ -2,3 +2,6 @@
 @import 'transitions';
 @import 'breakpoints';
 @import 'common';
+
+$flag-icons-path: '~flag-icons/flags';
+@import '~flag-icons/sass/flag-icons.scss';

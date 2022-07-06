@@ -90,7 +90,7 @@
               :class="[{selected: l === locale}]"
             >
               <span>
-                <img :src="l.flagUrl" :alt="l.name"> {{ l.name }}
+                <span :class="['fi', 'fi-' + l.countryCode]" :alt="l.name" /> {{ l.name }}
               </span>
             </li>
           </ul>
@@ -517,8 +517,10 @@ body {
             display: flex;
           }
 
-          img {
+          .fi { // flag icon
+            width: 1.5rem;
             margin-right: .5rem;
+            padding: 0;
           }
 
           li {

@@ -45,7 +45,7 @@
           <h2>Why BisectHosting?</h2>
           <ul>
             <li>
-              Bisect are a <strong>trusted</strong> and well established hosting provider in the
+              BisectHosting is a <strong>trusted</strong> and well established hosting provider in the
               community, and have already been serving many of our users for a number of years.
             </li>
             <li>

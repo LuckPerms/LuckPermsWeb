@@ -40,7 +40,7 @@
                 {{ $t('verbose.count') }}
               </td>
               <td>
-                {{ filteredNodeCount() }} / {{ verboseData.metadata.count.total }}
+                {{ filteredNodeCount }} / {{ verboseData.metadata.count.total }}
               </td>
             </tr>
             <tr>

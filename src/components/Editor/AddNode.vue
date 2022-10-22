@@ -134,7 +134,7 @@
           </div>
         </div>
         <div>
-          <code v-for="entry in flattenedContexts" v-bind:key="entry">
+          <code v-for="(entry, index) in flattenedContexts" :key="`add_node_context_${entry.key}_${entry.value}_${index}`">
             <span>{{ entry.key }}:</span>
             {{ entry.value }}
           </code>
@@ -174,7 +174,7 @@
           <font-awesome icon="times" />
         </div>
         <ul>
-          <li v-for="entry in flattenedContexts" v-bind:key="entry">
+          <li v-for="(entry, index) in flattenedContexts" :key="`add_node_flattened_context_${entry.key}_${entry.value}_${index}`">
             <span v-html="entry.key"></span>
             <span v-html="entry.value"></span>
             <button @click="removeContext(entry.key, entry.value)">
@@ -200,7 +200,7 @@
                 <ul class="context-list" v-if="context.keyFocus">
                   <li
                     v-for="pContext in potentialContexts"
-                    v-bind:key="pContext"
+                    :key="`potential_context_key_${pContext.key}`"
                     @click="context.key = pContext.key"
                   >{{ pContext.key }}</li>
                 </ul>
@@ -219,7 +219,7 @@
                 <ul class="context-list" v-if="context.valueFocus">
                   <li
                     v-for="value in potentialContextValues"
-                    v-bind:key="value"
+                    :key="`potential_context_value_${value}`"
                     @click="context.value = value"
                   >{{ value }}</li>
                 </ul>

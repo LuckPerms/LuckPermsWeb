@@ -45,10 +45,24 @@ export default {
     },
   },
   mounted() {
-    if (window.innerWidth >= 922) return;
     const wiki = document.getElementById('wiki');
-    document.querySelectorAll('.wiki aside a').forEach((link) => {
-      link.addEventListener('click', () => {
+    document.querySelectorAll('#wiki aside a').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        let target;
+
+        if (event.target.tagName === 'STRONG') {
+          target = event.target.parentNode;
+        } else if (event.target.tagName === 'A') {
+          ({ target } = event);
+        }
+
+        this.$router.push({
+          path: target.pathname,
+          hash: target.hash,
+        }).then().catch(() => {});
+
         wiki.scrollTo({
           top: 0,
           behavior: 'smooth',

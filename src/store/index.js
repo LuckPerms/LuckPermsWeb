@@ -402,7 +402,11 @@ export default new Vuex.Store({
       if (replace) {
         node.context = contexts;
       } else {
-        Vue.set(node, 'context', { ...node.context, ...contexts });
+        const contextList = { ...node.context, ...contexts };
+        Object.keys(contextList).forEach((key) => {
+          contextList[key] = [...new Set([...(node.context[key] || []), ...(contexts[key] || [])])];
+        });
+        Vue.set(node, 'context', contextList);
       }
 
       node.modified = true;

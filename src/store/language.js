@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Locale from 'locale-codes';
 
 // Need to import this dynamically otherwise it becomes a circular dependency and will throw errors
 const i18n = import('@/util/language');
@@ -51,10 +52,22 @@ export default {
       let language = 'en';
 
       const userDefaultLanguage = navigatorLanguages
-        .find(code => supportedLanguages.includes(code));
+        .find((code) => {
+          if (supportedLanguages.includes(code)) {
+            return true;
+          }
+
+          const { 'iso639-1': iso639v1 } = Locale.getByTag(code);
+
+          return supportedLanguages.includes(iso639v1);
+        });
 
       if (userDefaultLanguage) {
-        language = userDefaultLanguage;
+        if (supportedLanguages.includes(userDefaultLanguage)) {
+          language = userDefaultLanguage;
+        } else {
+          language = Locale.getByTag(userDefaultLanguage)['iso639-1'];
+        }
       }
 
       dispatch('fetchLanguage', language);

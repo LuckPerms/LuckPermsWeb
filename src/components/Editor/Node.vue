@@ -68,7 +68,7 @@
       :title="$t('editor.nodes.contexts')"
     >
       <span v-if="flattenedContexts.length">
-        <code v-for="entry in flattenedContexts" v-bind:key="entry">
+        <code v-for="entry in flattenedContexts" :key="`context_${entry.key}_${entry.value}`">
           <small>{{ entry.key }}:</small> {{ entry.value }}
         </code>
       </span>

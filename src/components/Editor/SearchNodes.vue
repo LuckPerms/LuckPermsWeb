@@ -28,6 +28,7 @@
           />
           <span @click="setCurrentSession(group.session.id)">
             {{ group.session.displayName }}
+            <span>({{ group.session.id }})</span>
           </span>
         </h2>
         <ul>
@@ -218,7 +219,6 @@ export default {
     line-height: 1;
     margin: 0;
     background: rgba(255,255,255,.1);
-    text-transform: uppercase;
 
     small {
       display: inline-block;
@@ -228,8 +228,16 @@ export default {
       text-transform: capitalize;
     }
 
-    span {
+    > span {
       cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      > span {
+        opacity: .5;
+        font-size: 1rem;
+        margin-left: .5rem;
+      }
     }
 
     img {

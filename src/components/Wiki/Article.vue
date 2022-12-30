@@ -108,7 +108,7 @@ export default {
       } else {
         document.getElementById('article').scrollTo({
           top: 0,
-          behavior: 'smooth',
+          behavior: 'smooth', 
         });
       }
       this.getArticle();

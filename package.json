@@ -59,5 +59,8 @@
     "sass-loader": "^7.3.1",
     "vue-markdown-loader": "^2.4.1",
     "vue-template-compiler": "^2.6.11"
+  },
+  "engines": {
+    "node": ">12 <17"
   }
 }

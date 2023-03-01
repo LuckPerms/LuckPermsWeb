@@ -19,6 +19,9 @@
 
       <ul :class="{ active: menu, 'top-level': true }">
         <li>
+          <div id="docsearch"></div>
+        </li>
+        <li>
           <router-link to="/">
             <font-awesome icon="home" fixed-width />
             {{ $t('links.home') }}
@@ -142,6 +145,9 @@
 </template>
 
 <script>
+import '@docsearch/css';
+import docsearch from '@docsearch/js';
+
 export default {
   metaInfo: {
     titleTemplate: '%s | LuckPerms',
@@ -213,6 +219,15 @@ export default {
 
   created() {
     this.$store.dispatch('getAppData');
+  },
+
+  mounted() {
+    docsearch({
+      container: '#docsearch',
+      appId: 'ZXKCPO8F1T',
+      indexName: 'luckperms',
+      apiKey: 'a37e3bc32993f2eb764d0c84dbd526e9',
+    });
   },
 
   methods: {

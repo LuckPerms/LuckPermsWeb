@@ -18,7 +18,7 @@
       </div>
 
       <ul :class="{ active: menu, 'top-level': true }">
-        <li>
+        <li class="search-container">
           <div id="docsearch"></div>
         </li>
         <li>
@@ -145,6 +145,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line import/extensions
 import '@docsearch/css';
 import docsearch from '@docsearch/js';
 
@@ -245,6 +246,15 @@ export default {
 </script>
 
 <style lang="scss">
+@import './scss/variables';
+
+:root {
+  --docsearch-searchbox-background: #{$grey};
+  --docsearch-searchbox-focus-background: #{$grey};
+  --docsearch-searchbox-shadow: inset 0 0 0 2px #{$brand-color};
+  --docsearch-text-color: white;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -657,6 +667,13 @@ body {
           }
         }
       }
+
+      &.search-container {
+        all: unset;
+        display: flex;
+        align-items: center;
+        margin-right: 1rem;
+      }
     }
   }
 }
@@ -705,5 +722,11 @@ body {
       opacity: .3;
     }
   }
+}
+
+.DocSearch-Button {
+  padding: 0;
+  border-radius: 0;
+  font-family: inherit;
 }
 </style>

@@ -249,6 +249,19 @@ export default {
 @import './scss/variables';
 
 :root {
+  --docsearch-footer-background: #{$grey};
+  --docsearch-footer-shadow: unset;
+  --docsearch-highlight-color: #{$brand-color};
+  --docsearch-hit-background: #{$grey};
+  --docsearch-hit-color: white;
+  --docsearch-hit-shadow: unset;
+  --docsearch-icon-color: rgba(255, 255, 255, .5);
+  --docsearch-key-gradient: linear-gradient(-225deg, #666, #999);
+  --docsearch-key-shadow: inset 0 -2px 0 0 #aaa, inset 0 0 1px 1px #aaa, 0 1px 2px 1px #{$navy};
+  --docsearch-logo-color: #{$brand-color};
+  --docsearch-modal-background: #{$navy};
+  --docsearch-modal-shadow: inset 1px 1px 0 0 #{$navy},0 3px 8px 0 #{$grey};
+  --docsearch-muted-color: rgba(255, 255, 255, .5);
   --docsearch-searchbox-background: #{$grey};
   --docsearch-searchbox-focus-background: #{$grey};
   --docsearch-searchbox-shadow: inset 0 0 0 2px #{$brand-color};
@@ -728,5 +741,19 @@ body {
   padding: 0;
   border-radius: 0;
   font-family: inherit;
+}
+
+.DocSearch-Modal {
+  border-radius: 0;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.DocSearch-Input:focus {
+  outline: none;
+}
+
+.DocSearch-Logo svg .cls-1,
+.DocSearch-Logo svg .cls-2 {
+  fill: var(--docsearch-logo-color);
 }
 </style>

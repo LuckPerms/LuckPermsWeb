@@ -537,7 +537,7 @@ body {
           }
         }
 
-        svg {
+        > svg {
           margin-right: .5rem;
           opacity: .5;
         }

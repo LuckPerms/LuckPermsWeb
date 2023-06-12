@@ -245,7 +245,7 @@ export default {
 :root {
   --docsearch-footer-background: #{$grey};
   --docsearch-footer-shadow: unset;
-  --docsearch-highlight-color: #{$brand-color};
+  --docsearch-highlight-color: rgba(255, 255, 255, .25);
   --docsearch-hit-background: #{$grey};
   --docsearch-hit-color: white;
   --docsearch-hit-shadow: unset;
@@ -758,5 +758,16 @@ body {
 .DocSearch-Logo svg .cls-1,
 .DocSearch-Logo svg .cls-2 {
   fill: var(--docsearch-logo-color);
+}
+
+.DocSearch-Hits,
+.DocSearch-Hit[aria-selected=true] {
+  mark {
+    color: var(--docsearch-logo-color)!important;
+  }
+}
+
+.DocSearch-Footer {
+  border-radius: 0;
 }
 </style>

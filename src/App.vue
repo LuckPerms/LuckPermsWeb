@@ -21,12 +21,6 @@
         <li class="search-container">
           <div id="docsearch"></div>
         </li>
-        <li>
-          <router-link to="/">
-            <font-awesome icon="home" fixed-width />
-            {{ $t('links.home') }}
-          </router-link>
-        </li>
         <template v-if="!config.selfHosted">
           <li>
             <router-link to="/download">
@@ -438,7 +432,7 @@ body {
       text-decoration: none;
       display: flex;
       align-items: center;
-      font-size: .8rem;
+      font-size: .75rem;
     }
 
     &:hover {
@@ -458,7 +452,7 @@ body {
     background: black;
     right: -100%;
     width: 100%;
-    max-width: 20rem;
+    max-width: 24rem;
     z-index: 100;
     overflow: hidden;
     overflow-y: scroll;
@@ -513,7 +507,7 @@ body {
         display: flex;
         align-items: center;
         font-weight: bold;
-        padding: .5em 1em;
+        padding: .5em;
         text-decoration: none;
         text-transform: uppercase;
         transition: all .2s;
@@ -523,6 +517,11 @@ body {
 
         @include breakpoint($sm) {
           font-size: 1rem;
+
+        }
+
+        @include breakpoint($lg) {
+          padding: .5em 1rem;
         }
 
         &.router-link-exact-active {
@@ -655,11 +654,15 @@ body {
         }
 
         a {
-          padding: 0 1rem;
+          padding: 0 .5rem;
 
           @include breakpoint($sm) {
-            padding: .5rem 1rem;
+
             font-size: 1.5rem;
+          }
+
+          @include breakpoint($lg) {
+            padding: .5rem 1rem;
           }
 
           &.github {
@@ -685,7 +688,7 @@ body {
         all: unset;
         display: flex;
         align-items: center;
-        margin-right: 1rem;
+        margin-right: .5rem;
       }
     }
   }

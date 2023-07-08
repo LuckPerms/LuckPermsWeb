@@ -1,5 +1,5 @@
 <template>
-<div>
+<div @keyup.enter="addGroup">
   <h2>{{ $t('editor.groups.create') }}</h2>
   <div class="row">
     <div class="col">

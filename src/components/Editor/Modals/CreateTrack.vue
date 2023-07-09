@@ -1,5 +1,5 @@
 <template>
-<div class="add-track">
+<div @keyup.enter="addTrack" class="add-track">
   <h2>{{ $t(`editor.tracks.${isAddingTrack ? 'create' : 'edit'}`) }}</h2>
   <div class="row">
     <div class="col">

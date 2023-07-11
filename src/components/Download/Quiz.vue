@@ -21,6 +21,8 @@
           <ul class="options" v-if="options.single">
             <li @click="proceed(3, 'bukkit')">CraftBukkit / Spigot / Paper</li>
             <li @click="proceed(3, 'sponge')">SpongeForge / SpongeVanilla</li>
+            <li @click="proceed(3, 'fabric')">Fabric / Quilt</li>
+            <li @click="proceed(3, 'forge')">Forge</li>
             <li @click="proceed(3, 'nukkit')">NukkitX</li>
           </ul>
           <p class="lighter" v-if="options.network">
@@ -44,10 +46,26 @@
           </ul>
           <ul class="options" v-if="options.sponge">
             <li @click="proceed(4, 'latest')">
-              {{ $t('quiz.newer', { version: 'SpongeAPI 5' }) }}
+              {{ $t('quiz.newer', { version: 'SpongeAPI 8' }) }}
             </li>
             <li @click="proceed(4, 'unsupported')">
-              {{ $t('quiz.older', { version: 'SpongeAPI 4' }) }}
+              {{ $t('quiz.older', { version: 'SpongeAPI 7' }) }}
+            </li>
+          </ul>
+          <ul class="options" v-if="options.fabric">
+            <li @click="proceed(4, 'latest')">
+              {{ $t('quiz.newer', { version: '1.20' }) }}
+            </li>
+            <li @click="proceed(4, 'unsupported')">
+              {{ $t('quiz.older', { version: '1.19' }) }}
+            </li>
+          </ul>
+          <ul class="options" v-if="options.forge">
+            <li @click="proceed(4, 'latest')">
+              {{ $t('quiz.newer', { version: '1.20' }) }}
+            </li>
+            <li @click="proceed(4, 'unsupported')">
+              {{ $t('quiz.older', { version: '1.19' }) }}
             </li>
           </ul>
           <ul class="options" v-if="options.nukkit">
@@ -67,6 +85,12 @@
                 {{ $t('links.download') }}
               </a>
               <a :href="downloads.sponge" v-if="options.sponge" download>
+                {{ $t('links.download') }}
+              </a>
+              <a :href="downloads.fabric" v-if="options.fabric" download>
+                {{ $t('links.download') }}
+              </a>
+              <a :href="downloads.forge" v-if="options.forge" download>
                 {{ $t('links.download') }}
               </a>
               <a :href="downloads.nukkit" v-if="options.nukkit" download>
@@ -104,7 +128,8 @@
             <li @click="proceed(4, 'unsupported')">{{ $t('quiz.older', { version: '1.8.7' }) }}</li>
           </ul>
           <ul class="options" v-if="options.velocity">
-            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: '1.0' }) }}</li>
+            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: '3.0' }) }}</li>
+            <li @click="proceed(4, 'unsupported')">{{ $t('quiz.newer', { version: '1.0' }) }}</li>
           </ul>
         </div>
       </transition>
@@ -122,6 +147,8 @@ export default {
         network: false,
         bukkit: false,
         sponge: false,
+        fabric: false,
+        forge: false,
         nukkit: false,
         bungee: false,
         velocity: false,
@@ -138,6 +165,8 @@ export default {
     serverType() {
       if (this.options.bukkit) return 'Bukkit';
       if (this.options.sponge) return 'Sponge';
+      if (this.options.fabric) return 'Fabric';
+      if (this.options.forge) return 'Forge';
       if (this.options.nukkit) return 'Nukkit';
       if (this.options.bungee) return 'BungeeCord';
       if (this.options.velocity) return 'Velocity';

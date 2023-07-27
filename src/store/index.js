@@ -33,6 +33,7 @@ export default new Vuex.Store({
       sponge: null,
       velocity: null,
       fabric: null,
+      forge: null,
     },
     extensions: {
       'extension-legacy-api': null,

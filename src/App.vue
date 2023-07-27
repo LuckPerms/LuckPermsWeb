@@ -18,7 +18,10 @@
       </div>
 
       <ul :class="{ active: menu, 'top-level': true }">
-        <li class="search-container">
+        <li
+          v-show="showSearchBar"
+          class="search-container"
+        >
           <div id="docsearch"></div>
         </li>
         <template v-if="!config.selfHosted">
@@ -196,6 +199,12 @@ export default {
     },
     config() {
       return this.$store.getters.config;
+    },
+    showSearchBar() {
+      // the editor has 2 search bars, lets not add another one :)
+      const routes = ['editor', 'editor-home'];
+
+      return !routes.includes(this.$route.name);
     },
     isToolsRoute() {
       return [

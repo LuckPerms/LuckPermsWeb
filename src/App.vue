@@ -18,11 +18,11 @@
       </div>
 
       <ul :class="{ active: menu, 'top-level': true }">
-        <li>
-          <router-link to="/">
-            <font-awesome icon="home" fixed-width />
-            {{ $t('links.home') }}
-          </router-link>
+        <li
+          v-show="showSearchBar"
+          class="search-container"
+        >
+          <div id="docsearch"></div>
         </li>
         <template v-if="!config.selfHosted">
           <li>
@@ -142,6 +142,10 @@
 </template>
 
 <script>
+// eslint-disable-next-line import/extensions
+import '@docsearch/css';
+import docsearch from '@docsearch/js';
+
 export default {
   metaInfo: {
     titleTemplate: '%s | LuckPerms',
@@ -196,6 +200,12 @@ export default {
     config() {
       return this.$store.getters.config;
     },
+    showSearchBar() {
+      // the editor has 2 search bars, lets not add another one :)
+      const routes = ['editor', 'editor-home'];
+
+      return !routes.includes(this.$route.name);
+    },
     isToolsRoute() {
       return [
         'editor',
@@ -215,6 +225,15 @@ export default {
     this.$store.dispatch('getAppData');
   },
 
+  mounted() {
+    docsearch({
+      container: '#docsearch',
+      appId: 'ZXKCPO8F1T',
+      indexName: 'luckperms',
+      apiKey: 'a37e3bc32993f2eb764d0c84dbd526e9',
+    });
+  },
+
   methods: {
     setLocale(locale) {
       this.$store.dispatch('setUserLocale', locale);
@@ -230,6 +249,28 @@ export default {
 </script>
 
 <style lang="scss">
+@import './scss/variables';
+
+:root {
+  --docsearch-footer-background: #{$grey};
+  --docsearch-footer-shadow: unset;
+  --docsearch-highlight-color: rgba(255, 255, 255, .25);
+  --docsearch-hit-background: #{$grey};
+  --docsearch-hit-color: white;
+  --docsearch-hit-shadow: unset;
+  --docsearch-icon-color: rgba(255, 255, 255, .5);
+  --docsearch-key-gradient: linear-gradient(-225deg, #666, #999);
+  --docsearch-key-shadow: inset 0 -2px 0 0 #aaa, inset 0 0 1px 1px #aaa, 0 1px 2px 1px #{$navy};
+  --docsearch-logo-color: #{$brand-color};
+  --docsearch-modal-background: #{$navy};
+  --docsearch-modal-shadow: inset 1px 1px 0 0 #{$navy},0 3px 8px 0 #{$grey};
+  --docsearch-muted-color: rgba(255, 255, 255, .5);
+  --docsearch-searchbox-background: #{$grey};
+  --docsearch-searchbox-focus-background: #{$grey};
+  --docsearch-searchbox-shadow: inset 0 0 0 2px #{$brand-color};
+  --docsearch-text-color: white;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -400,7 +441,7 @@ body {
       text-decoration: none;
       display: flex;
       align-items: center;
-      font-size: .8rem;
+      font-size: .75rem;
     }
 
     &:hover {
@@ -420,7 +461,7 @@ body {
     background: black;
     right: -100%;
     width: 100%;
-    max-width: 20rem;
+    max-width: 24rem;
     z-index: 100;
     overflow: hidden;
     overflow-y: scroll;
@@ -475,7 +516,7 @@ body {
         display: flex;
         align-items: center;
         font-weight: bold;
-        padding: .5em 1em;
+        padding: .5em;
         text-decoration: none;
         text-transform: uppercase;
         transition: all .2s;
@@ -485,6 +526,11 @@ body {
 
         @include breakpoint($sm) {
           font-size: 1rem;
+
+        }
+
+        @include breakpoint($lg) {
+          padding: .5em 1rem;
         }
 
         &.router-link-exact-active {
@@ -499,7 +545,7 @@ body {
           }
         }
 
-        svg {
+        > svg {
           margin-right: .5rem;
           opacity: .5;
         }
@@ -617,11 +663,15 @@ body {
         }
 
         a {
-          padding: 0 1rem;
+          padding: 0 .5rem;
 
           @include breakpoint($sm) {
-            padding: .5rem 1rem;
+
             font-size: 1.5rem;
+          }
+
+          @include breakpoint($lg) {
+            padding: .5rem 1rem;
           }
 
           &.github {
@@ -641,6 +691,13 @@ body {
             }
           }
         }
+      }
+
+      &.search-container {
+        all: unset;
+        display: flex;
+        align-items: center;
+        margin-right: .5rem;
       }
     }
   }
@@ -690,5 +747,36 @@ body {
       opacity: .3;
     }
   }
+}
+
+.DocSearch-Button {
+  padding: 0;
+  border-radius: 0;
+  font-family: inherit;
+}
+
+.DocSearch-Modal {
+  border-radius: 0;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.DocSearch-Input:focus {
+  outline: none;
+}
+
+.DocSearch-Logo svg .cls-1,
+.DocSearch-Logo svg .cls-2 {
+  fill: var(--docsearch-logo-color);
+}
+
+.DocSearch-Hits,
+.DocSearch-Hit[aria-selected=true] {
+  mark {
+    color: var(--docsearch-logo-color)!important;
+  }
+}
+
+.DocSearch-Footer {
+  border-radius: 0;
 }
 </style>

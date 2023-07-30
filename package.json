@@ -30,7 +30,7 @@
     "markdown-it-highlightjs": "^3.4.0",
     "markdown-loader": "^5.1.0",
     "pako": "^1.0.10",
-    "semver": "^7.3.4",
+    "semver": "^7.5.2",
     "uuid": "^3.3.3",
     "v-click-outside": "^2.1.5",
     "vue": "^2.6.11",

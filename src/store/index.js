@@ -5,6 +5,7 @@ import createPersistedState from 'vuex-persistedstate';
 import language from './language';
 import axiosCompress from '@/util/axios_compress';
 import { sendChangesViaSocket, socketConnect } from '@/util/ws';
+import { contextsToArray } from '@/util/editor';
 
 const uuid = require('uuid/v4');
 const config = require('../../config.json');
@@ -404,8 +405,12 @@ export default new Vuex.Store({
         node.context = contexts;
       } else {
         const contextList = { ...node.context, ...contexts };
+
         Object.keys(contextList).forEach((key) => {
-          contextList[key] = [...new Set([...(node.context[key] || []), ...(contexts[key] || [])])];
+          contextList[key] = [...new Set([
+            ...contextsToArray(node.context[key]),
+            ...contextsToArray(contexts[key]),
+          ])];
         });
         Vue.set(node, 'context', contextList);
       }

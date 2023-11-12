@@ -412,8 +412,8 @@
     },
     {
       "type": "user",
-      "id": "9490b898-856a-4aae-8de3-2986d007269b",
-      "displayName": "Aberdeener",
+      "id": "f8cf9cd4-0547-4c55-bc3b-7b65ee176911",
+      "displayName": "Underscore11",
       "nodes": [
         {
           "type": "inheritance",
@@ -424,8 +424,32 @@
     },
     {
       "type": "user",
-      "id": "f8cf9cd4-0547-4c55-bc3b-7b65ee176911",
-      "displayName": "Underscore11",
+      "id": "9fe79623-4957-4443-9695-387f5b84c10d",
+      "displayName": "Ev1dent",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.mod",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "dea5c5f3-8686-48ec-a7e7-ec19ed805bed",
+      "displayName": "BNTFryingPan",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.mod",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "7e81b665-1432-4b70-bf66-0f08302d2641",
+      "displayName": "ImDarkLaw",
       "nodes": [
         {
           "type": "inheritance",
@@ -504,42 +528,8 @@
     },
     {
       "type": "user",
-      "id": "9fe79623-4957-4443-9695-387f5b84c10d",
-      "displayName": "Ev1dent",
-      "nodes": [
-        {
-          "type": "inheritance",
-          "key": "group.default",
-          "value": true
-        },
-        {
-          "type": "inheritance",
-          "key": "group.helper",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "user",
       "id": "7f0c11f3-920c-4c04-bde5-2cf45485d485",
       "displayName": "ANutley",
-      "nodes": [
-        {
-          "type": "inheritance",
-          "key": "group.default",
-          "value": true
-        },
-        {
-          "type": "inheritance",
-          "key": "group.helper",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "user",
-      "id": "dea5c5f3-8686-48ec-a7e7-ec19ed805bed",
-      "displayName": "Leotomas",
       "nodes": [
         {
           "type": "inheritance",

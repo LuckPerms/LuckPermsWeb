@@ -48,9 +48,9 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.9.0",
-    "@vue/cli-plugin-babel": "^3.12.1",
-    "@vue/cli-plugin-eslint": "^3.12.1",
-    "@vue/cli-service": "^3.12.1",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
     "@vue/eslint-config-airbnb": "^4.0.1",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
@@ -59,7 +59,7 @@
     "markdown-it-emoji": "^1.4.0",
     "sass": "^1.32.12",
     "sass-loader": "^7.3.1",
-    "vue-markdown-loader": "^2.4.1",
+    "vue-markdown-loader": "^2.5.0",
     "vue-template-compiler": "^2.6.11"
   },
   "engines": {

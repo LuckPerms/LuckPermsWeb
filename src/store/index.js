@@ -4,7 +4,7 @@ import axios from 'axios';
 import createPersistedState from 'vuex-persistedstate';
 import language from './language';
 import axiosCompress from '@/util/axios_compress';
-import { sendChangesViaSocket, socketConnect } from '@/util/ws';
+import { socketConnect } from '@/socket/ws';
 import { contextsToArray } from '@/util/editor';
 
 const uuid = require('uuid/v4');
@@ -850,22 +850,33 @@ export default new Vuex.Store({
           const { key } = response.data;
           const { socket } = state.editor;
 
-          sendChangesViaSocket(socket, key)
-            .then((newSessionId) => {
-              commit('setSaveStatus', 'saved');
-              dispatch('getEditorData', newSessionId);
-            })
-            .catch((err) => {
-              console.log(err);
-              commit('setBytebinKey', key);
-              commit('setSaveStatus', 'saved');
-              commit('setModal', {
-                type: 'savedChanges',
-                object: {
-                  saveKey: getters.saveKey,
-                },
+          if (socket) {
+            socket.sendChangesViaSocket(key)
+              .then((newSessionId) => {
+                commit('setSaveStatus', 'saved');
+                dispatch('getEditorData', newSessionId);
+              })
+              .catch((err) => {
+                console.log(err);
+                commit('setBytebinKey', key);
+                commit('setSaveStatus', 'saved');
+                commit('setModal', {
+                  type: 'savedChanges',
+                  object: {
+                    saveKey: getters.saveKey,
+                  },
+                });
               });
+          } else {
+            commit('setBytebinKey', key);
+            commit('setSaveStatus', 'saved');
+            commit('setModal', {
+              type: 'savedChanges',
+              object: {
+                saveKey: getters.saveKey,
+              },
             });
+          }
         })
         .catch(console.error);
     },

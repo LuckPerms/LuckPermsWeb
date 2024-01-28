@@ -18,6 +18,7 @@
     "axios": "^0.21.2",
     "base64-arraybuffer": "^1.0.1",
     "bowser": "^2.11.0",
+    "comlink": "^4.4.1",
     "core-js": "^2.6.5",
     "flag-icons": "^6.6.3",
     "git-describe": "^4.0.4",
@@ -60,7 +61,8 @@
     "sass": "^1.32.12",
     "sass-loader": "^7.3.1",
     "vue-markdown-loader": "^2.4.1",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "worker-loader": "^3.0.8"
   },
   "engines": {
     "node": ">12 <17"

@@ -1,5 +1,6 @@
 import { decode, encode } from 'base64-arraybuffer';
 import Bowser from 'bowser';
+import { expose } from 'comlink';
 
 const config = require('../../config');
 
@@ -7,6 +8,8 @@ const KEEP_LISTENING = true;
 const STOP_LISTENING = false;
 
 /* eslint-disable no-use-before-define */
+
+let globalSocket;
 
 class SocketInterface {
   constructor(socket, keys, pluginKey) {
@@ -92,14 +95,8 @@ class SocketInterface {
 }
 
 // eslint-disable-next-line max-len
-export async function socketConnect(channelId, sessionId, pluginPublicKey, callbacks) {
-  // generate public/private keypair for the editor
-  const keys = await loadKeys() || await generateKeys();
-
-  // decode and import the plugin public key
-  const pluginKey = await importKey('spki', pluginPublicKey, ['verify']);
-
-  console.log('[WS] Loaded editor keys and decoded plugin public key');
+function socketConnect(channelId, sessionId, keys, pluginKey, userAgent, callbacks) {
+  console.log('[WS] Creating socket...');
 
   // create a websocket
   // important that no async/await occurs between here and the listener registrations
@@ -113,15 +110,17 @@ export async function socketConnect(channelId, sessionId, pluginPublicKey, callb
 
   socket.onopen = () => {
     console.log('[WS] Socket open, initialising connection...');
-    initConnection(socketInterface, sessionId, keys.encodedPublicKey, callbacks);
+    initConnection(socketInterface, sessionId, keys.encodedPublicKey, userAgent, callbacks);
   };
 
   socket.onclose = () => {
     callbacks.close();
   };
+
+  globalSocket = socketInterface;
 }
 
-function initConnection(socket, sessionId, encodedPublicKey, callbacks) {
+function initConnection(socket, sessionId, encodedPublicKey, userAgent, callbacks) {
   const nonce = `${randomString(4)}-${randomString(4)}`;
 
   function onMessage(msg) {
@@ -139,12 +138,12 @@ function initConnection(socket, sessionId, encodedPublicKey, callbacks) {
         }
 
         startKeepalive(socket);
-        callbacks.connect({ socket });
+        callbacks.connect();
         return STOP_LISTENING;
       }
 
       if (msg.state === 'untrusted') {
-        callbacks.trust({ nonce });
+        callbacks.trust(nonce);
         return KEEP_LISTENING;
       }
 
@@ -172,7 +171,7 @@ function initConnection(socket, sessionId, encodedPublicKey, callbacks) {
   // add a listener to await a reply
   socket.registerListener(onMessage);
 
-  const { browser, os } = Bowser.parse(window.navigator.userAgent);
+  const { browser, os } = Bowser.parse(userAgent);
 
   // send our public key once the socket is connected
   socket.send({
@@ -184,7 +183,9 @@ function initConnection(socket, sessionId, encodedPublicKey, callbacks) {
   });
 }
 
-export function sendChangesViaSocket(socket, bytebinCode) {
+function sendChangesViaSocket(bytebinCode) {
+  const socket = globalSocket;
+
   return new Promise((resolve, reject) => {
     // is the socket isn't open, don't bother
     if (!socket || socket.socket.readyState !== 1) {
@@ -268,57 +269,6 @@ function startKeepalive(socket) {
   /* eslint-enable no-param-reassign */
 }
 
-async function loadKeys() {
-  const encodedPublicKey = localStorage.getItem('editor-public-key');
-  const encodedPrivateKey = localStorage.getItem('editor-private-key');
-
-  if (encodedPublicKey && encodedPrivateKey) {
-    const publicKey = await importKey('spki', encodedPublicKey, []);
-    const privateKey = await importKey('pkcs8', encodedPrivateKey, ['sign']);
-    return {
-      publicKey,
-      privateKey,
-      encodedPublicKey,
-      encodedPrivateKey,
-    };
-  }
-
-  return null;
-}
-
-function importKey(format, encoded, keyUsages) {
-  return crypto.subtle.importKey(format, decode(encoded), {
-    name: 'RSASSA-PKCS1-v1_5',
-    hash: 'SHA-256',
-  }, false, keyUsages);
-}
-
-async function exportKey(format, key, storageKey) {
-  const exported = await crypto.subtle.exportKey(format, key);
-  const encoded = encode(exported);
-  localStorage.setItem(storageKey, encoded);
-  return encoded;
-}
-
-async function generateKeys() {
-  const { publicKey, privateKey } = await crypto.subtle.generateKey({
-    name: 'RSASSA-PKCS1-v1_5',
-    modulusLength: 4096,
-    publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256',
-  }, true, ['sign']);
-
-  const encodedPublicKey = await exportKey('spki', publicKey, 'editor-public-key');
-  const encodedPrivateKey = await exportKey('pkcs8', privateKey, 'editor-private-key');
-
-  return {
-    publicKey,
-    privateKey,
-    encodedPublicKey,
-    encodedPrivateKey,
-  };
-}
-
 function randomString(len) {
   function dec2hex(dec) {
     return dec.toString(16).padStart(2, '0');
@@ -328,3 +278,5 @@ function randomString(len) {
   crypto.getRandomValues(arr);
   return Array.from(arr, dec2hex).join('');
 }
+
+expose({ socketConnect, sendChangesViaSocket });

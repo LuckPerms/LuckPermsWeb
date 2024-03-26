@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     updateGroupName(event) {
-      this.group.name = event.target.value.toLowerCase().replace(' ', '-');
+      this.group.name = event.target.value.toLowerCase().replace(/ /g, '-');
     },
 
     addGroup() {

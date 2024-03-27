@@ -12,7 +12,7 @@
     {
       "type": "group",
       "id": "op",
-      "displayName": "Operator",
+      "displayName": "&l&7[&2&mOperator&r&l&7]&f",
       "nodes": [
         {
           "type": "permission",
@@ -26,7 +26,7 @@
         },
         {
           "type": "display_name",
-          "key": "displayname.Operator",
+          "key": "displayname.&l&7[&2&mOperator&r&l&7]&f",
           "value": true
         },
         {

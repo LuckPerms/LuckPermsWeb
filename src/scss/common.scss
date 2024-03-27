@@ -105,7 +105,7 @@ code, .code {
       font-size: 1.25rem;
     }
   }
-	
+
   &.demo-button {
     font-size: 1rem;
     padding: .5rem 1rem;
@@ -272,4 +272,8 @@ code, .code {
   width: 100%;
   z-index: 50;
   background: rgba(0,0,0,.5);
+}
+
+.pre_style {
+  margin: 0;
 }

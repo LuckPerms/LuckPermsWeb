@@ -59,7 +59,7 @@
     "typeChoose": "Choose your server type",
     "bukkit": "Paper, Spigot etc. (1.8.8 to 1.20.x)",
     "bungee": "BungeeCord, Waterfall etc. (latest only)",
-    "sponge": "Sponge (API 8)",
+    "sponge": "Sponge (API 8 & 9)",
     "fabric": "Fabric (1.20.6)",
     "forge": "Forge (1.20.6)",
     "nukkit": "NukkitX (b93 or newer)",

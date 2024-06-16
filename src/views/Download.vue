@@ -24,7 +24,7 @@
               <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit
             </span>
-            <small>{{ $t('download.bukkit') }}</small>
+            <small>{{ $t('download.bukkit', { version: '1.8.8 - 1.21.x' }) }}</small>
           </a>
           <a
             :href="downloads.sponge"
@@ -35,7 +35,7 @@
               <img src="@/assets/logos/sponge.png" alt="Sponge">
               Sponge
             </span>
-            <small>{{ $t('download.sponge') }}</small>
+            <small>{{ $t('download.sponge', { version: 'API 8 & 9' }) }}</small>
           </a>
           <a
             :href="downloads.fabric"
@@ -46,7 +46,7 @@
               <img src="@/assets/logos/fabric.png" alt="Fabric">
               Fabric
             </span>
-            <small>{{ $t('download.fabric') }}</small>
+            <small>{{ $t('download.fabric', { version: '1.21' }) }}</small>
           </a>
           <a
             :href="downloads.forge"
@@ -57,7 +57,7 @@
               <img src="@/assets/logos/forge.png" alt="Forge">
               Forge
             </span>
-            <small>{{ $t('download.forge') }}</small>
+            <small>{{ $t('download.forge', { version: '1.21' }) }}</small>
           </a>
           <a
             :href="downloads.nukkit"
@@ -79,7 +79,7 @@
               <img src="@/assets/logos/velocity.png" alt="Velocity">
               Velocity
             </span>
-            <small>{{ $t('download.velocity') }}</small>
+            <small>{{ $t('download.velocity', { version: '3.x' }) }}</small>
           </a>
           <a
             :href="downloads.bungee"

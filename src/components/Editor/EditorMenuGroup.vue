@@ -2,7 +2,7 @@
   <intersect @enter="isVisible = true" @leave="isVisible = false">
     <span class="group">
       <span class="group-name">
-        <span class="group-display">{{ group.displayName }}</span>
+        <span class="group-display" v-html="groupDisplayName"></span>
         <small v-if="group.displayName !== group.id">{{ group.id }}</small>
       </span>
       <span v-if="isVisible">
@@ -19,6 +19,7 @@
 
 <script>
 import Intersect from 'vue-intersect';
+import { initParser } from '@/util/colors';
 
 export default {
   name: 'EditorMenuGroup',
@@ -48,6 +49,9 @@ export default {
 
       return node.key.split('weight.')[1];
     },
+    groupDisplayName() {
+      return initParser(this.group.displayName).html
+    }
   },
 
   methods: {

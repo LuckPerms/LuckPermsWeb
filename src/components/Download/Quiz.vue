@@ -19,17 +19,18 @@
         <div v-if="page === 2" class="page page-2">
           <h1>{{ $t('quiz.type') }}</h1>
           <ul class="options" v-if="options.single">
-            <li @click="proceed(3, 'bukkit')">CraftBukkit / Spigot / Paper</li>
+            <li @click="proceed(3, 'bukkit')">Spigot / Paper</li>
             <li @click="proceed(3, 'sponge')">SpongeForge / SpongeVanilla</li>
-            <li @click="proceed(3, 'fabric')">Fabric / Quilt</li>
+            <li @click="proceed(3, 'fabric')">Fabric</li>
             <li @click="proceed(3, 'forge')">Forge</li>
+            <li @click="proceed(3, 'neoforge')">NeoForge</li>
             <li @click="proceed(3, 'nukkit')">NukkitX</li>
           </ul>
           <p class="lighter" v-if="options.network">
             {{ $t('quiz.note') }}
           </p>
           <ul class="options" v-if="options.network">
-            <li @click="proceed(5, 'bungee')">BungeeCord / Waterfall / Travertine</li>
+            <li @click="proceed(5, 'bungee')">BungeeCord / Waterfall</li>
             <li @click="proceed(5, 'velocity')">Velocity</li>
           </ul>
         </div>
@@ -54,18 +55,26 @@
           </ul>
           <ul class="options" v-if="options.fabric">
             <li @click="proceed(4, 'latest')">
-              {{ $t('quiz.newer', { version: '1.20' }) }}
+              {{ $t('quiz.newer', { version: '1.21' }) }}
             </li>
             <li @click="proceed(4, 'unsupported')">
-              {{ $t('quiz.older', { version: '1.19' }) }}
+              {{ $t('quiz.older', { version: '1.20' }) }}
             </li>
           </ul>
           <ul class="options" v-if="options.forge">
             <li @click="proceed(4, 'latest')">
-              {{ $t('quiz.newer', { version: '1.20' }) }}
+              {{ $t('quiz.newer', { version: '1.21' }) }}
             </li>
             <li @click="proceed(4, 'unsupported')">
-              {{ $t('quiz.older', { version: '1.19' }) }}
+              {{ $t('quiz.older', { version: '1.20' }) }}
+            </li>
+          </ul>
+          <ul class="options" v-if="options.neoforge">
+            <li @click="proceed(4, 'latest')">
+              {{ $t('quiz.newer', { version: '1.21' }) }}
+            </li>
+            <li @click="proceed(4, 'unsupported')">
+              {{ $t('quiz.older', { version: '1.20' }) }}
             </li>
           </ul>
           <ul class="options" v-if="options.nukkit">
@@ -91,6 +100,9 @@
                 {{ $t('links.download') }}
               </a>
               <a :href="downloads.forge" v-if="options.forge" download>
+                {{ $t('links.download') }}
+              </a>
+              <a :href="downloads.neoforge" v-if="options.neoforge" download>
                 {{ $t('links.download') }}
               </a>
               <a :href="downloads.nukkit" v-if="options.nukkit" download>
@@ -149,6 +161,7 @@ export default {
         sponge: false,
         fabric: false,
         forge: false,
+        neoforge: false,
         nukkit: false,
         bungee: false,
         velocity: false,
@@ -167,6 +180,7 @@ export default {
       if (this.options.sponge) return 'Sponge';
       if (this.options.fabric) return 'Fabric';
       if (this.options.forge) return 'Forge';
+      if (this.options.neoforge) return 'NeoForge';
       if (this.options.nukkit) return 'Nukkit';
       if (this.options.bungee) return 'BungeeCord';
       if (this.options.velocity) return 'Velocity';

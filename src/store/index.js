@@ -35,6 +35,7 @@ export default new Vuex.Store({
       velocity: null,
       fabric: null,
       forge: null,
+      neoforge: null,
     },
     extensions: {
       'extension-legacy-api': null,

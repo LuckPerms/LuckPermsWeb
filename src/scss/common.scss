@@ -36,7 +36,7 @@ a {
   color: $brand-color;
 
   &:hover {
-    color: lighten($brand-color, 10%);
+    color: color.adjust($brand-color, $lightness: 10%);
   }
 }
 
@@ -83,7 +83,7 @@ code, .code {
   }
 
   &:hover {
-    background: lighten($brand-color, 10%);
+    background: color.adjust($brand-color, $lightness: 10%);
   }
 
   span {
@@ -105,7 +105,7 @@ code, .code {
       font-size: 1.25rem;
     }
   }
-	
+
   &.demo-button {
     font-size: 1rem;
     padding: .5rem 1rem;
@@ -167,7 +167,7 @@ code, .code {
     }
 
     &:hover {
-      background: lighten($grey, 10%);
+      background: color.adjust($grey, $lightness: 10%);
     }
 
     span {

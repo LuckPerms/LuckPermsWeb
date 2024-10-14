@@ -251,7 +251,7 @@ export default {
         }
 
         &:hover {
-          background: lighten($brand-color, 10%);
+          background: color.adjust($brand-color, $lightness: 10%);
         }
 
         span {

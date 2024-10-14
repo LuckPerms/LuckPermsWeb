@@ -10,7 +10,6 @@ const hljsLanguages = [
   'nginx', ['plaintext', 'hocon', 'conf'],
 ];
 
-/* eslint-disable no-restricted-syntax, import/no-dynamic-require, global-require */
 function registerHljsLanguages() {
   for (let lang of hljsLanguages) {
     lang = [].concat(lang);
@@ -20,14 +19,14 @@ function registerHljsLanguages() {
     }
   }
 }
-/* eslint-enable no-restricted-syntax, import/no-dynamic-require, global-require */
 
 module.exports = {
   publicPath: config.base,
   css: {
     loaderOptions: {
       sass: {
-        data: `
+        additionalData: `
+          @use "sass:color";
           @import "@/scss/variables.scss";
           @import "@/scss/breakpoints.scss";
         `,
@@ -42,8 +41,8 @@ module.exports = {
       .use('vue-loader')
       .loader('vue-loader')
       .end()
-      .use('vue-markdown-loader')
-      .loader('vue-markdown-loader/lib/markdown-compiler')
+      .use('@lucko/vue-markdown-loader')
+      .loader('@lucko/vue-markdown-loader/lib/markdown-compiler')
       .options({
         raw: true,
         linkify: false,

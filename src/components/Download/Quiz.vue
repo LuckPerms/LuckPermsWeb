@@ -291,7 +291,7 @@ export default {
             text-decoration: none;
 
             &:hover {
-              background: lighten($brand-color, 10%);
+              background: color.adjust($brand-color, $lightness: 10%);
             }
           }
         }

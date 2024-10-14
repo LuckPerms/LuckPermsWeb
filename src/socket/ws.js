@@ -1,12 +1,10 @@
 import { decode, encode } from 'base64-arraybuffer';
 import { proxy, wrap } from 'comlink';
 
-// eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!./worker';
 
 /* eslint-disable no-use-before-define */
 
-// eslint-disable-next-line max-len,import/prefer-default-export
 export async function socketConnect(channelId, sessionId, pluginPublicKey, callbacks) {
   // generate public/private keypair for the editor
   const keys = await loadKeys() || await generateKeys();

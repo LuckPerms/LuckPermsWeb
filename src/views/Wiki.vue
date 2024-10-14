@@ -17,7 +17,6 @@
 </template>
 
 <script>
-// eslint-disable-next-line import/no-unresolved
 import Sidebar from '../wiki/pages/_Sidebar.md';
 
 export default {

@@ -52,7 +52,6 @@ export default {
   methods: {
     async getArticle() {
       try {
-        // eslint-disable-next-line global-require,import/no-dynamic-require
         this.article = require(`@/wiki/pages/${this.route}.md`).default;
       } catch (e) {
         this.article = null;

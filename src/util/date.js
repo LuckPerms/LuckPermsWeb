@@ -7,7 +7,6 @@
  * @param {boolean} [includeTime=false] - Whether to include return the time
  * @returns {String}
  */
-// eslint-disable-next-line import/prefer-default-export
 export function relativeDate(date, language, baseDate, includeTime) {
   const rtf = new Intl.RelativeTimeFormat(language, {
     numeric: 'auto',

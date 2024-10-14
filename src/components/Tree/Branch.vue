@@ -23,7 +23,6 @@
 </template>
 
 <script>
-// eslint-disable-next-line import/no-self-import
 import Branch from './Branch.vue';
 
 export default {
@@ -90,7 +89,7 @@ export default {
       justify-content: space-between;
 
       &:hover {
-        background: lighten($grey, 10%);
+        background: color.adjust($grey, $lightness: 10%);
       }
 
       code {

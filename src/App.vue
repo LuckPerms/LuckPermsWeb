@@ -142,7 +142,6 @@
 </template>
 
 <script>
-// eslint-disable-next-line import/extensions
 import '@docsearch/css';
 import docsearch from '@docsearch/js';
 

@@ -472,7 +472,7 @@ export default {
       background-color: $grey;
 
       &:hover {
-        background: lighten($grey, 10%);
+        background: color.adjust($grey, $lightness: 10%);
       }
 
       svg {

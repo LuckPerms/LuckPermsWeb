@@ -12,8 +12,9 @@ const STOP_LISTENING = false;
 let globalSocket;
 
 class SocketInterface {
-  constructor(socket, keys, pluginKey) {
+  constructor(socket, signVerifyAlgorithm, keys, pluginKey) {
     this.socket = socket;
+    this.signVerifyAlgorithm = signVerifyAlgorithm;
     this.keys = keys;
     this.pluginKey = pluginKey;
 
@@ -32,7 +33,7 @@ class SocketInterface {
 
     // sign the message with the editor private key
     const signature = await crypto.subtle.sign(
-      'RSASSA-PKCS1-v1_5',
+      this.signVerifyAlgorithm,
       this.keys.privateKey,
       new TextEncoder().encode(encoded),
     );
@@ -70,7 +71,7 @@ class SocketInterface {
     // verify that the message was sent by the plugin
     // (check it was signed with the plugin public key)
     const verified = await crypto.subtle.verify(
-      'RSASSA-PKCS1-v1_5',
+      this.signVerifyAlgorithm,
       this.pluginKey,
       decode(signature),
       new TextEncoder().encode(encodedMessage),
@@ -95,13 +96,13 @@ class SocketInterface {
 }
 
 // eslint-disable-next-line max-len
-function socketConnect(channelId, sessionId, keys, pluginKey, userAgent, callbacks) {
+function socketConnect(channelId, sessionId, signVerifyAlgorithm, keys, pluginKey, userAgent, callbacks) {
   console.log('[WS] Creating socket...');
 
   // create a websocket
   // important that no async/await occurs between here and the listener registrations
   const socket = new WebSocket(`wss://${config.bytesocks_host}/${channelId}`);
-  const socketInterface = new SocketInterface(socket, keys, pluginKey);
+  const socketInterface = new SocketInterface(socket, signVerifyAlgorithm, keys, pluginKey);
 
   socket.onmessage = (event) => {
     const frame = JSON.parse(event.data);

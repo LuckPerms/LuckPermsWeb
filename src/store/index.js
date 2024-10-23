@@ -577,6 +577,7 @@ export default new Vuex.Store({
 
         if (data.socket?.channelId) {
           socketConnect(
+            data.socket.protocolVersion,
             data.socket.channelId,
             sessionId,
             data.socket.publicKey,

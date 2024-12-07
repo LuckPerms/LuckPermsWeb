@@ -46,18 +46,7 @@
               <img src="@/assets/logos/fabric.png" alt="Fabric">
               Fabric
             </span>
-            <small>{{ $t('download.fabric', { version: '1.21.3' }) }}</small>
-          </a>
-          <a
-            :href="downloads.forge"
-            v-on:click="logDownload('forge')"
-            class="resource"
-          >
-            <span>
-              <img src="@/assets/logos/forge.png" alt="Forge">
-              Forge
-            </span>
-            <small>{{ $t('download.forge', { version: '1.21.3' }) }}</small>
+            <small>{{ $t('download.fabric', { version: '1.21.4' }) }}</small>
           </a>
           <a
             :href="downloads.neoforge"
@@ -68,7 +57,18 @@
               <img src="@/assets/logos/neoforge.png" alt="NeoForge">
               NeoForge
             </span>
-            <small>{{ $t('download.neoforge', { version: '1.21.3' }) }}</small>
+            <small>{{ $t('download.neoforge', { version: '1.21.4' }) }}</small>
+          </a>
+          <a
+            :href="downloads.forge"
+            v-on:click="logDownload('forge')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/forge.png" alt="Forge">
+              Forge
+            </span>
+            <small>{{ $t('download.forge', { version: '1.21.4' }) }}</small>
           </a>
           <a
             :href="downloads.nukkit"

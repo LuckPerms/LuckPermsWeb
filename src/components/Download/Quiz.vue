@@ -47,7 +47,7 @@
           </ul>
           <ul class="options" v-if="options.sponge">
             <li @click="proceed(4, 'latest')">
-              {{ $t('quiz.newer', { version: 'SpongeAPI 8' }) }}
+              {{ $t('quiz.newer', { version: 'SpongeAPI 12' }) }}
             </li>
             <li @click="proceed(4, 'unsupported')">
               {{ $t('quiz.older', { version: 'SpongeAPI 7' }) }}

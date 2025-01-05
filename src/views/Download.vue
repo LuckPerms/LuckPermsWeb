@@ -35,7 +35,7 @@
               <img src="@/assets/logos/sponge.png" alt="Sponge">
               Sponge
             </span>
-            <small>{{ $t('download.sponge', { version: 'API 8 & 9' }) }}</small>
+            <small>{{ $t('download.sponge', { version: 'API 12' }) }}</small>
           </a>
           <a
             :href="downloads.fabric"

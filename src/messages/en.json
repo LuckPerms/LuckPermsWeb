@@ -84,7 +84,7 @@
     },
     "notListed": {
       "title": "Looking for a version not listed?",
-      "grab": "The version you're looking for can likely be found on our {jenkins}.",
+      "grab": "The version you're looking for can likely be found at {modrinth} or on our {jenkins}.",
       "missing": "Is there still a missing version? build it from our source on {github}."
     },
     "extensions": {

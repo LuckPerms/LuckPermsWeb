@@ -168,6 +168,9 @@
           <h2>{{ $t('download.notListed.title') }}</h2>
           <ul>
             <i18n path="download.notListed.grab" tag="li">
+              <template #modrinth>
+                <a href="https://modrinth.com/plugin/luckperms/versions" target="_blank">modrinth</a>
+              </template>
               <template #jenkins>
                 <a href="https://ci.lucko.me/job/LuckPerms/" target="_blank">Jenkins</a>
               </template>

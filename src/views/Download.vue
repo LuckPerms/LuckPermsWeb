@@ -165,6 +165,19 @@
               </template>
             </i18n>
           </ul>
+          <h2>{{ $t('download.notListed.title') }}</h2>
+          <ul>
+            <i18n path="download.notListed.grab" tag="li">
+              <template #jenkins>
+                <a href="https://ci.lucko.me/job/LuckPerms/" target="_blank">Jenkins</a>
+              </template>
+            </i18n>
+            <i18n path="download.notListed.missing" tag="li">
+              <template #github>
+                <a href="https://github.com/LuckPerms/LuckPerms" target="_blank">GitHub</a>
+              </template>
+            </i18n>
+          </ul>
         </div>
       </section>
     </div>

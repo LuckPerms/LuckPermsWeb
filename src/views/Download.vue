@@ -143,9 +143,7 @@
             <li v-html="$t('download.install.config')" />
             <i18n path="download.install.setup" tag="li">
               <template #wiki>
-                <router-link to="wiki/Usage">
-                  {{ $t('download.install.wiki') }}
-                </router-link>
+                <router-link to="wiki/Usage">{{ $t('download.install.wiki') }}</router-link>
               </template>
             </i18n>
           </ol>
@@ -154,9 +152,7 @@
             <li v-html="$t('download.trouble.console')" />
             <i18n path="download.trouble.read" tag="li">
               <template #wiki>
-                <router-link to="wiki/Installation">
-                  {{ $t('download.trouble.wiki') }}
-                </router-link>
+                <router-link to="wiki/Installation">{{ $t('download.trouble.wiki') }}</router-link>
               </template>
             </i18n>
             <i18n path="download.trouble.support" tag="li">
@@ -174,9 +170,7 @@
           <h1>{{ $t('download.extensions.title') }}</h1>
           <i18n path="download.extensions.description" tag="p">
             <template #wiki>
-              <router-link to="/wiki/Extensions">
-                {{ $t('download.extensions.descriptionWiki') }}
-              </router-link>
+              <router-link to="/wiki/Extensions">{{ $t('download.extensions.descriptionWiki') }}</router-link>
             </template>
           </i18n>
         </div>
@@ -199,10 +193,8 @@
           <div>
             <p>{{ $t('download.extensions.legacyInfo') }}</p>
             <i18n path="download.extensions.more" tag="p">
-              <template #wiki>
-                <router-link to="/wiki/Extensions#extension-legacy-api">
-                  {{ $t('download.extensions.wiki') }}
-                </router-link>
+              <template #wikiSection>
+                <router-link to="/wiki/Extensions#extension-legacy-api">{{ $t('download.extensions.wikiSection') }}</router-link>
               </template>
             </i18n>
           </div>
@@ -221,17 +213,18 @@
           </a>
           <div>
             <i18n path="download.extensions.defaultAssignmentsInfo" tag="p">
-              <template #wiki>
-                <router-link to="/wiki/Default-Groups">
-                  {{ $t('download.extensions.groups') }}
-                </router-link>
+              <template #defaultGroups>
+                <router-link to="/wiki/Default-Groups">{{ $t('download.extensions.defaultGroups') }}</router-link>
               </template>
             </i18n>
-            <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
-              section</router-link> for more information. See also
-              <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about
-              configuring default assignments.
-            </p>
+            <i18n
+              path="download.extensions.more"
+              tag="p"
+            >
+              <template #wikiSection>
+                <router-link to="/wiki/Extensions#extension-default-assignments">{{ $t('download.extensions.wikiSection') }}</router-link>
+              </template>
+            </i18n>
           </div>
         </div>
       </section>
@@ -239,12 +232,8 @@
     <section class="hero additional-plugins">
       <div class="container">
         <div>
-          <h1>Additional Plugins</h1>
-          <p>
-            Additional plugins can provide more complex features,
-            but may not be available on all platforms
-          .
-          </p>
+          <h1>{{ $t('download.additionalPlugins.title') }}</h1>
+          <p>{{ $t('download.additionalPlugins.description') }}</p>
         </div>
       </div>
     </section>
@@ -254,12 +243,12 @@
           <a :href="additionalPlugins['extracontexts']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
-              ExtraContexts Plugin
+              {{ $t('download.additionalPlugins.extraContexts') }}
             </span>
-            <small>LuckPerms 5.0 and above, Bukkit only</small>
+            <small>{{ $t('download.additionalPlugins.version') }}</small>
           </a>
           <div>
-            <p>Add more contexts, including some for other plugins</p>
+            <p>{{ $t('download.additionalPlugins.extraContextsInfo') }}</p>
           </div>
         </div>
       </section>
@@ -267,13 +256,15 @@
     <section class="hero placeholder-expansions">
       <div class="container">
         <div>
-          <h1>Placeholder Expansions</h1>
-          <p>
-            LuckPerms adds
-            <router-link to="/wiki/Placeholders#placeholders">placeholders</router-link>
-            to PlaceholderAPI and MVdWPlaceholderAPI
-          .
-          </p>
+          <h1>{{ $t('download.placeholderExpansions.title') }}</h1>
+          <i18n
+            path="download.placeholderExpansions.description"
+            tag="p"
+          >
+            <template #placeholders>
+              <router-link to="/wiki/Placeholders#placeholders">{{ $t('download.placeholderExpansions.placeholders') }}</router-link>
+            </template>
+          </i18n>
         </div>
       </div>
     </section>
@@ -283,30 +274,41 @@
           <a :href="placeholderExpansions['bukkit-placeholderapi']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
-              PlaceholderAPI
+              {{ $t('download.placeholderExpansions.placeholderApi') }}
             </span>
-            <small>LuckPerms 5.0 and above, Bukkit only</small>
+            <small>{{ $t('download.placeholderExpansions.version') }}</small>
           </a>
           <div>
-            <p>
-              Install using either
-              <code>/papi ecloud download LuckPerms</code>
-              or by
-              <router-link to="/wiki/Placeholders#manual-install">installing manually</router-link>
-              .
-            </p>
+            <i18n
+              path="download.placeholderExpansions.placeholderApiInfo"
+              tag="p"
+            >
+              <template #command>
+                <code>/papi ecloud download LuckPerms</code>
+              </template>
+              <template #installingManually>
+                <router-link to="/wiki/Placeholders#placeholderapi">{{ $t('download.placeholderExpansions.placeholderApiInstallingManually') }}</router-link>
+              </template>
+            </i18n>
           </div>
         </div>
         <div>
           <a :href="placeholderExpansions['bukkit-mvdw']" class="resource">
             <span>
               <font-awesome icon="arrow-alt-circle-down" />
-              MVdWPlaceholderAPI
+              {{ $t('download.placeholderExpansions.mvdwPlaceholderApi') }}
             </span>
-            <small>LuckPerms 5.0 and above, Bukkit only</small>
+            <small>{{ $t('download.placeholderExpansions.version') }}</small>
           </a>
           <div>
-            <p>Place the JAR file in your <code>/plugins/</code> folder.</p>
+            <i18n
+              path="download.placeholderExpansions.mvdwPlaceholderApiInfo"
+              tag="p"
+            >
+              <template #plugins>
+                <code>/plugins/</code>
+              </template>
+            </i18n>
           </div>
         </div>
         <div>

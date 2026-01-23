@@ -1,7 +1,7 @@
 <template>
   <img
     class="avatar"
-    :src="`https://crafthead.net/helm/${key}/8`"
+    :src="platform === 'Hytale' ? `https://crafthead.net/hytale/helm/${key}/24` : `https://crafthead.net/helm/${key}/24`"
     :alt="$t('avatar', { name })"
     :title="title ? $t('avatar', { name }) : ''"
     @error="replaceWithDefault"
@@ -27,6 +27,12 @@ export default {
   computed: {
     key() {
       return this.id.replace(/-/g, '');
+    },
+    platform() {
+      return this.$store.getters.metaData?.platform
+        ?? this.$store.getters.verbose?.metadata?.platform
+        ?? this.$store.getters.tree?.metadata?.platform
+        ?? "Minecraft";
     },
   },
   methods: {

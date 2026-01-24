@@ -95,6 +95,7 @@
             </span>
             <small>{{ $t('home.partner.description') }}</small>
           </router-link>
+          <!--
           <a href="https://patreon.com/luckdev" class="resource">
             <span>
               <font-awesome :icon="['fab', 'patreon']" />
@@ -102,6 +103,7 @@
             </span>
             <small>{{ $t('home.patreon', { count: patreonCount }) }}</small>
           </a>
+          -->
         </div>
       </section>
     </div>

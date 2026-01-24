@@ -65,6 +65,7 @@
     "neoforge": "NeoForge ({version})",
     "nukkit": "NukkitX",
     "velocity": "Velocity ({version})",
+    "hytale": "Hytale ({version})",
     "bukkitLegacy": "Paper, Spigot etc. (1.7.10 only)",
     "changelog": "Recent Changelog",
     "install": {

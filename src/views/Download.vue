@@ -27,17 +27,6 @@
             <small>{{ $t('download.bukkit', { version: '1.8.8 - 1.21.x' }) }}</small>
           </a>
           <a
-            :href="downloads.sponge"
-            v-on:click="logDownload('sponge')"
-            class="resource"
-          >
-            <span>
-              <img src="@/assets/logos/sponge.png" alt="Sponge">
-              Sponge
-            </span>
-            <small>{{ $t('download.sponge', { version: 'API 12' }) }}</small>
-          </a>
-          <a
             :href="downloads.fabric"
             v-on:click="logDownload('fabric')"
             class="resource"
@@ -71,15 +60,15 @@
             <small>{{ $t('download.forge', { version: '1.21.11' }) }}</small>
           </a>
           <a
-            :href="downloads.nukkit"
-            v-on:click="logDownload('nukkit')"
+            :href="downloads.hytale"
+            v-on:click="logDownload('hytale')"
             class="resource"
           >
             <span>
-              <img src="@/assets/logos/nukkit.png" alt="Nukkit">
-              Nukkit
+              <img src="@/assets/logos/hytale.png" alt="Hytale">
+              Hytale
             </span>
-            <small>{{ $t('download.nukkit') }}</small>
+            <small>{{ $t('download.hytale', { version: 'beta' }) }}</small>
           </a>
           <a
             :href="downloads.velocity"
@@ -91,6 +80,28 @@
               Velocity
             </span>
             <small>{{ $t('download.velocity', { version: '3.x' }) }}</small>
+          </a>
+          <a
+            :href="downloads.sponge"
+            v-on:click="logDownload('sponge')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/sponge.png" alt="Sponge">
+              Sponge
+            </span>
+            <small>{{ $t('download.sponge', { version: 'API 12' }) }}</small>
+          </a>
+          <a
+            :href="downloads.nukkit"
+            v-on:click="logDownload('nukkit')"
+            class="resource"
+          >
+            <span>
+              <img src="@/assets/logos/nukkit.png" alt="Nukkit">
+              Nukkit
+            </span>
+            <small>{{ $t('download.nukkit') }}</small>
           </a>
           <a
             :href="downloads.bungee"

@@ -109,7 +109,7 @@ export default {
 
   methods: {
     updateTrackName(event) {
-      this.track.id = event.target.value.toLowerCase().replace(' ', '-');
+      this.track.id = event.target.value.toLowerCase().replace(/ /g, '-');
     },
 
     addTrack() {

@@ -39,7 +39,7 @@
               <multiselect
                 v-model="nodeParts.groupName"
                 :options="knownGroups"
-                :taggable="true"
+                :taggable="false"
                 :searchable="true"
                 :multiple="false"
                 :close-on-select="true"
@@ -422,7 +422,7 @@ export default {
     knownGroups() {
       const sessionSet = this.$store.getters.sessionSet || [];
       return sessionSet
-        .filter(session => session.type === 'inheritance')
+        .filter(session => session.type === 'group')
         .map(group => group.id);
     },
     nodeTypes() {

@@ -81,7 +81,7 @@ export function parseNodeType(key) {
 
 export function buildNodeKey(type, parts) {
   switch (type) {
-    case 'group':
+    case 'inheritance':
       return `group.${parts.groupName || ''}`;
     case 'prefix':
       return `prefix.${parts.weight || '0'}.${parts.prefix || ''}`;

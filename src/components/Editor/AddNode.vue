@@ -1,20 +1,149 @@
 <template>
   <div class="add-node">
     <form class="row" autocomplete="off" @submit.prevent>
-      <div class="form-group" v-if="!selectedNodes.length">
-        <label for="permissions">{{ $t('editor.nodes.addPermissions') }}</label>
-        <multiselect
-          id="permissions"
-          v-model="permissions"
-          :options="knownPermissions"
-          :multiple="true"
-          :taggable="true"
-          :clearOnSelect="false"
-          @tag="onTag"
-          :tag-placeholder="$t('editor.nodes.enterToSelect')"
-          :placeholder="$t('editor.nodes.enter')"
-          :close-on-select="false"
-        />
+
+      <!-- Node input -->
+      <div class="form-group node-builder" v-if="!selectedNodes.length">
+        <label for="nodeType">{{ $t('editor.nodes.add') }}</label>
+        <div class="node-builder-row">
+
+          <!-- Node type selector -->
+          <select id="nodeType" v-model="nodeType" class="node-type-select">
+            <option v-for="type in nodeTypes" :key="type.value" :value="type.value">
+              {{ type.label }}
+            </option>
+          </select>
+
+          <!-- Permission input -->
+          <div v-if="nodeType === 'permission'" class="node-type-inputs">
+            <div class="input-group">
+              <label class="input-label">{{ $t('editor.nodes.labels.permissions') }}</label>
+              <multiselect
+                v-model="nodeParts.permissionsList"
+                :options="knownPermissions"
+                :multiple="true"
+                :taggable="true"
+                :clearOnSelect="false"
+                @tag="onPermissionTag"
+                :tag-placeholder="$t('editor.nodes.enterToSelect')"
+                :placeholder="$t('editor.nodes.permissionPlaceholder')"
+                :close-on-select="false"
+              />
+            </div>
+          </div>
+
+          <!-- Inheritance input -->
+          <div v-else-if="nodeType === 'inheritance'" class="node-type-inputs">
+            <div class="input-group">
+              <label class="input-label">{{ $t('editor.nodes.labels.groupName') }}</label>
+              <multiselect
+                v-model="nodeParts.groupName"
+                :options="knownGroups"
+                :taggable="true"
+                :searchable="true"
+                :multiple="false"
+                :close-on-select="true"
+                :placeholder="$t('editor.nodes.groupNamePlaceholder')"
+              />
+            </div>
+          </div>
+
+          <!-- Prefix input -->
+          <div v-else-if="nodeType === 'prefix'" class="node-type-inputs">
+            <div class="input-group" style="flex: 0 0 80px;">
+              <label class="input-label">{{ $t('editor.nodes.labels.weight') }}</label>
+              <input
+                type="number"
+                v-model="nodeParts.weight"
+                class="node-input"
+              />
+            </div>
+            <div class="input-group flex-grow">
+              <label class="input-label">{{ $t('editor.nodes.labels.prefixText') }}</label>
+              <input
+                type="text"
+                v-model="nodeParts.prefix"
+                :placeholder="$t('editor.nodes.prefixPlaceholder')"
+                class="node-input"
+              />
+            </div>
+          </div>
+
+          <!-- Suffix input -->
+          <div v-else-if="nodeType === 'suffix'" class="node-type-inputs">
+            <div class="input-group" style="flex: 0 0 80px;">
+              <label class="input-label">{{ $t('editor.nodes.labels.weight') }}</label>
+              <input
+                type="number"
+                v-model="nodeParts.weight"
+                class="node-input"
+              />
+            </div>
+            <div class="input-group flex-grow">
+              <label class="input-label">{{ $t('editor.nodes.labels.suffixText') }}</label>
+              <input
+                type="text"
+                v-model="nodeParts.suffix"
+                :placeholder="$t('editor.nodes.suffixPlaceholder')"
+                class="node-input"
+              />
+            </div>
+          </div>
+
+          <!-- Meta input -->
+          <div v-else-if="nodeType === 'meta'" class="node-type-inputs">
+            <div class="input-group">
+              <label class="input-label">{{ $t('editor.nodes.labels.key') }}</label>
+              <input
+                type="text"
+                v-model="nodeParts.key"
+                :placeholder="$t('editor.nodes.metaKeyPlaceholder')"
+                class="node-input"
+              />
+            </div>
+            <div class="input-group">
+              <label class="input-label">{{ $t('editor.nodes.labels.value') }}</label>
+              <input
+                type="text"
+                v-model="nodeParts.value"
+                :placeholder="$t('editor.nodes.metaValuePlaceholder')"
+                class="node-input"
+              />
+            </div>
+          </div>
+
+          <!-- Weight input -->
+          <div v-else-if="nodeType === 'weight'" class="node-type-inputs">
+            <div class="input-group">
+              <label class="input-label">{{ $t('editor.nodes.labels.weightValue') }}</label>
+              <input
+                type="number"
+                v-model="nodeParts.weight"
+                :placeholder="$t('editor.nodes.weightValuePlaceholder')"
+                class="node-input"
+              />
+            </div>
+          </div>
+
+          <!-- Display Name input -->
+          <div v-else-if="nodeType === 'displayname'" class="node-type-inputs">
+            <div class="input-group input-with-warning">
+              <label class="input-label">{{ $t('editor.nodes.labels.displayName') }}</label>
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  v-model="nodeParts.displayName"
+                  :placeholder="$t('editor.nodes.displayNamePlaceholder')"
+                  class="node-input"
+                />
+                <span class="warning-icon">
+                  <font-awesome icon="exclamation-circle" />
+                  <span class="tooltip">{{ $t('editor.nodes.displayNameWarning') }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div v-else class="form-group bulk-edit">
@@ -144,7 +273,7 @@
       <button
         v-if="!selectedNodes.length"
         type="submit"
-        :disabled="permissions.length === 0"
+        :disabled="!canAddNode"
         :title="$t('editor.nodes.add')"
         @click="addNodesToSession"
       >
@@ -240,6 +369,7 @@
 import Datepicker from '@turbotailz/vuejs-datepicker';
 import Multiselect from 'vue-multiselect';
 import vClickOutside from 'v-click-outside';
+import { buildNodeKey } from '@/util/editor';
 
 export default {
   name: 'AddNode',
@@ -252,7 +382,18 @@ export default {
   },
   data() {
     return {
-      permissions: [],
+      nodeType: 'permission',
+      nodeParts: {
+        permission: '',
+        permissionsList: [],
+        groupName: null,
+        weight: '',
+        prefix: '',
+        suffix: '',
+        key: '',
+        value: '',
+        displayName: '',
+      },
       value: true,
       expiry: null,
       server: null,
@@ -277,6 +418,49 @@ export default {
     },
     knownPermissions() {
       return this.$store.state.editor.knownPermissions;
+    },
+    knownGroups() {
+      const sessionSet = this.$store.getters.sessionSet || [];
+      return sessionSet
+        .filter(session => session.type === 'inheritance')
+        .map(group => group.id);
+    },
+    nodeTypes() {
+      const allTypes = ['permission', 'inheritance', 'prefix', 'suffix', 'meta', 'weight', 'displayname'];
+      const isUser = this.session && this.session.type === 'user';
+
+      // weight and display name only show for groups
+      const availableTypes = isUser
+        ? allTypes.filter(type => !['weight', 'displayname'].includes(type))
+        : allTypes;
+
+      return availableTypes.map(type => (
+        { value: type, label: this.$t(`editor.nodes.types.${type}`) }
+      ));
+    },
+    canAddNode() {
+      if (this.nodeType === 'permission') {
+        return this.nodeParts.permissionsList.length > 0;
+      }
+      if (this.nodeType === 'inheritance') {
+        return this.nodeParts.groupName !== null && this.nodeParts.groupName !== '';
+      }
+      if (this.nodeType === 'prefix') {
+        return this.nodeParts.prefix.trim() !== '';
+      }
+      if (this.nodeType === 'suffix') {
+        return this.nodeParts.suffix.trim() !== '';
+      }
+      if (this.nodeType === 'meta') {
+        return this.nodeParts.key.trim() !== '' && this.nodeParts.value.trim() !== '';
+      }
+      if (this.nodeType === 'weight') {
+        return this.nodeParts.weight.trim() !== '';
+      }
+      if (this.nodeType === 'displayname') {
+        return this.nodeParts.displayName.trim() !== '';
+      }
+      return false;
     },
     flattenedContexts() {
       const entries = [];
@@ -305,14 +489,23 @@ export default {
       return (this.expiry || this.bulk.value !== null || Object.keys(this.context.contexts).length);
     },
   },
+  watch: {
+    session(newSession) {
+      if (newSession && newSession.type === 'user') {
+        if (this.nodeType === 'weight' || this.nodeType === 'displayname') {
+          this.nodeType = 'permission';
+        }
+      }
+    },
+  },
   methods: {
-    onTag(tag) {
+    onPermissionTag(tag) {
       const permissions = tag.split(/,\s*|\s+|\s*-\s+/);
 
       permissions.forEach((permission) => {
         if (permission === '') return;
 
-        this.permissions.push(permission);
+        this.nodeParts.permissionsList.push(permission);
 
         if (!this.knownPermissions.find(knownPermission => knownPermission === permission)) {
           this.addKnownPermission(permission);
@@ -323,12 +516,26 @@ export default {
       this.$store.dispatch('addKnownPermission', permission);
     },
     addNodesToSession() {
-      if (this.permissions.length === 0) return;
+      if (this.nodeType === 'permission' && this.nodeParts.permissionsList.length > 0) {
+        const nodes = [];
+        this.nodeParts.permissionsList.forEach((permission) => {
+          nodes.push({
+            sessionId: this.session.id,
+            type: 'permission',
+            key: permission,
+            value: this.value,
+            expiry: this.expiry,
+            context: this.context.contexts,
+            isNew: true,
+          });
+        });
+        this.$store.dispatch('addNodes', nodes);
+      } else {
+        if (!this.canAddNode) return;
 
-      const nodes = [];
-
-      this.permissions.forEach((key) => {
-        nodes.push({
+        const key = buildNodeKey(this.nodeType, this.nodeParts);
+        if (!key) return;
+        const node = {
           sessionId: this.session.id,
           type: 'permission',
           key,
@@ -336,12 +543,23 @@ export default {
           expiry: this.expiry,
           context: this.context.contexts,
           isNew: true,
-        });
-      });
-
-      this.$store.dispatch('addNodes', nodes);
-
-      this.permissions = [];
+        };
+        this.$store.dispatch('addNodes', [node]);
+      }
+      this.reset();
+    },
+    reset() {
+      this.nodeParts = {
+        permission: '',
+        permissionsList: [],
+        groupName: null,
+        weight: '',
+        prefix: '',
+        suffix: '',
+        key: '',
+        value: '',
+        displayName: '',
+      };
       this.value = true;
       this.expiry = null;
       this.context.contexts = {};
@@ -472,6 +690,159 @@ export default {
 
         &:first-child {
           flex: 2 2 40%;
+        }
+
+        &.node-builder {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0;
+          padding: 0.5rem;
+
+          > label {
+            margin-bottom: 0.5rem;
+          }
+
+          .node-builder-row {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            width: 100%;
+            gap: 0.5rem;
+          }
+
+          .node-type-select {
+            flex: 0 0 auto;
+            min-width: 120px;
+            max-width: 140px;
+            padding: 0.6rem 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+            margin-right: 0.5rem;
+            color: #FFF;
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            align-self: flex-end;
+            min-height: 38px;
+
+            &:focus {
+              outline: none;
+              border-color: $brand-color;
+              background: rgba(0, 0, 0, 0.4);
+            }
+          }
+
+          .node-type-inputs {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            align-items: flex-start;
+            padding: 0;
+            width: 100%;
+
+            .input-group {
+              display: flex;
+              flex-direction: column;
+              flex: 1 1 auto;
+              gap: 0.15rem;
+              min-width: 0;
+
+              &.flex-grow {
+                flex: 2 1 auto;
+              }
+
+              .input-label {
+                font-size: 0.65rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: rgba(255, 255, 255, 0.5);
+                font-weight: 600;
+                margin: 0;
+                padding: 0 0.25rem;
+                line-height: 1;
+                white-space: nowrap;
+              }
+
+              &.input-with-warning {
+                .input-wrapper {
+                  position: relative;
+                  width: 100%;
+
+                  .warning-icon {
+                    position: absolute;
+                    right: 0.5rem;
+                    top: 0.5rem;
+                    color: #fac858;
+                    cursor: help;
+                    font-size: 1rem;
+                    pointer-events: all;
+                    z-index: 1;
+
+                    &:hover {
+                      color: #ffdc73;
+
+                      .tooltip {
+                        visibility: visible;
+                        opacity: 1;
+                      }
+                    }
+
+                    .tooltip {
+                      visibility: hidden;
+                      opacity: 0;
+                      position: absolute;
+                      right: 0;
+                      bottom: calc(100% + 0.5rem);
+                      background: rgba(50, 50, 55, 0.98);
+                      color: #FFF;
+                      padding: 0.75rem 1rem;
+                      border-radius: 4px;
+                      width: 280px;
+                    }
+                  }
+                }
+              }
+            }
+
+            .node-input {
+              width: 100%;
+              padding: 0.6rem 0.65rem;
+              background: rgba(0, 0, 0, 0.2);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              border-radius: 2px;
+              color: #FFF;
+              font-family: 'Source Code Pro', monospace;
+              font-size: 0.9rem;
+              box-sizing: border-box;
+              min-height: 38px;
+
+              &::placeholder {
+                color: rgba(255, 255, 255, 0.4);
+              }
+
+              &:focus {
+                outline: none;
+                border-color: $brand-color;
+                background: rgba(0, 0, 0, 0.3);
+              }
+            }
+
+            .multiselect {
+              flex: 1 1 auto;
+              width: 100%;
+              min-height: 38px;
+            }
+
+            > .input-group:first-child:last-child {
+              flex: 1 1 100%;
+            }
+          }
         }
 
         + .form-group {
@@ -708,6 +1079,22 @@ export default {
       font: inherit;
       max-height: 30vh;
       overflow-y: auto;
+      min-height: 38px;
+      padding: 0.45rem 2.5rem 0.45rem 0.65rem;
+    }
+
+    .multiselect__single {
+      background: transparent;
+      color: #FFF;
+      font-family: 'Source Code Pro', monospace;
+      margin-bottom: 0;
+      padding: 0;
+    }
+
+    .multiselect__placeholder {
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 0;
+      padding-top: 0;
     }
 
     .multiselect__tag {

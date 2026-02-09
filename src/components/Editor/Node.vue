@@ -14,7 +14,34 @@
       @click="permission.edit = true"
       :title="$t('editor.nodes.edit')"
     >
-      <code>{{ source.key }}</code>
+      <span class="node-type-badge" :class="`badge-${parsedNode.type}`">
+        {{ $t(`editor.nodes.types.${parsedNode.type}`) }}
+      </span>
+      <code class="node-value">
+        <template v-if="parsedNode.type === 'permission'">
+          {{ source.key }}
+        </template>
+        <template v-else-if="parsedNode.type === 'inheritance'">
+          {{ parsedNode.groupName }}
+        </template>
+        <template v-else-if="parsedNode.type === 'prefix'">
+          {{ parsedNode.prefix }}
+          <span class="weight-indicator">({{ $t('editor.nodes.weightLabel') }}: {{ parsedNode.weight }})</span>
+        </template>
+        <template v-else-if="parsedNode.type === 'suffix'">
+          {{ parsedNode.suffix }}
+          <span class="weight-indicator">({{ $t('editor.nodes.weightLabel') }}: {{ parsedNode.weight }})</span>
+        </template>
+        <template v-else-if="parsedNode.type === 'meta'">
+          {{ parsedNode.key }}: {{ parsedNode.value }}
+        </template>
+        <template v-else-if="parsedNode.type === 'weight'">
+          {{ parsedNode.weight }}
+        </template>
+        <template v-else-if="parsedNode.type === 'displayname'">
+          {{ parsedNode.displayName }}
+        </template>
+      </code>
     </div>
     <div v-else class="permission">
       <input
@@ -156,6 +183,7 @@
 import Datepicker from '@turbotailz/vuejs-datepicker';
 import vClickOutside from 'v-click-outside';
 import { relativeDate } from '@/util/date';
+import { parseNodeType } from '@/util/editor';
 
 export default {
   name: 'Node',
@@ -196,6 +224,9 @@ export default {
     },
     isSelected() {
       return this.selectedNodes.indexOf(this.source.id) >= 0;
+    },
+    parsedNode() {
+      return parseNodeType(this.source.key);
     },
     flattenedContexts() {
       const entries = [];
@@ -371,6 +402,72 @@ export default {
   .permission {
     flex: 2 2 30%;
     word-break: break-all;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .node-type-badge {
+      display: inline-block;
+      padding: 0.2em 0;
+      font-size: 0.75em;
+      font-weight: bold;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: 0.25em;
+      text-transform: uppercase;
+      font-family: sans-serif;
+      flex-shrink: 0;
+      min-width: 105px;
+
+      &.badge-permission {
+        background-color: #6c757d;
+        color: #FFF;
+      }
+
+      &.badge-inheritance {
+        background-color: #5470c6;
+        color: #FFF;
+      }
+
+      &.badge-prefix {
+        background-color: #91cc75;
+        color: #2c3e50;
+      }
+
+      &.badge-suffix {
+        background-color: #fac858;
+        color: #2c3e50;
+      }
+
+      &.badge-meta {
+        background-color: #ee6666;
+        color: #FFF;
+      }
+
+      &.badge-weight {
+        background-color: #73c0de;
+        color: #2c3e50;
+      }
+
+      &.badge-displayname {
+        background-color: #9a60b4;
+        color: #FFF;
+      }
+    }
+
+    code.node-value {
+      font-family: 'Source Code Pro', monospace;
+      word-break: break-all;
+    }
+
+    .weight-indicator {
+      opacity: 0.6;
+      font-size: 0.85em;
+      margin-left: 0.3em;
+      font-style: italic;
+    }
   }
 
   .value {

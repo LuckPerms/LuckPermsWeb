@@ -10,6 +10,7 @@
       <div class="form-group">
         <label for="displayName">{{ $t('editor.groups.displayName') }}</label>
         <input type="text" id="displayName" v-model="group.displayName">
+        <ColorParser v-if="group.displayName" :text="group.displayName" :showRaw="false" />
       </div>
       <div class="form-group">
         <label for="parent">{{ $t('editor.groups.parent') }}</label>
@@ -29,10 +30,12 @@
       <div class="form-group">
         <label for="prefix">{{ $t('editor.groups.prefix') }}</label>
         <input type="text" id="prefix" v-model="group.prefix">
+        <ColorParser v-if="group.prefix" :text="group.prefix" :showRaw="false" />
       </div>
       <div class="form-group">
         <label for="suffix">{{ $t('editor.groups.suffix') }}</label>
         <input type="text" id="suffix" v-model="group.suffix">
+        <ColorParser v-if="group.suffix" :text="group.suffix" :showRaw="false" />
       </div>
     </div>
   </div>
@@ -44,9 +47,13 @@
 </template>
 
 <script>
+import ColorParser from './../Utilities/ColorParser';
 
 export default {
   name: 'CreateGroup',
+  components: {
+    ColorParser,
+  },
   data() {
     return {
       group: {

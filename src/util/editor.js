@@ -26,7 +26,7 @@ export function parseNodeType(key) {
       return {
         type: 'prefix',
         weight: parts[1],
-        prefix: parts[2],
+        prefix: unescapeCharacters(parts[2]),
       };
     }
   }
@@ -38,7 +38,7 @@ export function parseNodeType(key) {
       return {
         type: 'suffix',
         weight: parts[1],
-        suffix: parts[2],
+        suffix: unescapeCharacters(parts[2]),
       };
     }
   }
@@ -46,12 +46,12 @@ export function parseNodeType(key) {
   // meta: meta.<key>.<value>
   if (key.startsWith('meta.')) {
     const metaContent = key.substring(5);
-    const dotIndex = metaContent.indexOf('.');
-    if (dotIndex > 0) {
+    const parts = splitByNodeSeparatorInTwo(metaContent);
+    if (parts && parts.length === 2) {
       return {
         type: 'meta',
-        key: metaContent.substring(0, dotIndex),
-        value: metaContent.substring(dotIndex + 1),
+        key: unescapeCharacters(parts[0]),
+        value: unescapeCharacters(parts[1]),
       };
     }
   }
@@ -84,11 +84,11 @@ export function buildNodeKey(type, parts) {
     case 'inheritance':
       return `group.${parts.groupName || ''}`;
     case 'prefix':
-      return `prefix.${parts.weight || '0'}.${parts.prefix || ''}`;
+      return `prefix.${parts.weight || '0'}.${escapeCharacters(parts.prefix || '')}`;
     case 'suffix':
-      return `suffix.${parts.weight || '0'}.${parts.suffix || ''}`;
+      return `suffix.${parts.weight || '0'}.${escapeCharacters(parts.suffix || '')}`;
     case 'meta':
-      return `meta.${parts.key || ''}.${parts.value || ''}`;
+      return `meta.${escapeCharacters(parts.key || '')}.${escapeCharacters(parts.value || '')}`;
     case 'weight':
       return `weight.${parts.weight || '0'}`;
     case 'displayname':
@@ -99,3 +99,14 @@ export function buildNodeKey(type, parts) {
   }
 }
 
+function escapeCharacters(str) {
+  return str.replace(/\./g, '\\.');
+}
+
+function unescapeCharacters(str) {
+  return str.replace(/\\\./g, '.');
+}
+
+function splitByNodeSeparatorInTwo(str) {
+  return str.split(/(?<!\\)\./, 2);
+}

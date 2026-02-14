@@ -33,7 +33,7 @@
           <span class="weight-indicator">({{ $t('editor.nodes.weightLabel') }}: {{ parsedNode.weight }})</span>
         </template>
         <template v-else-if="parsedNode.type === 'meta'">
-          {{ parsedNode.key }}: {{ parsedNode.value }}
+          {{ parsedNode.key }} = {{ parsedNode.value }}
         </template>
         <template v-else-if="parsedNode.type === 'weight'">
           {{ parsedNode.weight }}

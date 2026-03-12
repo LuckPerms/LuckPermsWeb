@@ -1,0 +1,31 @@
+services:
+  # frontend service
+  frontend:
+    build:
+      context: ./
+
+  # bytebin (data storage) service
+  bytebin:
+    image: ghcr.io/lucko/bytebin
+    volumes:
+      - data:/opt/bytebin/content
+
+  # bytesocks (web socket) service
+  bytesocks:
+    image: ghcr.io/lucko/bytesocksdoc
+
+  # reverse proxy
+  nginx:
+    image: nginx:alpine
+    command: ['nginx', '-g', 'daemon off;']
+    depends_on:
+      - frontend
+      - bytebin
+      - bytesocks
+    ports:
+      - 8080:80
+    volumes:
+      - ./docker/reverseproxy-nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  data: {}

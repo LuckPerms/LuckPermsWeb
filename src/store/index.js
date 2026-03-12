@@ -526,7 +526,7 @@ export default new Vuex.Store({
     getAppData: async ({ commit, dispatch }) => {
       commit('setConfig', config);
       try {
-        const appData = await axios.get(`${config.api_url}/data/all`);
+        const appData = await axios.get(`${config.apiUrl}data/all`);
         commit('setVersion', appData.data.version);
         commit('setVersionTimestamp', appData.data.versionTimestamp);
         commit('setChangeLog', appData.data.changeLog);
@@ -573,7 +573,8 @@ export default new Vuex.Store({
           return;
         }
 
-        const { data } = await axios.get(`${config.bytebin_url}${sessionId}`);
+        const baseUrl = new URL(config.bytebinUrl, window.location.href);
+        const { data } = await axios.get(`${baseUrl}${sessionId}`);
 
         if (data.socket?.channelId) {
           socketConnect(
@@ -847,7 +848,8 @@ export default new Vuex.Store({
         });
       });
 
-      axios.post(`${config.bytebin_url}post`, payload, axiosCompress)
+      const baseUrl = new URL(config.bytebinUrl, window.location.href);
+      axios.post(`${baseUrl}post`, payload, axiosCompress)
         .then((response) => {
           const { key } = response.data;
           const { socket } = state.editor;
@@ -908,7 +910,8 @@ export default new Vuex.Store({
           commit('setVerboseData', { data, status: 2 });
         } else {
           commit('setVerboseData', { data: null, status: 1 });
-          const response = await axios.get(`${config.bytebin_url}${sessionId}`);
+          const baseUrl = new URL(config.bytebinUrl, window.location.href);
+          const response = await axios.get(`${baseUrl}${sessionId}`);
           const data = {
             ...response.data,
             sessionId,
@@ -945,7 +948,8 @@ export default new Vuex.Store({
           commit('setTreeData', data);
           return;
         }
-        const response = await axios.get(`${config.bytebin_url}${sessionId}`);
+        const baseUrl = new URL(config.bytebinUrl, window.location.href);
+        const response = await axios.get(`${baseUrl}${sessionId}`);
 
         const data = {
           ...response.data,

@@ -96,12 +96,19 @@ class SocketInterface {
 }
 
 // eslint-disable-next-line max-len
-function socketConnect(channelId, sessionId, signVerifyAlgorithm, keys, pluginKey, userAgent, callbacks) {
+function socketConnect(channelId, sessionId, signVerifyAlgorithm, keys, pluginKey, userAgent, windowHref, callbacks) {
   console.log('[WS] Creating socket...');
 
   // create a websocket
   // important that no async/await occurs between here and the listener registrations
-  const socket = new WebSocket(`wss://${config.bytesocks_host}/${channelId}`);
+  const url = new URL(config.bytesocksUrl, windowHref);
+  if (url.protocol === 'https:') {
+    url.protocol = 'wss:';
+  } else if (url.protocol === 'http:') {
+    url.protocol = 'ws:';
+  }
+
+  const socket = new WebSocket(`${url}${channelId}`);
   const socketInterface = new SocketInterface(socket, signVerifyAlgorithm, keys, pluginKey);
 
   socket.onmessage = (event) => {

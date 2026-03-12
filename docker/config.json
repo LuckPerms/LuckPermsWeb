@@ -1,0 +1,7 @@
+{
+  "base": "/",
+  "selfHosted": true,
+  "bytebinUrl": "/data/",
+  "bytesocksUrl": "/ws/",
+  "apiUrl": "https://metadata.luckperms.net/"
+}

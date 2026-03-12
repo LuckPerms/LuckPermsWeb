@@ -1,7 +1,7 @@
 {
-  "bytebin_url": "https://usercontent.luckperms.net/",
-  "bytesocks_host": "usersockets.luckperms.net",
   "base": "/",
   "selfHosted": false,
-  "api_url": "https://metadata.luckperms.net"
+  "bytebinUrl": "https://usercontent.luckperms.net/",
+  "bytesocksUrl": "wss://usersockets.luckperms.net/",
+  "apiUrl": "https://metadata.luckperms.net/"
 }

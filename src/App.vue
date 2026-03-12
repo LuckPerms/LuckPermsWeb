@@ -18,13 +18,13 @@
       </div>
 
       <ul :class="{ active: menu, 'top-level': true }">
-        <li
-          v-show="showSearchBar"
-          class="search-container"
-        >
-          <div id="docsearch"></div>
-        </li>
         <template v-if="!config.selfHosted">
+          <li
+            v-show="showSearchBar"
+            class="search-container"
+          >
+            <div id="docsearch"></div>
+          </li>
           <li>
             <router-link to="/download">
               <font-awesome icon="arrow-alt-circle-down" fixed-width />

@@ -15,8 +15,9 @@ export async function socketConnect(protocolVersion, channelId, sessionId, plugi
   const pluginKey = await cryptoHelper.importKey('spki', pluginPublicKey, ['verify']);
 
   const { userAgent } = window.navigator;
+  const { href } = window.location;
   const socket = wrap(new Worker());
-  await socket.socketConnect(channelId, sessionId, cryptoHelper.signVerifyAlgorithm, keys, pluginKey, userAgent, proxy({
+  await socket.socketConnect(channelId, sessionId, cryptoHelper.signVerifyAlgorithm, keys, pluginKey, userAgent, href, proxy({
     connect: proxy(() => {
       callbacks.connect({ socket });
     }),

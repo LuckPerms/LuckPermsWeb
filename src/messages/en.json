@@ -297,7 +297,7 @@
     "context": "Context",
     "origin": "Origin",
     "processor": "Processor",
-    "cause": "Cause",
+    "cause": "Cause Node",
     "thread": "Thread",
     "trace": "Trace",
     "exclude": "Exclude",

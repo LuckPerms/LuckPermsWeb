@@ -303,10 +303,12 @@ export default {
       display: flex;
       flex-direction: column;
       padding: 1rem 1rem 1rem 0;
+      overflow: hidden;
 
       .data {
         flex: 1;
-        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
         list-style: none;
         margin: 0;
         padding: 0 1rem 0 0;

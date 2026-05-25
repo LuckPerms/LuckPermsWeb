@@ -39,13 +39,13 @@
             <tr v-if="source.resultInfo">
               <td>{{ $t('verbose.processor') }}</td>
               <td>
-                <code>{{ source.resultInfo.processorClass }}</code>
+                <code>{{ source.resultInfo.processorClass.split('.').at(-1) }}</code>
               </td>
             </tr>
-            <tr v-if="source.resultInfo">
+            <tr v-if="source.resultInfo && source.resultInfo.node">
               <td>{{ $t('verbose.cause') }}</td>
               <td>
-                <code>{{ source.resultInfo.cause }}</code>
+                <pre class="code">{{ JSON.stringify(source.resultInfo.node, null, 2) }}</pre>
               </td>
             </tr>
             <tr>
@@ -57,7 +57,7 @@
           </table>
         </div>
         <div class="col-2">
-          {{ $t('verbose.trace') }}
+          <span>{{ $t('verbose.trace') }}</span>
           <pre class="code">{{ source.trace.join("\n") }}</pre>
         </div>
       </div>
@@ -160,25 +160,64 @@ export default {
         padding: .5rem 1rem;
         display: flex;
         white-space: normal;
+        gap: 1rem;
 
         .col-1 {
           flex: 1;
+          min-width: 0;
+          overflow: hidden;
         }
 
         .col-2 {
           display: flex;
           flex-direction: column;
           flex: 2;
+          min-width: 0;
+
+          .code {
+            max-height: 32rem;
+          }
+
+          span {
+            opacity: 0.7;
+            padding-bottom: .3rem;
+          }
         }
 
         table {
-          td:first-child {
-            width: 25%;
+          width: 100%;
+          table-layout: fixed;
+          border-collapse: collapse;
+
+          tr + tr td {
+            border-top: 1px solid rgba(255,255,255,.06);
           }
+
+          td {
+            padding: .3rem .4rem;
+            vertical-align: top;
+            overflow: hidden;
+          }
+
+          td:first-child {
+            width: 30%;
+            opacity: .7;
+            white-space: nowrap;
+            padding-right: .75rem;
+          }
+        }
+
+        .code {
+          width: 100%;
+          overflow-x: auto;
+          white-space: pre;
+          word-break: normal;
+          margin: 2px 0;
         }
 
         code {
           word-break: break-all;
+          margin: 2px;
         }
 
         ul {

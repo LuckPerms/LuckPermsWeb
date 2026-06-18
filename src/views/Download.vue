@@ -35,7 +35,7 @@
               <img src="@/assets/logos/fabric.png" alt="Fabric">
               Fabric
             </span>
-            <small>{{ $t('download.fabric', { version: '26.1' }) }}</small>
+            <small>{{ $t('download.fabric', { version: '26.2' }) }}</small>
           </a>
           <a
             :href="downloads.neoforge"
@@ -46,7 +46,7 @@
               <img src="@/assets/logos/neoforge.png" alt="NeoForge">
               NeoForge
             </span>
-            <small>{{ $t('download.neoforge', { version: '26.1' }) }}</small>
+            <small>{{ $t('download.neoforge', { version: '26.2' }) }}</small>
           </a>
           <a
             :href="downloads.forge"
@@ -57,7 +57,7 @@
               <img src="@/assets/logos/forge.png" alt="Forge">
               Forge
             </span>
-            <small>{{ $t('download.forge', { version: '26.1' }) }}</small>
+            <small>{{ $t('download.forge', { version: '26.2' }) }}</small>
           </a>
           <a
             :href="downloads.hytale"
@@ -296,7 +296,7 @@
               <font-awesome icon="arrow-alt-circle-down" />
               PlaceholderAPI
             </span>
-            <small>LuckPerms 5.0 and above, Bukkit only</small>
+            <small>Bukkit only</small>
           </a>
           <div>
             <p>
@@ -314,7 +314,7 @@
               <font-awesome icon="arrow-alt-circle-down" />
               MVdWPlaceholderAPI
             </span>
-            <small>LuckPerms 5.0 and above, Bukkit only</small>
+            <small>Bukkit only</small>
           </a>
           <div>
             <p>Place the JAR file in your <code>/plugins/</code> folder.</p>
@@ -326,7 +326,7 @@
               <font-awesome icon="arrow-alt-circle-down" />
               Fabric PlaceholderAPI
             </span>
-            <small>LuckPerms 5.0 and above, Fabric only</small>
+            <small>Fabric for MC 1.21.11, not needed on newer versions</small>
           </a>
           <div>
             <p>Place the JAR file in your <code>/mods/</code> folder.</p>

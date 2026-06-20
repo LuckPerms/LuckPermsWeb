@@ -24,7 +24,7 @@
   },
   "home": {
     "name": "Home",
-    "supported": "Supports Bukkit/Spigot/Paper, BungeeCord, Sponge, Fabric, Forge, NeoForge, Nukkit and Velocity servers",
+    "supported": "Supports Bukkit/Spigot/Paper/Folia, BungeeCord, Sponge, Fabric, Forge, NeoForge, Nukkit and Velocity servers",
     "why": {
       "title": "Why LuckPerms?",
       "description": "LuckPerms is a permissions plugin for Minecraft servers. It allows server admins to control what features players can use by creating groups and assigning permissions.",
@@ -57,8 +57,8 @@
     "build": "Latest, built {time}",
     "typeHelp": "Not sure which type?",
     "typeChoose": "Choose your server type",
-    "bukkit": "Paper, Spigot etc. ({version})",
-    "bungee": "BungeeCord, Waterfall etc. (latest only)",
+    "bukkit": "Paper, Folia, Spigot, etc. ({version})",
+    "bungee": "BungeeCord, Waterfall, etc. (latest only)",
     "sponge": "Sponge ({version})",
     "fabric": "Fabric ({version})",
     "forge": "Forge ({version})",
@@ -66,7 +66,7 @@
     "nukkit": "NukkitX",
     "velocity": "Velocity ({version})",
     "hytale": "Hytale ({version})",
-    "bukkitLegacy": "Paper, Spigot etc. (1.7.10 only)",
+    "bukkitLegacy": "Paper, Spigot, etc. (1.7.10 only)",
     "changelog": "Recent Changelog",
     "install": {
       "title": "How to install",

@@ -24,7 +24,7 @@
               <img src="@/assets/logos/bukkit.png" alt="Bukkit">
               Bukkit
             </span>
-            <small>{{ $t('download.bukkit', { version: '1.8.8 - 1.21.x' }) }}</small>
+            <small>{{ $t('download.bukkit', { version: '1.8.8 - 26.2' }) }}</small>
           </a>
           <a
             :href="downloads.fabric"

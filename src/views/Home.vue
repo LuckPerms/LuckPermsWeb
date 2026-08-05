@@ -95,15 +95,6 @@
             </span>
             <small>{{ $t('home.partner.description') }}</small>
           </router-link>
-          <!--
-          <a href="https://patreon.com/luckdev" class="resource">
-            <span>
-              <font-awesome :icon="['fab', 'patreon']" />
-              Patreon
-            </span>
-            <small>{{ $t('home.patreon', { count: patreonCount }) }}</small>
-          </a>
-          -->
         </div>
       </section>
     </div>
@@ -155,9 +146,6 @@ export default {
     },
     discordUserCount() {
       return this.$store.getters.discordUserCount;
-    },
-    patreonCount() {
-      return this.$store.getters.patreonCount;
     },
   },
 };

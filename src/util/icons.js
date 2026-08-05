@@ -40,7 +40,6 @@ import {
 import {
   faGithub,
   faDiscord,
-  faPatreon,
 } from '@fortawesome/free-brands-svg-icons';
 
 library.add(
@@ -82,7 +81,6 @@ library.add(
 
   faGithub,
   faDiscord,
-  faPatreon,
 );
 
 const FontAwesome = {

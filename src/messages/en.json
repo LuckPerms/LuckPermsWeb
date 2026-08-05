@@ -46,7 +46,6 @@
     "wiki": "Learn how to install, setup, configure and effectively use LuckPerms",
     "github": "Browse the source code, report issues and contribute to the project",
     "discord": "Join {count} others to discuss the project and ask/answer questions",
-    "patreon": "Join {count} others supporting the project on Patreon",
     "partner": {
       "title": "Create your own Minecraft Server",
       "description": "Easily create your very own Minecraft Server with our hosting partner, Bisect Hosting!"

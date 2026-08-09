@@ -1,11 +1,8 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
+
+import config from '../config.json';
 import Home from './views/Home.vue';
 import NotFound from './views/NotFound.vue';
-
-const config = require('../config.json');
-
-Vue.use(Router);
 
 let routes = [
   {
@@ -14,73 +11,59 @@ let routes = [
     component: Home,
   },
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: NotFound,
   },
   {
     path: '/editor',
     name: 'editor-home',
-    component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),
+    component: () => import('./views/Editor.vue'),
   },
   {
     path: '/editor/:id',
     name: 'editor',
-    component: () => import(/* webpackChunkName: "editor" */ './views/Editor'),
+    component: () => import('./views/Editor.vue'),
   },
   {
     path: '/verbose',
     name: 'verbose-home',
-    component: () => import(/* webpackChunkName: "verbose" */ './views/Verbose'),
+    component: () => import('./views/Verbose.vue'),
   },
   {
     path: '/verbose/:id',
     name: 'verbose',
-    component: () => import(/* webpackChunkName: "verbose" */ './views/Verbose'),
+    component: () => import('./views/Verbose.vue'),
   },
   {
     path: '/treeview',
     name: 'tree-home',
-    component: () => import(/* webpackChunkName: "tree" */ './views/Tree'),
+    component: () => import('./views/Tree.vue'),
   },
   {
     path: '/treeview/:id',
     name: 'tree',
-    component: () => import(/* webpackChunkName: "tree" */ './views/Tree'),
+    component: () => import('./views/Tree.vue'),
   },
 ];
 
 if (!config.selfHosted) {
-  const publicRoutes = [
+  routes = [
+    ...routes,
     {
       path: '/download',
       name: 'download',
-      component: () => import(/* webpackChunkName: "download" */ './views/Download'),
+      component: () => import('./views/Download.vue'),
     },
     {
       path: '/sponsor',
       name: 'sponsor',
-      component: () => import(/* webpackChunkName: "sponsor" */ './views/Sponsor'),
-    },
-    {
-      path: '/wiki',
-      name: 'wiki',
-      component: () => import(/* webpackChunkName: "wiki" */ './views/Wiki'),
-      redirect: '/wiki/Home',
-      children: [
-        {
-          path: ':page',
-          name: 'wiki-article',
-          component: () => import(/* webpackChunkName: "wiki" */ './components/Wiki/Article'),
-        },
-      ],
+      component: () => import('./views/Sponsor.vue'),
     },
   ];
-  routes = [...routes, ...publicRoutes];
 }
 
-export default new Router({
-  mode: 'history',
-  base: config.base,
+export default createRouter({
+  history: createWebHistory(config.base),
   routes,
 });

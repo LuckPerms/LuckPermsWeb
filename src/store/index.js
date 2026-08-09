@@ -1,22 +1,19 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
 import axios from 'axios';
+import { createStore } from 'vuex';
+import { v4 as uuidv4 } from 'uuid';
 import createPersistedState from 'vuex-persistedstate';
 import language from './language';
 import axiosCompress from '@/util/axios_compress';
 import { socketConnect } from '@/socket/ws';
 import { contextsToArray } from '@/util/editor';
 
-const uuid = require('uuid/v4');
-const config = require('../../config.json');
-
-Vue.use(Vuex);
+import config from '../../config.json';
 
 const persistedState = createPersistedState({
   paths: ['language'],
 });
 
-export default new Vuex.Store({
+export default createStore({
   modules: {
     language,
   },
@@ -300,14 +297,13 @@ export default new Vuex.Store({
     addEditorSession(state, {
       id, type, displayName, isNew = false,
     }) {
-      Vue.set(state.editor.sessions, id, {
+      state.editor.sessions[id] = {
         id,
         type,
         displayName,
         new: isNew,
         modified: false,
-      });
-      // state.editor.sessions[id] = ;
+      };
       state.editor.sessionList.push(id);
 
       const { deletedGroups } = state.editor;
@@ -406,7 +402,7 @@ export default new Vuex.Store({
             ...contextsToArray(contexts[key]),
           ])];
         });
-        Vue.set(node, 'context', contextList);
+        node.context = contextList;
       }
 
       node.modified = true;
@@ -485,7 +481,7 @@ export default new Vuex.Store({
 
       state.verbose.data = data.data.map(node => ({
         ...node,
-        id: uuid(),
+        id: uuidv4(),
       }));
       state.verbose.metadata = data.metadata;
       state.verbose.sessionId = data.sessionId;
@@ -648,7 +644,7 @@ export default new Vuex.Store({
     addNodes({ commit }, nodes) {
       nodes.forEach((node) => {
         const addingNode = node;
-        addingNode.id = uuid();
+        addingNode.id = uuidv4();
         addingNode.expiry = node.expiry;
         addingNode.context = node.context || {};
         addingNode.selected = false;

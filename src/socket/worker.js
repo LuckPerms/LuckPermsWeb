@@ -2,7 +2,7 @@ import { decode, encode } from 'base64-arraybuffer';
 import Bowser from 'bowser';
 import { expose } from 'comlink';
 
-const config = require('../../config');
+import config from '../../config.json';
 
 const KEEP_LISTENING = true;
 const STOP_LISTENING = false;

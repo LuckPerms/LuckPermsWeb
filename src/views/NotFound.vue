@@ -1,15 +1,15 @@
 <template>
-  <main class="notfound">
-    <section class="hero">
-      <div class="hero-content">
-        <font-awesome icon="exclamation-circle" />
-        <h1>{{ $t('notFound.title') }}</h1>
-        <div class="error">
-          <i18n path="notFound.message" tag="p">
+  <main class="notfound overflow-y-auto">
+    <section class="hero flex-col items-center p-16">
+      <div class="hero-content relative">
+        <font-awesome icon="exclamation-circle" class="absolute -top-2 -left-28 z-[1] text-[6rem] opacity-50 text-red" />
+        <h1 class="relative z-[2] mb-0">{{ $t('notFound.title') }}</h1>
+        <div class="error text-red">
+          <i18n-t keypath="notFound.message" tag="p" class="text-xl font-bold">
             <template #path>
               <code>{{ $route.path }}</code>
             </template>
-          </i18n>
+          </i18n-t>
         </div>
       </div>
     </section>
@@ -17,51 +17,14 @@
 </template>
 
 <script>
+import { useHead } from '@unhead/vue';
+
 export default {
   name: 'NotFound',
-  metaInfo: {
-    title: '404',
+  setup() {
+    useHead({
+      title: '404',
+    });
   },
 };
 </script>
-
-<style lang="scss">
-  main.notfound {
-    overflow-y: auto;
-
-    .hero {
-      flex-direction: column;
-      align-items: center;
-      padding: 4rem;
-
-      .hero-content {
-        position: relative;
-
-        svg {
-          position: absolute;
-          color: $red;
-          top: -.5rem;
-          left: -7rem;
-          font-size: 6rem;
-          z-index: 1;
-          opacity: .5;
-        }
-
-        h1 {
-          position: relative;
-          z-index: 2;
-          margin-bottom: 0;
-        }
-      }
-
-      p {
-        font-size: 1.25rem;
-        font-weight: bold;
-      }
-
-      .error {
-        color: $red;
-      }
-    }
-  }
-</style>

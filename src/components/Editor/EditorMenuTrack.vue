@@ -1,17 +1,17 @@
 <template>
   <div class="editor-menu-track">
-    <h3 @click="toggle = !toggle">
+    <h3 @click="toggle = !toggle" class="group m-0 flex select-none items-center justify-between border-b border-grey p-2 text-brand uppercase">
       <span>
-        <button :title="$t('editor.tracks.toggleGroup')">
+        <button :title="$t('editor.tracks.toggleGroup')" class="mr-2 cursor-pointer bg-transparent p-0 text-[1.5rem] text-white opacity-50 hover:opacity-100 [&_svg]:transition-transform [&_svg]:duration-200">
           <font-awesome icon="caret-right" fixed-width :rotation="toggle ? 90 : null" />
         </button>
         <span>{{ track.id }}</span>
       </span>
       <span class="actions">
-        <button @click.stop="editTrack" :title="$t('editor.tracks.edit')">
+        <button @click.stop="editTrack" :title="$t('editor.tracks.edit')" class="mr-2 cursor-pointer bg-transparent p-0 text-base text-white opacity-0 group-hover:opacity-50">
           <font-awesome icon="edit" fixed-width />
         </button>
-        <button @click.stop="deleteTrack" :title="$t('editor.tracks.delete')">
+        <button @click.stop="deleteTrack" :title="$t('editor.tracks.delete')" class="mr-2 cursor-pointer bg-transparent p-0 text-base text-white opacity-0 group-hover:opacity-50">
           <font-awesome icon="times" fixed-width />
         </button>
       </span>
@@ -98,61 +98,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-  .editor-menu-track {
-    h3 {
-      margin: 0;
-      padding: .5rem;
-      color: $brand-color;
-      border-bottom: $grey 1px solid;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      user-select: none;
-
-      &:hover {
-        .actions {
-          button {
-            opacity: .5;
-          }
-        }
-      }
-
-      button {
-        background: transparent;
-        border: none;
-        opacity: .5;
-        cursor: pointer;
-        color: white;
-        font-size: 1.5rem;
-        padding: 0;
-        margin-right: .5rem;
-
-        svg {
-          transition: transform .2s;
-        }
-
-        &:hover {
-          opacity: 1;
-        }
-
-        &[disabled] {
-          width: 1em;
-        }
-      }
-
-      .actions {
-        button {
-          opacity: 0;
-          font-size: 1rem;
-
-          &:hover {
-            opacity: 1;
-          }
-        }
-      }
-    }
-  }
-</style>

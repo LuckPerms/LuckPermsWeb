@@ -39,22 +39,22 @@
               <template v-if="errors.load">
                 <h3>{{ $t('editor.error.title') }}</h3>
                 <p>{{ $t('editor.error.info') }}</p>
-                <i18n path="editor.error.new" tag="p">
+                <i18n-t keypath="editor.error.new" tag="p">
                   <template #command>
                     <code>/lp editor</code>
                   </template>
-                </i18n>
+                </i18n-t>
               </template>
 
               <template v-if="errors.unsupported">
                 <h3>{{ $t('editor.unsupported.title') }}</h3>
-                <i18n path="editor.unsupported.info" tag="p">
+                <i18n-t keypath="editor.unsupported.info" tag="p">
                   <template #download>
                     <router-link to="/download">
                       {{ $t('editor.unsupported.download') }}
                     </router-link>
                   </template>
-                </i18n>
+                </i18n-t>
               </template>
             </div>
           </div>
@@ -157,6 +157,8 @@
 <script>
 import debounce from 'lodash.debounce';
 import EditorMenu from '@/components/Editor/EditorMenu.vue';
+import { useHead } from '@unhead/vue';
+
 import Header from '@/components/Editor/Header.vue';
 import Meta from '@/components/Editor/Meta.vue';
 import NodeList from '@/components/Editor/NodeList.vue';
@@ -167,8 +169,10 @@ import updateSession from '@/util/session';
 
 export default {
   name: 'Editor',
-  metaInfo: {
-    title: 'Editor',
+  setup() {
+    useHead({
+      title: 'Editor',
+    });
   },
   components: {
     EditorMenu,

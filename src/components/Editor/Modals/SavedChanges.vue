@@ -5,11 +5,11 @@
     {{ $t('editor.command') }}
   </p>
 
-  <div class="command">
-    <code class="apply-edits" @click="copyCommand" :title="$t('editor.clipboardCopy')">
+  <div class="command relative mb-8 pb-8">
+    <code class="apply-edits cursor-pointer text-[1.5rem] hover:opacity-80" @click="copyCommand" :title="$t('editor.clipboardCopy')">
       /{{ metaData.commandAlias }} applyedits {{ this.props.saveKey }}
     </code>
-    <span class="command-copied" v-if="commandCopied">
+    <span class="command-copied absolute bottom-0 left-0 block text-brand" v-if="commandCopied">
       {{ $t('editor.copied') }}
     </span>
   </div>
@@ -40,36 +40,10 @@ export default {
 
   methods: {
     async copyCommand() {
-      await this.$copyText(`/${this.metaData.commandAlias} applyedits ${this.props.saveKey}`);
+      await navigator.clipboard.writeText(`/${this.metaData.commandAlias} applyedits ${this.props.saveKey}`);
       this.commandCopied = true;
     },
   },
 };
+
 </script>
-
-<style lang="scss">
-  .saved-changes {
-    .apply-edits {
-      font-size: 1.5rem;
-      cursor: pointer;
-
-      &:hover {
-        opacity: .8;
-      }
-    }
-
-    .command {
-      position: relative;
-      padding-bottom: 2rem;
-      margin-bottom: 2rem;
-
-      .command-copied {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        display: block;
-        color: $brand-color;
-      }
-    }
-  }
-</style>

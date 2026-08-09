@@ -1,17 +1,17 @@
 <template>
-  <main class="sponsor">
+  <main class="sponsor overflow-y-auto">
     <section class="hero">
-      <div class="container">
-        <div>
-          <img src="@/assets/logo.svg" alt="LuckPerms">
-          <font-awesome-layers>
+      <div class="container flex flex-col items-center">
+        <div class="flex items-center justify-center">
+          <img class="w-32 m-8 md:w-64 md:m-16" src="@/assets/logo.svg" alt="LuckPerms">
+          <font-awesome-layers class="relative inline-block text-[2rem] w-8 md:text-[4rem] md:w-32">
             <font-awesome icon="heart" />
             <font-awesome icon="heart" />
           </font-awesome-layers>
-          <img src="@/assets/bisect.svg" alt="BisectHosting">
+          <img class="w-32 m-8 md:w-64 md:m-16" src="@/assets/bisect.svg" alt="BisectHosting">
         </div>
-        <h1>LuckPerms has partnered with BisectHosting!</h1>
-        <p>BisectHosting are Minecraft server hosting experts, ready to help you create and host
+        <h1 class="mt-0 mx-16 mb-4 text-center">LuckPerms has partnered with BisectHosting!</h1>
+        <p class="text-[1.5rem] w-full max-w-[60rem] text-center mb-16 px-8">BisectHosting are Minecraft server hosting experts, ready to help you create and host
           your very own server! They also have special discounts available for LuckPerms
           users - read on to find out more!</p>
       </div>
@@ -19,21 +19,22 @@
 
     <section class="hero resources cta">
       <div>
-        <a href="https://bisecthosting.com/luck" target="_blank" v-on:click="logClick">
+        <a class="bg-brand text-black px-8 py-2 no-underline text-[2rem] font-bold my-8 text-center" href="https://bisecthosting.com/luck" target="_blank" v-on:click="logClick">
           Create your server now!
         </a>
-        <p>Click the link above to go to the BisectHosting website to use their panel to create
+        <p class="text-[1.5rem] w-full max-w-[44rem] text-center px-8">Click the link above to go to the BisectHosting website to use their panel to create
           your new server!</p>
       </div>
       <div>
         <a
+          class="bg-brand text-black px-8 py-2 no-underline text-[2rem] font-bold my-8 text-center"
           href="https://www.bisecthosting.com/clients/submitticket.php?step=2&deptid=1"
           target="_blank"
           v-on:click="logClick"
         >
           Chat to BisectHosting support
         </a>
-        <p>If you have any questions, use the button above to get in touch with the friendly
+        <p class="text-[1.5rem] w-full max-w-[44rem] text-center px-8">If you have any questions, use the button above to get in touch with the friendly
           BisectHosting support team!
         </p>
       </div>
@@ -58,7 +59,7 @@
               developing and providing LuckPerms for everyone to enjoy!
             </li>
           </ul>
-          <hr>
+          <hr class="border-brand w-48 mt-4 mb-8 mx-auto">
           <p>
             We'd like to thank Bisect for sponsoring open source projects like ours and enabling
             us to continue to provide LuckPerms for free to the community, for all to enjoy.
@@ -95,11 +96,14 @@
 </template>
 
 <script>
+import { useHead } from '@unhead/vue';
 
 export default {
   name: 'Sponsor',
-  metaInfo: {
-    title: 'Sponsor',
+  setup() {
+    useHead({
+      title: 'Sponsor',
+    });
   },
   data() {
     return {
@@ -117,107 +121,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
-  main.sponsor {
-    overflow-y: auto;
-
-    .hero {
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        > div {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        h1 {
-          margin: 0 4rem 1rem;
-          text-align: center;
-
-          + p {
-            font-size: 1.5rem;
-            width: 100%;
-            max-width: 60rem;
-            text-align: center;
-            margin-bottom: 4rem;
-            padding: 0 2rem;
-          }
-        }
-      }
-
-      img {
-        width: 8rem;
-        margin: 2rem;
-
-        @include breakpoint($md) {
-          width: 16rem;
-          margin: 4rem;
-        }
-      }
-
-      .fa-layers {
-        width: 2rem;
-
-        @include breakpoint($md) {
-          width: 8rem;
-        }
-
-        svg {
-          font-size: 2rem;
-
-          @include breakpoint($md) {
-            font-size: 4rem;
-          }
-
-          &:first-child {
-            color: red;
-            animation: pulse 1s infinite ease-out;
-          }
-
-          &:last-child {
-            color: hotpink;
-            animation: heartbeat 1s infinite ease-out;
-          }
-        }
-      }
-    }
-
-    hr {
-      border-color: $brand-color;
-      width: 12rem;
-      margin: 1rem auto 2rem;
-    }
-
-    .cta {
-      display: flex;
-      //flex-direction: column;
-      //align-items: center;
-      //padding: 4rem;
-
-      a {
-        background: $brand-color;
-        color: black;
-        padding: .5rem 2rem;
-        text-decoration: none;
-        font-size: 2rem;
-        font-weight: bold;
-        margin: 2rem 0;
-        text-align: center;
-      }
-
-      p {
-        font-size: 1.5rem;
-        width: 100%;
-        max-width: 44rem;
-        text-align: center;
-        padding: 0 2rem;
-      }
-    }
-  }
-
+<style>
   @keyframes heartbeat {
     0% {
       transform: scale(1);
@@ -236,5 +140,15 @@ export default {
       transform: scale(2.5);
       opacity: 0;
     }
+  }
+
+  .icon:first-child svg {
+    color: red;
+    animation: pulse 1s infinite ease-out;
+  }
+
+  .icon:last-child svg {
+    color: hotpink;
+    animation: heartbeat 1s infinite ease-out;
   }
 </style>

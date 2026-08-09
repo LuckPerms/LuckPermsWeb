@@ -1,14 +1,14 @@
 <template>
   <div class="delete-nodes-modal">
-    <h2>{{ $tc('editor.nodes.delete', selectedNodes.length) }}</h2>
-    <div class="col-2">
-      <div>
+    <h2>{{ $t('editor.nodes.delete', selectedNodes.length) }}</h2>
+    <div class="col-2 flex">
+      <div class="flex-1">
         <p>
-          {{ $tc('editor.nodes.deleteConfirm', selectedNodes.length) }}
+          {{ $t('editor.nodes.deleteConfirm', selectedNodes.length) }}
         </p>
       </div>
-      <div>
-        <button @click="deleteNodes">
+      <div class="flex flex-1 items-center justify-center pl-8">
+        <button class="bg-red! px-8! py-4! text-[1.5rem]!" @click="deleteNodes">
           <font-awesome icon="times" />
           {{ $t('editor.delete') }}
         </button>
@@ -39,29 +39,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-  .delete-nodes-modal {
-    .col-2 {
-      display: flex;
-
-      > div:nth-child(1) {
-        flex: 1;
-      }
-
-      > div:nth-child(2) {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-left: 2rem;
-
-        button {
-          font-size: 1.5rem;
-          padding: 1rem 2rem;
-          background: $red;
-        }
-      }
-    }
-  }
-</style>

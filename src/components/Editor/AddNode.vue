@@ -148,7 +148,7 @@
 
       <div v-else class="form-group bulk-edit">
         <p>
-          <span v-html="$tc('editor.nodes.selected', selectedNodes.length)" />
+          <span v-html="$t('editor.nodes.selected', selectedNodes.length)" />
           <button @click="deselectNodes" :title="$t('editor.nodes.deselect')">
             <font-awesome icon="times" />
           </button>
@@ -298,7 +298,7 @@
 
     <transition name="fade">
       <div v-if="context.ui" class="context-ui" v-click-outside="closeContextUi">
-        <h4 v-html="$tc('editor.nodes.contextsCount', flattenedContexts.length)" />
+        <h4 v-html="$t('editor.nodes.contextsCount', flattenedContexts.length)" />
         <div class="close" @click="closeContextUi">
           <font-awesome icon="times" />
         </div>
@@ -366,7 +366,9 @@
 </template>
 
 <script>
-import Datepicker from '@turbotailz/vuejs-datepicker';
+import 'vue-multiselect/dist/vue-multiselect.css';
+
+import Datepicker from '@/components/common/DatePicker.vue';
 import Multiselect from 'vue-multiselect';
 import vClickOutside from 'v-click-outside';
 import { buildNodeKey } from '@/util/editor';
@@ -591,7 +593,7 @@ export default {
       const values = this.context.contexts[key] || [];
       if (!values.find(val => val === value)) {
         values.push(value.trim());
-        this.$set(this.context.contexts, key, values);
+        this.context.contexts[key] = values;
       }
 
       this.context.key = '';
@@ -601,7 +603,7 @@ export default {
       const { contexts } = this.context;
 
       if (contexts[key].includes(value)) {
-        this.$set(contexts, key, contexts[key].filter(v => v !== value));
+        contexts[key] = contexts[key].filter(v => v !== value);
       }
     },
     blurField(type) {
@@ -632,8 +634,6 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '~vue-multiselect/dist/vue-multiselect.min.css';
-
   .add-node {
     background-color: #666670;
     box-shadow: 0 0 1em rgba(0,0,0,.2);

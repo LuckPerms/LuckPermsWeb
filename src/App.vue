@@ -19,22 +19,10 @@
 
       <ul :class="{ active: menu, 'top-level': true }">
         <template v-if="!config.selfHosted">
-          <li
-            v-show="showSearchBar"
-            class="search-container"
-          >
-            <div id="docsearch"></div>
-          </li>
           <li>
             <router-link to="/download">
               <font-awesome icon="arrow-alt-circle-down" fixed-width />
               {{ $t('links.download') }}
-            </router-link>
-          </li>
-          <li class="overlap">
-            <router-link to="/wiki">
-              <font-awesome icon="book" fixed-width />
-              {{ $t('wiki') }}
             </router-link>
           </li>
         </template>
@@ -128,12 +116,7 @@
             <a :href="'https://github.com/LuckPerms/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
           </li>
           <li>
-            <router-link v-if="!config.selfHosted" to="/wiki/Credits" target="_blank">
-              Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
-            </router-link>
-            <a v-else href="https://luckperms.net/wiki/Credits" target="_blank">
-              Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
-            </a>
+            Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
           </li>
         </ul>
       </div>
@@ -142,38 +125,39 @@
 </template>
 
 <script>
-import '@docsearch/css';
-import docsearch from '@docsearch/js';
+import { useHead } from '@unhead/vue';
 
 export default {
-  metaInfo: {
-    titleTemplate: '%s | LuckPerms',
-    meta: [
-      {
-        property: 'og:title',
-        content: 'LuckPerms',
-      },
-      {
-        property: 'og:description',
-        content: 'Website & online apps for the LuckPerms plugin.',
-      },
-      {
-        property: 'og:type',
-        content: 'product',
-      },
-      {
-        property: 'og:image',
-        content: 'https://luckperms.net/logo.png',
-      },
-      {
-        property: 'og:url',
-        content: 'https://luckperms.net/',
-      },
-      {
-        property: 'og:site_name',
-        content: 'LuckPerms - A permissions plugin for Minecraft servers.',
-      },
-    ],
+  setup() {
+    useHead({
+      titleTemplate: '%s | LuckPerms',
+      meta: [
+        {
+          property: 'og:title',
+          content: 'LuckPerms',
+        },
+        {
+          property: 'og:description',
+          content: 'Website & online apps for the LuckPerms plugin.',
+        },
+        {
+          property: 'og:type',
+          content: 'product',
+        },
+        {
+          property: 'og:image',
+          content: 'https://luckperms.net/logo.png',
+        },
+        {
+          property: 'og:url',
+          content: 'https://luckperms.net/',
+        },
+        {
+          property: 'og:site_name',
+          content: 'LuckPerms - A permissions plugin for Minecraft servers.',
+        },
+      ],
+    });
   },
 
   data() {
@@ -199,12 +183,6 @@ export default {
     config() {
       return this.$store.getters.config;
     },
-    showSearchBar() {
-      // the editor has 2 search bars, lets not add another one :)
-      const routes = ['editor', 'editor-home'];
-
-      return !routes.includes(this.$route.name);
-    },
     isToolsRoute() {
       return [
         'editor',
@@ -224,15 +202,6 @@ export default {
     this.$store.dispatch('getAppData');
   },
 
-  mounted() {
-    docsearch({
-      container: '#docsearch',
-      appId: 'ZXKCPO8F1T',
-      indexName: 'luckperms',
-      apiKey: 'a37e3bc32993f2eb764d0c84dbd526e9',
-    });
-  },
-
   methods: {
     setLocale(locale) {
       this.$store.dispatch('setUserLocale', locale);
@@ -248,28 +217,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import './scss/variables';
-
-:root {
-  --docsearch-footer-background: #{$grey};
-  --docsearch-footer-shadow: unset;
-  --docsearch-highlight-color: rgba(255, 255, 255, .25);
-  --docsearch-hit-background: #{$grey};
-  --docsearch-hit-color: white;
-  --docsearch-hit-shadow: unset;
-  --docsearch-icon-color: rgba(255, 255, 255, .5);
-  --docsearch-key-gradient: linear-gradient(-225deg, #666, #999);
-  --docsearch-key-shadow: inset 0 -2px 0 0 #aaa, inset 0 0 1px 1px #aaa, 0 1px 2px 1px #{$navy};
-  --docsearch-logo-color: #{$brand-color};
-  --docsearch-modal-background: #{$navy};
-  --docsearch-modal-shadow: inset 1px 1px 0 0 #{$navy},0 3px 8px 0 #{$grey};
-  --docsearch-muted-color: rgba(255, 255, 255, .5);
-  --docsearch-searchbox-background: #{$grey};
-  --docsearch-searchbox-focus-background: #{$grey};
-  --docsearch-searchbox-shadow: inset 0 0 0 2px #{$brand-color};
-  --docsearch-text-color: white;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -691,13 +638,6 @@ body {
           }
         }
       }
-
-      &.search-container {
-        all: unset;
-        display: flex;
-        align-items: center;
-        margin-right: .5rem;
-      }
     }
   }
 }
@@ -746,36 +686,5 @@ body {
       opacity: .3;
     }
   }
-}
-
-.DocSearch-Button {
-  padding: 0;
-  border-radius: 0;
-  font-family: inherit;
-}
-
-.DocSearch-Modal {
-  border-radius: 0;
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-.DocSearch-Input:focus {
-  outline: none;
-}
-
-.DocSearch-Logo svg .cls-1,
-.DocSearch-Logo svg .cls-2 {
-  fill: var(--docsearch-logo-color);
-}
-
-.DocSearch-Hits,
-.DocSearch-Hit[aria-selected=true] {
-  mark {
-    color: var(--docsearch-logo-color)!important;
-  }
-}
-
-.DocSearch-Footer {
-  border-radius: 0;
 }
 </style>

@@ -2,8 +2,6 @@
   "description": "A permissions plugin for Minecraft servers.",
   "close": "Close",
   "copy": "Copy",
-  "wiki": "Wiki",
-  "wikiLocaleWarning": "Note: the wiki is only available in English.",
   "localeUpdate": "New! Use the LuckPerms website in your preferred language. See our Discord for more info.",
   "avatar": "{name}'s avatar",
   "sponsor": "Proudly sponsored by <strong>BisectHosting</strong>.<br/>Create your own Minecraft server today!",
@@ -13,7 +11,6 @@
     "editor": "Web Editor",
     "verbose": "Verbose Viewer",
     "tree": "Tree Viewer",
-    "wiki": "Wiki",
     "tools": {
       "name": "Tools",
       "editor": "Editor",

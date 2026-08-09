@@ -1,8 +1,8 @@
 <template>
-  <div class="branch" :class="node ? '' : 'no-node'">
-    <div class="node" @click="open = !open" v-if="node">
+  <div class="branch pl-8" :class="node ? '' : 'no-node pl-0 [&>.branch]:pl-0'">
+    <div class="node flex justify-between bg-grey rounded-sm mb-0.5 cursor-pointer hover:brightness-110 [&_code]:bg-transparent" @click="open = !open" v-if="node">
       <div>
-        <button v-if="hasChildren && node">
+        <button class="bg-transparent text-white border-0 px-3 cursor-pointer ml-0.5" v-if="hasChildren && node">
           <font-awesome icon="caret-right" :rotation="open ? 90 : null" />
         </button>
         <code>{{ node }}</code>
@@ -24,6 +24,7 @@
 
 <script>
 import Branch from './Branch.vue';
+import eventBus from '@/util/eventBus';
 
 export default {
   name: 'branch',
@@ -57,53 +58,19 @@ export default {
     },
   },
   created() {
-    this.$root.$on('collapseTree', () => {
+    this.collapseHandler = () => {
       if (this.node) this.open = false;
-    });
-
-    this.$root.$on('expandTree', () => {
+    };
+    this.expandHandler = () => {
       this.open = true;
-    });
+    };
+
+    eventBus.on('collapseTree', this.collapseHandler);
+    eventBus.on('expandTree', this.expandHandler);
+  },
+  beforeUnmount() {
+    eventBus.off('collapseTree', this.collapseHandler);
+    eventBus.off('expandTree', this.expandHandler);
   },
 };
 </script>
-
-<style lang="scss">
-  .branch {
-    padding-left: 2rem;
-
-    &.no-node {
-      padding-left: 0;
-
-      > .branch {
-        padding-left: 0;
-      }
-    }
-
-    .node {
-      background: $grey;
-      border-radius: 2px;
-      margin-bottom: .2rem;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-
-      &:hover {
-        background: color.adjust($grey, $lightness: 10%);
-      }
-
-      code {
-        background: transparent;
-      }
-    }
-
-    button {
-      background: transparent;
-      color: #FFF;
-      border: 0;
-      padding: 0 .8rem;
-      cursor: pointer;
-      margin-left: .2rem;
-    }
-  }
-</style>

@@ -1,0 +1,421 @@
+@import 'tailwindcss';
+@import 'flag-icons/css/flag-icons.min.css';
+
+@theme {
+  --color-brand: #94df03;
+  --color-navy: #101022;
+  --color-grey: #2d2d38;
+  --color-red: tomato;
+  --color-app: #141422;
+  --color-dark: #0a0a10;
+  --color-footer: #95b556;
+  --color-discord: #5865f2;
+
+  --font-sans: 'Inter', 'Source Sans Pro', 'Open Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Source Code Pro', monospace;
+
+  --breakpoint-sm: 48rem;
+  --breakpoint-md: 62rem;
+  --breakpoint-lg: 87.5rem;
+  --breakpoint-xl: 112.5rem;
+}
+
+@layer base {
+  :focus {
+    outline: 1px solid var(--color-brand);
+  }
+
+  input:focus {
+    outline-offset: unset;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(10 10 24);
+    border-left: 1px solid rgb(255 255 255 / 0.1);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(255 255 255 / 0.4);
+  }
+
+  html {
+    height: 100%;
+    font-size: 12px;
+    scrollbar-color: hsla(0, 0%, 100%, 0.4) rgb(0 0 0 / 0%);
+  }
+
+  @media screen and (min-width: 62rem) {
+    html {
+      font-size: 14px;
+    }
+  }
+
+  @media screen and (min-width: 87.5rem) {
+    html {
+      font-size: 16px;
+    }
+  }
+
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    overflow-x: hidden;
+  }
+
+  a {
+    color: var(--color-brand);
+
+    &:hover {
+      color: color-mix(in oklab, var(--color-brand), white 10%);
+    }
+  }
+
+  code,
+  .code {
+    border: 0;
+    display: inline-block;
+    font-family: var(--font-mono);
+    padding: 0.2em 0.5em;
+    background: rgb(0 0 0 / 0.2);
+    font-size: 0.8em;
+    border-radius: 2px;
+    line-height: 1.5;
+
+    &.true {
+      color: var(--color-brand);
+    }
+
+    &.false {
+      color: tomato;
+    }
+
+    &.undefined {
+      color: grey;
+    }
+  }
+
+  #app {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #fff;
+    line-height: 1.5;
+    background-color: var(--color-app);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+
+    > main {
+      height: 100%;
+      max-height: calc(100% - 6rem);
+    }
+
+    > footer {
+      background: var(--color-grey);
+      padding: 0.4em 1em;
+      position: relative;
+      font-size: 0.9em;
+      flex: 0 0 auto;
+      height: 2rem;
+      box-shadow: 0 0 1rem rgb(0 0 0 / 0.2);
+
+      svg {
+        color: var(--color-footer);
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    max-width: 120rem;
+    margin: 0 auto;
+  }
+
+  .hero {
+    background: linear-gradient(-2deg, #0a0a10, #131319);
+    display: flex;
+
+    .container {
+      flex-wrap: wrap;
+
+      @media screen and (min-width: 62rem) {
+        flex-wrap: nowrap;
+      }
+    }
+
+    h1 {
+      margin: 0 0 1rem;
+      line-height: 1;
+      font-size: 2em;
+
+      @media screen and (min-width: 62rem) {
+        font-size: 3em;
+      }
+    }
+
+    p {
+      margin: 0;
+      opacity: 0.5;
+    }
+  }
+
+  .button {
+    border: 0;
+    font: inherit;
+    font-weight: bold;
+    background: var(--color-brand);
+    color: var(--color-navy);
+    font-size: 1.5em;
+    padding: 1rem 2rem;
+    text-align: center;
+    line-height: 1;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.2s;
+    cursor: pointer;
+
+    @media screen and (min-width: 62rem) {
+      font-size: 2em;
+    }
+
+    &:hover {
+      background: color-mix(in oklab, var(--color-brand), white 10%);
+    }
+
+    span {
+      display: block;
+      font-weight: bold;
+
+      svg {
+        margin-right: 0.5rem;
+        opacity: 0.5;
+      }
+    }
+
+    small {
+      font-size: 1rem;
+      font-weight: normal;
+      opacity: 0.75;
+
+      @media screen and (min-width: 62rem) {
+        font-size: 1.25rem;
+      }
+    }
+
+    &.demo-button {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+    }
+  }
+
+  .resources {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @media screen and (min-width: 62rem) {
+      flex-direction: row;
+    }
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 2rem;
+
+      h2 {
+        margin-top: 0;
+      }
+
+      p,
+      ol,
+      ul {
+        margin-top: 0;
+        opacity: 0.75;
+      }
+
+      @media screen and (min-width: 62rem) {
+        width: 50%;
+        padding: 4rem;
+
+        &:first-child {
+          padding-right: 2rem;
+        }
+
+        &:last-child {
+          padding-left: 2rem;
+        }
+      }
+    }
+
+    a.resource {
+      display: block;
+      background: var(--color-grey);
+      color: var(--color-brand);
+      padding: 1.5rem;
+      line-height: 1;
+      text-decoration: none;
+      border-radius: 2px;
+      font-size: 1.5em;
+      transition: background 0.2s;
+      box-shadow: 0 0 1rem rgb(0 0 0 / 0.1);
+
+      &:not(:last-child) {
+        margin-bottom: 2rem;
+      }
+
+      &:hover {
+        background: color-mix(in oklab, var(--color-grey), white 10%);
+      }
+
+      span {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      svg {
+        margin-right: 0.5rem;
+        opacity: 0.5;
+      }
+
+      small {
+        color: white;
+        opacity: 0.4;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .lighter {
+    opacity: 0.66;
+  }
+
+  .tool-intro {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > div {
+      display: flex;
+      align-items: flex-start;
+      background: linear-gradient(-2deg, #1b1c2d, var(--color-grey));
+      padding: 2em;
+      max-width: 40rem;
+      border-radius: 2px;
+    }
+
+    img {
+      height: 13rem;
+      width: auto;
+      margin-right: 2em;
+      box-shadow: 0 0 2rem rgb(0 0 0 / 0.1);
+      border-radius: 100%;
+    }
+
+    h1 {
+      font-size: 3em;
+      line-height: 1;
+      margin: 0;
+
+      + p {
+        font-size: 1.5em;
+        margin-top: 0;
+        margin-bottom: 1rem;
+      }
+    }
+
+    p {
+      &:first-of-type {
+        margin-top: 0;
+      }
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+
+    ul {
+      margin: 1em 0 0;
+      padding-left: 1.5em;
+
+      li {
+        margin-bottom: 0.25em;
+
+        &:last-child {
+          margin: 0;
+        }
+      }
+    }
+
+    svg {
+      margin-right: 0.5em;
+      opacity: 0.5;
+    }
+
+    .error {
+      margin-top: 1em;
+      color: var(--color-red);
+    }
+  }
+
+  .overlay-focus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 50;
+    background: rgb(0 0 0 / 0.5);
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .slide-enter-active,
+  .slide-leave-active {
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+  }
+
+  .slide-enter-to,
+  .slide-leave {
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
+  .slide-enter,
+  .slide-leave-to {
+    overflow: hidden;
+    max-height: 0;
+  }
+}

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Intersect from 'vue-intersect';
+import Intersect from '@/components/common/Intersect.vue';
 
 export default {
   name: 'EditorMenuGroup',

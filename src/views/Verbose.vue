@@ -1,10 +1,10 @@
 <template>
-  <main class="verbose container">
-    <div class="verbose-viewer" v-if="verboseData.status === 2">
-      <div class="col-1">
-        <h1>{{ $t('verbose.title') }}</h1>
-        <div class="meta-info">
-          <table>
+  <main class="verbose container flex overflow-y-hidden">
+    <div class="verbose-viewer flex w-full h-full max-h-full" v-if="verboseData.status === 2">
+      <div class="col-1 basis-[30%] bg-transparent p-4">
+        <h1 class="m-0 p-4 leading-none bg-white/5 rounded-t">{{ $t('verbose.title') }}</h1>
+        <div class="meta-info bg-grey p-4 rounded-b">
+          <table class="[&_td:first-child]:w-[40%]">
             <tr>
               <td>{{ $t('verbose.uploaded') }}</td>
               <td>
@@ -63,33 +63,34 @@
             </tr>
           </table>
         </div>
-        <div class="filter">
+        <div class="filter mt-4">
           <label for="filter">{{ $t('verbose.filter') }}</label>
           <input
             type="text"
             id="filter"
             v-model="filter"
             :placeholder="$t('verbose.filterPlaceholder')"
+            class="font-inherit w-full bg-white/5 text-white px-4 py-2 border-0 mt-2"
           >
           <div
             v-for="value in ['true', 'false', 'undefined']" :key="value"
-            :class="['exclude-result', { selected: isExcluded(value) }]"
+            :class="['exclude-result pt-4 shrink-0 cursor-pointer', { selected: isExcluded(value) }]"
             @click="excludeResult(value)"
           >
-            <span></span>
-            <p>
+            <span class="inline-block w-6 h-6 border-2 border-grey relative [&_after]:absolute [&_after]:block [&_after]:content-[''] [&_after]:w-4 [&_after]:h-2 [&_after]:border-4 [&_after]:border-brand [&_after]:border-t-0 [&_after]:border-r-0 [&_after]:-rotate-45 [&_after]:left-1 [&_after]:top-1"></span>
+            <p class="inline relative top-[7px] pl-2 m-0">
               {{ $t('verbose.exclude') }} <code :class="value">{{ value }}</code>
             </p>
           </div>
         </div>
       </div>
-      <div class="col-2">
+      <div class="col-2 basis-[70%] flex flex-col p-4 pl-0 overflow-hidden">
         <virtual-list
           :data-sources="filteredNodes"
           data-key="id"
           :data-component="Node"
           :keeps="50"
-          class="data"
+          class="data flex-1 overflow-x-hidden overflow-y-auto list-none m-0 p-0 pr-4 [&_[role=listitem]]:bg-grey [&_[role=listitem]]:rounded"
           :estimate-size="38"
         />
       </div>
@@ -104,22 +105,22 @@
             <template v-if="errors.load">
               <h3>{{ $t('editor.error.title') }}</h3>
               <p>{{ $t('editor.error.info') }}</p>
-              <i18n path="editor.error.new" tag="p">
+              <i18n-t keypath="editor.error.new" tag="p">
                 <template #command>
                   <code>/lp editor</code>
                 </template>
-              </i18n>
+              </i18n-t>
             </template>
 
             <template v-if="errors.unsupported">
               <h3>{{ $t('editor.unsupported.title') }}</h3>
-              <i18n path="editor.unsupported.info" tag="p">
+              <i18n-t keypath="editor.unsupported.info" tag="p">
                 <template #download>
                   <router-link to="/download">
                     {{ $t('editor.unsupported.download') }}
                   </router-link>
                 </template>
-              </i18n>
+              </i18n-t>
             </template>
           </div>
           <template v-if="verboseData.status === 1">
@@ -149,14 +150,18 @@
 </template>
 
 <script>
-import VirtualList from 'vue-virtual-scroll-list';
+import { useHead } from '@unhead/vue';
+
+import VirtualList from '@/components/common/VirtualList.vue';
 import Node from '../components/Verbose/Node.vue';
 import Avatar from '../components/Avatar.vue';
 import updateSession from '@/util/session';
 
 export default {
-  metaInfo: {
-    title: 'Verbose',
+  setup() {
+    useHead({
+      title: 'Verbose',
+    });
   },
   components: {
     Avatar,
@@ -209,115 +214,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-  main.verbose {
-    display: flex;
-    overflow-y: hidden;
-  }
-
-  .verbose-viewer {
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
-    display: flex;
-
-    > .col-1 {
-      flex: 0 0 30%;
-      background: transparent;
-      padding: 1rem;
-
-      h1 {
-        margin: 0;
-        padding: 1rem;
-        line-height: 1;
-        background: rgba(255,255,255,.05);
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-      }
-
-      .meta-info {
-        background: $grey;
-        padding: 1rem;
-        border-bottom-left-radius: 2px;
-        border-bottom-right-radius: 2px;
-      }
-
-      td:first-child {
-        width: 40%;
-      }
-
-      .filter {
-        margin-top: 1rem;
-
-        input {
-          font: inherit;
-          width: 100%;
-          background: rgba(255, 255, 255, .05);
-          color: #FFF;
-          padding: .5rem 1rem;
-          border: 0;
-          margin-top: .5rem;
-        }
-
-        .exclude-result {
-          padding-top: 1rem;
-          flex: 0 0 auto;
-
-          span {
-            display: inline-block;
-            width: 1.5rem;
-            height: 1.5rem;
-            border: 2px solid $grey;
-            position: relative;
-          }
-
-          p {
-            display: inline;
-            bottom: 7px;
-            padding-left: 0.5rem;
-            position: relative;
-          }
-
-          &.selected {
-            span {
-              &:after {
-                position: absolute;
-                display: block;
-                content: '';
-                width: 1rem;
-                height: .5rem;
-                border: 4px solid $brand-color;
-                border-top: 0;
-                border-right: 0;
-                transform: rotate(-45deg);
-              }
-            }
-          }
-        }
-      }
-    }
-
-    > .col-2 {
-      flex: 0 0 70%;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem 1rem 1rem 0;
-      overflow: hidden;
-
-      .data {
-        flex: 1;
-        overflow-x: hidden;
-        overflow-y: auto;
-        list-style: none;
-        margin: 0;
-        padding: 0 1rem 0 0;
-
-        [role="listitem"] {
-          background: $grey;
-          border-radius: 2px;
-        }
-      }
-    }
-  }
-</style>

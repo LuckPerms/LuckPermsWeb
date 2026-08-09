@@ -1,17 +1,17 @@
 <template>
 <div class="delete-user">
-  <i18n path="editor.users.delete" tag="h2">
+  <i18n-t keypath="editor.users.delete" tag="h2">
     <template #user>
-      <code class="username">
-        <avatar :id="user.id" :name="user.displayName" />
+      <code class="username mt-2 flex w-fit items-center">
+        <avatar :id="user.id" :name="user.displayName" class="mr-2 h-6 w-auto" />
         {{ user.displayName }}
       </code>
     </template>
-  </i18n>
+  </i18n-t>
   <p class="lighter">
     {{ $t('editor.users.deleteConfirm', { count: permissions.length }) }}
   </p>
-  <div>
+  <div class="flex">
     <button type="button" @click="deleteUser">
       <font-awesome icon="check" />
       {{ $t('editor.delete') }}
@@ -51,24 +51,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-  .delete-user {
-    > div {
-      display: flex;
-    }
-
-    .username {
-      display: flex;
-      width: fit-content;
-      align-items: center;
-      margin-top: .5rem;
-    }
-
-    img {
-      height: 1.5rem;
-      width: auto;
-      margin-right: .5rem;
-    }
-  }
-</style>

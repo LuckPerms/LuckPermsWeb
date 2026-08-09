@@ -124,14 +124,14 @@ export default {
       const VueI18n = (await i18n).default;
 
       if (locale === 'en') {
-        VueI18n.locale = locale;
+        VueI18n.global.locale = locale;
         return;
       }
 
       const { data } = await axios.get(`https://metadata.luckperms.net/translation/web/${locale}`);
 
-      VueI18n.locale = locale;
-      VueI18n.setLocaleMessage(locale, data);
+      VueI18n.global.locale = locale;
+      VueI18n.global.setLocaleMessage(locale, data);
     },
   },
 };

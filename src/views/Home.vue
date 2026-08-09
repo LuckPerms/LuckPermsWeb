@@ -1,34 +1,34 @@
 <template>
-  <main class="home">
+  <main class="home overflow-y-auto">
     <section class="hero">
-      <div class="container">
-        <div :class="{'logo': true, 'selfhosted': config.selfHosted }">
-          <img alt="LuckPerms logo" src="../assets/logo.svg">
-          <div>
+      <div class="container flex flex-wrap md:flex-nowrap">
+        <div :class="['logo', { selfhosted: config.selfHosted }]" class="flex w-full flex-col items-center justify-center px-8 py-16 text-center text-[1.5em] [&.selfhosted]:w-full [&.selfhosted]:justify-center md:w-[66%] md:flex-row md:justify-start md:p-16 md:text-left">
+          <img alt="LuckPerms logo" src="../assets/logo.svg" class="mb-8 h-52 w-auto md:mb-0 md:mr-8">
+          <div class="md:max-w-[35rem]">
             <h1>LuckPerms</h1>
             <p>{{ $t('description') }}</p>
           </div>
         </div>
 
-        <div class="download" v-if="!config.selfHosted">
-          <router-link to="/download">
-          <span>
-            <font-awesome icon="arrow-alt-circle-down" />
-            {{ $t('links.download') }}
-          </span>
+        <div v-if="!config.selfHosted" class="flex w-full flex-col items-center justify-center pb-16 md:w-[34%] md:items-end md:p-16">
+          <router-link to="/download" class="button md:mt-10">
+            <span>
+              <font-awesome icon="arrow-alt-circle-down" />
+              {{ $t('links.download') }}
+            </span>
             <small>
               v{{ version }}
               <font-awesome icon="asterisk" :spin="true" v-if="!version" />
             </small>
           </router-link>
-          <small>
+          <small class="mt-4 max-w-[18rem] text-center opacity-50 md:text-right">
             {{ $t('home.supported') }}
           </small>
         </div>
       </div>
     </section>
 
-    <div class="container" v-if="!config.selfHosted">
+    <div class="container flex" v-if="!config.selfHosted">
       <section class="resources">
         <div>
           <h2>{{ $t('home.why.title') }}</h2>
@@ -46,17 +46,17 @@
           <h2>{{ $t('home.apps.title') }}</h2>
           <p>{{ $t('home.apps.description1') }}</p>
           <p>{{ $t('home.apps.description2') }}</p>
-          <div class="tools">
-            <router-link to="/editor" alt="Web Editor">
-              <font-awesome icon="edit" />
+          <div class="tools flex">
+            <router-link to="/editor" alt="Web Editor" class="m-4 flex flex-1 flex-col items-center rounded-sm bg-grey p-8 text-center font-bold text-brand no-underline first:ml-0 last:mr-0 sm:text-xl">
+              <font-awesome icon="edit" class="mb-4 text-[3rem] text-white opacity-50 sm:text-[4rem]" />
               {{ $t('links.editor') }}
             </router-link>
-            <router-link to="/verbose" alt="Verbose Viewer">
-              <font-awesome icon="comment-alt" />
+            <router-link to="/verbose" alt="Verbose Viewer" class="m-4 flex flex-1 flex-col items-center rounded-sm bg-grey p-8 text-center font-bold text-brand no-underline first:ml-0 last:mr-0 sm:text-xl">
+              <font-awesome icon="comment-alt" class="mb-4 text-[3rem] text-white opacity-50 sm:text-[4rem]" />
               {{ $t('links.verbose') }}
             </router-link>
-            <router-link to="/treeview" alt="Tree Viewer">
-              <font-awesome icon="sitemap" />
+            <router-link to="/treeview" alt="Tree Viewer" class="m-4 flex flex-1 flex-col items-center rounded-sm bg-grey p-8 text-center font-bold text-brand no-underline first:ml-0 last:mr-0 sm:text-xl">
+              <font-awesome icon="sitemap" class="mb-4 text-[3rem] text-white opacity-50 sm:text-[4rem]" />
               {{ $t('links.tree') }}
             </router-link>
           </div>
@@ -87,20 +87,20 @@
       </section>
     </div>
 
-    <div class="container selfhosted" v-else>
-      <section class="resources">
+    <div class="container selfhosted flex justify-center" v-else>
+      <section class="resources w-1/2 [&>div]:w-full">
         <div>
-          <div class="tools">
-            <router-link to="/editor" alt="Web Editor">
-              <font-awesome icon="edit" />
+          <div class="tools flex">
+            <router-link to="/editor" alt="Web Editor" class="m-4 flex flex-1 flex-col items-center rounded-sm bg-grey p-8 text-center font-bold text-brand no-underline first:ml-0 last:mr-0 sm:text-xl">
+              <font-awesome icon="edit" class="mb-4 text-[3rem] text-white opacity-50 sm:text-[4rem]" />
               {{ $t('links.editor') }}
             </router-link>
-            <router-link to="/verbose" alt="Verbose Viewer">
-              <font-awesome icon="comment-alt" />
+            <router-link to="/verbose" alt="Verbose Viewer" class="m-4 flex flex-1 flex-col items-center rounded-sm bg-grey p-8 text-center font-bold text-brand no-underline first:ml-0 last:mr-0 sm:text-xl">
+              <font-awesome icon="comment-alt" class="mb-4 text-[3rem] text-white opacity-50 sm:text-[4rem]" />
               {{ $t('links.verbose') }}
             </router-link>
-            <router-link to="/treeview" alt="Tree Viewer">
-              <font-awesome icon="sitemap" />
+            <router-link to="/treeview" alt="Tree Viewer" class="m-4 flex flex-1 flex-col items-center rounded-sm bg-grey p-8 text-center font-bold text-brand no-underline first:ml-0 last:mr-0 sm:text-xl">
+              <font-awesome icon="sitemap" class="mb-4 text-[3rem] text-white opacity-50 sm:text-[4rem]" />
               {{ $t('links.tree') }}
             </router-link>
           </div>
@@ -142,174 +142,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-  main.home {
-    overflow-y: auto;
-
-    .container {
-      display: flex;
-
-      &.selfhosted {
-        justify-content: center;
-
-        .resources {
-          width: 50%;
-
-          div {
-            width: 100%;
-          }
-        }
-      }
-    }
-
-    .logo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 4rem 2rem;
-      font-size: 1.5em;
-      width: 100%;
-      text-align: center;
-
-      @include breakpoint($md) {
-        padding: 4rem;
-        width: 66%;
-        flex-direction: row;
-        text-align: left;
-        justify-content: flex-start;
-
-        div {
-          max-width: 35rem;
-        }
-      }
-
-      img {
-        height: 13rem;
-        width: auto;
-        margin-bottom: 2rem;
-
-        @include breakpoint($md) {
-          margin-bottom: 0;
-          margin-right: 2rem;
-        }
-      }
-
-      &.selfhosted {
-        justify-content: center;
-        width: 100%;
-      }
-    }
-
-    .download {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding-bottom: 4rem;
-
-      @include breakpoint($md) {
-        padding: 4rem;
-        align-items: flex-end;
-        width: 34%;
-      }
-
-      a {
-        background: $brand-color;
-        color: $navy;
-        font-size: 1.5em;
-        padding: 1rem 2rem;
-        text-align: center;
-        line-height: 1;
-        text-decoration: none;
-        border-radius: 2px;
-        transition: background .2s;
-
-        @include breakpoint($md) {
-          font-size: 2em;
-          margin-top: 2.5rem;
-        }
-
-        &:hover {
-          background: color.adjust($brand-color, $lightness: 10%);
-        }
-
-        span {
-          display: block;
-          font-weight: bold;
-
-          svg {
-            margin-right: .5rem;
-            opacity: .5;
-          }
-        }
-
-        small {
-          font-size: 1rem;
-          opacity: .75;
-
-          @include breakpoint($md) {
-            font-size: 1.25rem;
-          }
-        }
-      }
-
-      > small {
-        max-width: 18rem;
-        text-align: center;
-        opacity: .5;
-        margin-top: 1rem;
-
-        @include breakpoint($md) {
-          text-align: right;
-        }
-      }
-    }
-  }
-
-  .tools {
-    display: flex;
-
-    a {
-      background: $grey;
-      color: $brand-color;
-      font: inherit;
-      font-weight: bold;
-      flex: 1;
-      margin: 1rem;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border-radius: 2px;
-      text-decoration: none;
-      text-align: center;
-
-      @include breakpoint($sm) {
-        font-size: 1.25rem;
-      }
-
-      svg {
-        font-size: 3rem;
-        display: block;
-        opacity: .5;
-        color: #FFF;
-        margin-bottom: 1rem;
-
-        @include breakpoint($sm) {
-          font-size: 4rem;
-        }
-      }
-
-      &:first-child {
-        margin-left: 0;
-      }
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
-</style>

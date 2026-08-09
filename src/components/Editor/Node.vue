@@ -45,7 +45,7 @@
     </div>
     <div v-else class="permission">
       <input
-        v-autofocus
+        autofocus
         type="text"
         v-model="permission.value"
         @keydown.enter="updateNode('key', permission)"
@@ -180,7 +180,7 @@
 </template>
 
 <script>
-import Datepicker from '@turbotailz/vuejs-datepicker';
+import Datepicker from '@/components/common/DatePicker.vue';
 import vClickOutside from 'v-click-outside';
 import { relativeDate } from '@/util/date';
 import { parseNodeType } from '@/util/editor';

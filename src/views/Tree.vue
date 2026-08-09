@@ -1,9 +1,9 @@
 <template>
-  <main class="tree container">
-    <div class="tree-viewer" v-if="metaData">
-      <div class="col-1">
-        <h1>{{ $t('tree.title') }}</h1>
-        <div class="meta-info">
+  <main class="tree container flex overflow-y-hidden">
+    <div class="tree-viewer flex w-full h-full max-h-full" v-if="metaData">
+      <div class="col-1 basis-[30%] bg-transparent p-4">
+        <h1 class="m-0 p-4 leading-none bg-white/5 rounded-t">{{ $t('tree.title') }}</h1>
+        <div class="meta-info bg-grey p-4 rounded-b">
           <table>
             <tr>
               <td>{{ $t('tree.uploaded') }}</td>
@@ -44,22 +44,23 @@
             </tr>
           </table>
         </div>
-        <button @click="expandTree">
+        <button class="bg-black/20 font-inherit text-brand px-4 py-2 border-0 mt-4 mr-4 cursor-pointer [&_svg]:opacity-50 [&_svg]:mr-2 [&_svg]:text-white" @click="expandTree">
           <font-awesome icon="plus-square" />
           {{ $t('tree.expand') }}
         </button>
-        <button @click="collapseTree">
+        <button class="bg-black/20 font-inherit text-brand px-4 py-2 border-0 mt-4 mr-4 cursor-pointer [&_svg]:opacity-50 [&_svg]:mr-2 [&_svg]:text-white" @click="collapseTree">
           <font-awesome icon="minus-square" />
           {{ $t('tree.collapse') }}
         </button>
       </div>
-      <div class="col-2">
-        <div>
+      <div class="col-2 basis-[70%] flex p-4 pl-0">
+        <div class="w-full overflow-auto pr-4">
           <branch
             v-for="(branch, node) in treeData"
             :branch-data="branch"
             :node="node"
             :key="node"
+            class="pl-0"
           />
         </div>
       </div>
@@ -88,22 +89,22 @@
             <template v-if="errors.load">
               <h3>{{ $t('editor.error.title') }}</h3>
               <p>{{ $t('editor.error.info') }}</p>
-              <i18n path="editor.error.new" tag="p">
+              <i18n-t keypath="editor.error.new" tag="p">
                 <template #command>
                   <code>/lp editor</code>
                 </template>
-              </i18n>
+              </i18n-t>
             </template>
 
             <template v-if="errors.unsupported">
               <h3>{{ $t('editor.unsupported.title') }}</h3>
-              <i18n path="editor.unsupported.info" tag="p">
+              <i18n-t keypath="editor.unsupported.info" tag="p">
                 <template #download>
                   <router-link to="/download">
                     {{ $t('editor.unsupported.download') }}
                   </router-link>
                 </template>
-              </i18n>
+              </i18n-t>
             </template>
           </div>
         </div>
@@ -113,13 +114,18 @@
 </template>
 
 <script>
+import { useHead } from '@unhead/vue';
+
 import Avatar from '../components/Avatar.vue';
 import Branch from '../components/Tree/Branch.vue';
+import eventBus from '@/util/eventBus';
 import updateSession from '@/util/session';
 
 export default {
-  metaInfo: {
-    title: 'Tree',
+  setup() {
+    useHead({
+      title: 'Tree',
+    });
   },
   components: {
     Avatar,
@@ -145,10 +151,10 @@ export default {
   },
   methods: {
     expandTree() {
-      this.$root.$emit('expandTree');
+      eventBus.emit('expandTree');
     },
     collapseTree() {
-      this.$root.$emit('collapseTree');
+      eventBus.emit('collapseTree');
     },
   },
   watch: {
@@ -158,76 +164,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-  main.tree {
-    display: flex;
-    overflow-y: hidden;
-  }
-
-  .tree-viewer {
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
-    display: flex;
-
-    > .col-1 {
-      flex: 0 0 30%;
-      background: transparent;
-      padding: 1rem;
-
-      h1 {
-        margin: 0;
-        padding: 1rem;
-        line-height: 1;
-        background: rgba(255,255,255,.05);
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-      }
-
-      .meta-info {
-        background: $grey;
-        padding: 1rem;
-        border-bottom-left-radius: 2px;
-        border-bottom-right-radius: 2px;
-      }
-
-      td:first-child {
-        width: 40%;
-      }
-
-      button {
-        background: rgba(0,0,0,.2);
-        font: inherit;
-        color: $brand-color;
-        padding: .5rem 1rem;
-        border: 0;
-        margin-top: 1rem;
-        margin-right: 1rem;
-        cursor: pointer;
-
-        svg {
-          opacity: .5;
-          margin-right: .5rem;
-          color: #FFF;
-        }
-      }
-    }
-
-    > .col-2 {
-      flex: 0 0 70%;
-      display: flex;
-      padding: 1rem 1rem 1rem 0;
-
-      > div {
-        width: 100%;
-        overflow: auto;
-        padding-right: 1rem;
-
-        > .branch {
-          padding-left: 0;
-        }
-      }
-    }
-  }
-</style>

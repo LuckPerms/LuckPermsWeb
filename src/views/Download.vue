@@ -152,29 +152,29 @@
             <li v-html="$t('download.install.add')" />
             <li v-html="$t('download.install.restart')" />
             <li v-html="$t('download.install.config')" />
-            <i18n path="download.install.setup" tag="li">
+            <i18n-t keypath="download.install.setup" tag="li">
               <template #wiki>
-                <router-link to="wiki/Usage">
+                <a href="https://luckperms.net/wiki/Usage" target="_blank">
                   {{ $t('download.install.wiki') }}
-                </router-link>
+                </a>
               </template>
-            </i18n>
+            </i18n-t>
           </ol>
           <h2>{{ $t('download.trouble.title') }}</h2>
           <ul>
             <li v-html="$t('download.trouble.console')" />
-            <i18n path="download.trouble.read" tag="li">
+            <i18n-t keypath="download.trouble.read" tag="li">
               <template #wiki>
-                <router-link to="wiki/Installation">
+                <a href="https://luckperms.net/wiki/Installation" target="_blank">
                   {{ $t('download.trouble.wiki') }}
-                </router-link>
+                </a>
               </template>
-            </i18n>
-            <i18n path="download.trouble.support" tag="li">
+            </i18n-t>
+            <i18n-t keypath="download.trouble.support" tag="li">
               <template #discord>
                   <a href="https://discord.gg/luckperms" target="_blank">Discord</a>
               </template>
-            </i18n>
+            </i18n-t>
           </ul>
         </div>
       </section>
@@ -183,13 +183,13 @@
       <div class="container">
         <div>
           <h1>{{ $t('download.extensions.title') }}</h1>
-          <i18n path="download.extensions.description" tag="p">
+          <i18n-t keypath="download.extensions.description" tag="p">
             <template #wiki>
-              <router-link to="/wiki/Extensions">
+              <a href="https://luckperms.net/wiki/Extensions" target="_blank">
                 {{ $t('download.extensions.descriptionWiki') }}
-              </router-link>
+              </a>
             </template>
-          </i18n>
+          </i18n-t>
         </div>
       </div>
     </section>
@@ -209,13 +209,6 @@
           </a>
           <div>
             <p>{{ $t('download.extensions.legacyInfo') }}</p>
-            <i18n path="download.extensions.more" tag="p">
-              <template #wiki>
-                <router-link to="/wiki/Extensions#extension-legacy-api">
-                  {{ $t('download.extensions.wiki') }}
-                </router-link>
-              </template>
-            </i18n>
           </div>
         </div>
         <div>
@@ -231,18 +224,13 @@
             <small>{{ $t('download.extensions.version') }}</small>
           </a>
           <div>
-            <i18n path="download.extensions.defaultAssignmentsInfo" tag="p">
+            <i18n-t keypath="download.extensions.defaultAssignmentsInfo" tag="p">
               <template #wiki>
-                <router-link to="/wiki/Default-Groups">
+                <a href="https://luckperms.net/wiki/Default-Groups" target="_blank">
                   {{ $t('download.extensions.groups') }}
-                </router-link>
+                </a>
               </template>
-            </i18n>
-            <p>Check out the <router-link to="/wiki/Extensions#extension-default-assignments">wiki
-              section</router-link> for more information. See also
-              <a href="/wiki/Default-Groups#configure-default-assignments">this section</a> about
-              configuring default assignments.
-            </p>
+            </i18n-t>
           </div>
         </div>
       </section>
@@ -280,9 +268,7 @@
         <div>
           <h1>Placeholder Expansions</h1>
           <p>
-            LuckPerms adds
-            <router-link to="/wiki/Placeholders#placeholders">placeholders</router-link>
-            to PlaceholderAPI and MVdWPlaceholderAPI
+            LuckPerms adds placeholders to PlaceholderAPI and MVdWPlaceholderAPI
           .
           </p>
         </div>
@@ -301,10 +287,7 @@
           <div>
             <p>
               Install using either
-              <code>/papi ecloud download LuckPerms</code>
-              or by
-              <router-link to="/wiki/Placeholders#manual-install">installing manually</router-link>
-              .
+              <code>/papi ecloud download LuckPerms</code>.
             </p>
           </div>
         </div>
@@ -342,15 +325,18 @@
 </template>
 
 <script>
+import { useHead } from '@unhead/vue';
 import { relativeDate } from '@/util/date';
 
 export default {
   name: 'Download',
-  metaInfo: {
-    title: 'Download',
+  setup() {
+    useHead({
+      title: 'Download',
+    });
   },
   components: {
-    Quiz: () => import('../components/Download/Quiz'),
+    Quiz: () => import('../components/Download/Quiz.vue'),
   },
   data() {
     return {

@@ -1,20 +1,21 @@
 <template>
   <div class="copy-nodes-modal">
-    <h2>{{ $tc('editor.nodes.copy', selectedNodes.length) }}</h2>
-    <div class="col-2">
-      <ul>
+    <h2>{{ $t('editor.nodes.copy', selectedNodes.length) }}</h2>
+    <div class="col-2 flex">
+      <ul class="m-0 max-h-56 list-none flex-[2] overflow-y-auto p-0">
         <li
           v-for="session in sessions"
           :key="`copyNodeSession_${session.id}`"
           :class="{ selected: selectedSessions.includes(session.id) }"
           @click="toggleSession(session.id)"
+          class="group mb-[0.2rem] flex cursor-pointer items-center bg-black/25 px-4 py-2 hover:bg-black/20 [&.selected]:text-brand"
         >
-          <span class="checkbox"></span>
+          <span class="checkbox relative mr-4 block h-6 w-6 border-2 border-black/[0.33] group-[.selected]:after:absolute group-[.selected]:after:block group-[.selected]:after:content-[''] group-[.selected]:after:border-4 group-[.selected]:after:border-brand group-[.selected]:after:border-r-0 group-[.selected]:after:border-t-0 group-[.selected]:after:h-2 group-[.selected]:after:w-4 group-[.selected]:after:rotate-[-45deg]"></span>
           {{ session.displayName }}
         </li>
       </ul>
-      <div>
-        <button :disabled="!selectedSessions.length" @click="copyNodes">
+      <div class="flex flex-1 items-center justify-center pl-8">
+        <button :disabled="!selectedSessions.length" @click="copyNodes" class="px-8! py-4! text-[1.5rem]! disabled:cursor-not-allowed! disabled:opacity-50!">
           <font-awesome icon="clone" />
           {{ $t('copy') }}
         </button>
@@ -55,78 +56,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-  .copy-nodes-modal {
-    .col-2 {
-      display: flex;
-
-      > div {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-left: 2rem;
-
-        button {
-          font-size: 1.5rem;
-          padding: 1rem 2rem;
-
-          &[disabled] {
-            opacity: .5;
-            cursor: not-allowed;
-          }
-        }
-      }
-    }
-
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      max-height: 14rem;
-      overflow-y: auto;
-      flex: 2;
-
-      li {
-        background: rgba(0,0,0,.25);
-        padding: .5rem 1rem;
-        margin-bottom: .2rem;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-
-        &:hover {
-          background: rgba(0,0,0,.2);
-        }
-
-        .checkbox {
-          width: 1.5rem;
-          height: 1.5rem;
-          border: 2px solid rgba(0,0,0,.33);
-          display: block;
-          margin-right: 1rem;
-          position: relative;
-        }
-      }
-    }
-
-    .selected {
-      color: $brand-color;
-
-      .checkbox {
-        &:after {
-          content: '';
-          display: block;
-          position: absolute;
-          border: 4px solid $brand-color;
-          border-right: 0;
-          border-top: 0;
-          width: 1rem;
-          height: .5rem;
-          transform: rotate(-45deg);
-        }
-      }
-    }
-  }
-</style>

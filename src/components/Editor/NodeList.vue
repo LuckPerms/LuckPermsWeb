@@ -1,11 +1,12 @@
 <template>
-<div class="node-list">
-  <h2 v-html="$tc('editor.nodes.permissionsCount', nodes.length)" />
+<div class="node-list flex flex-1 flex-col relative overflow-y-auto bg-white/20">
+  <h2 v-html="$t('editor.nodes.permissionsCount', nodes.length)" class="text-xl m-0 mb-2 pt-2 px-4 [&_span]:ml-2.5 [&_span]:opacity-50" />
 
-  <div class="node-list-header">
-    <div class="sorting-tabs">
+  <div class="node-list-header sticky top-0 z-10 bg-[rgb(67,67,78)] border-b border-black/20">
+    <div class="sorting-tabs flex">
       <div
         :class="{ 'node-select-all': true, 'selected': allSelected }"
+        class="px-4 py-2 cursor-pointer flex items-center justify-between font-bold shrink-0 [&_span]:block [&_span]:w-6 [&_span]:h-6 [&_span]:border-2 [&_span]:border-grey [&_span]:relative [&.selected_span::after]:absolute [&.selected_span::after]:block [&.selected_span::after]:w-4 [&.selected_span::after]:h-2 [&.selected_span::after]:border-4 [&.selected_span::after]:border-brand [&.selected_span::after]:border-t-0 [&.selected_span::after]:border-r-0 [&.selected_span::after]:-rotate-45 [&.selected_span::after]:content-['']"
         @click="selectAll"
         :title="$t('editor.nodes.selectAll')"
       >
@@ -13,7 +14,7 @@
       </div>
 
       <div
-        class="permission"
+        class="permission flex-[2_2_30%] px-4 py-2 cursor-pointer flex items-center justify-between font-bold hover:bg-white/20 [&.active]:bg-white/10"
         :class="{'active': sort.method === 'key'}"
         @click="changeSort('key')"
         :title="$t('editor.nodes.sort.permission')"
@@ -21,13 +22,14 @@
         {{ $t('editor.permissions') }}
         <font-awesome
           v-if="sort.method === 'key'"
+          class="opacity-50 transition-transform duration-300 [&.reverse]:rotate-180"
           :class="{'reverse': !sort.desc}"
           icon="chevron-circle-down"
         />
       </div>
 
       <div
-        class="value"
+        class="value flex-[1_1_10%] px-4 py-2 cursor-pointer flex items-center justify-between font-bold hover:bg-white/20 [&.active]:bg-white/10"
         :class="{'active': sort.method === 'value'}"
         @click="changeSort('value')"
         :title="$t('editor.nodes.sort.value')"
@@ -35,13 +37,14 @@
         {{ $t('editor.value') }}
         <font-awesome
           v-if="sort.method === 'value'"
+          class="opacity-50 transition-transform duration-300 [&.reverse]:rotate-180"
           :class="{'reverse': !sort.desc}"
           icon="chevron-circle-down"
         />
       </div>
 
       <div
-        class="expiry"
+        class="expiry flex-[1_1_15%] px-4 py-2 cursor-pointer flex items-center justify-between font-bold hover:bg-white/20 [&.active]:bg-white/10"
         :class="{'active': sort.method === 'expiry'}"
         @click="changeSort('expiry')"
         :title="$t('editor.nodes.sort.expiry')"
@@ -49,12 +52,13 @@
         {{ $t('editor.expiry') }}
         <font-awesome
           v-if="sort.method === 'expiry'"
+          class="opacity-50 transition-transform duration-300 [&.reverse]:rotate-180"
           :class="{'reverse': !sort.desc}"
           icon="chevron-circle-down" />
       </div>
 
       <div
-        class="context"
+        class="context flex-[1_1_20%] px-4 py-2 cursor-pointer flex items-center justify-between font-bold hover:bg-white/20 [&.active]:bg-white/10"
         :class="{'active': sort.method === 'contexts'}"
         @click="changeSort('contexts')"
         :title="$t('editor.nodes.sort.contexts')"
@@ -62,12 +66,13 @@
         {{ $t('editor.contexts') }}
         <font-awesome
           v-if="sort.method === 'contexts'"
+          class="opacity-50 transition-transform duration-300 [&.reverse]:rotate-180"
           :class="{'reverse': !sort.desc}"
           icon="chevron-circle-down"
         />
       </div>
 
-      <div class="delete-column"></div>
+      <div class="delete-column pointer-events-none w-12 shrink-0 mr-2 px-4 py-2 flex items-center justify-between font-bold"></div>
     </div>
   </div>
 
@@ -76,7 +81,7 @@
     data-key="id"
     :data-component="Node"
     :keeps="50"
-    class="node-list-scroll"
+    class="node-list-scroll flex-1 overflow-y-scroll overflow-x-hidden"
     :estimate-size="42"
   />
 </div>
@@ -84,7 +89,7 @@
 
 <script>
 import sortBy from 'lodash.sortby';
-import VirtualList from 'vue-virtual-scroll-list';
+import VirtualList from '@/components/common/VirtualList.vue';
 import Node from './Node.vue';
 
 export default {
@@ -150,138 +155,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.node-list {
-  background-color: rgba(255,255,255,.2);
-  flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-
-  h2 {
-    font-size: 1.25rem;
-    margin: 0 0 .5rem;
-    padding: .5rem 1rem 0;
-
-    span {
-      margin-left: .5em;
-      opacity: .5;
-    }
-  }
-
-  .node-list-header {
-    background-color: rgb(67,67,78);
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-
-    .sorting-tabs {
-      display: flex;
-
-      > div {
-        padding: .5em 1em;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-weight: bold;
-
-        &.active {
-          background: rgba(255,255,255,.1);
-        }
-
-        &.node-select-all {
-          flex: 0 0 auto;
-
-          span {
-            display: block;
-            width: 1.5rem;
-            height: 1.5rem;
-            border: 2px solid $grey;
-            position: relative;
-          }
-
-          &.selected {
-            span {
-              &:after {
-                position: absolute;
-                display: block;
-                content: '';
-                width: 1rem;
-                height: .5rem;
-                border: 4px solid $brand-color;
-                border-top: 0;
-                border-right: 0;
-                transform: rotate(-45deg);
-              }
-            }
-          }
-        }
-
-        &.delete-column {
-          pointer-events: none;
-          flex: 0 0 3rem;
-          margin-right: .5rem;
-        }
-
-        svg {
-          opacity: .5;
-          transition: transform .3s;
-
-          &.reverse {
-            transform: rotate(180deg);
-          }
-        }
-
-        &:hover {
-          background: rgba(255,255,255,0.2);
-        }
-
-        &.permission {
-          flex: 2 2 30%;
-        }
-
-        &.value {
-          flex: 1 1 10%;
-        }
-
-        &.expiry {
-          flex: 1 1 15%;
-        }
-
-        &.context {
-          flex: 1 1 20%;
-        }
-      }
-    }
-  }
-
-  > ul {
-    margin: 0;
-    padding: 0;
-    padding-bottom: 8em;
-    list-style: none;
-  }
-
-  // TODO: figure out if it's possible to use transitions with virtual scroller
-  //&-enter, &-leave-to {
-  //  opacity: 0;
-  //  transform: translateX(10%);
-  //}
-
-  //&-leave-active {
-  //  position: absolute;
-  //  background: $red;
-  //  width: 100%;
-  //  pointer-events: none;
-  //}
-  .node-list-scroll {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    flex: 1;
-  }
-}
-</style>

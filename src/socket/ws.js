@@ -1,7 +1,7 @@
 import { decode, encode } from 'base64-arraybuffer';
 import { proxy, wrap } from 'comlink';
 
-import Worker from 'worker-loader!./worker';
+import Worker from './worker?worker';
 
 /* eslint-disable no-use-before-define */
 

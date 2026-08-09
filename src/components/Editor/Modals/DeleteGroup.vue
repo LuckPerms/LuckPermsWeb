@@ -4,7 +4,7 @@
   <p class="lighter">
     {{ $t('editor.groups.deleteConfirm', { count: permissions.length }) }}
   </p>
-  <div>
+  <div class="flex">
     <button type="button" @click="deleteGroup">
       <font-awesome icon="check" />
       {{ $t('editor.delete') }}
@@ -36,11 +36,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-  .delete-group {
-    > div {
-      display: flex;
-    }
-  }
-</style>

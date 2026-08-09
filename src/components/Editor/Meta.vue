@@ -1,20 +1,22 @@
 <template>
-<div class="editor-meta">
-  <div class="meta-weight" v-if="sessionData.type === 'group'">
+<div class="editor-meta bg-white/10 px-4 pb-4">
+  <div class="meta-weight flex-1" v-if="sessionData.type === 'group'">
     <strong>{{ $t('editor.meta.weight') }}</strong>
     <code>{{ groupWeight }}</code>
   </div>
-  <div class="meta-parents">
-    <div class="add-group">
+  <div class="meta-parents flex-1">
+    <div class="add-group relative">
       <strong>{{ $t('editor.meta.parents') }}</strong>
       <button
+        class="cursor-pointer bg-brand border-0 rounded-sm text-base font-bold px-2 ml-2"
         @click="addingGroup = true"
         :title="$t('editor.meta.add', { id: session.id })"
       >
         +
       </button>
-      <ul v-if="addingGroup" v-click-outside="closeGroups">
+      <ul v-if="addingGroup" v-click-outside="closeGroups" class="list-none m-0 p-0 flex flex-col absolute top-full bg-grey max-h-[40vh] overflow-y-auto z-[100] shadow-[0_0.2rem_1rem_rgba(0,0,0,0.2)]">
         <li
+          class="px-4 py-1 m-0 font-mono text-[0.8rem] cursor-pointer hover:bg-white/5 [&:not(:last-child)]:border-b [&:not(:last-child)]:border-black/20"
           v-for="group in groups"
           @click="addParentToGroup(group.id)"
           :key="`addParent_${group.id}`"
@@ -23,9 +25,10 @@
         </li>
       </ul>
     </div>
-    <ul>
-      <li v-for="parent in parents" :key="`groupParent_${parent}`">
+    <ul class="list-none m-0 p-0 flex">
+      <li v-for="parent in parents" :key="`groupParent_${parent}`" class="mr-2">
         <code
+          class="cursor-pointer [&_span]:text-white [&_span]:opacity-10 [&_span]:hover:opacity-50"
           @click="handleParentSessionSwitch(parent)"
           :title="$t('editor.meta.gotoParent', { parent })"
         >
@@ -109,83 +112,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.editor-meta {
-  background-color: rgba(255,255,255,.1);
-  padding: 0 1em 1em;
-
-  > div {
-    flex: 1;
-  }
-
-  .meta-parents {
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-
-      li {
-        margin-right: .5em;
-
-        code {
-          cursor: pointer;
-
-          span {
-            color: white;
-            opacity: .1;
-
-            &:hover {
-              opacity: .5;
-            }
-          }
-        }
-      }
-    }
-
-    .add-group {
-      position: relative;
-
-      button {
-        cursor: pointer;
-        background: $brand-color;
-        font: inherit;
-        border: 0;
-        border-radius: 2px;
-        font-size: 1rem;
-        font-weight: bold;
-        padding: 0 .5rem;
-        margin-left: .5rem;
-      }
-
-      ul {
-        position: absolute;
-        top: 100%;
-        background: $grey;
-        flex-direction: column;
-        max-height: 40vh;
-        overflow-y: auto;
-        z-index: 100;
-        box-shadow: 0 .2rem 1rem rgba(0,0,0,.2);
-
-        li {
-          padding: .25rem 1rem;
-          margin: 0;
-          font-family: "Source Code Pro", monospace;
-          font-size: .8rem;
-          cursor: pointer;
-
-          &:not(:last-child) {
-            border-bottom: 1px solid rgba(0,0,0,.2);
-          }
-
-          &:hover {
-            background: rgba(255,255,255,.05);
-          }
-        }
-      }
-    }
-  }
-}
-</style>

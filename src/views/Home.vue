@@ -42,11 +42,6 @@
             <li v-html="$t('home.why.extensive')"/>
             <li v-html="$t('home.why.free')"/>
           </ul>
-          <i18n path="home.why.more" tag="p">
-            <template #wiki>
-              <router-link to="/wiki/Why-LuckPerms">{{ $t('home.why.why') }}</router-link>
-            </template>
-          </i18n>
 
           <h2>{{ $t('home.apps.title') }}</h2>
           <p>{{ $t('home.apps.description1') }}</p>
@@ -67,13 +62,6 @@
           </div>
         </div>
         <div>
-          <router-link to="/wiki" class="resource">
-            <span>
-              <font-awesome icon="book" />
-              {{ $t('links.wiki') }}
-            </span>
-            <small>{{ $t('home.wiki') }}</small>
-          </router-link>
           <a href="https://github.com/LuckPerms/LuckPerms" class="resource">
             <span>
               <font-awesome :icon="['fab', 'github']" />
@@ -124,12 +112,16 @@
 </template>
 
 <script>
+import { useHead } from '@unhead/vue';
+
 export default {
   name: 'Home',
 
-  metaInfo: {
-    title: 'LuckPerms',
-    titleTemplate: null,
+  setup() {
+    useHead({
+      title: 'LuckPerms',
+      titleTemplate: null,
+    });
   },
 
   data() {

@@ -7,7 +7,7 @@
     </div>
 
 <!--    Modals -->
-    <component :is="modal.type" :props="modal.object" @close="closeModal" />
+    <component :is="modalComponent" :props="modal.object" @close="closeModal" />
   </div>
 </div>
 </template>
@@ -24,22 +24,28 @@ import DeleteNodes from './Modals/DeleteNodes.vue';
 import ReusedSessionWarning from './Modals/ReusedSessionWarning.vue';
 import TrustPrompt from './Modals/TrustPrompt.vue';
 
+const modalComponents = {
+  createGroup: CreateGroup,
+  deleteGroup: DeleteGroup,
+  deleteUser: DeleteUser,
+  createTrack: CreateTrack,
+  savedChanges: SavedChanges,
+  copyNodes: CopyNodes,
+  moveNodes: MoveNodes,
+  deleteNodes: DeleteNodes,
+  reusedSessionWarning: ReusedSessionWarning,
+  trustPrompt: TrustPrompt,
+};
+
 export default {
   name: 'Modal',
-  components: {
-    CreateGroup,
-    DeleteGroup,
-    DeleteUser,
-    CreateTrack,
-    SavedChanges,
-    CopyNodes,
-    MoveNodes,
-    DeleteNodes,
-    ReusedSessionWarning,
-    TrustPrompt,
-  },
   props: {
     modal: Object,
+  },
+  computed: {
+    modalComponent() {
+      return modalComponents[this.modal?.type] || null;
+    },
   },
   methods: {
     closeModal() {

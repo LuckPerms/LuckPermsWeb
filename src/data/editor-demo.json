@@ -11,8 +11,8 @@
   "permissionHolders": [
     {
       "type": "group",
-      "id": "op",
-      "displayName": "Operator",
+      "id": "owner",
+      "displayName": "Owner",
       "nodes": [
         {
           "type": "permission",
@@ -26,7 +26,7 @@
         },
         {
           "type": "display_name",
-          "key": "displayname.Operator",
+          "key": "displayname.Owner",
           "value": true
         },
         {
@@ -333,7 +333,19 @@
       "nodes": [
         {
           "type": "inheritance",
-          "key": "group.op",
+          "key": "group.owner",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "id": "d444bde6-fae7-4082-b12d-ec4a240a308c",
+      "displayName": "ItzzMateo",
+      "nodes": [
+        {
+          "type": "inheritance",
+          "key": "group.owner",
           "value": true
         }
       ]
@@ -345,7 +357,7 @@
       "nodes": [
         {
           "type": "inheritance",
-          "key": "group.op",
+          "key": "group.owner",
           "value": true
         }
       ]

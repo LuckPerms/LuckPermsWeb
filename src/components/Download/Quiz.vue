@@ -1,13 +1,13 @@
 <template>
-  <div class="download-quiz" @click="closeModal">
-    <div class="modal" @click.stop>
-      <button class="close-button" @click="closeModal">
+  <div class="download-quiz fixed inset-0 z-[100] flex items-center justify-center bg-black/90" @click="closeModal">
+    <div class="modal bg-[linear-gradient(-2deg,#11111d,#2d2d38)] p-16 w-full max-w-[48rem] h-full max-h-[32rem] overflow-hidden relative rounded" @click.stop>
+      <button class="close-button absolute bottom-4 left-1/2 -translate-x-1/2 bg-transparent border-0 font-inherit text-white opacity-50 uppercase cursor-pointer p-4 hover:opacity-100" @click="closeModal">
         <font-awesome icon="times"/>
         {{ $t('close') }}
       </button>
       <transition name="fade" mode="out-in">
-        <div v-if="page === 1" class="page page-1">
-          <h1>{{ $t('quiz.choose') }}</h1>
+        <div v-if="page === 1" class="page page-1 flex flex-col items-center absolute w-[calc(100%-8rem)] h-[calc(100%-8rem)] overflow-auto">
+          <h1 class="my-0 mb-4 text-center">{{ $t('quiz.choose') }}</h1>
           <ul class="options">
             <li @click="proceed(2, 'single')">{{ $t('quiz.single') }}</li>
             <li @click="proceed(2, 'network')">{{ $t('quiz.network') }}</li>
@@ -16,118 +16,118 @@
       </transition>
 
       <transition name="fade" mode="out-in">
-        <div v-if="page === 2" class="page page-2">
-          <h1>{{ $t('quiz.type') }}</h1>
-          <ul class="options" v-if="options.single">
-            <li @click="proceed(3, 'bukkit')">Spigot / Paper</li>
-            <li @click="proceed(3, 'sponge')">SpongeForge / SpongeVanilla</li>
-            <li @click="proceed(3, 'fabric')">Fabric</li>
-            <li @click="proceed(3, 'forge')">Forge</li>
-            <li @click="proceed(3, 'neoforge')">NeoForge</li>
-            <li @click="proceed(3, 'nukkit')">NukkitX</li>
+        <div v-if="page === 2" class="page page-2 flex flex-col items-center absolute w-[calc(100%-8rem)] h-[calc(100%-8rem)] overflow-auto">
+          <h1 class="my-0 mb-4 text-center">{{ $t('quiz.type') }}</h1>
+          <ul class="options list-none m-0 p-0 flex flex-col w-full" v-if="options.single">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(3, 'bukkit')">Spigot / Paper</li>
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(3, 'sponge')">SpongeForge / SpongeVanilla</li>
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(3, 'fabric')">Fabric</li>
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(3, 'forge')">Forge</li>
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(3, 'neoforge')">NeoForge</li>
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(3, 'nukkit')">NukkitX</li>
           </ul>
           <p class="lighter" v-if="options.network">
             {{ $t('quiz.note') }}
           </p>
-          <ul class="options" v-if="options.network">
-            <li @click="proceed(5, 'bungee')">BungeeCord / Waterfall</li>
-            <li @click="proceed(5, 'velocity')">Velocity</li>
+          <ul class="options list-none m-0 p-0 flex flex-col w-full" v-if="options.network">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(5, 'bungee')">BungeeCord / Waterfall</li>
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(5, 'velocity')">Velocity</li>
           </ul>
         </div>
       </transition>
 
       <transition name="fade" mode="out-in">
-        <div v-if="page === 3" class="page page-3">
-          <h1>{{ $t('quiz.version', { serverType }) }}</h1>
-          <ul class="options" v-if="options.bukkit">
-            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: '1.8.8' }) }}</li>
-            <li @click="proceed(4, 'unsupported')">1.8 - 1.8.7</li>
-            <li @click="proceed(4, 'legacy')">1.7.10</li>
-            <li @click="proceed(4, 'unsupported')">{{ $t('quiz.older', { version: '1.7.9' }) }}</li>
+        <div v-if="page === 3" class="page page-3 flex flex-col items-center absolute w-[calc(100%-8rem)] h-[calc(100%-8rem)] overflow-auto">
+          <h1 class="my-0 mb-4 text-center">{{ $t('quiz.version', { serverType }) }}</h1>
+          <ul class="options list-none m-0 p-0 flex flex-col w-full" v-if="options.bukkit">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: '1.8.8' }) }}</li>
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'unsupported')">1.8 - 1.8.7</li>
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'legacy')">1.7.10</li>
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'unsupported')">{{ $t('quiz.older', { version: '1.7.9' }) }}</li>
           </ul>
-          <ul class="options" v-if="options.sponge">
-            <li @click="proceed(4, 'latest')">
+          <ul class="options list-none m-0 p-0 flex flex-col w-full" v-if="options.sponge">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'latest')">
               {{ $t('quiz.newer', { version: 'SpongeAPI 12' }) }}
             </li>
-            <li @click="proceed(4, 'unsupported')">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'unsupported')">
               {{ $t('quiz.older', { version: 'SpongeAPI 7' }) }}
             </li>
           </ul>
-          <ul class="options" v-if="options.fabric">
-            <li @click="proceed(4, 'latest')">
+          <ul class="options list-none m-0 p-0 flex flex-col w-full" v-if="options.fabric">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'latest')">
               {{ $t('quiz.newer', { version: '1.21' }) }}
             </li>
-            <li @click="proceed(4, 'unsupported')">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'unsupported')">
               {{ $t('quiz.older', { version: '1.20' }) }}
             </li>
           </ul>
-          <ul class="options" v-if="options.forge">
-            <li @click="proceed(4, 'latest')">
+          <ul class="options list-none m-0 p-0 flex flex-col w-full" v-if="options.forge">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'latest')">
               {{ $t('quiz.newer', { version: '1.21' }) }}
             </li>
-            <li @click="proceed(4, 'unsupported')">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'unsupported')">
               {{ $t('quiz.older', { version: '1.20' }) }}
             </li>
           </ul>
-          <ul class="options" v-if="options.neoforge">
-            <li @click="proceed(4, 'latest')">
+          <ul class="options list-none m-0 p-0 flex flex-col w-full" v-if="options.neoforge">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'latest')">
               {{ $t('quiz.newer', { version: '1.21' }) }}
             </li>
-            <li @click="proceed(4, 'unsupported')">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'unsupported')">
               {{ $t('quiz.older', { version: '1.20' }) }}
             </li>
           </ul>
-          <ul class="options" v-if="options.nukkit">
-            <li @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: 'b93' }) }}</li>
-            <li @click="proceed(4, 'unsupported')">{{ $t('quiz.newer', { version: 'b92' }) }}</li>
+          <ul class="options list-none m-0 p-0 flex flex-col w-full" v-if="options.nukkit">
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'latest')">{{ $t('quiz.newer', { version: 'b93' }) }}</li>
+            <li class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center hover:brightness-110" @click="proceed(4, 'unsupported')">{{ $t('quiz.newer', { version: 'b92' }) }}</li>
           </ul>
         </div>
       </transition>
 
       <transition name="fade" mode="out-in">
-        <div v-if="page === 4" class="page page-4">
+        <div v-if="page === 4" class="page page-4 flex flex-col items-center absolute w-[calc(100%-8rem)] h-[calc(100%-8rem)] overflow-auto">
           <template v-if="options.latest">
-            <img alt="LuckPerms logo" src="@/assets/logo.svg">
-            <h1>{{ $t('quiz.result', { serverType }) }}</h1>
-            <div class="options">
-              <a :href="downloads.bukkit" v-if="options.bukkit" download>
+            <img alt="LuckPerms logo" src="@/assets/logo.svg" class="w-32 h-32 mb-4">
+            <h1 class="my-0 mb-4 text-center">{{ $t('quiz.result', { serverType }) }}</h1>
+            <div class="options flex flex-col w-full list-none m-0 p-0">
+              <a :href="downloads.bukkit" v-if="options.bukkit" download class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center no-underline">
                 {{ $t('links.download') }}
               </a>
-              <a :href="downloads.sponge" v-if="options.sponge" download>
+              <a :href="downloads.sponge" v-if="options.sponge" download class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center no-underline">
                 {{ $t('links.download') }}
               </a>
-              <a :href="downloads.fabric" v-if="options.fabric" download>
+              <a :href="downloads.fabric" v-if="options.fabric" download class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center no-underline">
                 {{ $t('links.download') }}
               </a>
-              <a :href="downloads.forge" v-if="options.forge" download>
+              <a :href="downloads.forge" v-if="options.forge" download class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center no-underline">
                 {{ $t('links.download') }}
               </a>
-              <a :href="downloads.neoforge" v-if="options.neoforge" download>
+              <a :href="downloads.neoforge" v-if="options.neoforge" download class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center no-underline">
                 {{ $t('links.download') }}
               </a>
-              <a :href="downloads.nukkit" v-if="options.nukkit" download>
+              <a :href="downloads.nukkit" v-if="options.nukkit" download class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center no-underline">
                 {{ $t('links.download') }}
               </a>
-              <a :href="downloads.bungee" v-if="options.bungee" download>
+              <a :href="downloads.bungee" v-if="options.bungee" download class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center no-underline">
                 {{ $t('links.download') }}
               </a>
-              <a :href="downloads.velocity" v-if="options.velocity" download>
+              <a :href="downloads.velocity" v-if="options.velocity" download class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center no-underline">
                 {{ $t('links.download') }}
               </a>
             </div>
           </template>
           <template v-if="options.legacy">
-            <img alt="LuckPerms logo" src="@/assets/logo.svg">
-            <h1>{{ $t('quiz.resultLegacy', { serverType }) }}</h1>
-            <div class="options">
-              <a :href="downloads['bukkit-legacy']" v-if="options.bukkit" download>
+            <img alt="LuckPerms logo" src="@/assets/logo.svg" class="w-32 h-32 mb-4">
+            <h1 class="my-0 mb-4 text-center">{{ $t('quiz.resultLegacy', { serverType }) }}</h1>
+            <div class="options flex flex-col w-full list-none m-0 p-0">
+              <a :href="downloads['bukkit-legacy']" v-if="options.bukkit" download class="bg-brand text-navy font-bold mx-4 my-4 p-2 rounded cursor-pointer text-[1.5rem] text-center no-underline">
                 {{ $t('links.download') }}
               </a>
             </div>
           </template>
           <template v-if="options.unsupported">
-            <h1 v-if="!options.bungee">{{ $t('quiz.outdated', { serverType }) }}</h1>
-            <h1 v-if="options.bungee">{{ $t('quiz.travertine') }}</h1>
+            <h1 v-if="!options.bungee" class="my-0 mb-4 text-center">{{ $t('quiz.outdated', { serverType }) }}</h1>
+            <h1 v-if="options.bungee" class="my-0 mb-4 text-center">{{ $t('quiz.travertine') }}</h1>
           </template>
         </div>
       </transition>

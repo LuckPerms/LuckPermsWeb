@@ -43,7 +43,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 .avatar {
   image-rendering: -webkit-optimize-contrast;
   image-rendering: pixelated;

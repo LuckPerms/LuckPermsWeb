@@ -633,582 +633,484 @@ export default {
 };
 </script>
 
-<style lang="scss">
-  .add-node {
-    background-color: #666670;
-    box-shadow: 0 0 1em rgba(0,0,0,.2);
-    z-index: 10;
-
-    > .row {
-      position: relative;
-      display: flex;
-
-      > div {
-        border-right: 1px solid rgba(0,0,0,.2);
-        padding: .5rem 0;
-      }
-
-      > button {
-        margin: .5rem;
-        color: $brand-color;
-        background: $grey;
-        border: 0;
-        border-radius: 2px;
-        width: 5em;
-        cursor: not-allowed;
-        opacity: .5;
-        font-family: "Source Code Pro", monospace;
-
-        span {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-
-          svg {
-            margin-bottom: .5rem;
-          }
-        }
-
-        &:not([disabled]) {
-          opacity: 1;
-          cursor: pointer;
-
-          &:hover {
-            opacity: .8;
-          }
-        }
-      }
-
-      .form-group {
-        display: flex;
-        flex-direction: column;
-        flex: 1 1 12%;
-        padding-left: .5em;
-        padding-right: .5em;
-        align-items: flex-start;
-        position: relative;
-
-        &:first-child {
-          flex: 2 2 40%;
-        }
-
-        &.node-builder {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 0;
-          padding: 0.5rem;
-
-          > label {
-            margin-bottom: 0.5rem;
-          }
-
-          .node-builder-row {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-end;
-            width: 100%;
-            gap: 0.5rem;
-          }
-
-          .node-type-select {
-            flex: 0 0 auto;
-            min-width: 120px;
-            max-width: 140px;
-            padding: 0.6rem 0.75rem;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 2px;
-            margin-right: 0.5rem;
-            color: #FFF;
-            font-family: 'Source Code Pro', monospace;
-            font-weight: 600;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
-            align-self: flex-end;
-            min-height: 38px;
-
-            &:focus {
-              outline: none;
-              border-color: $brand-color;
-              background: rgba(0, 0, 0, 0.4);
-            }
-          }
-
-          .node-type-inputs {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: row;
-            gap: 0.5rem;
-            align-items: flex-start;
-            padding: 0;
-            width: 100%;
-
-            .input-group {
-              display: flex;
-              flex-direction: column;
-              flex: 1 1 auto;
-              gap: 0.15rem;
-              min-width: 0;
-
-              &.flex-grow {
-                flex: 2 1 auto;
-              }
-
-              .input-label {
-                font-size: 0.65rem;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                color: rgba(255, 255, 255, 0.5);
-                font-weight: 600;
-                margin: 0;
-                padding: 0 0.25rem;
-                line-height: 1;
-                white-space: nowrap;
-              }
-
-              &.input-with-warning {
-                .input-wrapper {
-                  position: relative;
-                  width: 100%;
-
-                  .warning-icon {
-                    position: absolute;
-                    right: 0.5rem;
-                    top: 0.5rem;
-                    color: #fac858;
-                    cursor: help;
-                    font-size: 1rem;
-                    pointer-events: all;
-                    z-index: 1;
-
-                    &:hover {
-                      color: #ffdc73;
-
-                      .tooltip {
-                        visibility: visible;
-                        opacity: 1;
-                      }
-                    }
-
-                    .tooltip {
-                      visibility: hidden;
-                      opacity: 0;
-                      position: absolute;
-                      right: 0;
-                      bottom: calc(100% + 0.5rem);
-                      background: rgba(50, 50, 55, 0.98);
-                      color: #FFF;
-                      padding: 0.75rem 1rem;
-                      border-radius: 4px;
-                      width: 280px;
-                    }
-                  }
-                }
-              }
-            }
-
-            .node-input {
-              width: 100%;
-              padding: 0.6rem 0.65rem;
-              background: rgba(0, 0, 0, 0.2);
-              border: 1px solid rgba(255, 255, 255, 0.1);
-              border-radius: 2px;
-              color: #FFF;
-              font-family: 'Source Code Pro', monospace;
-              font-size: 0.9rem;
-              box-sizing: border-box;
-              min-height: 38px;
-
-              &::placeholder {
-                color: rgba(255, 255, 255, 0.4);
-              }
-
-              &:focus {
-                outline: none;
-                border-color: $brand-color;
-                background: rgba(0, 0, 0, 0.3);
-              }
-            }
-
-            .multiselect {
-              flex: 1 1 auto;
-              width: 100%;
-              min-height: 38px;
-            }
-
-            > .input-group:first-child:last-child {
-              flex: 1 1 100%;
-            }
-          }
-        }
-
-        + .form-group {
-          padding-top: .5rem;
-          border-top: 1px solid rgba(0,0,0,.2);
-        }
-
-        &.bulk-edit {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-direction: row;
-          padding: 0 2rem;
-
-          p {
-            margin: 0;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-
-            span span {
-              font-size: 3rem;
-              color: $brand-color;
-              margin-right: 1rem;
-              font-weight: 600;
-            }
-
-            button {
-              background: transparent;
-              margin-left: 1rem;
-              border: 0;
-              font-size: 1.5rem;
-              opacity: .5;
-              cursor: pointer;
-              height: 1em;
-
-              &:hover {
-                opacity: .75;
-              }
-            }
-          }
-
-          .buttons {
-            button {
-              background: rgba(0,0,0,.25);
-              font-family: "Source Code Pro", monospace;
-              font-size: 1rem;
-              border: 0;
-              color: rgba(0,0,0,.8);
-              margin-left: 1rem;
-              padding: .5rem 1rem;
-              cursor: pointer;
-
-              svg {
-                opacity: .5;
-                margin-right: .5rem;
-              }
-
-              &:hover {
-                background: rgba(0,0,0,.2);
-              }
-
-              &:nth-child(1) {
-                color: $brand-color;
-              }
-
-              &:nth-child(2) {
-                color: #FFF;
-              }
-
-              &:nth-child(3) {
-                color: $red;
-              }
-            }
-          }
-        }
-
-        label {
-          line-height: 1;
-          margin-bottom: .5em;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          width: 100%;
-          cursor: pointer;
-
-          button.code {
-            width: auto;
-          }
-        }
-
-        .bulk-value {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: .5rem;
-
-          label {
-            margin: 0;
-            cursor: unset;
-          }
-
-          > div {
-            display: flex;
-          }
-
-          button {
-            opacity: 0.5;
-            margin-left: .2rem;
-          }
-
-          .null {
-            color: white;
-          }
-
-          .selected {
-            opacity: 1;
-          }
-        }
-
-        .multiselect__input {
-          background: transparent;
-          font: inherit;
-          color: #FFF;
-
-          &::placeholder {
-            color: rgba(255,255,255,.2);
-          }
-        }
-
-        input, textarea {
-          width: 100%;
-          height: 100%;
-          border: 0;
-          background: rgba(0,0,0,0.2);
-          border-radius: 2px;
-          padding: .2em .5em;
-          color: #FFF;
-          font-family: 'Source Code Pro', monospace;
-          line-height: 1.5;
-        }
-
-        .code {
-          color: $red;
-          cursor: pointer;
-          width: 100%;
-          text-align: center;
-
-          &.true {
-            color: $brand-color;
-          }
-
-          &:hover {
-            opacity: .8;
-          }
-        }
-      }
-
-      .contexts {
-        .bulk-contexts {
-          display: flex;
-          width: 100%;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: .5rem;
-
-          label {
-            width: auto;
-            margin: 0;
-          }
-
-          > div {
-            display: flex;
-          }
-        }
-
-        button.code {
-          color: $brand-color;
-        }
-
-        code {
-          display: inline-block;
-          margin-right: .2rem;
-          margin-top: .2rem;
-
-          span {
-            font-size: smaller;
-            opacity: .5;
-          }
-        }
-      }
-    }
-
-    .known-permissions {
-      position: absolute;
-      bottom: 100%;
-      left: 0;
-      background: #565660;
-      z-index: 15;
-      display: flex;
-      flex-direction: column-reverse;
-      width: 40%;
-      max-height: 50vh;
-      overflow-y: auto;
-      padding: .5em 0;
-      box-shadow: 0 0 1em rgba(0,0,0,.2);
-
-      li {
-        padding: .2em 1em;
-        border-bottom: 1px solid rgba(0,0,0,0.2);
-        cursor: pointer;
-        word-break: break-all;
-        font-family: 'Source Code Pro', monospace;
-
-        &:hover {
-          background: rgba(255,255,255,.2);
-        }
-
-        &.highlighted {
-          background: rgba(255,255,255,.2);
-        }
-      }
-    }
-
-    .multiselect {
-      color: white;
-    }
-
-    .multiselect__tags {
-      background: rgba(0,0,0,.1);
-      border: 0;
-      border-radius: 2px;
-      font: inherit;
-      max-height: 30vh;
-      overflow-y: auto;
-      min-height: 38px;
-      padding: 0.45rem 2.5rem 0.45rem 0.65rem;
-    }
-
-    .multiselect__single {
-      background: transparent;
-      color: #FFF;
-      font-family: 'Source Code Pro', monospace;
-      margin-bottom: 0;
-      padding: 0;
-    }
-
-    .multiselect__placeholder {
-      color: rgba(255, 255, 255, 0.4);
-      margin-bottom: 0;
-      padding-top: 0;
-    }
-
-    .multiselect__tag {
-      background: rgba(0,0,0,.25);
-      color: white;
-      font-family: "Source Code Pro", monospace;
-      font-size: .8rem;
-      border-radius: 2px;
-      padding: .25rem 1.5rem .25rem .5rem;
-
-      &-icon {
-        border-radius: 0;
-
-        &:after {
-          color: #000;
-          opacity: .25;
-        }
-
-        &:hover {
-          background: transparent;
-
-          &:after {
-            opacity: .5;
-          }
-        }
-      }
-    }
-
-    .multiselect__content {
-      font-family: "Source Code Pro", monospace;
-
-      &-wrapper {
-        background: $grey;
-        border: 0;
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-        box-shadow: 0 -1rem 2rem rgba(0,0,0,.1);
-      }
-    }
-
-    .multiselect__element {
-      &:not(:first-child) {
-        border-top: 1px solid rgba(0,0,0,.2);
-      }
-    }
-
-    .multiselect__option {
-      &--highlight {
-        background: rgba(255,255,255,.2);
-
-        &:after {
-          background: rgba(0,0,0,.2);
-        }
-      }
-
-      &--selected {
-        background: $brand-color;
-        color: $navy;
-
-        &:after {
-          color: rgba(0,0,0,.5);
-        }
-
-        &.multiselect__option--highlight {
-          background: color.adjust($brand-color, $lightness: 10%);
-        }
-      }
-    }
-
-    .vdp-datepicker__calendar {
-      bottom: 100%;
-      top: unset;
-    }
-
-    .context-ui {
-      bottom: 8rem;
-      top: unset;
-      right: 2rem;
-
-      input {
-        border: 0;
-        background: rgba(0,0,0,.2);
-        color: #FFF;
-        font-family: "Source Code Pro", monospace;
-      }
-
-      .context-list {
-        max-height: 10rem;
-      }
-    }
-  }
-
-  #bulk_contexts_replace {
-    background: rgba(0,0,0,.2);
-    color: $grey;
-    font-family: "Source Code Pro", monospace;
-    border: 0;
-    opacity: .5;
-    margin-right: .2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-
-    svg {
-      margin-right: .5rem;
-    }
-
-    &:hover {
-      opacity: .75;
-    }
-
-    &.selected {
-      color: $brand-color;
-      opacity: 1;
-    }
-  }
+<style>
+.add-node {
+  background-color: #666670;
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+.add-node > .row {
+  position: relative;
+  display: flex;
+}
+.add-node > .row > div {
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0.5rem 0;
+}
+.add-node > .row > button {
+  margin: 0.5rem;
+  color: var(--color-brand);
+  background: var(--color-grey);
+  border: 0;
+  border-radius: 2px;
+  width: 5em;
+  cursor: not-allowed;
+  opacity: 0.5;
+  font-family: "Source Code Pro", monospace;
+}
+.add-node > .row > button span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.add-node > .row > button span svg {
+  margin-bottom: 0.5rem;
+}
+.add-node > .row > button:not([disabled]) {
+  opacity: 1;
+  cursor: pointer;
+}
+.add-node > .row > button:not([disabled]):hover {
+  opacity: 0.8;
+}
+.add-node > .row .form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 12%;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  align-items: flex-start;
+  position: relative;
+}
+.add-node > .row .form-group:first-child {
+  flex: 2 2 40%;
+}
+.add-node > .row .form-group.node-builder {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  padding: 0.5rem;
+}
+.add-node > .row .form-group.node-builder > label {
+  margin-bottom: 0.5rem;
+}
+.add-node > .row .form-group.node-builder .node-builder-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 100%;
+  gap: 0.5rem;
+}
+.add-node > .row .form-group.node-builder .node-type-select {
+  flex: 0 0 auto;
+  min-width: 120px;
+  max-width: 140px;
+  padding: 0.6rem 0.75rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  margin-right: 0.5rem;
+  color: #FFF;
+  font-family: "Source Code Pro", monospace;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  align-self: flex-end;
+  min-height: 38px;
+}
+.add-node > .row .form-group.node-builder .node-type-select:focus {
+  outline: none;
+  border-color: var(--color-brand);
+  background: rgba(0, 0, 0, 0.4);
+}
+.add-node > .row .form-group.node-builder .node-type-inputs {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: flex-start;
+  padding: 0;
+  width: 100%;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .input-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .input-group.flex-grow {
+  flex: 2 1 auto;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .input-group .input-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+  margin: 0;
+  padding: 0 0.25rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .input-group.input-with-warning .input-wrapper {
+  position: relative;
+  width: 100%;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .input-group.input-with-warning .input-wrapper .warning-icon {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  color: #fac858;
+  cursor: help;
+  font-size: 1rem;
+  pointer-events: all;
+  z-index: 1;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .input-group.input-with-warning .input-wrapper .warning-icon:hover {
+  color: #ffdc73;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .input-group.input-with-warning .input-wrapper .warning-icon:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .input-group.input-with-warning .input-wrapper .warning-icon .tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.5rem);
+  background: rgba(50, 50, 55, 0.98);
+  color: #FFF;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  width: 280px;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .node-input {
+  width: 100%;
+  padding: 0.6rem 0.65rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  color: #FFF;
+  font-family: "Source Code Pro", monospace;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  min-height: 38px;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .node-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .node-input:focus {
+  outline: none;
+  border-color: var(--color-brand);
+  background: rgba(0, 0, 0, 0.3);
+}
+.add-node > .row .form-group.node-builder .node-type-inputs .multiselect {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 38px;
+}
+.add-node > .row .form-group.node-builder .node-type-inputs > .input-group:first-child:last-child {
+  flex: 1 1 100%;
+}
+.add-node > .row .form-group + .form-group {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+.add-node > .row .form-group.bulk-edit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 0 2rem;
+}
+.add-node > .row .form-group.bulk-edit p {
+  margin: 0;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+.add-node > .row .form-group.bulk-edit p span span {
+  font-size: 3rem;
+  color: var(--color-brand);
+  margin-right: 1rem;
+  font-weight: 600;
+}
+.add-node > .row .form-group.bulk-edit p button {
+  background: transparent;
+  margin-left: 1rem;
+  border: 0;
+  font-size: 1.5rem;
+  opacity: 0.5;
+  cursor: pointer;
+  height: 1em;
+}
+.add-node > .row .form-group.bulk-edit p button:hover {
+  opacity: 0.75;
+}
+.add-node > .row .form-group.bulk-edit .buttons button {
+  background: rgba(0, 0, 0, 0.25);
+  font-family: "Source Code Pro", monospace;
+  font-size: 1rem;
+  border: 0;
+  color: rgba(0, 0, 0, 0.8);
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.add-node > .row .form-group.bulk-edit .buttons button svg {
+  opacity: 0.5;
+  margin-right: 0.5rem;
+}
+.add-node > .row .form-group.bulk-edit .buttons button:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+.add-node > .row .form-group.bulk-edit .buttons button:nth-child(1) {
+  color: var(--color-brand);
+}
+.add-node > .row .form-group.bulk-edit .buttons button:nth-child(2) {
+  color: #FFF;
+}
+.add-node > .row .form-group.bulk-edit .buttons button:nth-child(3) {
+  color: var(--color-red);
+}
+.add-node > .row .form-group label {
+  line-height: 1;
+  margin-bottom: 0.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+.add-node > .row .form-group label button.code {
+  width: auto;
+}
+.add-node > .row .form-group .bulk-value {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.add-node > .row .form-group .bulk-value label {
+  margin: 0;
+  cursor: unset;
+}
+.add-node > .row .form-group .bulk-value > div {
+  display: flex;
+}
+.add-node > .row .form-group .bulk-value button {
+  opacity: 0.5;
+  margin-left: 0.2rem;
+}
+.add-node > .row .form-group .bulk-value .null {
+  color: white;
+}
+.add-node > .row .form-group .bulk-value .selected {
+  opacity: 1;
+}
+.add-node > .row .form-group .multiselect__input {
+  background: transparent;
+  font: inherit;
+  color: #FFF;
+}
+.add-node > .row .form-group .multiselect__input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+.add-node > .row .form-group input, .add-node > .row .form-group textarea {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  padding: 0.2em 0.5em;
+  color: #FFF;
+  font-family: "Source Code Pro", monospace;
+  line-height: 1.5;
+}
+.add-node > .row .form-group .code {
+  color: var(--color-red);
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+}
+.add-node > .row .form-group .code.true {
+  color: var(--color-brand);
+}
+.add-node > .row .form-group .code:hover {
+  opacity: 0.8;
+}
+.add-node > .row .contexts .bulk-contexts {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.add-node > .row .contexts .bulk-contexts label {
+  width: auto;
+  margin: 0;
+}
+.add-node > .row .contexts .bulk-contexts > div {
+  display: flex;
+}
+.add-node > .row .contexts button.code {
+  color: var(--color-brand);
+}
+.add-node > .row .contexts code {
+  display: inline-block;
+  margin-right: 0.2rem;
+  margin-top: 0.2rem;
+}
+.add-node > .row .contexts code span {
+  font-size: smaller;
+  opacity: 0.5;
+}
+.add-node .known-permissions {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background: #565660;
+  z-index: 15;
+  display: flex;
+  flex-direction: column-reverse;
+  width: 40%;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding: 0.5em 0;
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+}
+.add-node .known-permissions li {
+  padding: 0.2em 1em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  word-break: break-all;
+  font-family: "Source Code Pro", monospace;
+}
+.add-node .known-permissions li:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.add-node .known-permissions li.highlighted {
+  background: rgba(255, 255, 255, 0.2);
+}
+.add-node .multiselect {
+  color: white;
+}
+.add-node .multiselect__tags {
+  background: rgba(0, 0, 0, 0.1);
+  border: 0;
+  border-radius: 2px;
+  font: inherit;
+  max-height: 30vh;
+  overflow-y: auto;
+  min-height: 38px;
+  padding: 0.45rem 2.5rem 0.45rem 0.65rem;
+}
+.add-node .multiselect__single {
+  background: transparent;
+  color: #FFF;
+  font-family: "Source Code Pro", monospace;
+  margin-bottom: 0;
+  padding: 0;
+}
+.add-node .multiselect__placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0;
+  padding-top: 0;
+}
+.add-node .multiselect__tag {
+  background: rgba(0, 0, 0, 0.25);
+  color: white;
+  font-family: "Source Code Pro", monospace;
+  font-size: 0.8rem;
+  border-radius: 2px;
+  padding: 0.25rem 1.5rem 0.25rem 0.5rem;
+}
+.add-node .multiselect__tag-icon {
+  border-radius: 0;
+}
+.add-node .multiselect__tag-icon:after {
+  color: #000;
+  opacity: 0.25;
+}
+.add-node .multiselect__tag-icon:hover {
+  background: transparent;
+}
+.add-node .multiselect__tag-icon:hover:after {
+  opacity: 0.5;
+}
+.add-node .multiselect__content {
+  font-family: "Source Code Pro", monospace;
+}
+.add-node .multiselect__content-wrapper {
+  background: var(--color-grey);
+  border: 0;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  box-shadow: 0 -1rem 2rem rgba(0, 0, 0, 0.1);
+}
+.add-node .multiselect__element:not(:first-child) {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+.add-node .multiselect__option--highlight {
+  background: rgba(255, 255, 255, 0.2);
+}
+.add-node .multiselect__option--highlight:after {
+  background: rgba(0, 0, 0, 0.2);
+}
+.add-node .multiselect__option--selected {
+  background: var(--color-brand);
+  color: var(--color-navy);
+}
+.add-node .multiselect__option--selected:after {
+  color: rgba(0, 0, 0, 0.5);
+}
+.add-node .multiselect__option--selected.multiselect__option--highlight {
+  background: rgb(68.4643414888%, 98.7870900573%, 9.8403609231%);
+}
+.add-node .vdp-datepicker__calendar {
+  bottom: 100%;
+  top: unset;
+}
+.add-node .context-ui {
+  bottom: 8rem;
+  top: unset;
+  right: 2rem;
+}
+.add-node .context-ui input {
+  border: 0;
+  background: rgba(0, 0, 0, 0.2);
+  color: #FFF;
+  font-family: "Source Code Pro", monospace;
+}
+.add-node .context-ui .context-list {
+  max-height: 10rem;
+}
+
+#bulk_contexts_replace {
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--color-grey);
+  font-family: "Source Code Pro", monospace;
+  border: 0;
+  opacity: 0.5;
+  margin-right: 0.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+#bulk_contexts_replace svg {
+  margin-right: 0.5rem;
+}
+#bulk_contexts_replace:hover {
+  opacity: 0.75;
+}
+#bulk_contexts_replace.selected {
+  color: var(--color-brand);
+  opacity: 1;
+}
 </style>

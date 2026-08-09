@@ -207,95 +207,86 @@ export default {
 };
 </script>
 
-<style lang="scss">
-  .download-quiz {
-    background: rgba(0, 0, 0, .9);
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .modal {
-      background: $bg-gradient-dark;
-      padding: 4rem;
-      border-radius: 4px;
-      width: 100%;
-      max-width: 48rem;
-      height: 100%;
-      max-height: 32rem;
-      overflow: hidden;
-      position: relative;
-
-      .close-button {
-        position: absolute;
-        bottom: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        background: transparent;
-        border: 0;
-        font: inherit;
-        color: white;
-        opacity: .5;
-        text-transform: uppercase;
-        cursor: pointer;
-        padding: 1rem;
-
-        &:hover {
-          opacity: 1;
-        }
-      }
-
-      .page {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: absolute;
-        width: calc(100% - 8rem);
-        height: calc(100% - 8rem);
-        overflow: auto;
-
-        img {
-          width: 8rem;
-          height: 8rem;
-          margin-bottom: 1rem;
-        }
-
-        h1 {
-          margin: 0 0 1rem;
-          text-align: center;
-        }
-
-        .options {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-
-          li, a {
-            background: $brand-color;
-            color: $navy;
-            font-weight: bold;
-            margin: 1rem;
-            padding: .5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            text-align: center;
-            text-decoration: none;
-
-            &:hover {
-              background: color.adjust($brand-color, $lightness: 10%);
-            }
-          }
-        }
-      }
-    }
-  }
+<style>
+.download-quiz {
+  background: rgba(0, 0, 0, 0.9);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.download-quiz .modal {
+  background: linear-gradient(-2deg, #11111d, var(--color-grey));
+  padding: 4rem;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 48rem;
+  height: 100%;
+  max-height: 32rem;
+  overflow: hidden;
+  position: relative;
+}
+.download-quiz .modal .close-button {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  color: white;
+  opacity: 0.5;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 1rem;
+}
+.download-quiz .modal .close-button:hover {
+  opacity: 1;
+}
+.download-quiz .modal .page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  width: calc(100% - 8rem);
+  height: calc(100% - 8rem);
+  overflow: auto;
+}
+.download-quiz .modal .page img {
+  width: 8rem;
+  height: 8rem;
+  margin-bottom: 1rem;
+}
+.download-quiz .modal .page h1 {
+  margin: 0 0 1rem;
+  text-align: center;
+}
+.download-quiz .modal .page .options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.download-quiz .modal .page .options li, .download-quiz .modal .page .options a {
+  background: var(--color-brand);
+  color: var(--color-navy);
+  font-weight: bold;
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  text-align: center;
+  text-decoration: none;
+}
+.download-quiz .modal .page .options li:hover, .download-quiz .modal .page .options a:hover {
+  background: rgb(68.4643414888%, 98.7870900573%, 9.8403609231%);
+}
 </style>

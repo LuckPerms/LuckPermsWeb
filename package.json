@@ -47,7 +47,6 @@
     "@vitejs/plugin-vue": "^6.0.8",
     "oxfmt": "^0.62.0",
     "oxlint": "^1.77.0",
-    "sass": "^1.102.0",
     "tailwindcss": "^4.3.3",
     "ultracite": "^7.10.2",
     "vite": "^8.2.1"

@@ -378,164 +378,143 @@ export default {
 };
 </script>
 
-<style lang="scss">
-  main.download {
-    overflow-y: auto;
-
-    .hero {
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 4rem;
-
-        @include breakpoint($md) {
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-        }
-      }
-
-      .version {
-        line-height: 1.2;
-      }
-
-      h1 {
-        text-align: center;
-
-        @include breakpoint($md) {
-          text-align: left;
-        }
-      }
-
-      p {
-        text-align: center;
-        font-size: 1.5rem;
-        opacity: 1;
-        color: rgba(225, 255, 255, .5);
-
-        @include breakpoint($md) {
-          text-align: right;
-        }
-      }
-
-      span {
-        color: $brand_color;
-        font-weight: bold;
-        font-size: 2.2em;
-      }
-    }
-
-    .resource {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 1.25rem 1.5rem;
-
-      @include breakpoint($md) {
-        flex-direction: row;
-        align-items: center;
-      }
-
-      span {
-        margin: 0 1rem 0 0;
-        white-space: nowrap;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-      }
-
-      small {
-        margin-top: 1rem;
-
-        @include breakpoint($md) {
-          margin: 0;
-        }
-      }
-
-      img {
-        margin-right: .75rem;
-        width: 1.5em;
-        filter: saturate(20%);
-      }
-
-      &:hover img {
-        filter: none;
-      }
-    }
-
-    .button {
-      color: $brand-color;
-      background-color: $grey;
-
-      &:hover {
-        background: color.adjust($grey, $lightness: 10%);
-      }
-
-      svg {
-        opacity: .5;
-        margin-right: 1rem;
-      }
-    }
-
-    .changelog {
-      list-style: none;
-      padding: 0;
-
-      li {
-        padding-bottom: .25rem;
-        margin-bottom: .25rem;
-        display: flex;
-        justify-content: space-between;
-
-        &:not(:last-child) {
-          border-bottom: 1px solid rgba(255, 255, 255, .1);
-        }
-
-        > span {
-          display: flex;
-        }
-
-        .title {
-          margin: 0 1rem;
-        }
-
-        .time {
-          flex-shrink: 0;
-        }
-      }
-    }
-
-    .extensions,
-    .additional-plugins,
-    .placeholder-expansions {
-      &.hero {
-        .container {
-          justify-content: center;
-        }
-
-        h1, p {
-          text-align: center;
-        }
-      }
-
-      .resources {
-        > div {
-          + div {
-            padding-top: 0;
-
-            @include breakpoint($md) {
-              padding-top: 4rem;
-            }
-          }
-        }
-      }
-    }
-
-    .additional-plugins {
-      section {
-        justify-content: center;
-      }
-    }
+<style>
+main.download {
+  overflow-y: auto;
+}
+main.download .hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem;
+}
+@media screen and (min-width: 992px) {
+  main.download .hero .container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
+}
+main.download .hero .version {
+  line-height: 1.2;
+}
+main.download .hero h1 {
+  text-align: center;
+}
+@media screen and (min-width: 992px) {
+  main.download .hero h1 {
+    text-align: left;
+  }
+}
+main.download .hero p {
+  text-align: center;
+  font-size: 1.5rem;
+  opacity: 1;
+  color: rgba(225, 255, 255, 0.5);
+}
+@media screen and (min-width: 992px) {
+  main.download .hero p {
+    text-align: right;
+  }
+}
+main.download .hero span {
+  color: var(--color-brand);
+  font-weight: bold;
+  font-size: 2.2em;
+}
+main.download .resource {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.25rem 1.5rem;
+}
+@media screen and (min-width: 992px) {
+  main.download .resource {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+main.download .resource span {
+  margin: 0 1rem 0 0;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+main.download .resource small {
+  margin-top: 1rem;
+}
+@media screen and (min-width: 992px) {
+  main.download .resource small {
+    margin: 0;
+  }
+}
+main.download .resource img {
+  margin-right: 0.75rem;
+  width: 1.5em;
+  filter: saturate(20%);
+}
+main.download .resource:hover img {
+  filter: none;
+}
+main.download .button {
+  color: var(--color-brand);
+  background-color: var(--color-grey);
+}
+main.download .button:hover {
+  background: rgb(26.5579499126%, 26.5579499126%, 33.0498932246%);
+}
+main.download .button svg {
+  opacity: 0.5;
+  margin-right: 1rem;
+}
+main.download .changelog {
+  list-style: none;
+  padding: 0;
+}
+main.download .changelog li {
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+}
+main.download .changelog li:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+main.download .changelog li > span {
+  display: flex;
+}
+main.download .changelog li .title {
+  margin: 0 1rem;
+}
+main.download .changelog li .time {
+  flex-shrink: 0;
+}
+main.download .extensions.hero .container,
+main.download .additional-plugins.hero .container,
+main.download .placeholder-expansions.hero .container {
+  justify-content: center;
+}
+main.download .extensions.hero h1, main.download .extensions.hero p,
+main.download .additional-plugins.hero h1,
+main.download .additional-plugins.hero p,
+main.download .placeholder-expansions.hero h1,
+main.download .placeholder-expansions.hero p {
+  text-align: center;
+}
+main.download .extensions .resources > div + div,
+main.download .additional-plugins .resources > div + div,
+main.download .placeholder-expansions .resources > div + div {
+  padding-top: 0;
+}
+@media screen and (min-width: 992px) {
+  main.download .extensions .resources > div + div,
+  main.download .additional-plugins .resources > div + div,
+  main.download .placeholder-expansions .resources > div + div {
+    padding-top: 4rem;
+  }
+}
+main.download .additional-plugins section {
+  justify-content: center;
+}
 </style>

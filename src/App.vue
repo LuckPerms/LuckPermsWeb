@@ -216,13 +216,13 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 * {
   box-sizing: border-box;
 }
 
 :focus {
-  outline: $brand-color 1px solid;
+  outline: var(--color-brand) 1px solid;
 }
 
 input:focus {
@@ -230,28 +230,28 @@ input:focus {
 }
 
 ::-webkit-scrollbar {
-  width: .5rem;
-
-  &-track {
-    background: rgb(10, 10, 24);
-    border-left: 1px solid rgba(255,255,255,.1);
-  }
-
-  &-thumb {
-    background: rgba(255, 255, 255, .4);
-  }
+  width: 0.5rem;
+}
+::-webkit-scrollbar-track {
+  background: rgb(10, 10, 24);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 html {
   height: 100%;
   font-size: 12px;
-  scrollbar-color: hsla(0, 0%, 100%, .4) rgba(0, 0, 0, 0%);
-
-  @include breakpoint($md) {
+  scrollbar-color: hsla(0, 0%, 100%, 0.4) rgba(0, 0, 0, 0);
+}
+@media screen and (min-width: 992px) {
+  html {
     font-size: 14px;
   }
-
-  @include breakpoint($lg) {
+}
+@media screen and (min-width: 1400px) {
+  html {
     font-size: 16px;
   }
 }
@@ -264,7 +264,7 @@ body {
 }
 
 #app {
-  font-family: 'Source Sans Pro', 'Open Sans', sans-serif;
+  font-family: "Source Sans Pro", "Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #FFF;
@@ -274,417 +274,344 @@ body {
   height: 100%;
   display: flex;
   flex-flow: column;
-
-  > main {
-    height: 100%;
-    max-height: calc(100% - 6rem);
-  }
-
-  > footer {
-    background: $grey;
-    padding: .4em 1em;
-    position: relative;
-    font-size: .9em;
-    flex: 0 0 auto;
-    height: 2rem;
-    box-shadow: 0 0 1rem rgba(0,0,0,0.2);
-
-    svg {
-      color: #95b556;
-    }
-
-    a {
-      text-decoration: none;
-    }
-
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      justify-content: space-between;
-    }
-  }
+}
+#app > main {
+  height: 100%;
+  max-height: calc(100% - 6rem);
+}
+#app > footer {
+  background: var(--color-grey);
+  padding: 0.4em 1em;
+  position: relative;
+  font-size: 0.9em;
+  flex: 0 0 auto;
+  height: 2rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+}
+#app > footer svg {
+  color: #95b556;
+}
+#app > footer a {
+  text-decoration: none;
+}
+#app > footer ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
 }
 
 #nav-menu-toggle {
   background: transparent;
-  color: $brand-color;
+  color: var(--color-brand);
   height: 3rem;
   width: 3rem;
   font-size: 2rem;
   border: 0;
-
-  @include breakpoint($sm) {
+}
+@media screen and (min-width: 768px) {
+  #nav-menu-toggle {
     display: none;
   }
 }
 
 #nav {
-  padding: .5rem;
+  padding: 0.5rem;
   z-index: 100;
-  box-shadow: 0 0 0.5rem rgba(0,0,0,.25);
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: space-between;
   position: relative;
-
-  > div {
+}
+#nav > div {
+  display: flex;
+  align-items: center;
+}
+#nav > div > span {
+  opacity: 0.5;
+  margin-left: 0.5rem;
+}
+#nav .logo {
+  height: 3rem;
+  padding: 0.5rem;
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  color: #FFF;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-weight: bold;
+}
+#nav .logo:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+#nav .logo img {
+  height: 100%;
+  width: auto;
+  margin-right: 0.5rem;
+}
+#nav hr {
+  height: 2rem;
+  margin: 0 1rem 0 0.5rem;
+  border-color: var(--color-brand);
+}
+#nav .nav-message {
+  max-width: 25rem;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.66);
+  transition: all 0.2s;
+}
+#nav .nav-message .new {
+  color: var(--color-brand);
+}
+#nav .nav-message img {
+  height: 2rem;
+  margin-right: 0.5rem;
+}
+#nav .nav-message a {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+}
+#nav .nav-message:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+#nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 4rem;
+  transition: right 0.2s;
+  flex-direction: column;
+  background: black;
+  right: -100%;
+  width: 100%;
+  max-width: 24rem;
+  z-index: 100;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+@media screen and (min-width: 768px) {
+  #nav ul {
+    flex-direction: row;
+    position: relative;
+    max-width: unset;
+    width: auto;
+    top: unset;
+    right: unset;
+    background: transparent;
+    overflow: initial;
+    overflow-y: initial;
+  }
+}
+#nav ul.active {
+  right: 0;
+  display: initial;
+  max-height: calc(100vh - 8rem);
+}
+@media screen and (max-width: 767px) {
+  #nav ul.top-level:not(.active) {
+    display: none;
+  }
+}
+#nav ul li {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+#nav ul li img {
+  width: 1.5rem;
+}
+#nav ul li.overlap {
+  z-index: 110;
+}
+@media screen and (min-width: 768px) {
+  #nav ul li {
+    flex-direction: row;
+  }
+}
+#nav ul li:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+#nav ul li a, #nav ul li span {
+  color: var(--color-brand);
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  padding: 0.5em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.5rem;
+}
+@media screen and (min-width: 768px) {
+  #nav ul li a, #nav ul li span {
+    font-size: 1rem;
+  }
+}
+@media screen and (min-width: 1400px) {
+  #nav ul li a, #nav ul li span {
+    padding: 0.5em 1rem;
+  }
+}
+#nav ul li a.router-link-exact-active, #nav ul li span.router-link-exact-active {
+  color: #FFF;
+}
+#nav ul li a.tools, #nav ul li span.tools {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  #nav ul li a.tools, #nav ul li span.tools {
     display: flex;
-    align-items: center;
-
-    > span {
-      opacity: .5;
-      margin-left: .5rem;
-    }
   }
-
-  .logo {
-    height: 3rem;
-    padding: .5rem;
-    font-size: 1.7rem;
-    display: flex;
-    align-items: center;
-    color: #FFF;
-    text-decoration: none;
-    transition: all .2s;
-    font-weight: bold;
-
-    &:hover {
-      background: rgba(255,255,255,.1);
-    }
-
-    img {
-      height: 100%;
-      width: auto;
-      margin-right: .5rem;
-    }
-  }
-
-  hr {
-    height: 2rem;
-    margin: 0 1rem 0 .5rem;
-    border-color: $brand-color;
-  }
-
-  .nav-message {
-    max-width: 25rem;
-    font-size: .9rem;
-    line-height: 1.2;
-    color: rgba(255,255,255,.66);
-    transition: all .2s;
-
-    .new {
-      color: $brand-color;
-    }
-
-    img {
-      height: 2rem;
-      margin-right: .5rem;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      font-size: .75rem;
-    }
-
-    &:hover {
-      color: rgba(255,255,255,.8);
-    }
-  }
-
-  ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    top: 4rem;
-    transition: right .2s;
-    flex-direction: column;
-    background: black;
-    right: -100%;
-    width: 100%;
-    max-width: 24rem;
-    z-index: 100;
-    overflow: hidden;
+}
+#nav ul li a > svg, #nav ul li span > svg {
+  margin-right: 0.5rem;
+  opacity: 0.5;
+}
+#nav ul li .locale svg {
+  margin-right: 0;
+}
+#nav ul li .locale + ul {
+  display: none;
+}
+#nav ul li .locale + ul.open {
+  display: flex;
+}
+#nav ul li .locale + ul .fi {
+  width: 1.5rem;
+  margin-right: 0.5rem;
+  padding: 0;
+}
+#nav ul li .locale + ul li span {
+  padding: 0.75rem 2rem;
+  line-height: 1;
+}
+#nav ul li .locale + ul li.selected {
+  background: rgba(255, 255, 255, 0.1);
+}
+@media screen and (min-width: 768px) {
+  #nav ul li .locale + ul {
+    width: 28rem;
+    max-height: 50vh;
     overflow-y: scroll;
-
-    @include breakpoint($sm) {
-      flex-direction: row;
-      position: relative;
-      max-width: unset;
-      width: auto;
-      top: unset;
-      right: unset;
-      background: transparent;
-      overflow: initial;
-      overflow-y: initial;
-    }
-
-    &.active {
-      right: 0;
-      display: initial;
-      max-height: calc(100vh - 8rem);
-    }
-
-    &.top-level:not(.active) {
-      @include breakpoint($xs) {
-        display: none;
-      }
-    }
-
-    li {
-      display: flex;
-      position: relative;
-      flex-direction: column;
-
-      img {
-        width: 1.5rem;
-      }
-
-      &.overlap {
-        z-index: 110;
-      }
-
-      @include breakpoint($sm) {
-        flex-direction: row;
-      }
-
-      &:hover {
-        background: rgba(255,255,255,.1);
-      }
-
-      a, span {
-        color: $brand-color;
-        display: flex;
-        align-items: center;
-        font-weight: bold;
-        padding: .5em;
-        text-decoration: none;
-        text-transform: uppercase;
-        transition: all .2s;
-        cursor: pointer;
-        width: 100%;
-        font-size: 1.5rem;
-
-        @include breakpoint($sm) {
-          font-size: 1rem;
-
-        }
-
-        @include breakpoint($lg) {
-          padding: .5em 1rem;
-        }
-
-        &.router-link-exact-active {
-          color: #FFF;
-        }
-
-        &.tools {
-          display: none;
-
-          @include breakpoint($sm) {
-            display: flex;
-          }
-        }
-
-        > svg {
-          margin-right: .5rem;
-          opacity: .5;
-        }
-      }
-
-      .locale {
-        & svg {
-          margin-right: 0;
-        }
-
-        + ul {
-          display: none;
-
-          &.open {
-            display: flex;
-          }
-
-          .fi { // flag icon
-            width: 1.5rem;
-            margin-right: .5rem;
-            padding: 0;
-          }
-
-          li {
-            span {
-              padding: .75rem 2rem;
-              line-height: 1;
-            }
-
-            &.selected {
-              background: rgba(255,255,255,.1);;
-            }
-          }
-
-          @include breakpoint($sm) {
-            width: 28rem;
-            max-height: 50vh;
-            overflow-y: scroll;
-
-            &.open {
-              display: none;
-            }
-
-            li {
-              span {
-                padding: .5rem 1rem;
-                line-height: 1;
-              }
-            }
-          }
-        }
-
-        .locale-label {
-          padding: 0rem .75rem;
-
-          @include breakpoint($sm) {
-            display: none;
-          }
-        }
-      }
-
-      &:not(:first-child) {
-        a, span {
-          &.router-link-active {
-            color: #FFF;
-          }
-        }
-      }
-
-      > ul {
-        position: relative;
-        top: unset;
-        bottom: unset;
-        right: unset;
-
-        @include breakpoint($sm) {
-          display: none;
-          position: absolute;
-          top: 100%;
-          left: 50%;
-          transform: translateX(-50%);
-          flex-direction: column;
-          min-width: 100%;
-          background: $grey;
-          z-index: 100;
-          box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
-
-          li {
-            &:hover {
-              background: rgba(255,255,255,.1);
-            }
-          }
-
-          a {
-            width: 100%;
-          }
-        }
-      }
-
-      @include breakpoint($sm) {
-        &:hover {
-          ul {
-            display: flex;
-          }
-        }
-      }
-
-      &.external {
-        svg {
-          margin-right: 0;
-
-          @include breakpoint($sm) {
-            opacity: 1;
-          }
-        }
-
-        a {
-          padding: 0 .5rem;
-
-          @include breakpoint($sm) {
-
-            font-size: 1.5rem;
-          }
-
-          @include breakpoint($lg) {
-            padding: .5rem 1rem;
-          }
-
-          &.github {
-            color: #FFF;
-          }
-
-          &.discord {
-            color: #5865F2;
-          }
-
-          span {
-            color: inherit;
-            padding-left: .5rem;
-
-            @include breakpoint($sm) {
-              display: none;
-            }
-          }
-        }
-      }
-    }
+  }
+  #nav ul li .locale + ul.open {
+    display: none;
+  }
+  #nav ul li .locale + ul li span {
+    padding: 0.5rem 1rem;
+    line-height: 1;
+  }
+}
+#nav ul li .locale .locale-label {
+  padding: 0rem 0.75rem;
+}
+@media screen and (min-width: 768px) {
+  #nav ul li .locale .locale-label {
+    display: none;
+  }
+}
+#nav ul li:not(:first-child) a.router-link-active, #nav ul li:not(:first-child) span.router-link-active {
+  color: #FFF;
+}
+#nav ul li > ul {
+  position: relative;
+  top: unset;
+  bottom: unset;
+  right: unset;
+}
+@media screen and (min-width: 768px) {
+  #nav ul li > ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column;
+    min-width: 100%;
+    background: var(--color-grey);
+    z-index: 100;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  }
+  #nav ul li > ul li:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  #nav ul li > ul a {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 768px) {
+  #nav ul li:hover ul {
+    display: flex;
+  }
+}
+#nav ul li.external svg {
+  margin-right: 0;
+}
+@media screen and (min-width: 768px) {
+  #nav ul li.external svg {
+    opacity: 1;
+  }
+}
+#nav ul li.external a {
+  padding: 0 0.5rem;
+}
+@media screen and (min-width: 768px) {
+  #nav ul li.external a {
+    font-size: 1.5rem;
+  }
+}
+@media screen and (min-width: 1400px) {
+  #nav ul li.external a {
+    padding: 0.5rem 1rem;
+  }
+}
+#nav ul li.external a.github {
+  color: #FFF;
+}
+#nav ul li.external a.discord {
+  color: #5865F2;
+}
+#nav ul li.external a span {
+  color: inherit;
+  padding-left: 0.5rem;
+}
+@media screen and (min-width: 768px) {
+  #nav ul li.external a span {
+    display: none;
   }
 }
 
-.vdp-datepicker {
-  .vdp-datepicker__calendar {
-    background: $grey;
-    border: 0;
-    box-shadow: 0 0 1em rgba(0,0,0,.2);
-
-    header {
-      span {
-        &.prev {
-          &:after {
-            border-right-color: white;
-          }
-        }
-
-        &.next {
-          &:after {
-            border-left-color: white;
-          }
-        }
-
-        &:not(.disabled):hover {
-          background: rgba(255,255,255,.2);
-        }
-      }
-    }
-
-    .cell {
-      &:not(.blank):not(.day-header) {
-        &:not(.disabled) {
-          &:hover {
-            border-color: $brand-color;
-          }
-        }
-      }
-
-      &.selected {
-        background: $brand-color;
-      }
-    }
-
-    .disabled {
-      opacity: .3;
-    }
-  }
+.vdp-datepicker .vdp-datepicker__calendar {
+  background: var(--color-grey);
+  border: 0;
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+}
+.vdp-datepicker .vdp-datepicker__calendar header span.prev:after {
+  border-right-color: white;
+}
+.vdp-datepicker .vdp-datepicker__calendar header span.next:after {
+  border-left-color: white;
+}
+.vdp-datepicker .vdp-datepicker__calendar header span:not(.disabled):hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.vdp-datepicker .vdp-datepicker__calendar .cell:not(.blank):not(.day-header):not(.disabled):hover {
+  border-color: var(--color-brand);
+}
+.vdp-datepicker .vdp-datepicker__calendar .cell.selected {
+  background: var(--color-brand);
+}
+.vdp-datepicker .vdp-datepicker__calendar .disabled {
+  opacity: 0.3;
 }
 </style>

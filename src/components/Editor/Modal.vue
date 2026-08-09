@@ -55,7 +55,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 .modal {
   position: fixed;
   top: 0;
@@ -63,96 +63,82 @@ export default {
   left: 0;
   right: 0;
   z-index: 100;
-  background-color: rgba(0,0,0,0.9);
+  background-color: rgba(0, 0, 0, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
-
-
-  .modal-box {
-    background: rgba(255,255,255,.2);
-    padding: 2em;
-    width: 100%;
-    max-width: 600px;
-    border-radius: 2px;
-    position: relative;
-
-    .close {
-      position: absolute;
-      top: 0;
-      right: 0;
-      padding: 1em;
-      font-size: 1.5em;
-      opacity: .5;
-      cursor: pointer;
-
-      &:hover {
-        opacity: 1;
-      }
-    }
-
-    .row {
-      display: flex;
-      margin: 0 -1em;
-
-      .col {
-        width: 50%;
-        padding: 0 1em;
-        display: flex;
-        flex-direction: column;
-      }
-    }
-
-    h2 {
-      margin: 0;
-      margin-bottom: .5em;
-      line-height: 1;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1em;
-
-      label {
-        font-weight: bold;
-        margin-bottom: .5em;
-      }
-
-      input, select {
-        font: inherit;
-        font-family: 'Source Code Pro', monospace;
-        border: 0;
-        border-radius: 2px;
-        width: 16em;
-        padding: .2em .5em;
-        background-color: rgba(255,255,255,.75);
-      }
-    }
-
-    button {
-      font: inherit;
-      width: 100%;
-      background: $brand-color;
-      font-weight: bold;
-      border: 0;
-      border-radius: 2px;
-      padding: .2em .5em;
-      margin-top: .5em;
-      cursor: pointer;
-
-      &:hover {
-        opacity: .8;
-      }
-
-      &.red {
-        background-color: $red;
-      }
-
-      &:not(:first-child):not(.save-button) {
-        margin-left: 1em;
-      }
-    }
-  }
+}
+.modal .modal-box {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2em;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 2px;
+  position: relative;
+}
+.modal .modal-box .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1em;
+  font-size: 1.5em;
+  opacity: 0.5;
+  cursor: pointer;
+}
+.modal .modal-box .close:hover {
+  opacity: 1;
+}
+.modal .modal-box .row {
+  display: flex;
+  margin: 0 -1em;
+}
+.modal .modal-box .row .col {
+  width: 50%;
+  padding: 0 1em;
+  display: flex;
+  flex-direction: column;
+}
+.modal .modal-box h2 {
+  margin: 0;
+  margin-bottom: 0.5em;
+  line-height: 1;
+}
+.modal .modal-box .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+}
+.modal .modal-box .form-group label {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+.modal .modal-box .form-group input, .modal .modal-box .form-group select {
+  font: inherit;
+  font-family: "Source Code Pro", monospace;
+  border: 0;
+  border-radius: 2px;
+  width: 16em;
+  padding: 0.2em 0.5em;
+  background-color: rgba(255, 255, 255, 0.75);
+}
+.modal .modal-box button {
+  font: inherit;
+  width: 100%;
+  background: var(--color-brand);
+  font-weight: bold;
+  border: 0;
+  border-radius: 2px;
+  padding: 0.2em 0.5em;
+  margin-top: 0.5em;
+  cursor: pointer;
+}
+.modal .modal-box button:hover {
+  opacity: 0.8;
+}
+.modal .modal-box button.red {
+  background-color: var(--color-red);
+}
+.modal .modal-box button:not(:first-child):not(.save-button) {
+  margin-left: 1em;
 }
 </style>

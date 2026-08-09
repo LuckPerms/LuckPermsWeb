@@ -226,256 +226,207 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
+#editor-menu {
+  width: 100%;
+  max-width: 20rem;
+  overflow-y: auto;
+  max-height: 100%;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  position: absolute;
+  z-index: 55;
+  background: black;
+  top: 4rem;
+  bottom: 0;
+  left: -20rem;
+  transition: left 0.2s;
+  user-select: none;
+}
+@media screen and (min-width: 768px) {
   #editor-menu {
-    width: 100%;
-    max-width: 20rem;
-    overflow-y: auto;
-    max-height: 100%;
-    border-right: 1px solid rgba(255,255,255,.2);
-    position: absolute;
-    z-index: 55;
-    background: black;
-    top: 4rem;
-    bottom: 0;
-    left: -20rem;
-    transition: left .2s;
-    user-select: none;
-
-    @include breakpoint($sm) {
-      position: relative;
-      flex: 0 0 20rem;
-      left: unset;
-      top: unset;
-    }
-
-    &.active {
-      left: 0;
-    }
-
-    .filter {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: $navy;
-
-      input {
-        font: inherit;
-        color: white;
-        background: rgba(255,255,255,.1);
-        border: none;
-        padding: .5rem 1rem;
-        width: calc(100% - 4rem);
-        outline-offset: -1px;
-        height: 4rem;
-        margin-left: 4rem;
-
-        @include breakpoint($sm) {
-          height: unset;
-          width: 100%;
-          margin: 0;
-        }
-      }
-
-      .delete {
-        position: absolute;
-        right: .5rem;
-        top: 50%;
-        transform: translateY(-50%);
-        background: transparent;
-        color: white;
-        opacity: .5;
-        border: 0;
-
-        &:hover {
-          cursor: pointer;
-          opacity: 1;
-        }
-      }
-    }
-
-    h2 {
-      margin: 0;
-      padding: .5em 1em;
-      border-bottom: 1px solid rgba(255,255,255,.1);
-      text-transform: uppercase;
-      position: sticky;
-      top: 2.5rem;
-      z-index: 5;
-      background-color: $navy;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-
-      small {
-        opacity: .6;
-      }
-
-      button {
-        background: transparent;
-        border: none;
-        opacity: .5;
-        cursor: pointer;
-        color: white;
-        font-size: 1.5rem;
-        padding: 0;
-
-        svg {
-          transition: transform .2s;
-        }
-
-        &:hover {
-          opacity: 1;
-        }
-
-        &[disabled] {
-          width: 1em;
-        }
-      }
-    }
-
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      margin-bottom: 3rem;
-
-      li {
-        padding: .5em 1em .5em 2em;
-        border-bottom: 1px solid rgba(255,255,255,.1);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        position: relative;
-
-        &:before {
-          position: absolute;
-          left: .5em;
-          background: rgba(0, 0, 0, 0.2);
-          border-radius: 1rem;
-          font-size: .8rem;
-          font-family: "Source Code Pro", monospace;
-          padding: 0.25rem;
-          width: 1em;
-          text-align: center;
-          height: 1em;
-          line-height: 1;
-          opacity: .75;
-        }
-
-        &.active {
-          background-color: rgba(255,255,255,.1);
-        }
-
-        &.modified {
-          background-color: rgba(252, 252, 0, .1);
-
-          &:before {
-            content: 'M';
-          }
-        }
-
-        &.new {
-          background-color: rgba(124, 252, 0, .1);
-
-          &:before {
-            content: 'N';
-          }
-        }
-
-        &:hover {
-          background-color: rgba(255,255,255,.15);
-        }
-
-        small {
-          opacity: .5;
-          font-size: smaller;
-          display: block;
-
-          &:before {
-            content: '(';
-          }
-
-          &:after {
-            content: ')';
-          }
-        }
-      }
-    }
-
-    .tracks {
-      > ul {
-        > li {
-          padding: 0;
-          flex-direction: column;
-          align-items: stretch;
-
-          &:hover {
-            background: transparent;
-          }
-
-          ul {
-            margin-bottom: 0;
-
-            li {
-              &:last-child {
-                border-bottom: 0;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .groups {
-      li {
-        > span {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-
-          .weight {
-            opacity: .5;
-          }
-        }
-        &:hover {
-          button {
-            opacity: .5;
-          }
-        }
-      }
-    }
-
-    .users {
-      img {
-        width: 1em;
-        height: auto;
-        margin-right: .5em;
-      }
-
-      li {
-        &:hover {
-          button {
-            opacity: 0.5;
-
-            &:hover {
-              opacity: 1;
-            }
-          }
-        }
-
-        button {
-          position: absolute;
-          right: 1rem;
-          background: transparent;
-          border: 0;
-          opacity: 0;
-          cursor: pointer;
-          color: white;
-        }
-      }
-    }
+    position: relative;
+    flex: 0 0 20rem;
+    left: unset;
+    top: unset;
   }
+}
+#editor-menu.active {
+  left: 0;
+}
+#editor-menu .filter {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-navy);
+}
+#editor-menu .filter input {
+  font: inherit;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 0.5rem 1rem;
+  width: calc(100% - 4rem);
+  outline-offset: -1px;
+  height: 4rem;
+  margin-left: 4rem;
+}
+@media screen and (min-width: 768px) {
+  #editor-menu .filter input {
+    height: unset;
+    width: 100%;
+    margin: 0;
+  }
+}
+#editor-menu .filter .delete {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  color: white;
+  opacity: 0.5;
+  border: 0;
+}
+#editor-menu .filter .delete:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+#editor-menu h2 {
+  margin: 0;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  position: sticky;
+  top: 2.5rem;
+  z-index: 5;
+  background-color: var(--color-navy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+#editor-menu h2 small {
+  opacity: 0.6;
+}
+#editor-menu h2 button {
+  background: transparent;
+  border: none;
+  opacity: 0.5;
+  cursor: pointer;
+  color: white;
+  font-size: 1.5rem;
+  padding: 0;
+}
+#editor-menu h2 button svg {
+  transition: transform 0.2s;
+}
+#editor-menu h2 button:hover {
+  opacity: 1;
+}
+#editor-menu h2 button[disabled] {
+  width: 1em;
+}
+#editor-menu ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin-bottom: 3rem;
+}
+#editor-menu ul li {
+  padding: 0.5em 1em 0.5em 2em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+#editor-menu ul li:before {
+  position: absolute;
+  left: 0.5em;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-family: "Source Code Pro", monospace;
+  padding: 0.25rem;
+  width: 1em;
+  text-align: center;
+  height: 1em;
+  line-height: 1;
+  opacity: 0.75;
+}
+#editor-menu ul li.active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+#editor-menu ul li.modified {
+  background-color: rgba(252, 252, 0, 0.1);
+}
+#editor-menu ul li.modified:before {
+  content: "M";
+}
+#editor-menu ul li.new {
+  background-color: rgba(124, 252, 0, 0.1);
+}
+#editor-menu ul li.new:before {
+  content: "N";
+}
+#editor-menu ul li:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+#editor-menu ul li small {
+  opacity: 0.5;
+  font-size: smaller;
+  display: block;
+}
+#editor-menu ul li small:before {
+  content: "(";
+}
+#editor-menu ul li small:after {
+  content: ")";
+}
+#editor-menu .tracks > ul > li {
+  padding: 0;
+  flex-direction: column;
+  align-items: stretch;
+}
+#editor-menu .tracks > ul > li:hover {
+  background: transparent;
+}
+#editor-menu .tracks > ul > li ul {
+  margin-bottom: 0;
+}
+#editor-menu .tracks > ul > li ul li:last-child {
+  border-bottom: 0;
+}
+#editor-menu .groups li > span {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#editor-menu .groups li > span .weight {
+  opacity: 0.5;
+}
+#editor-menu .groups li:hover button {
+  opacity: 0.5;
+}
+#editor-menu .users img {
+  width: 1em;
+  height: auto;
+  margin-right: 0.5em;
+}
+#editor-menu .users li:hover button {
+  opacity: 0.5;
+}
+#editor-menu .users li:hover button:hover {
+  opacity: 1;
+}
+#editor-menu .users li button {
+  position: absolute;
+  right: 1rem;
+  background: transparent;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+  color: white;
+}
 </style>

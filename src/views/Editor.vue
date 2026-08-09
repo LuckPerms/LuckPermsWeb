@@ -304,7 +304,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 #editor-menu-toggle {
   position: absolute;
   left: 0;
@@ -315,9 +315,10 @@ export default {
   border: 0;
   height: 4rem;
   width: 4rem;
-  color: $brand-color;
-
-  @include breakpoint($sm) {
+  color: var(--color-brand);
+}
+@media screen and (min-width: 768px) {
+  #editor-menu-toggle {
     display: none;
   }
 }
@@ -325,140 +326,123 @@ export default {
 main.editor {
   display: flex;
   flex-direction: column;
-
-  .editor-container {
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .editor-wrap {
-      display: flex;
-      width: 100%;
-      height: 100%;
-      max-height: 100%;
-
-      .editor-main {
-        max-height: 100%;
-        overflow-y: hidden;
-        flex: 4;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-
-        > nav {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1rem;
-          font-size: 1.5rem;
-          position: relative;
-          z-index: 52;
-
-          .logo {
-            display: flex;
-            align-items: center;
-            font-weight: bold;
-            margin-left: 4rem;
-
-            @include breakpoint($sm) {
-              margin-left: 0;
-            }
-
-            h1 {
-              font-size: 1.5rem;
-            }
-          }
-
-          .buttons {
-            display: flex;
-
-            button {
-              background: $brand-color;
-              color: $navy;
-              font: inherit;
-              font-size: 1rem;
-              font-weight: bold;
-              padding: .25rem .5rem;
-              border:0;
-              margin-left: .5rem;
-              cursor: pointer;
-
-              &:hover {
-                opacity: .8;
-              }
-            }
-
-            .search {
-              display: flex;
-              position: relative;
-
-              button {
-                background: white;
-                margin: 0;
-              }
-            }
-
-            .socket {
-              color: $brand-color;
-              font-size: 1rem;
-              padding: .25rem .25rem;
-              border: 0;
-              margin-right: .5rem;
-            }
-
-            input {
-              padding: .5rem;
-              width: 20rem;
-              background: white;
-              border: 0;
-              background: rgba(255,255,255,.85);
-              border-right: 1px solid rgba(0,0,0,.25);
-              font-family: "Source Code Pro", monospace;
-            }
-          }
-        }
-
-        .editor-session {
-          max-height: 100%;
-          width: 100%;
-          overflow: hidden;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-
-          .session-container {
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-          }
-        }
-
-        .editor-no-session {
-          position: absolute;
-          z-index: 1;
-          height: 100%;
-          width: 100%;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;
-
-          svg {
-            font-size: 2rem;
-            opacity: .33;
-            margin-right: 1rem;
-          }
-        }
-
-        h1 {
-          margin: 0;
-        }
-      }
-    }
+}
+main.editor .editor-container {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+main.editor .editor-container .editor-wrap {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+main.editor .editor-container .editor-wrap .editor-main {
+  max-height: 100%;
+  overflow-y: hidden;
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+main.editor .editor-container .editor-wrap .editor-main > nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+  position: relative;
+  z-index: 52;
+}
+main.editor .editor-container .editor-wrap .editor-main > nav .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin-left: 4rem;
+}
+@media screen and (min-width: 768px) {
+  main.editor .editor-container .editor-wrap .editor-main > nav .logo {
+    margin-left: 0;
   }
+}
+main.editor .editor-container .editor-wrap .editor-main > nav .logo h1 {
+  font-size: 1.5rem;
+}
+main.editor .editor-container .editor-wrap .editor-main > nav .buttons {
+  display: flex;
+}
+main.editor .editor-container .editor-wrap .editor-main > nav .buttons button {
+  background: var(--color-brand);
+  color: var(--color-navy);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+main.editor .editor-container .editor-wrap .editor-main > nav .buttons button:hover {
+  opacity: 0.8;
+}
+main.editor .editor-container .editor-wrap .editor-main > nav .buttons .search {
+  display: flex;
+  position: relative;
+}
+main.editor .editor-container .editor-wrap .editor-main > nav .buttons .search button {
+  background: white;
+  margin: 0;
+}
+main.editor .editor-container .editor-wrap .editor-main > nav .buttons .socket {
+  color: var(--color-brand);
+  font-size: 1rem;
+  padding: 0.25rem 0.25rem;
+  border: 0;
+  margin-right: 0.5rem;
+}
+main.editor .editor-container .editor-wrap .editor-main > nav .buttons input {
+  padding: 0.5rem;
+  width: 20rem;
+  background: white;
+  border: 0;
+  background: rgba(255, 255, 255, 0.85);
+  border-right: 1px solid rgba(0, 0, 0, 0.25);
+  font-family: "Source Code Pro", monospace;
+}
+main.editor .editor-container .editor-wrap .editor-main .editor-session {
+  max-height: 100%;
+  width: 100%;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+main.editor .editor-container .editor-wrap .editor-main .editor-session .session-container {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+main.editor .editor-container .editor-wrap .editor-main .editor-no-session {
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+main.editor .editor-container .editor-wrap .editor-main .editor-no-session svg {
+  font-size: 2rem;
+  opacity: 0.33;
+  margin-right: 1rem;
+}
+main.editor .editor-container .editor-wrap .editor-main h1 {
+  margin: 0;
 }
 </style>

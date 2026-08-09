@@ -65,33 +65,31 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-  .group-name {
-    max-width: 85%;
-  }
+<style scoped>
+.group-name {
+  max-width: 85%;
+}
 
-  .group-display {
-    white-space: nowrap;
-    max-width: 100%;
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.group-display {
+  white-space: nowrap;
+  max-width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  button {
-    background: transparent;
-    color: white;
-    opacity: 0;
-    border: 0;
-    cursor: pointer;
-    padding: 0 .5rem;
-
-    &:hover {
-      opacity: 1 !important;
-    }
-
-    &[disabled] {
-      opacity: 0 !important;
-    }
-  }
+button {
+  background: transparent;
+  color: white;
+  opacity: 0;
+  border: 0;
+  cursor: pointer;
+  padding: 0 0.5rem;
+}
+button:hover {
+  opacity: 1 !important;
+}
+button[disabled] {
+  opacity: 0 !important;
+}
 </style>

@@ -71,7 +71,7 @@
       "title": "How to install",
       "add": "Add the downloaded plugin <code>.jar</code> file into your server's <code>plugins</code> or <code>mods</code> folder.",
       "restart": "Start or restart your server - <strong>do not reload!</strong>",
-      "config": "Locate the plugin's configuration file (usually found within <code>/plugins/LuckPerms/</code>) and adjust any settings to your liking.",
+      "config": "Locate the configuration file and adjust any settings to your liking. This is usually within <code>/plugins/LuckPerms/</code> for Bukkit, BungeeCord, Velocity and NukkitX, or <code>/config/luckperms/</code> for Sponge, Fabric, Forge and NeoForge.",
       "setup": "Start setting up your permissions! Check out the {wiki} guide for more info.",
       "wiki": "Getting Started"
     },

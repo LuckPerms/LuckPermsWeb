@@ -139,7 +139,7 @@
               <span> · </span>
             </template>
             <router-link v-if="!config.selfHosted" to="/wiki/Credits" target="_blank">
-              Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
+              Copyright © 2017-{{ new Date().getFullYear().toString() }}
             </router-link>
             <a v-else href="https://luckperms.net/wiki/Credits" target="_blank">
               Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors

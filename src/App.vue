@@ -128,6 +128,16 @@
             <a :href="'https://github.com/LuckPerms/LuckPermsWeb/commit/' + commitHash" target="_blank">{{ commitHash }}</a>
           </li>
           <li>
+            <template v-if="!config.selfHosted">
+              <router-link to="/wiki/Terms-of-Service" target="_blank">
+                Terms of Service
+              </router-link>
+              <span> · </span>
+              <router-link to="/wiki/Privacy-Policy" target="_blank">
+                Privacy Policy
+              </router-link>
+              <span> · </span>
+            </template>
             <router-link v-if="!config.selfHosted" to="/wiki/Credits" target="_blank">
               Copyright © 2017-{{ new Date().getFullYear().toString() }} LuckPerms contributors
             </router-link>

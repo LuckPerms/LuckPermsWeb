@@ -1,6 +1,10 @@
 <template>
 <div class="delete-group">
-  <h2 v-html="$t('editor.groups.delete', { group: props.groupId })" />
+  <i18n path="editor.groups.delete" tag="h2">
+    <template #group>
+      <code>{{ props.groupId }}</code>
+    </template>
+  </i18n>
   <p class="lighter">
     {{ $t('editor.groups.deleteConfirm', { count: permissions.length }) }}
   </p>

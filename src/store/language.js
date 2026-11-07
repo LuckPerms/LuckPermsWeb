@@ -1,8 +1,32 @@
 import axios from 'axios';
+import DOMPurify from 'dompurify';
 import Locale from 'locale-codes';
 
 // Need to import this dynamically otherwise it becomes a circular dependency and will throw errors
 const i18n = import('@/util/language');
+
+const SAFE_TRANSLATION_TAGS = ['b', 'br', 'code', 'em', 'i', 'span', 'strong'];
+
+function sanitizeTranslationValue(value) {
+  if (typeof value === 'string') {
+    return DOMPurify.sanitize(value, {
+      ALLOWED_TAGS: SAFE_TRANSLATION_TAGS,
+      ALLOWED_ATTR: [],
+    });
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(sanitizeTranslationValue);
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, child]) => [key, sanitizeTranslationValue(child)]),
+    );
+  }
+
+  return value;
+}
 
 function sortByName({ name: aName = '' }, { name: bName = '' }) {
   return aName.localeCompare(bName);
@@ -131,7 +155,7 @@ export default {
       const { data } = await axios.get(`https://metadata.luckperms.net/translation/web/${locale}`);
 
       VueI18n.locale = locale;
-      VueI18n.setLocaleMessage(locale, data);
+      VueI18n.setLocaleMessage(locale, sanitizeTranslationValue(data));
     },
   },
 };

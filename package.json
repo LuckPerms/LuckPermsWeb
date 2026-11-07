@@ -20,6 +20,7 @@
     "bowser": "^2.11.0",
     "comlink": "^4.4.1",
     "core-js": "^3.8.3",
+    "dompurify": "^3.4.17",
     "flag-icons": "^6.6.3",
     "git-describe": "^4.0.4",
     "highlight.js": "^10.2.0",

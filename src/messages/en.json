@@ -144,7 +144,7 @@
       "name": "Group name",
       "choose": "Choose a group or user from the side bar",
       "toggle": "Show/hide groups",
-      "delete": "Are you sure you want to delete group: <code>{group}</code>",
+      "delete": "Are you sure you want to delete group: {group}",
       "deleteConfirm": "All {count} of its permissions will be deleted. This currently can not be undone.",
       "displayName": "Display name",
       "parent": "Parent",

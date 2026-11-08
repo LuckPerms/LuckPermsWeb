@@ -304,8 +304,8 @@
         </div>
         <ul>
           <li v-for="(entry, index) in flattenedContexts" :key="`add_node_flattened_context_${entry.key}_${entry.value}_${index}`">
-            <span v-html="entry.key"></span>
-            <span v-html="entry.value"></span>
+            <span>{{ entry.key }}</span>
+            <span>{{ entry.value }}</span>
             <button @click="removeContext(entry.key, entry.value)">
               <font-awesome icon="times" fixed-width />
             </button>

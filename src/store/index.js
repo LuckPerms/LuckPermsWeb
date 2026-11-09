@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import { v4 as uuid } from 'uuid';
 import createPersistedState from 'vuex-persistedstate';
 import language from './language';
 import axiosCompress from '@/util/axios_compress';
 import { socketConnect } from '@/socket/ws';
 import { contextsToArray } from '@/util/editor';
 
-const uuid = require('uuid/v4');
 const config = require('../../config.json');
 
 Vue.use(Vuex);

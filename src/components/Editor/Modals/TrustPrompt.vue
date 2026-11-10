@@ -1,8 +1,17 @@
 <template>
 <div class="trust-prompt">
-  <h2><font-awesome icon="network-wired" /> {{ $t('editor.trust.title') }}</h2>
+  <h2>
+    <font-awesome :icon="securityUpdate ? 'shield-alt' : 'network-wired'" />
+    {{ securityUpdate ? $t('editor.trust.security.title') : $t('editor.trust.title') }}
+  </h2>
   <p>
-    {{ $t('editor.trust.prompt') }}
+    {{ securityUpdate ? $t('editor.trust.security.prompt') : $t('editor.trust.prompt') }}
+  </p>
+  <p v-if="securityUpdate" class="lighter">
+    {{ $t('editor.trust.security.unchanged') }}
+  </p>
+  <p v-if="securityUpdate" class="lighter">
+    {{ $t('editor.trust.security.authorize') }}
   </p>
 
   <div class="command">
@@ -14,7 +23,10 @@
     </span>
   </div>
 
-  <p v-html="$t('editor.trust.note')" />
+  <p v-if="props.keyStorageUnavailable">
+    {{ $t('editor.trust.security.unavailable') }}
+  </p>
+  <p v-else v-html="$t('editor.trust.note')" />
 </div>
 </template>
 
@@ -35,6 +47,9 @@ export default {
   computed: {
     metaData() {
       return this.$store.getters.metaData;
+    },
+    securityUpdate() {
+      return Boolean(this.props.keyStorageUpgrade || this.props.keyStorageUnavailable);
     },
   },
 

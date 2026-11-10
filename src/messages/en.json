@@ -137,7 +137,14 @@
     "trust": {
       "title": "Editor Connection",
       "prompt": "In order to trust this web browser and allow it to apply changes directly to your server, please run the following command in-game:",
-      "note": "<strong>Note:</strong> You only have to do this once! The server will remember this browser for future sessions."
+      "note": "<strong>Note:</strong> You only have to do this once! The server will remember this browser for future sessions.",
+      "security": {
+        "title": "Editor Security Update",
+        "prompt": "This browser needs to be authorized again because its editor signing key has been replaced for improved security.",
+        "unchanged": "Your editor session, permissions and saved changes have not been changed. You can close this message to keep editing and apply changes manually.",
+        "authorize": "Run the command below once to continue applying changes directly from this browser.",
+        "unavailable": "This browser cannot securely save the editor signing key. You may need to authorize this browser again in future sessions."
+      }
     },
     "groups": {
       "create": "Create a group",

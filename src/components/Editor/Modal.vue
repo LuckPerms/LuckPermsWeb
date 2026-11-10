@@ -1,7 +1,11 @@
 <template>
 <div class="modal" @click="closeModal">
 
-  <div class="modal-box" @click.stop>
+  <div
+    class="modal-box"
+    :class="{ 'trust-prompt-modal': modal.type === 'trustPrompt' }"
+    @click.stop
+  >
     <div class="close" @click="closeModal">
       <font-awesome icon="times-circle" />
     </div>
@@ -70,6 +74,10 @@ export default {
     max-width: 600px;
     border-radius: 2px;
     position: relative;
+
+    &.trust-prompt-modal {
+      background: #141422;
+    }
 
     .close {
       position: absolute;

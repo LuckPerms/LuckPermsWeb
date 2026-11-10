@@ -579,10 +579,14 @@ export default new Vuex.Store({
                 commit('setEditorSocket', socket);
                 commit('setEditorSocketStatus', true);
               },
-              trust: ({ nonce }) => {
+              trust: ({ nonce, keyStorageUpgrade, keyStorageUnavailable }) => {
                 commit('setModal', {
                   type: 'trustPrompt',
-                  object: { nonce },
+                  object: {
+                    nonce,
+                    keyStorageUpgrade,
+                    keyStorageUnavailable,
+                  },
                 });
               },
               trusted: () => {

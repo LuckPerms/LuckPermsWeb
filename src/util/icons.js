@@ -36,6 +36,7 @@ import {
   faServer,
   faHeart,
   faArrowCircleRight,
+  faShieldAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -78,6 +79,7 @@ library.add(
   faServer,
   faHeart,
   faArrowCircleRight,
+  faShieldAlt,
 
   faGithub,
   faDiscord,
